@@ -1,0 +1,14 @@
+    body {
+      max-height: 100%;
+    }
+    li{
+      padding: 0px;
+      height: 40px;
+    }
+    /*
+    ul.nav-list li a:focus{
+      background-color: #1664e3;
+      color: white;
+      border-radius: 5px;
+    }
+    */

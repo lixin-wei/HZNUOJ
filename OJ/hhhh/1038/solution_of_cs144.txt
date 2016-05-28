@@ -1,0 +1,2270 @@
+
+**************************************************************
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string.h>
+#include<cstring>
+#include<string>
+#include<cmath>
+
+using namespace std;
+
+typedef struct {string a;
+int b;} name;
+int main()
+{
+    int t,n,i,j;
+    string tchar;
+    int temp;
+    name loy[101];
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        for(i=0;i<n;i++)
+            cin>>loy[i].a>>loy[i].b;
+        for(i=0;i<n;i++)
+        {
+            for(j=i+1;j<n;j++)
+            {
+                if(loy[i].b<loy[j].b)
+                {
+                    tchar=loy[i].a;
+                    loy[i].a=loy[j].a;
+                    loy[j].a=tchar;
+                    temp=loy[i].b;
+                    loy[i].b=loy[j].b;
+                    loy[j].b=temp;
+                }
+            }
+        }
+        for(i=0;i<n;i++)
+        {
+            cout<<loy[i].a<<endl;
+        }
+    }
+	return 0;
+}
+
+
+Problem: 1999
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:5 ms
+Memory:1700 kb
+ip: 172.26.114.210
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string.h>
+#include<cstring>
+#include<string>
+#include<cmath>
+
+using namespace std;
+
+typedef struct {string a;
+string b;
+int c;} name;
+int main()
+{
+    int t,n,i,j,m;
+    string tchar;
+    int temp;
+    name d[101];
+   cin>>n>>m;
+   for(i=0;i<n;i++)
+   {
+       cin>>d[i].a>>d[i].b>>d[i].c;
+   }
+   for(i=0;i<m;i++)
+   {
+       cin>>tchar;
+       for(j=0;j<n;j++)
+       {
+           if(tchar.compare(d[j].a)==0)
+            break;
+       }
+       if(d[j].c>=90)
+        cout<<"A"<<endl;
+       else if(d[j].c>=80)
+        cout<<"B"<<endl;
+       else if(d[j].c>=70)
+        cout<<"C"<<endl;
+       else if(d[j].c>=60)
+        cout<<"OK"<<endl;
+       else cout<<"ARE YOU PIG?"<<endl;
+   }
+
+	return 0;
+}
+
+
+Problem: 2000
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:2 ms
+Memory:1700 kb
+ip: 172.26.114.210
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int time=0;
+            cin>>a;
+            while(a)
+            {
+                if(a%2==1)
+                    break;
+                time++;
+                a/=2;
+            }
+            if(n!=0)
+                cout<<pow(2.0,time)<<" ";
+            else cout<<pow(2.0,time)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int init[1000000];
+int main()
+{
+    int t,n,a;
+    for(int i=0; i<1000000; i++)
+    {
+        int k=i;
+        int time=0;
+        while(k)
+        {
+            if(k%2==1)
+                break;
+            time++;
+            k/=2;
+        }
+        init[i]=pow(2.0,time);
+    }
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            cin>>a;
+            if(n!=0)
+                cout<<init[a]<<" ";
+            else cout<<init[a]<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Runtime Error
+Sresult: 10
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int time=0,aa;
+            cin>>a;
+            aa=a;
+            for(time=0;time<10;time++){
+                a>>=time+1;
+                a<<=time+1;
+                if(aa!=a)
+                    break;
+            }
+            if(n!=0)
+                cout<<pow(2.0,time)<<" ";
+            else cout<<pow(2.0,time)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+    #include <iostream>
+    #include <string.h>
+    #include <stdio.h>
+
+    using namespace std;
+    typedef long long LL;
+
+    LL n,m,p=2;
+
+    LL quick_mod(LL a, LL b)
+    {
+        LL ans = 1;
+        a %= p;
+        while(b)
+        {
+            if(b & 1)
+            {
+                ans = ans * a % p;
+                b--;
+            }
+            b >>= 1;
+            a = a * a % p;
+        }
+        return ans;
+    }
+
+    LL C(LL n, LL m)
+    {
+        if(m > n) return 0;
+        LL ans = 1;
+        for(int i=1; i<=m; i++)
+        {
+            LL a = (n + i - m) % p;
+            LL b = i % p;
+            ans = ans * (a * quick_mod(b, p-2) % p) % p;
+        }
+        return ans;
+    }
+
+    LL Lucas(LL n, LL m)
+    {
+        if(m == 0) return 1;
+        return C(n % p, m % p) * Lucas(n / p, m / p) % p;
+    }
+
+    int main()
+    {
+        int T;
+        scanf("%d", &T);
+        while(T--)
+        {
+            scanf("%I64d%I64d", &m, &n);
+            printf("%I64d\n", Lucas(n,m));
+        }
+        return 0;
+    }
+
+
+Problem: 2011
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Output Limit Exceed
+Sresult: 9
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include <cstdio>
+#include <iostream>
+#include <cmath>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+#define maxn 100010
+typedef long long LL;
+LL m,n,p=2;
+LL Pow(LL a,LL b,LL mod)
+{
+    LL ans=1;
+    while(b)
+    {
+        if(b&1)
+        {
+            b--;
+            ans=(ans*a)%mod;
+        }
+        else
+        {
+            b/=2;
+            a=(a*a)%mod;
+        }
+    }
+    return ans;
+}
+LL C(LL n,LL m)
+{
+    if(n<m)
+        return 0;
+    LL ans=1;
+    for(int i=1;i<=m;i++)
+    {
+        ans=ans*(((n-m+i)%p)*Pow(i,p-2,p)%p)%p;
+    }
+    return ans;
+}
+LL Lucas(LL n,LL m)
+{
+    if(m==0)
+        return 1;
+    return (Lucas(n/p,m/p)*C(n%p,m%p))%p;
+}
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%lld%lld",&m,&n);
+        printf("%lld\n",Lucas(n,m));
+    }
+    return 0;
+}
+
+
+Problem: 2011
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:4 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    int num[12];
+    for(int i=0;i<12;i++)
+        num[i]=pow(2.0,i);
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int i;
+            cin>>a;
+            for(i=0;i<11;i++){
+                if((a&num[i])==num[i]){
+                    break;
+                }
+            }
+            if(n!=0)
+                cout<<num[i]<<" ";
+            else cout<<num[i]<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int i;
+            cin>>a;
+            if(n!=0)
+                cout<<(a&-a)<<" ";
+            else
+                cout<<(a&-a)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        while(n--)
+        {
+            int i;
+            scanf("%d",&a);
+            if(n!=0)
+                printf("%d ",a&-a);
+            else
+                printf("%d\n",a&-a);
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:631 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        while(n--)
+        {
+            ans=0;
+            scanf("%d",&a);
+            ans=(ans^a);
+        }
+        printf("%d\n",ans);
+    }
+
+    return 0;
+}
+
+
+Problem: 2012
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Wrong Answer
+Sresult: 6
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        ans=0;
+        while(n--)
+        {
+            scanf("%d",&a);
+            ans=(ans^a);
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
+
+
+Problem: 2012
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:136 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string.h>
+#include<cstring>
+#include<string>
+#include<cmath>
+
+using namespace std;
+
+typedef struct {string a;
+int b;} name;
+int main()
+{
+    int t,n,i,j;
+    string tchar;
+    int temp;
+    name loy[101];
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        for(i=0;i<n;i++)
+            cin>>loy[i].a>>loy[i].b;
+        for(i=0;i<n;i++)
+        {
+            for(j=i+1;j<n;j++)
+            {
+                if(loy[i].b<loy[j].b)
+                {
+                    tchar=loy[i].a;
+                    loy[i].a=loy[j].a;
+                    loy[j].a=tchar;
+                    temp=loy[i].b;
+                    loy[i].b=loy[j].b;
+                    loy[j].b=temp;
+                }
+            }
+        }
+        for(i=0;i<n;i++)
+        {
+            cout<<loy[i].a<<endl;
+        }
+    }
+	return 0;
+}
+
+
+Problem: 1999
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:5 ms
+Memory:1700 kb
+ip: 172.26.114.210
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string.h>
+#include<cstring>
+#include<string>
+#include<cmath>
+
+using namespace std;
+
+typedef struct {string a;
+string b;
+int c;} name;
+int main()
+{
+    int t,n,i,j,m;
+    string tchar;
+    int temp;
+    name d[101];
+   cin>>n>>m;
+   for(i=0;i<n;i++)
+   {
+       cin>>d[i].a>>d[i].b>>d[i].c;
+   }
+   for(i=0;i<m;i++)
+   {
+       cin>>tchar;
+       for(j=0;j<n;j++)
+       {
+           if(tchar.compare(d[j].a)==0)
+            break;
+       }
+       if(d[j].c>=90)
+        cout<<"A"<<endl;
+       else if(d[j].c>=80)
+        cout<<"B"<<endl;
+       else if(d[j].c>=70)
+        cout<<"C"<<endl;
+       else if(d[j].c>=60)
+        cout<<"OK"<<endl;
+       else cout<<"ARE YOU PIG?"<<endl;
+   }
+
+	return 0;
+}
+
+
+Problem: 2000
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:2 ms
+Memory:1700 kb
+ip: 172.26.114.210
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+struct student
+{
+	char name[20];
+	double a;
+	double b;
+	double c;
+	double average;
+};
+int comp(const void *p,const void *q)
+{
+	return((struct student *)q)->average - ((struct student *)p)->average;
+}
+void main()
+{
+   struct student studentarray[100];
+   int n,i,j,max1,max2,max3,t,m1=0,m2=0,m3=0;
+   scanf("%d",&n);
+   for(i=0;i<n;i++)
+   {
+	   scanf("%s %lf %lf %lf",studentarray[i].name,&studentarray[i].a,&studentarray[i].b,&studentarray[i].c);
+   }
+   for(i=1;i<n;i++)
+   {
+	   max1=studentarray[0].a;
+	   max2=studentarray[0].b;
+	   max3=studentarray[0].c;
+	   if(studentarray[i].a>max1)max1=studentarray[i].a,m1=i;
+	   if(studentarray[i].b>max2)max2=studentarray[i].b,m2=i;
+	   if(studentarray[i].c>max3)max3=studentarray[i].c,m3=i; 
+	  
+   }
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m1].name,studentarray[m1].a,studentarray[m1].b,studentarray[m1].c);
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m2].name,studentarray[m2].a,studentarray[m2].b,studentarray[m2].c);
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m3].name,studentarray[m3].a,studentarray[m3].b,studentarray[m3].c);
+   printf("\n");
+   for(i=0;i<n;i++)
+   {
+	   studentarray[i].average=1.0*(studentarray[i].a+studentarray[i].b+studentarray[i].c)/3;
+   }
+  qsort(studentarray,n,sizeof(struct student),comp);
+  for(i=0;i<n;i++)
+  {
+	  printf("%s,%.2f,%.2f,%.2f\n",studentarray[i].name,studentarray[i].a,studentarray[i].b,studentarray[i].c);
+  }
+  printf("\n");
+  for(i=0;i<n;i++)
+  {
+	  if(studentarray[i].average>80)
+		  printf("%s,%.2f,%.2f,%.2f,%.2f\n",studentarray[i].name,studentarray[i].a,studentarray[i].b,studentarray[i].c,studentarray[i].average);
+  }
+}
+
+
+Problem: 2004
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Wrong Answer
+Sresult: 6
+ip: 172.26.68.207
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int time=0;
+            cin>>a;
+            while(a)
+            {
+                if(a%2==1)
+                    break;
+                time++;
+                a/=2;
+            }
+            if(n!=0)
+                cout<<pow(2.0,time)<<" ";
+            else cout<<pow(2.0,time)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int init[1000000];
+int main()
+{
+    int t,n,a;
+    for(int i=0; i<1000000; i++)
+    {
+        int k=i;
+        int time=0;
+        while(k)
+        {
+            if(k%2==1)
+                break;
+            time++;
+            k/=2;
+        }
+        init[i]=pow(2.0,time);
+    }
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            cin>>a;
+            if(n!=0)
+                cout<<init[a]<<" ";
+            else cout<<init[a]<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Runtime Error
+Sresult: 10
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int time=0,aa;
+            cin>>a;
+            aa=a;
+            for(time=0;time<10;time++){
+                a>>=time+1;
+                a<<=time+1;
+                if(aa!=a)
+                    break;
+            }
+            if(n!=0)
+                cout<<pow(2.0,time)<<" ";
+            else cout<<pow(2.0,time)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+    #include <iostream>
+    #include <string.h>
+    #include <stdio.h>
+
+    using namespace std;
+    typedef long long LL;
+
+    LL n,m,p=2;
+
+    LL quick_mod(LL a, LL b)
+    {
+        LL ans = 1;
+        a %= p;
+        while(b)
+        {
+            if(b & 1)
+            {
+                ans = ans * a % p;
+                b--;
+            }
+            b >>= 1;
+            a = a * a % p;
+        }
+        return ans;
+    }
+
+    LL C(LL n, LL m)
+    {
+        if(m > n) return 0;
+        LL ans = 1;
+        for(int i=1; i<=m; i++)
+        {
+            LL a = (n + i - m) % p;
+            LL b = i % p;
+            ans = ans * (a * quick_mod(b, p-2) % p) % p;
+        }
+        return ans;
+    }
+
+    LL Lucas(LL n, LL m)
+    {
+        if(m == 0) return 1;
+        return C(n % p, m % p) * Lucas(n / p, m / p) % p;
+    }
+
+    int main()
+    {
+        int T;
+        scanf("%d", &T);
+        while(T--)
+        {
+            scanf("%I64d%I64d", &m, &n);
+            printf("%I64d\n", Lucas(n,m));
+        }
+        return 0;
+    }
+
+
+Problem: 2011
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Output Limit Exceed
+Sresult: 9
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include <cstdio>
+#include <iostream>
+#include <cmath>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+#define maxn 100010
+typedef long long LL;
+LL m,n,p=2;
+LL Pow(LL a,LL b,LL mod)
+{
+    LL ans=1;
+    while(b)
+    {
+        if(b&1)
+        {
+            b--;
+            ans=(ans*a)%mod;
+        }
+        else
+        {
+            b/=2;
+            a=(a*a)%mod;
+        }
+    }
+    return ans;
+}
+LL C(LL n,LL m)
+{
+    if(n<m)
+        return 0;
+    LL ans=1;
+    for(int i=1;i<=m;i++)
+    {
+        ans=ans*(((n-m+i)%p)*Pow(i,p-2,p)%p)%p;
+    }
+    return ans;
+}
+LL Lucas(LL n,LL m)
+{
+    if(m==0)
+        return 1;
+    return (Lucas(n/p,m/p)*C(n%p,m%p))%p;
+}
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%lld%lld",&m,&n);
+        printf("%lld\n",Lucas(n,m));
+    }
+    return 0;
+}
+
+
+Problem: 2011
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:4 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    int num[12];
+    for(int i=0;i<12;i++)
+        num[i]=pow(2.0,i);
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int i;
+            cin>>a;
+            for(i=0;i<11;i++){
+                if((a&num[i])==num[i]){
+                    break;
+                }
+            }
+            if(n!=0)
+                cout<<num[i]<<" ";
+            else cout<<num[i]<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        while(n--)
+        {
+            int i;
+            cin>>a;
+            if(n!=0)
+                cout<<(a&-a)<<" ";
+            else
+                cout<<(a&-a)<<endl;
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Time Limit Exceed
+Sresult: 7
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        while(n--)
+        {
+            int i;
+            scanf("%d",&a);
+            if(n!=0)
+                printf("%d ",a&-a);
+            else
+                printf("%d\n",a&-a);
+        }
+    }
+
+    return 0;
+}
+
+
+Problem: 2013
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:631 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        while(n--)
+        {
+            ans=0;
+            scanf("%d",&a);
+            ans=(ans^a);
+        }
+        printf("%d\n",ans);
+    }
+
+    return 0;
+}
+
+
+Problem: 2012
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Wrong Answer
+Sresult: 6
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<iostream>
+#include<cmath>
+#include<cstdio>
+using namespace std;
+int main()
+{
+    int t,n,a,ans;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d",&n);
+        ans=0;
+        while(n--)
+        {
+            scanf("%d",&a);
+            ans=(ans^a);
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
+
+
+Problem: 2012
+User: 2014211307&nbsp;(哦)
+Language: C++
+Result: Accepted
+Sresult: 4
+Time:136 ms
+Memory:1700 kb
+ip: 172.17.151.30
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+struct student
+{
+	char name[20];
+	double a;
+	double b;
+	double c;
+	double average;
+};
+int comp(const void *p,const void *q)
+{
+	return((struct student *)q)->average - ((struct student *)p)->average;
+}
+void main()
+{
+   struct student studentarray[100];
+   int n,i,j,max1,max2,max3,t,m1=0,m2=0,m3=0;
+   scanf("%d",&n);
+   for(i=0;i<n;i++)
+   {
+	   scanf("%s %lf %lf %lf",studentarray[i].name,&studentarray[i].a,&studentarray[i].b,&studentarray[i].c);
+   }
+   for(i=1;i<n;i++)
+   {
+	   max1=studentarray[0].a;
+	   max2=studentarray[0].b;
+	   max3=studentarray[0].c;
+	   if(studentarray[i].a>max1)max1=studentarray[i].a,m1=i;
+	   if(studentarray[i].b>max2)max2=studentarray[i].b,m2=i;
+	   if(studentarray[i].c>max3)max3=studentarray[i].c,m3=i; 
+	  
+   }
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m1].name,studentarray[m1].a,studentarray[m1].b,studentarray[m1].c);
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m2].name,studentarray[m2].a,studentarray[m2].b,studentarray[m2].c);
+   printf("%s,%.2f,%.2f,%.2f\n",studentarray[m3].name,studentarray[m3].a,studentarray[m3].b,studentarray[m3].c);
+   printf("\n");
+   for(i=0;i<n;i++)
+   {
+	   studentarray[i].average=1.0*(studentarray[i].a+studentarray[i].b+studentarray[i].c)/3;
+   }
+  qsort(studentarray,n,sizeof(struct student),comp);
+  for(i=0;i<n;i++)
+  {
+	  printf("%s,%.2f,%.2f,%.2f\n",studentarray[i].name,studentarray[i].a,studentarray[i].b,studentarray[i].c);
+  }
+  printf("\n");
+  for(i=0;i<n;i++)
+  {
+	  if(studentarray[i].average>80)
+		  printf("%s,%.2f,%.2f,%.2f,%.2f\n",studentarray[i].name,studentarray[i].a,studentarray[i].b,studentarray[i].c,studentarray[i].average);
+  }
+}
+
+
+Problem: 2004
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Wrong Answer
+Sresult: 6
+ip: 172.26.68.207
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,e=0,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=0;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		else
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Compile Error
+Sresult: 11
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=1;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=1;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 2002
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Accepted
+Sresult: 4
+Time:1 ms
+Memory:1092 kb
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+ 
+ 
+int main()
+{
+    int n,people[100][9],i,j,c=0;
+    scanf("%d",&n);
+    for(j=0;j<n;j++)
+        for(i=0;i<9;i++)
+        {
+            scanf("%d",&people[j][i]);
+        }
+        for(j=1;j<n;j++)
+         for(i=1;i<9;i++)
+         
+    {
+        if(people[c][i]<people[j][i])
+            c=j;
+        else if(people[c][i]>people[j][i])
+               break;
+         
+         
+    }
+    printf("%d",people);
+        return 0;
+}
+
+Problem: 2002
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Wrong Answer
+Sresult: 6
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name;
+	float s[3];
+	float avr;
+};
+void mysort(struct fen a[],int n,int m)  //选?择?排?序¨°
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].s[m]>a[j].s[m]) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+void sort(struct fen a[],int n)  //选?择?排?序¨°
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j]&&i!=n-1)
+				c=i;
+			else if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=1;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,e=0,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=0;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		else
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Compile Error
+Sresult: 11
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=1;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+
+
+int main()
+{
+	int n,people[100][9],i,j,c=0;
+	scanf("%d",&n);
+	for(j=0;j<n;j++)
+		for(i=0;i<9;i++)
+		{
+			scanf("%d",&people[j][i]);
+		}
+        for(j=1;j<n;j++)
+	     for(i=1;i<9;i++)
+		
+	{
+		if(people[c][i]<people[j][i])
+			c=j;
+		else if(people[c][i]>people[j][i])
+		       break;
+		
+		
+	}
+	printf("%d",people[c][0]);
+		return 0;
+}
+
+Problem: 2002
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Accepted
+Sresult: 4
+Time:1 ms
+Memory:1092 kb
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+ 
+ 
+int main()
+{
+    int n,people[100][9],i,j,c=0;
+    scanf("%d",&n);
+    for(j=0;j<n;j++)
+        for(i=0;i<9;i++)
+        {
+            scanf("%d",&people[j][i]);
+        }
+        for(j=1;j<n;j++)
+         for(i=1;i<9;i++)
+         
+    {
+        if(people[c][i]<people[j][i])
+            c=j;
+        else if(people[c][i]>people[j][i])
+               break;
+         
+         
+    }
+    printf("%d",people);
+        return 0;
+}
+
+Problem: 2002
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Wrong Answer
+Sresult: 6
+ip: 172.27.240.1
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name;
+	float s[3];
+	float avr;
+};
+void mysort(struct fen a[],int n,int m)  //选?择?排?序¨°
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].s[m]>a[j].s[m]) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+void sort(struct fen a[],int n)  //选?择?排?序¨°
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j]&&i!=n-1)
+				c=i;
+			else if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=0;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
+
+**************************************************************
+#include<stdio.h>
+#include<stdlib.h>
+struct fen
+{
+	char name[20];
+	float s[3];
+	float avr;
+};
+
+
+void sort(struct fen a[],int n)  
+{
+	int i,j;
+	struct fen  t;
+	for(i=1; i<n; i++)
+	{
+		for(j=0; j<n-i; j++)
+			if(a[j+1].avr>a[j].avr) 
+			{
+				t=a[j];
+				a[j]=a[j+1];
+				a[j+1]=t;
+			}
+	}
+}
+
+
+int main()
+{
+	
+	struct fen score[9999];
+	int n,i,j,c;
+	float d=0;
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		scanf("%s %f %f %f",score[i].name,&score[i].s[0],
+		                    &score[i].s[1],&score[i].s[2]);
+		score[i].avr=(score[i].s[0] +score[i].s[1] + score[i].s[2]) / 3;
+
+	}
+	c=0;
+	for(j=0;j<3;j++)
+	{
+		for(i=1;i<n;i++)
+		{
+			if(score[c].s[j]<score[i].s[j])
+				c=i;
+			 if(i==n-1)
+				printf("%c,%.2f,%.2f,%.2f\n",score[c].name,
+				score[c].s[0],score[c].s[1],score[c].s[2]);
+		}//输出成绩最好的
+		if(j==2)
+			printf("\n");
+	}
+	
+	sort(score,n);
+	for(i=0;i<n;i++)
+	{
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	    if(i==n-1)
+			printf("\n");
+	}//平均分
+	for(i=0;i<n;i++)
+	{
+		if(score[i].avr>80.0)
+		printf("%c,%.2f,%.2f,%.2f\n",score[i].name,
+				score[i].s[0],score[i].s[1],score[i].s[2]);
+	}
+		  
+	return 0;
+}
+
+Problem: 0
+User: 2014211307&nbsp;(哦)
+Language: C
+Result: Test Running Done
+Sresult: 13
+ip: 172.27.254.182
+****************************************************************
+
