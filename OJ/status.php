@@ -251,7 +251,7 @@
           if($ok)
             $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm am-round'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
           else
-            $view_status[$i][3].= "<span class='m-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."</span>";
+            $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-round am-btn-sm'>".$row['sim_s_id']."</span>";
           if(isset($_GET['showsim'])&&isset($row[13]))
             $view_status[$i][3].= "$row[13]";
         } else {
@@ -264,7 +264,7 @@
       }
     }
     if ($row['result']!=4&&isset($row['pass_rate'])&&$row['pass_rate']>0&&$row['pass_rate']<.98)
-      $view_status[$i][3].="<span class='m-btn am-btn-secondary am-btn-sm'>". (100-$row['pass_rate']*100)."%</span>";
+      $view_status[$i][3].="<span class='am-btn am-btn-secondary am-round am-btn-sm'>". (100-$row['pass_rate']*100)."%</span>";
     if(isset($_SESSION['http_judge'])) {
       $view_status[$i][3].="<form class='http_judge_form form-inline'><input type=hidden name=sid value='".$row['solution_id']."'>";
       $view_status[$i][3].="</form>";
