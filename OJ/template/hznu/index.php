@@ -21,7 +21,7 @@
 
 <style>
   .bg{
-    background-image: url(template/hznu/bg_image.jpg);
+    background-image: url(template/hznu/bg_image2.jpg);
     background-repeat: no-repeat;
     background-position: top;
   }
@@ -32,8 +32,7 @@
     margin-right: auto;
   }
 </style>
-
-<div class="am-container" style="margin-top:400px;">
+<div class="am-container" style="margin-top:0px;">
   <!-- 轮播模块 start -->
 <!--   <div id='slider' data-am-widget='slider' class='am-slider am-slider-default' data-am-slider='{}'>
   <ul class='am-slides'>
@@ -44,7 +43,11 @@
   </ul>
 </div> -->
   <!-- 轮播模块 end -->
-
+  <div class="am-g ill" style="height: 380px;"></div>
+  <div class="am-g ill" style="height: 20px;">
+    <center><div class="link" style="cursor: pointer; height: 20px; width: 100px;"></div></center>
+  </div>
+  <div class="am-g ill" style="height: 30px;"></div>
   <div class='am-g'>
     <!-- 公告模块 start -->
     <div class="am-u-md-9">
@@ -81,7 +84,7 @@ sss;
             </div>
           </div>
         </div>
-      </div>   
+      </div>
     </div>
     <!-- 公告模块 end -->
 
@@ -112,3 +115,10 @@ sss;
 
 </div>
 <?php require_once("footer.php") ?>
+
+<script type="text/javascript">
+  $('div.link').click(function(){
+    window.open('http://www.pixiv.net/member_illust.php?mode=medium&illust_id=13212258');
+    //window.location.href="http://pixiv.net/member.php?id=430651";
+  });
+</script>
