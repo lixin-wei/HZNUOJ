@@ -122,7 +122,7 @@
     $view_rank[$i][7] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=UVA&res=1&orderBy=run_id'>".$row['UVA']."</a>"."</div>";
     $view_rank[$i][8] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=CodeForces&res=1&orderBy=run_id'>".$row['CF']."</a>"."</div>";
     $view_rank[$i][9] = "<div class='am-text-center'>".$total."</div>";
-    $view_rank[$i][10]= "<div class='am-text-center am-kai' style='width:110px'><b><font color='".$row['color']."'>".$row['level']."</font></b></div>";
+    $view_rank[$i][10]= "<div class='am-text-center' style='width:110px;'><font color='".$row['color']."'>".$row['level']."</font></div>";
 		$view_rank[$i][11]= "<div class='am-text-center'>".round($row['strength'])."</div>";
   }
 

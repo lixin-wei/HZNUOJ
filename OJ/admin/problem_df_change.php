@@ -2,18 +2,21 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.03.21
+   * @2016.06.02
   **/
 ?>
 
 <?php require_once("admin-header.php");
 require_once("../include/check_get_key.php");
-if (!(isset($_SESSION['administrator']))){
+$id=intval($_GET['id']);
+  require_once("permission.php"); 
+
+if (!$p_ok) {
 	echo "<a href='../loginpage.php'>Please Login First!</a>";
 	exit(1);
 }
 ?>
-<?php $id=intval($_GET['id']);
+<?php 
 $sql="SELECT `defunct` FROM `problem` WHERE `problem_id`=$id";
 $result=mysql_query($sql);
 $row=mysql_fetch_row($result);

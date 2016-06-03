@@ -11,7 +11,7 @@
 
 <?php
 
-	require_once('./include/db_info.inc.php');
+	require_once('../include/db_info.inc.php');
   
   class User {
     public $user_id; // 用户名
@@ -32,7 +32,7 @@
   if($result_user) $user_cnt_divisor = mysql_num_rows($result_user);
   else $user_cnt_divisor = 1;
   mysql_free_result($result_user);
-  // echo $user_cnt_divisor."<br>";
+  echo $user_cnt_divisor."<br>";
 
   // 获取用户总量
   $sql = "SELECT user_id FROM users";
@@ -47,7 +47,7 @@
     $user_info[$i]->user_id = $row_user->user_id;
   }
   mysql_free_result($result_user);
-  // echo $user_cnt."<br>";
+  echo $user_cnt."<br>";
 
   // 获取hznuoj分数
   for ($i=0; $i<$user_cnt; $i++) {
@@ -186,7 +186,7 @@
   mysql_query("set names utf8");
 
 
-  require_once('./include/rank.inc.php');
+  require_once('../include/rank.inc.php');
 
   for ($i=0; $i<$user_cnt; $i++) {
     
@@ -194,11 +194,11 @@
     $user_mysql = $user_info[$i]->user_id;
 
     // 根据数组计算该实力对应的等级和颜色
-    if ($user_info[$i]->strength > 20100*10) {
+    if ($user_info[$i]->strength > $max_strength) {
       $user_info[$i]->color = "#6C3365";
       $user_info[$i]->level_name = "斗战胜佛";
-    } else for ($j=0; $j<210; $j++) {
-      if ($user_info[$i]->strength <= $level_strength[$j]*10) {
+    } else for ($j=0; $j<$level_total; $j++) {
+      if ($user_info[$i]->strength <= $level_strength[$j]) {
         $user_info[$i]->level_name = $level_name[$j];
         $user_info[$i]->color = $level_color[$j];
         break;
@@ -220,6 +220,6 @@
     $result=mysql_query($sql);
   }
 
-  // echo "update rank successfully!";
+  echo "update rank successfully!";
 
 ?>

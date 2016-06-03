@@ -11,6 +11,7 @@
 
 <?php $title="Ranklist";?>
 <?php include "header.php" ?>
+
 <div class='am-container'>
   <hr>
   <div class='am-g'>
@@ -82,7 +83,7 @@
         <th class='am-text-center'>UVA</th>
         <th class='am-text-center'>CF</th>
         <th class='am-text-center'>Total</th>
-        <th class='am-text-center' style='width=110px'>Level</th>
+        <th class='am-text-center' style='width=100px'>Level</th>
         <th class='am-text-center'>DouQi</th>
       </tr>
     </thead>
@@ -94,7 +95,7 @@
         foreach($view_rank as $row){
           echo "<tr>";
           foreach($row as $table_cell){
-            echo "<td>";
+            echo "<td align='center'>";
             echo $table_cell;
             echo "</td>";
           }

@@ -12,7 +12,6 @@
   **/
 ?>
 
-
 <?php $title="Home";?>
 <?php 
   require_once("header.php");

@@ -5,7 +5,7 @@
    * @2016.03.22
    * last modified
    * by yybird
-   * @2016.05.08
+   * @2016.06.02
   **/
 ?>
 
@@ -33,6 +33,7 @@
       <div class="am-form-group am-form-icon">
         <i class="am-icon-binoculars"></i>
         <input type="text" class="am-form-field am-round" placeholder=" &nbsp;Input keywords" name="search">
+        <input type="hidden" name="OJ" value="<?php echo $OJ ?>">
       </div>
       <button type="submit" class="am-btn am-btn-secondary am-round ">Search</button>
     </form>

@@ -231,7 +231,7 @@
           $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary am-round'>".$row->tag3."</span>";
       }
       $view_problemset[$i][3] .= "</td>";
-      $view_problemset[$i][4]="<td class='am-text-center' style='width:350px'><nobr>".mb_substr($p_source,0,40,'utf8')."</nobr></td >";
+      $view_problemset[$i][4]="<td class='am-text-center' style='width:350px'><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
       $view_problemset[$i][5]="<td class='am-text-center' style='width:160px'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
       $view_problemset[$i][6]="<td class='am-text-center' style='width:80px'>".$row->score."</td>";
     } else {

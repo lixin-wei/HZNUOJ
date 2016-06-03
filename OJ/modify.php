@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.07
+   * @2016.06.02
   **/
 ?>
 
@@ -20,6 +20,7 @@
   $err_str="";
   $err_cnt=0;
   $user_id=$_SESSION['user_id'];
+  $stu_id = trim($_POST['stu_id']);
   $email=trim($_POST['email']);
   $school=trim($_POST['school']);
   $class=trim($_POST['class']);
@@ -81,6 +82,7 @@
   ."`nick`='".($nick)."',"
   ."`school`='".($school)."',"
   ."`class`='".($class)."', "
+  ."`stu_id`='".($stu_id)."',"
   ."`real_name`='".($real_name)."', "
   ."`email`='".($email)."' "
   ."WHERE `user_id`='".mysql_real_escape_string($user_id)."'"

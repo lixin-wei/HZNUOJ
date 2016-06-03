@@ -1,0 +1,12 @@
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+  var isIE = function(ver){
+    var b = document.createElement('b');
+    b.innerHTML = '<!--[if IE ' + ver + ']><i></i><![endif]-->';
+    return b.getElementsByTagName('i').length === 1;
+  }
+  alert('ie6:' + isIE(6) + '\n' + 'ie7:' + isIE(7) + '\n' + 'ie8:' + isIE(8) + '\n' + 'ie9:' + isIE(9) + '\n' + 'ie:' + isIE())
+  // if(isIE(6) || isIE(7) || isIE(8) || isIE(9) ){
+  //   window.location.href="alert.html";
+  // }
+</script>

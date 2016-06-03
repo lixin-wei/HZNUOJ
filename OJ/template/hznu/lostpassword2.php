@@ -5,7 +5,7 @@
    * @2016.05.12
    * last modified
    * by yybird
-   * @2016.05.12
+   * @2016.06.02
   **/
 ?>
 
@@ -24,9 +24,9 @@
         </div>  
       </div> 
       <div class="am-form-group">
-        <label class="am-u-sm-4 am-form-label">Input the Code sended to your email: </label>
+        <label class="am-u-sm-4 am-form-label">Key: </label>
         <div class="am-u-sm-8">
-          <input type="text" name="lost_key" id="pwd" value="" placeholder="Key in Your Email" style="width:300px;">
+          <input type="text" name="lost_key" id="pwd" value="" placeholder="Key sended to your email" style="width:300px;">
         </div>  
       </div>
 <!--       <div class="am-form-group">

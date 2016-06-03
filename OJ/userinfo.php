@@ -246,17 +246,18 @@
   require_once("./include/rank.inc.php");
 
   // 根据数组计算该实力对应的等级和颜色
-  if ($strength > 20100*10) {
+  if ($strength > $max_strength) {
     $color = "#6C3365";
-    $level_name = "斗战胜佛";
-  } else for ($j=1; $j<210; $j++) {
-    if ($strength < $level_strength[$j]*10) {
+    $level = "斗战胜佛";
+  } else for ($j=1; $j<$level_total; $j++) {
+
+    if ($strength < $level_strength[$j]) {
       $level = $level_name[$j-1];
       $color = $level_color[$j-1];
       break;
     }
   }
-
+  
   // 更新用户信息
   $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."',ZJU=".$ZJU.",HDU=".$HDU.",PKU=".$PKU.",UVA=".$UVA.",CF=".$CF." WHERE user_id='".$user_mysql."'";
   $result=mysql_query($sql);

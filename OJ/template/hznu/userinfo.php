@@ -21,16 +21,6 @@
         <tbody>
           <tr><td class="am-primary">User ID</td><td class="am-warning"><?php echo $user?></td></tr>
           <tr><td class="am-primary">Nick Name</td><td class="am-warning"><?php echo $nick?></td></tr>
-          <?php
-            if ($GE_T) {
-          ?>
-              <tr>
-                <td class="am-primary">Real Name</td>
-                <td class="am-warning"><?php echo $real_name?></td>
-              </tr>
-          <?php
-            }
-          ?>
           <tr><td class="am-primary">Rank</td><td class="am-warning"><?php echo $Rank?></td></tr>
           <tr><td class="am-primary">Douqi</td><td class="am-warning"><?php echo round($strength)?></td></tr>
           <tr><td class="am-primary">Level</td><td class="am-warning"><?php echo $level?></td></tr>
@@ -64,6 +54,16 @@
           </tr>
           <tr><td class="am-primary">School</td><td class="am-warning"><?php echo $school?></td></tr>
           <tr><td class="am-primary">Email</td><td class="am-warning"><?php echo $email?></td></tr>
+          <?php
+            if ($GE_TA) {
+          ?>
+              <tr><td class="am-danger"></td><td class="am-danger">The follows are  admin only</td></</tr>
+              <tr><td class="am-primary">Student ID</td><td class="am-warning"><?php echo $stu_id?></td></tr>
+              <tr><td class="am-primary">Real Name</td><td class="am-warning"><?php echo $real_name?></td></tr>
+              <tr><td class="am-primary">Class</td><td class="am-warning"><?php echo $class?></td></tr>
+          <?php
+            }
+          ?>
         </tbody>
       </table>
     </div>

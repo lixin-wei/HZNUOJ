@@ -5,7 +5,7 @@
    * @2016.03.22
    * last modified
    * by yybird
-   * @2016.05.07
+   * @2016.06.02
   **/
 ?>
 
@@ -24,7 +24,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
       <div class="am-u-sm-8">
-        <label class="am-form-label"><?php echo $row->stu_id?></label>
+        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->stu_id)?>" name="stu_id">
       </div>
     </div>
     <div class="am-form-group">

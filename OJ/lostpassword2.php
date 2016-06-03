@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.12
+   * @2016.06.02
   **/
 ?>
 
@@ -31,7 +31,7 @@
   if($_SESSION['lost_user_id']==$lost_user_id && $_SESSION['lost_key']==$lost_key) {
     $sql=" update `users` set password='".pwGen($lost_key)."'WHERE `user_id`='".mysql_real_escape_string($lost_user_id)."'";
     $result=mysql_query($sql);
-    $view_errors="Password Reseted to the key you've just inputed.Click <a href=index.php>Here</a> to login!";
+    $view_errors="Password has  been reseted to the key you've just inputed. Click <a href=index.php>here</a> to login!";
   } else {
     $view_errors="Password Reset Failed";
   }

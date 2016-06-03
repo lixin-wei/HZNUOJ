@@ -31,8 +31,8 @@
       </div>
       <div class="am-form-group">
         <label for="pwd" class="am-u-sm-4 am-form-label">Verify Code: </label>
-        <div class="am-u-sm-3"><input name="vcode" size=4 type='text' style="width:150px;"></input></div>
-        <div class="am-u-sm-5"><img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <div class="am-u-sm-4"><input name="vcode" size=4 type='text' style="width:150px;"></input></div>
+        <div class="am-u-sm-4"><img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
       </div>
       <div class="am-from-group">
         <div class="am-cf am-u-sm-offset-4 am-u-sm-5 am-u-end">
