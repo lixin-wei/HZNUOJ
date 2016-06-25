@@ -206,17 +206,17 @@
             cell.className="am-badge am-round am-icon-trophy";
           }
           var tmp = 1; // 只有第一名被占用
-          if (total*goldRate-1 > 3) { // 金牌数大于3时启动
-            if (r == 2) {
-              cell.innerHTML = "&nbsp;2nd";
-              cell.className="am-btn am-btn-primary am-round am-btn-sm am-icon-angellist";
-            }
-            if (r == 3) {
-              cell.innerHTML = "&nbsp;3rd";
-              cell.className="am-btn am-btn-warning am-round am-btn-sm am-icon-angellist";
-            }
-            tmp = 3; // 前三名都被占用
-          }
+          // if (total*goldRate-1 > 3) { // 金牌数大于3时启动
+          //   if (r == 2) {
+          //     cell.innerHTML = "&nbsp;2nd";
+          //     cell.className="am-btn am-btn-primary am-round am-btn-sm am-icon-angellist";
+          //   }
+          //   if (r == 3) {
+          //     cell.innerHTML = "&nbsp;3rd";
+          //     cell.className="am-btn am-btn-warning am-round am-btn-sm am-icon-angellist";
+          //   }
+          //   tmp = 3; // 前三名都被占用
+          // }
           if(r>tmp && r<=total*goldRate+1) { // 金牌
             cell.style.cssText="background-color:#f8c100;";
             cell.className="am-badge am-round";
