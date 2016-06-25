@@ -66,7 +66,7 @@
     ?>
     </select>
 <?php
-  $sql="select `problem_id`,`title`,`in_date`,`defunct` FROM `problem` where problem_id>=$pstart and problem_id<$pend order by `problem_id` desc";
+  $sql="select `problem_id`,`title`, `author`, `in_date`,`defunct` FROM `problem` where problem_id>=$pstart and problem_id<$pend order by `problem_id` desc";
   //echo $sql;
   if($keyword) $sql="select `problem_id`,`title`,`in_date`,`defunct` FROM `problem` where title like '%$keyword%' or source like '%$keyword%'";
   $result=mysql_query($sql) or die(mysql_error());
@@ -76,8 +76,8 @@
   <?php
   echo "<center><table class='table table-striped' width=90% BORDER=1>";
   echo "<form method=post action=contest_add.php>";
-  echo "<tr><td colspan=7><input type=submit name='problem2contest' value='CheckToNewContest'>";
-  echo "<tr><td>PID<td>Title<td>Date";
+  echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
+  echo "<tr><td>PID<td>Title<td>author<td>Date";
   if($GE_TA){
           if($GE_TA)   echo "<td>Status<td>Delete";
           echo "<td>Edit<td>TestData</tr>";
@@ -87,6 +87,7 @@
           echo "<td>".$row->problem_id;
           echo "<input type=checkbox name='pid[]' value='$row->problem_id'>";
           echo "<td><a href='../problem.php?id=$row->problem_id'>".$row->title."</a>";
+          echo "<td>".$row->author."</td>";
           echo "<td>".$row->in_date;
           if($GE_TA){
                   if($GE_TA){
