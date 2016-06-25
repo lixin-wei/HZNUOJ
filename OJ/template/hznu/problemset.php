@@ -66,12 +66,13 @@
     <thead>
       <tr>
         <th style='width:30px'></th>
-        <th class='am-text-center' style='width:75px'>Prob.ID</th>
+        <th class='am-text-center' >Prob.ID</th>
         <th class='am-text-center'>Title</th>
         <th class='am-text-center'>Tags</th>
-        <th class='am-text-center' style='width:350px'>Source</th>
-        <th class='am-text-center' style='width:160px'>AC/Sub</th>
-        <th class='am-text-center' style='width:80px'>Score</th>
+        <th class="am-text-center">Author</th>
+        <th class='am-text-center'>Source</th>
+        <th class='am-text-center'>AC/Sub</th>
+        <th class='am-text-center'>Score</th>
       </tr>
     </thead>
     <tbody>

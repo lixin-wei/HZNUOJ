@@ -51,7 +51,7 @@
       echo "<table border=1>";
       echo "<tr><td colspan=3>Copy these accounts to distribute</td></tr>";
       echo "<tr><td>team_name</td><td>class</td><td>contest_id</td><td>login_id</td><td>password</td></tr>";
-      for($i=$no;$i<=$no+$teamnumber;$i++){
+      for($i=$no;$i<$no+$teamnumber;$i++){
         $user_id=$prefix.($i<10?('0'.$i):$i);
         $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
                           if(isset($pieces[$i-1]))

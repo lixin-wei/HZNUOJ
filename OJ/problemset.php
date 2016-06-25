@@ -231,13 +231,15 @@
           $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary am-round'>".$row->tag3."</span>";
       }
       $view_problemset[$i][3] .= "</td>";
-      $view_problemset[$i][4]="<td class='am-text-center' style='width:350px'><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
-      $view_problemset[$i][5]="<td class='am-text-center' style='width:160px'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
-      $view_problemset[$i][6]="<td class='am-text-center' style='width:80px'>".$row->score."</td>";
+      $view_problemset[$i][4] = "<td class='am-text-center'><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";
+      $view_problemset[$i][5] = "<td class='am-text-center'><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
+      $view_problemset[$i][6]="<td class='am-text-center'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
+      $view_problemset[$i][7]="<td class='am-text-center'>".$row->score."</td>";
     } else {
       $view_problemset[$i][2]="<td><a href='".$VJ_URL."/problem/viewProblem.action?id=".$row->C_ID."'>".$row->C_TITLE."</a></td>";
       $view_problemset[$i][3] = "<td></td>";
-      $view_problemset[$i][4]="<td class='am-text-center' style='width:350px'><nobr>".strip_tags(mb_substr($row->C_SOURCE,0,40,'utf8'))."</nobr></td>";
+      $view_problemset[$i][4] = "<td></td>";
+      $view_problemset[$i][5]="<td class='am-text-center'><nobr>".strip_tags(mb_substr($row->C_SOURCE,0,40,'utf8'))."</nobr></td>";
       // 获取AC次数
       $sql_tmp = "SELECT COUNT(*) AS ac_num, COUNT(DISTINCT C_USER_ID) AS ac_user 
                   FROM t_submission WHERE C_ORIGIN_PROB='".$row->C_originProb."' AND C_ORIGIN_OJ='$OJ' AND C_STATUS_CANONICAL='AC'";
@@ -254,7 +256,7 @@
       $sub_num = $row_tmp->sub_num;
       $sub_user = $row_tmp->sub_user;
       mysql_free_result($result_tmp);
-      $view_problemset[$i][5]="<td class='am-text-center' style='width:350px'><a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&probNum=".$row->C_originProb."&res=1&orderBy=run_id'>".$AC_num."</a>/<a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&res=0&probNum=".$row->C_originProb."'>".$sub_num."</a></td>";
+      $view_problemset[$i][6]="<td class='am-text-center'><a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&probNum=".$row->C_originProb."&res=1&orderBy=run_id'>".$AC_num."</a>/<a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&res=0&probNum=".$row->C_originProb."'>".$sub_num."</a></td>";
       // 获取vjudge上的用户数
       $sql_tmp = "SELECT COUNT(*) AS cnt FROM t_user";
       $result_tmp = mysql_query($sql_tmp) or die(mysql_error());
@@ -264,7 +266,7 @@
       // 计算分数
       $score = 100.0 * (1-($AC_user+$sub_user/2.0)/$user_cnt);
       if ($score < 10) $score = 10;
-      $view_problemset[$i][6]="<td class='am-text-center' style='width:80px'>".round($score, 2)."</td>";
+      $view_problemset[$i][7]="<td class='am-text-center'>".round($score, 2)."</td>";
     }
     $i++;
   }

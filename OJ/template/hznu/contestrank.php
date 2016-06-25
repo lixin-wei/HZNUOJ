@@ -99,11 +99,11 @@
   <br />
 
   <!-- 排名表格 start -->
-  <table class="am-table am-table-bordered am-table-striped" style='font-size:12px;' id="rank">
+  <table class="am-table am-table-bordered am-table-striped" style='font-size:14px;' id="rank">
     <thead align="center">
       <td width="70px">Rank</td>
       <td>User</td>
-      <td width='30%'>Nick</td>
+      <td style="min-width: 150px">Nick</td>
       <td>Solved</td>
       <td>Penalty</td>
       <?php
@@ -116,7 +116,7 @@
         $rank=1;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr align=center>";
-          echo "<td><btn type='button' class=''>";
+          echo "<td><span class=''>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
           if($nick[0]!="*") {
@@ -124,7 +124,7 @@
           }
           else 
             echo "*";
-          echo "</btn></td>"; 
+          echo "</span></td>"; 
           $usolved=$U[$i]->solved;
           if($uuid==$_GET['user_id']) echo "<td>";
           else echo"<td>";
@@ -202,7 +202,8 @@
           var r = parseInt(cell.innerHTML);
           if(r == 1) { // 冠军
             cell.innerHTML = "&nbsp;Winner";
-            cell.className="am-btn am-btn-success am-round am-btn-sm am-icon-trophy";
+            cell.style.cssText="background-color:#ce0000;";
+            cell.className="am-badge am-round am-icon-trophy";
           }
           var tmp = 1; // 只有第一名被占用
           if (total*goldRate-1 > 3) { // 金牌数大于3时启动
@@ -217,20 +218,20 @@
             tmp = 3; // 前三名都被占用
           }
           if(r>tmp && r<=total*goldRate+1) { // 金牌
-            cell.style.cssText="background-color:gold;";
-            cell.className="am-btn am-btn-warning am-round am-btn-sm";
+            cell.style.cssText="background-color:#f8c100;";
+            cell.className="am-badge am-round";
           }
           if(r>total*goldRate+1 && r<=total*silverRate+1) { // 银牌
-            cell.style.cssText="background-color:silver;";
-            cell.className="am-btn am-btn-primary am-round am-btn-sm";
+            cell.style.cssText="background-color:#a4a4a4;";
+            cell.className="am-badge am-round";
           }
           if(r>total*silverRate+1 && r<=total*bronzeRate+1) { // 铜牌
-            cell.style.cssText="background-color:brown;";
-            cell.className="am-btn am-btn-secondary am-round am-btn-sm";
+            cell.style.cssText="background-color:#815d18;";
+            cell.className="am-badge am-round";
           }
           if(r>total*bronzeRate+1 && ac>0) { // 铁牌
-            cell.style.cssText="background-color:white;";
-            cell.className="am-btn am-btn-default am-round am-btn-sm";
+            cell.style.cssText="background-color:transparent;color:black;";
+            cell.className="am-badge am-round";
           }
         }
       }
@@ -240,5 +241,4 @@
   }
   metal();
 </script>
-
 <?php include "footer.php" ?>

@@ -47,12 +47,12 @@
   <?php
           echo "<span><i class='am-icon-tag'></i> Tags: </span>";
           for ($i=0; $i<count($tag); ++$i) {
-            if ($i == 0) echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger am-round'>".$tag[$i]."</span>";
-            else if ($i == 1) echo "&nbsp;&nbsp;<span class='am-badge am-badge-warning am-round'>".$tag[$i]."</span>";
-            else if ($i == 2) echo "&nbsp;&nbsp;<span class='am-badge am-badge-primary am-round'>".$tag[$i]."</span>";
-            else if ($i == 3) echo "&nbsp;&nbsp;<span class='am-badge am-badge-secondary am-round'>".$tag[$i]."</span>";
-            else if ($i == 4) echo "&nbsp;&nbsp;<span class='am-badge am-badge-success am-round'>".$tag[$i]."</span>";
-            else echo "&nbsp;&nbsp;<span class='am-badge am-badge-default am-round'>".$tag[$i]."</span>";
+            if ($i == 0) echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger'>".$tag[$i]."</span>";
+            else if ($i == 1) echo "&nbsp;&nbsp;<span class='am-badge am-badge-warning'>".$tag[$i]."</span>";
+            else if ($i == 2) echo "&nbsp;&nbsp;<span class='am-badge am-badge-primary'>".$tag[$i]."</span>";
+            else if ($i == 3) echo "&nbsp;&nbsp;<span class='am-badge am-badge-secondary'>".$tag[$i]."</span>";
+            else if ($i == 4) echo "&nbsp;&nbsp;<span class='am-badge am-badge-success'>".$tag[$i]."</span>";
+            else echo "&nbsp;&nbsp;<span class='am-badge am-badge-default'>".$tag[$i]."</span>";
           }
   ?>
         </div>
@@ -76,7 +76,7 @@
   <div style="text-align:center;">
     Time Limit:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span> 
     &nbsp;&nbsp;&nbsp;&nbsp; Memory Limit: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
-    <?php if($row->spj) echo "<span class='am-badge am-badge-primary am-round'>Special Judge</span>"?>
+    <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
   </div>
   <div style="text-align:center;">
     Submission：<span class="am-badge am-badge-secondary"><?php echo $row->submit?></span>&nbsp;&nbsp;&nbsp;&nbsp;

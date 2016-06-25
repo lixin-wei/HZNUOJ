@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2015.07.08
+   * @2016.06.17
   **/
 ?>
 
@@ -31,6 +31,10 @@
 
   // 比对用户名和密码
   $login=check_login($user_id,$password, $cid);
+  if ($login == -1) {
+    echo "<script>alert('Permission denied! You can only use team account to login this system now!');history.go(-1);</script>";
+    exit(0);
+  }
 
   if ($login) { // 登录成功
     $_SESSION['user_id']=$login;
@@ -56,7 +60,7 @@
 
   } else {
     echo "<script language='javascript'>\n";
-    echo "alert('UserName or Password Wrong!');\n";
+    echo "alert('UserID or Password or ContestID Wrong!');\n";
     echo "history.go(-1);\n";
     echo "</script>";
   }
