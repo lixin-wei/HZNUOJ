@@ -38,7 +38,7 @@
   if ($type == "OJ")
     $cnt = intval($row->upid)-1000;
   else 
-    $cnt = intval($row->upid)-$BORDER;
+    $cnt = intval($row->upid)-$BORDER+1;
   $cnt = intval($cnt/$page_cnt)+(($cnt%$page_cnt)>0?1:0); // cnt是页数
   if (isset($_GET['page'])) $page=intval($_GET['page']);
   else $page = $cnt;
