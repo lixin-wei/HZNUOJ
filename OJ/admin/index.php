@@ -79,7 +79,7 @@ if(isset($OJ_LANG)) require_once("../lang/$OJ_LANG.php");
       </div>
 
       <div class="col-md-10 main">
-        <iframe name="main" src="watch.php" width="100%" height="90%" frameborder="0"></iframe>
+        <iframe name="main" src="watch.php" width="100%" height="100%" frameborder="0"></iframe>
       </div>
     </div>
   </div>

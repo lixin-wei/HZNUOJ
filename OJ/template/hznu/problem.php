@@ -12,6 +12,9 @@
 
 <?php $title=$view_title;?>
 <?php
+  if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
+  else $OJ = "HZNU";
+
   if ($_GET['cid']) require_once("contest_header.php");
   else require_once("header.php");
   function sss($str){
@@ -157,7 +160,10 @@
   <?php echo "<div>".$row->hint."</div>"; ?>
 
   <h2><b><font color='#0000cd'>Author</font></b></h2>
-  <?php echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; ?>
+  <?php 
+    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
+    else echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
+  ?>
 
   <h2><b><font color='#0000cd'>Source</font></b></h2>
   <?php echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>"; ?>

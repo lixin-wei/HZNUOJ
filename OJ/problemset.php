@@ -223,7 +223,8 @@
     }
     $view_problemset[$i][1]="<td class='am-text-center'>".$p_id."</td>";
     if ($OJ=="HZNU" || $OJ=="C") {
-      $view_problemset[$i][2]="<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+      if($OJ=='C') $view_problemset[$i][2]="<td><a href='problem.php?OJ=C&id=".$p_id."'>".$row->title."</a></td>";
+      else $view_problemset[$i][2]="<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
       $view_problemset[$i][3] = "<td>";
       if ($show_tag) {
           $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger am-round'>".$row->tag1."</span>";

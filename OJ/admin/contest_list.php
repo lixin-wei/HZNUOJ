@@ -58,7 +58,7 @@
     $cid=$row->contest_id;
     if($GE_T) {
       echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->private=="0"?"<span class=green>Public</span>":"<span class=red>Private<span>")."</a>";
-      echo "<td><a href=contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->defunct=="N"?"<span class=green>Available</span>":"<span class=red>Reserved</span>")."</a>";
+      echo "<td><a href=contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->defunct=="N"?"<span style='color: green;'>Available</span>":"<span style='color: red;'>Reserved</span>")."</a>";
       echo "<td><a href=contest_edit.php?cid=$row->contest_id>Edit</a>";
       echo "<td><a href=contest_add.php?cid=$row->contest_id>Copy</a>";
       if($GE_T){
