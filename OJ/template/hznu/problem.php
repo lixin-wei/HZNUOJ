@@ -166,7 +166,10 @@
   ?>
 
   <h2><b><font color='#0000cd'>Source</font></b></h2>
-  <?php echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>"; ?>
+  <?php 
+    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->source'>".nl2br($row->source)."</a></p></div>"; 
+    else echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>"; 
+  ?>
 
   <!-- 提交等按钮 start -->
   <div class="am-text-center">
