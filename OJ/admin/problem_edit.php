@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.12
+   * @2016.06.27
   **/
 ?>
 
@@ -56,9 +56,18 @@
         <p>Author:<br>
           <?php
             $author = $row->author;
-            $xing = strstr($author, ", ", true);
-            $ming = strstr($author, ", ");
-            $ming = substr($ming, 2);
+            if ($author != "") {
+              $xing = strstr($author, ", ", true);
+              $ming = strstr($author, ", ");
+              $ming = substr($ming, 2);
+              if ($xing=="" && $ming=="") {
+                if ($author[strlen($author)-1] >='A' && $author[strlen($author)-1] <='Z') {
+                  $xing = $author;
+                } else {
+                  $ming = $author;
+                }
+              }
+            }
           ?>
           XING: <textarea name='xing' rows='1' cols='70' style='width:100px'><?php echo htmlspecialchars($xing)?></textarea>
           MING: <textarea name='ming' rows='1' cols='70' style='width:100px'><?php echo htmlspecialchars($ming)?></textarea>
@@ -101,6 +110,8 @@
         }
         $ming = ucfirst($ming);
         $author = $xing.", ".$ming;
+        if ($author[0] == ',') $author = "";
+        if (strlen($author)>=2 && $author[strlen($author)-2] == ',') $author = substr($author, 0, strlen($author)-2);
         $source=$_POST['source'];
         $spj=$_POST['spj'];
         if (get_magic_quotes_gpc ()) {

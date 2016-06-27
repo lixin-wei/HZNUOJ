@@ -12,7 +12,7 @@
 <footer class="blog-footer">
   <hr />
   This Online Judge is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
-  It's maintained by <a href="mailto:yybird@hsACM.cn">yybird</a> && <a href="userinfo.php?user=hhhh">hhhh</a> && <a href="mailto:wlx65005@163.con">D_Star</a> now <br />
+  It's maintained by <a href="mailto:yybird@hsACM.cn">yybird</a> && <a href="userinfo.php?user=hhhh">hhhh</a> && <a href="mailto:wlx65005@163.com">D_Star</a> now <br />
   ★Server Time: <span id='footerdate'></span><?php //echo date('20y-m-d h:i:s',time()); ?>★
 </footer>
 <!--[if (gte IE 9)|!(IE)]><!-->
