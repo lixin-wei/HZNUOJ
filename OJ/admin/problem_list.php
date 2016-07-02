@@ -36,7 +36,7 @@
   echo mysql_error();
   $row=mysql_fetch_object($result);
   if ($type == "OJ")
-    $cnt = intval($row->upid)-1000;
+    $cnt = intval($row->upid)-1000+1;
   else 
     $cnt = intval($row->upid)-$BORDER+1;
   $cnt = intval($cnt/$page_cnt)+(($cnt%$page_cnt)>0?1:0); // cnt是页数
@@ -77,7 +77,7 @@
   echo "<center><table class='table table-striped' width=90% BORDER=1>";
   echo "<form method=post action=contest_add.php>";
   echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
-  echo "<tr><td>PID<td>Title<td>author<td>Date";
+  echo "<tr><td>PID<td>Title<td>Author<td>Date";
   if($GE_TA){
           if($GE_TA)   echo "<td>Status<td>Delete";
           echo "<td>Edit<td>TestData</tr>";

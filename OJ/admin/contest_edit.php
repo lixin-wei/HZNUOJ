@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.25
+   * @2016.06.28
   **/
 ?>
 
@@ -26,7 +26,6 @@
     $user_limit = mysql_real_escape_string($_POST['user_limit']);
     $defunct_TA = mysql_real_escape_string($_POST['defunct_TA']);
     $open_source = mysql_real_escape_string($_POST['open_source']);
-    echo $open_source;
     if (get_magic_quotes_gpc ()) {
         $title = stripslashes ( $title);
         $password = stripslashes ( $password);
@@ -103,7 +102,7 @@
   $private=$row['private'];
   $user_limit = $row['user_limit']=="Y"?'Y':'N';
   $defunct_TA = $row['defunct_TA']=="Y"?'Y':'N';
-  $open_souce = $row['open_source']=="N"?'N':'Y';
+  $open_souce = $row['open_source']=="Y"?'Y':'N';
   $password=$row['password'];
   $langmask=$row['langmask'];
   $description=$row['description'];

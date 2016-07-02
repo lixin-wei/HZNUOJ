@@ -7,7 +7,7 @@
 ?>
 
 <?php
-  ini_set("display_errors","On");
+  // ini_set("display_errors","On");
   ob_start();
   header ( "content-type:   application/excel" );
 ?>
@@ -110,10 +110,11 @@
   }
 
   // contest start time
+  $user_limit = 0;
   if (!isset($_GET['cid'])) die("No Such Contest!");
   $cid=intval($_GET['cid']);
   // require_once("contest-header.php");
-  $sql="SELECT `start_time`,`title` FROM `contest` WHERE `contest_id`='$cid'";
+  $sql="SELECT `start_time`,`title`, user_limit FROM `contest` WHERE `contest_id`='$cid'";
   $result=mysql_query($sql) or die(mysql_error());
   $rows_cnt=mysql_num_rows($result);
   $start_time=0;
@@ -121,6 +122,7 @@
     $row=mysql_fetch_array($result);
     $start_time=strtotime($row[0]);
     $title=$row[1];
+    $user_limit = $row['user_limit']=="Y"?1:0;
     if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
       $title=iconv("utf8","gbk",$title);
     }
@@ -152,44 +154,68 @@
   $mark_per_punish=$mark_per_problem/5;
   mysql_free_result($result);
 
-$sql="SELECT 
-  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,class 
-    FROM 
-      (select * from solution where solution.contest_id='$cid' and num>=0) solution 
-    left join users 
-    on users.user_id=solution.user_id 
-  ORDER BY users.user_id,in_date";
-//echo $sql;
-$result=mysql_query($sql);
 $user_cnt=0;
 $user_name='';
 $U=array();
-while ($row=mysql_fetch_object($result)){
-  $n_user=$row->user_id;
-  if (strcmp($user_name,$n_user)){
-    $user_cnt++;
-    $U[$user_cnt]=new TM();
-    $U[$user_cnt]->user_id=$row->user_id;
-    $U[$user_cnt]->nick=$row->nick;
+if (!$user_limit) {
+  $sql="SELECT 
+    users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class 
+      FROM 
+        (select * from solution where solution.contest_id='$cid' and num>=0) solution 
+      left join users 
+      on users.user_id=solution.user_id 
+    ORDER BY users.user_id,in_date";
+    $result = mysql_query($sql);
+    while ($row=mysql_fetch_object($result)){
+      $n_user=$row->user_id;
+      if (strcmp($user_name,$n_user)){
+        $user_cnt++;
+        $U[$user_cnt]=new TM();
+        $U[$user_cnt]->user_id=$row->user_id;
+        $U[$user_cnt]->nick=$row->nick;
 
-    $user_name=$n_user;
-  }
-  $U[$user_cnt]->Add($row->num,strtotime($row->in_date)-$start_time,intval($row->result),$mark_base,$mark_per_problem,$mark_per_punish);
-  $U[$user_cnt]->real_name = $row->real_name;
-  $U[$user_cnt]->class = strtoupper($row->class);
+        $user_name=$n_user;
+      }
+      $U[$user_cnt]->Add($row->num,strtotime($row->in_date)-$start_time,intval($row->result),$mark_base,$mark_per_problem,$mark_per_punish);
+      $U[$user_cnt]->real_name = $row->real_name;
+      $U[$user_cnt]->class = strtoupper($row->class);
+    }
+      mysql_free_result($result);
 }
+  $sql="SELECT 
+    team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class 
+      FROM 
+        (select * from solution where solution.contest_id='$cid' and num>=0) solution 
+      left join team 
+      on team.user_id=solution.user_id 
+    ORDER BY team.user_id,in_date";
+  $result=mysql_query($sql);
+  while ($row=mysql_fetch_object($result)){
+    $n_user=$row->user_id;
+    if (strcmp($user_name,$n_user)){
+      $user_cnt++;
+      $U[$user_cnt]=new TM();
+      $U[$user_cnt]->user_id=$row->user_id;
+      $U[$user_cnt]->nick=$row->nick;
+      $user_name=$n_user;
+    }
+    $U[$user_cnt]->Add($row->num,strtotime($row->in_date)-$start_time,intval($row->result),$mark_base,$mark_per_problem,$mark_per_punish);
+    $U[$user_cnt]->class = strtoupper($row->class);
+  }
+  mysql_free_result($result);
+
+
 mysql_free_result($result);
 usort($U,"s_cmp");
 $rank=1;
 //echo "<style> td{font-size:14} </style>";
 //echo "<title>Contest RankList -- $title</title>";
 echo "<center><h3>Contest RankList -- $title</h3></center>";
-echo "<table border=1 align='center'><tr><td>Rank<td>User<td>Real Name<td>Class<td>Nick<td>Solved<td>Mark";
+echo "<table border=1 align='center'><tr><td>Rank<td>User<td>Real Name<td>Class<td>Nick<td>Solved<td>Penalty";
 for ($i=0;$i<$pid_cnt;$i++)
   echo "<td>$PID[$i]";
 echo "</tr>";
-getMark($U,$mark_start,$mark_end,$mark_sigma);
-
+// getMark($U,$mark_start,$mark_end,$mark_sigma);
 for ($i=0;$i<$user_cnt;$i++){
   if ($i&1) echo "<tr class=oddrow align=center>";
   else echo "<tr class=evenrow align=center>";
@@ -206,10 +232,9 @@ for ($i=0;$i<$user_cnt;$i++){
   echo "<td>".$U[$i]->class."";
   echo "<td>".$U[$i]->nick."";
   echo "<td>$usolved";
-  echo "<td>";
+  echo "<td>".$U[$i]->time."";
   
-  
-  echo $U[$i]->mark>0?intval($U[$i]->mark):0;
+  //echo $U[$i]->mark>0?intval($U[$i]->mark):0;
   for ($j=0;$j<$pid_cnt;$j++){
     echo "<td>";
     if(isset($U[$i])){

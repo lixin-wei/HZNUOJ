@@ -21,7 +21,7 @@
     if (!is_numeric($cid)) {
       $canLogin = true;
       if ($LOGIN_DEFUNCT) {
-        $sql = "SELECT * FROM privilege WHERE user_id='$user_id' AND defunct='N'";
+        $sql = "SELECT * FROM privilege WHERE user_id='$user_id' AND defunct='N' AND rightstr!='teacher_assistant'";
         $result = mysql_query($sql);
         if (!mysql_num_rows($result))  $canLogin = false;
         mysql_free_result($result);
@@ -48,7 +48,10 @@
       if($row && pwCheck($password,$row['password'])){
         $user_id=$row['user_id'];
         $_SESSION['contest_id'] = $row['contest_id'];
+        $pass = $row['password'];
         mysql_free_result($result);
+        $sql="INSERT INTO `loginlog` VALUES('$user_id','$pass','".$_SERVER['REMOTE_ADDR']."',NOW())";
+        @mysql_query($sql) or die(mysql_error());
         return $user_id;
       }
       mysql_free_result($result);

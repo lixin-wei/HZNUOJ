@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.24
+   * @2016.06.27
   **/
 ?>
 
@@ -50,6 +50,8 @@
   }
   $ming = ucfirst($ming);
   $author = $xing.", ".$ming;
+  if ($author[0] == ',') $author = "";
+  if (strlen($author)>=2 && $author[strlen($author)-2] == ',') $author = substr($author, 0, strlen($author)-2);
   $source = $_POST ['source'];
   $spj = $_POST ['spj'];
   if (get_magic_quotes_gpc ()) {

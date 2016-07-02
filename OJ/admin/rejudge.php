@@ -1,6 +1,6 @@
 <?php require("admin-header.php");
 
-if (!$GE_T){
+if (!$GE_TA){
 	echo "<a href='../loginpage.php'>Please Login First!</a>";
 	exit(1);
 }?>

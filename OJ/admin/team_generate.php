@@ -2,13 +2,14 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.24
+   * @2016.06.30
   **/
 ?>
 
 <?php 
   require("admin-header.php");
-  if (!(isset($_SESSION['administrator']))){
+  require_once("../include/db_info.inc.php");
+  if (!$GE_T){
     echo "<a href='../loginpage.php'>Please Login First!</a>";
     exit(1);
   }
@@ -51,18 +52,18 @@
       echo "<table border=1>";
       echo "<tr><td colspan=3>Copy these accounts to distribute</td></tr>";
       echo "<tr><td>team_name</td><td>class</td><td>contest_id</td><td>login_id</td><td>password</td></tr>";
-      for($i=$no;$i<=$no+$teamnumber;$i++){
+      for($i=$no;$i<$no+$teamnumber;$i++){
         $user_id=$prefix.($i<10?('0'.$i):$i);
         $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
                           if(isset($pieces[$i-1]))
                             $nick=$pieces[$i-1];
                           else
-        $nick="your_own_nick";
+        $nick="NULL";
         echo "<tr><td>$nick</td><td>$class</td><td>$contest_id</td><td>$user_id</td><td>$password</td></tr>";
         
         $password=pwGen($password);
                          
-        $school="your_own_school";
+        $school=$_POST['school'];
         $sql="INSERT INTO `team`(`user_id`, prefix, NO, `ip`,`accesstime`,`password`,`reg_time`,`nick`,contest_id, class, `school`)"."VALUES('".$user_id."','".$prefix."','".$i."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$contest_id."','".$class."','".$school."')on DUPLICATE KEY UPDATE `ip`='".$_SERVER['REMOTE_ADDR']."',`accesstime`=NOW(),`password`='".$password."',`reg_time`=now(),nick='".$nick."',`school`='".$school."'";
         mysql_query($sql) or die(mysql_error());
       }

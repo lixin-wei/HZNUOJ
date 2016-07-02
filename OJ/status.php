@@ -2,7 +2,7 @@
   /**
    * This file is modified!
    * by yybird
-   * @2016.05.26
+   * @2016.07.01
   **/
 ?>
 
@@ -61,7 +61,7 @@
       $start_time=strtotime($row->start_time);
       $title=$row->title;
       $end_time=strtotime($row->end_time);
-      $open_source = $row->open_source=="N"?0:1; // 默认值为1
+      $open_source = $row->open_source=="Y"?1:0; // 默认值为0
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
     }
     $lock_time=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
@@ -227,7 +227,9 @@
     // 确认该用户是否可以查看reinfo
     $ok = false; // ok 为该用户权限是否满足要求
     if (isset($_GET['cid'])) {
-      $flag = ( (!is_running(intval($cid)) && $open_source) || // 比赛已经结束了且开放源代码查看
+
+      $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||
+                (!is_running(intval($cid)) && $open_source) || // 比赛已经结束了且开放源代码查看
                 $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
                 (!$GE_T && $GE_TA && !$defunct_TA) // 是助教且该比赛没屏蔽助教
               );
@@ -240,7 +242,7 @@
 
 
     $view_status[$i][3]="";
-    if (intval($row['result'])==11 && ((isset($_SESSION['user_id'])&&$row['user_id']==$_SESSION['user_id']) || isset($_SESSION['source_browser']))){
+    if (intval($row['result'])==11 && ((isset($_SESSION['user_id'])&&$row['user_id']==$_SESSION['user_id']) || $GE_TA || isset($_SESSION['source_browser']))){
       $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='$MSG_Click_Detail'>".$MSG_Compile_Error."</a>";
     } else if ($can_read_reinfo) {
       $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='$MSG_Click_Detail'>".$judge_result[$row['result']]."</a>";
@@ -282,9 +284,10 @@
         $view_status[$i][5]= "---";
       }
       //echo $row['result'];
+
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
-          $GE_T || // 权限在教师以上
-          (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
+          $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上
+          (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || //6 solution在比赛中，比赛结束了且开放了源代码查看
           (!is_numeric($row['contest_id']) && $GE_TA) || // 不在比赛中，权限在助教以上
           (is_numeric($row['contest_id']) && !$GE_T && $GE_TA && !$defunct_TA) // 在比赛中，没屏蔽助教
         ) { // 可以查看代码的情况

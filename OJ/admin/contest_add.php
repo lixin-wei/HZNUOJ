@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.05.25
+   * @2016.06.28
   **/
 ?>
 
@@ -161,8 +161,8 @@ else if(isset($_POST['problem2contest'])){
     </select>
   Open source:
     <select name='open_source' style='width:50px'>
-      <option value='Y' selected='selected'>Y</option>
-      <option value='N'>N</option>
+      <option value='Y'>Y</option>
+      <option value='N' selected='selected'>N</option>
     </select>
   <br />
   Language:<select name="lang[]" multiple="multiple"    style="height:220px">

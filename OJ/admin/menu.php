@@ -24,14 +24,11 @@
         ?>
             <li><a class='btn btn-primary' href="problem_add_page.php?type=C" target="main"><b><?php echo "AddCProblem" ?></b></a></li>
             <li><a class='btn btn-primary' href="problem_list.php?type=C" target="main"><b><?php echo "CProblemList" ?></b></a></li>
+            <li><a class='btn btn-primary' href="rejudge.php" target="main"><b><?php echo $MSG_REJUDGE?></b></a></li>
         <?php 
           }
           if ($GE_T) {
         ?>
-            <li><a class='btn btn-primary' href="problem_add_page.php" target="main"><b><?php echo $MSG_ADD.$MSG_PROBLEM?></b></a></li>
-            <li><a class='btn btn-primary' href="problem_list.php" target="main"><b><?php echo $MSG_PROBLEM.$MSG_LIST?></b></a></li>
-            <li><a class='btn btn-primary' href="contest_add.php" target="main"><b><?php echo $MSG_ADD.$MSG_CONTEST?></b></a></li>
-            <li><a class='btn btn-primary' href="contest_list.php" target="main"><b><?php echo $MSG_CONTEST.$MSG_LIST?></b></a></li>
             <li><a class='btn btn-primary' href="news_add_page.php" target="main"><b><?php echo $MSG_ADD.$MSG_NEWS?></b></a></li>
             <li><a class='btn btn-primary' href="news_list.php" target="main"><b><?php echo $MSG_NEWS.$MSG_LIST?></b></a>
 <!-- slide相关功能暂时被弃用
@@ -39,11 +36,14 @@
             <li><a class='btn btn-primary' href="slide_list.php" target="main"><b><?php echo "slideList" ?></b></a>
 -->
             
-            <li><a class='btn btn-primary' href="rejudge.php" target="main"><b><?php echo $MSG_REJUDGE?></b></a></li>
         <?php 
           }
           if (isset($_SESSION['administrator'])){
         ?>
+           <li><a class='btn btn-primary' href="problem_add_page.php" target="main"><b><?php echo $MSG_ADD.$MSG_PROBLEM?></b></a></li>
+            <li><a class='btn btn-primary' href="problem_list.php" target="main"><b><?php echo $MSG_PROBLEM.$MSG_LIST?></b></a></li>
+            <li><a class='btn btn-primary' href="contest_add.php" target="main"><b><?php echo $MSG_ADD.$MSG_CONTEST?></b></a></li>
+            <li><a class='btn btn-primary' href="contest_list.php" target="main"><b><?php echo $MSG_CONTEST.$MSG_LIST?></b></a></li>
             <li><a class='btn btn-primary' href="team_generate.php" target="main"><b><?php echo $MSG_TEAMGENERATOR?></b></a></li>
             <!-- <li><a class='btn btn-primary' href="setmsg.php" target="main"><b><?php echo $MSG_SETMESSAGE?></b></a></li> -->
             <li><a class='btn btn-primary' href="change_user_id.php" target="main"><b><?php echo "ChangeUserID" ?></b></a></li>

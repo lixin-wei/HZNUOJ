@@ -5,7 +5,7 @@
    * @2016.03.26
    * last modified
    * by yybird
-   * @2016.05.26
+   * @2016.06.27
   **/
 ?>
 
@@ -35,34 +35,8 @@
     return $n/$m>3;
   }
 
-
-  /* 判断是否有查看权限 start */
-  $ok=false;
   $id=strval(intval($_GET['sid']));
-  $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
-  if (is_numeric($row->contest_id)) { // 代码是在比赛中的
-    $cid = $row->contest_id;
-    $sql_tmp = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
-    $result_tmp = mysql_query($sql_tmp);
-    $row_tmp = mysql_fetch_object($result_tmp);
-    $open_source = $row_tmp->open_source=="N"?0:1; // 默认值为1
-    $defunct_TA = $row_tmp->defunct_TA=="Y"?1:0; // 默认值为0
-    mysql_free_result($result_tmp);
-    $flag = ( (!is_running(intval($cid)) && $open_source) || // 比赛已经结束了且开放源代码查看
-              $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
-              (!$GE_T && $GE_TA && !$defunct_TA) // 是助教且该比赛没屏蔽助教
-            );
-    if ($flag) $ok = true;
-  } else {
-    if ($row && $row->user_id==$_SESSION['user_id']) $ok=true; // 是本人，有查看权限
-    if ($GE_TA || isset($_SESSION['source_browser'])) $ok = true; // 所有有管理权限的成员均可查看
-  }
-  $view_reinfo="";
-  /* 判断是否有查看权限 end */
-
-
+  $ok = canSeeWAinfo($id);
 
   if ($ok==true){
     if($row->user_id!=$_SESSION['user_id'])

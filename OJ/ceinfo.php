@@ -1,9 +1,18 @@
 <?php
+  /**
+   * This file is modified
+   * by yybird
+   * @2016.06.27
+  **/
+?>
+
+<?php
 	$cache_time=10;
 	$OJ_CACHE_SHARE=false;
 	require_once('./include/cache_start.php');
     require_once('./include/db_info.inc.php');
 	require_once('./include/setlang.php');
+	require_once("./include/my_func.inc.php");
 	$view_title= "Welcome To Online Judge";
 	
 require_once("./include/const.inc.php");
@@ -24,13 +33,13 @@ function is_valid($str2){
 }
 
 
-$ok=false;
 $id=strval(intval($_GET['sid']));
 $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
 $result=mysql_query($sql);
 $row=mysql_fetch_object($result);
-if ($row && $row->user_id==$_SESSION['user_id']) $ok=true;
-if (isset($_SESSION['source_browser'])) $ok=true;
+$ok = false;
+if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) $ok = true;
+if ($GE_TA) $ok = true;
 $view_reinfo="";
 if ($ok==true){
 	if($row->user_id!=$_SESSION['user_id'])

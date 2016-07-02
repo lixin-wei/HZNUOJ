@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.04.12
+   * @2016.06.28
   **/
 ?>
 
@@ -145,4 +145,110 @@
   }
 
 
+  function canSeeSource($sid) {
+
+    global $OJ_AUTO_SHARE;
+    global $GE_T, $GE_TA;
+
+
+    /* 获取solution信息 start */
+    $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
+    $result=mysql_query($sql);
+    $row=mysql_fetch_object($result);
+    $pid = $row->problem_id;
+    $cid = $row->contest_id;
+    mysql_free_result($result);
+    /* 获取solution信息 end */
+
+
+    $irc = false; // in running contest
+    $idc = false; // in defunct TA contest
+    $sql = "SELECT DISTINCT(contest_id) AS cid FROM contest_problem WHERE problem_id='$pid'";
+    $result = mysql_query($sql);
+    while ($row_cid = mysql_fetch_object($result)) {
+      if (is_running($row_cid->cid)) {
+        $irc = true;
+        $sql = "SELECT defunct_TA FROM contest WHERE contest_id='$row_cid->cid'";
+        $result_tmp = mysql_query($sql);
+        $row_tmp = mysql_fetch_array($result);
+        $idc = $row_tmp->defunct_TA=="Y"?1:0; 
+        mysql_free_result($result_tmp);
+      }
+    }
+    mysql_free_result($result);
+
+
+    /* 判断是否有查看权限 start */
+    if (isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE && isset($_SESSION['user_id'])){ // 已经AC该题目，可查看该题代码
+      $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id=$pid AND user_id='".$_SESSION['user_id']."'";
+      $rrs = mysql_query($sql);
+      $ok = !$irc && (mysql_num_rows($rrs)>0) ;
+      mysql_free_result($rrs);
+      if ($ok) return true;
+    }
+    
+    if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;  // 是本人，可以查看该代码
+    else { // 不是本人的情况下
+      if ($irc) { // the problem is in running contest
+        return ( $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
+                      (!$GE_T && $GE_TA && !$idc) // 是助教且包含该题的所有运行中的比赛都没屏蔽助教
+                    );
+      } else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
+        $sql = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
+        $result = mysql_query($sql);
+        $row = mysql_fetch_object($result);
+        $open_source = $row->open_source=="Y"?1:0; // 默认值为0
+        $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
+        mysql_free_result($result);
+        return  ( (!is_running(intval($cid))  && $open_source) || // 比赛已经结束了且开放源代码查看
+                       $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
+                       (!$GE_T && $GE_TA && !$defunct_TA) // 是助教且该比赛没屏蔽助教
+                     );
+      } else { // 该代码不是在比赛中的
+        if ($GE_TA || isset($_SESSION['source_browser'])) return true; // 所有有管理权限的成员均可查看
+      }
+    }
+    /* 判断是否有查看权限 end */
+
+    return false;
+  }
+
+
+  function canSeeWAinfo($sid) {
+
+    global $OJ_SHOW_DIFF;
+    global $GE_T, $GE_TA;
+
+
+    /* 获取solution信息 start */
+    $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
+    $result=mysql_query($sql);
+    $row=mysql_fetch_object($result);
+    $pid = $row->problem_id;
+    $cid = $row->contest_id;
+    mysql_free_result($result);
+    /* 获取solution信息 end */
+
+
+    /* 判断是否有查看权限 start */
+    if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id'] && $OJ_SHOW_DIFF) return true;  // 是本人
+    else { // 不是本人的情况下
+      if ($GE_T || isset($_SESSION['source_browser']) )return true;
+      if (!$GE_TA) return false;
+      if (is_numeric($cid)) { // 比赛中
+        $sql = "SELECT defunct_TA FROM contest WHERE contest_id='$cid'";
+        $result = mysql_query($sql);
+        $row = mysql_fetch_object($result);
+        $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
+        mysql_free_result($result);
+        if (is_running(intval($cid)) && $defunct_TA) return false;
+        else return true;
+      } else { // 该代码不是在比赛中的
+        if ($GE_TA || isset($_SESSION['source_browser'])) return true; // 所有有管理权限的成员均可查看
+      }
+    }
+    /* 判断是否有查看权限 end */
+
+    return false;
+  }
 ?>

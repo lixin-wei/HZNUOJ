@@ -32,26 +32,25 @@ if(isset($OJ_LANG)) require_once("../lang/$OJ_LANG.php");
         ?>
             <li><a href="problem_add_page.php?type=C" target="main"><?php echo "AddCProblem" ?></a></li>
             <li><a href="problem_list.php?type=C" target="main"><?php echo "CProblemList" ?></a></li>
+            <li><a href="rejudge.php" target="main"><?php echo $MSG_REJUDGE?></a></li>
         <?php 
           }
           if ($GE_T) {
         ?>
-            <li><a href="problem_add_page.php" target="main"><?php echo $MSG_ADD.$MSG_PROBLEM?></a></li>
-            <li><a href="problem_list.php" target="main"><?php echo $MSG_PROBLEM.$MSG_LIST?></a></li>
-            <li><a href="contest_add.php" target="main"><?php echo $MSG_ADD.$MSG_CONTEST?></a></li>
-            <li><a href="contest_list.php" target="main"><?php echo $MSG_CONTEST.$MSG_LIST?></a></li>
             <li><a href="news_add_page.php" target="main"><?php echo $MSG_ADD.$MSG_NEWS?></a></li>
             <li><a href="news_list.php" target="main"><?php echo $MSG_NEWS.$MSG_LIST?></a>
 <!-- slide相关功能暂时被弃用
             <li><a href="slide_add_page.php" target="main"><?php echo "AddSlide" ?></a></li>
             <li><a href="slide_list.php" target="main"><?php echo "slideList" ?></a></li>
 -->
-            
-            <li><a href="rejudge.php" target="main"><?php echo $MSG_REJUDGE?></a></li>
         <?php 
           }
           if (isset($_SESSION['administrator'])){
         ?>
+            <li><a href="problem_add_page.php" target="main"><?php echo $MSG_ADD.$MSG_PROBLEM?></a></li>
+            <li><a href="problem_list.php" target="main"><?php echo $MSG_PROBLEM.$MSG_LIST?></a></li>
+            <li><a href="contest_add.php" target="main"><?php echo $MSG_ADD.$MSG_CONTEST?></a></li>
+            <li><a href="contest_list.php" target="main"><?php echo $MSG_CONTEST.$MSG_LIST?></a></li>
             <li><a href="team_generate.php" target="main"><?php echo $MSG_TEAMGENERATOR?></a></li>
             <!-- <li><a href="setmsg.php" target="main"><?php echo $MSG_SETMESSAGE?></a></li> -->
             <li><a href="change_user_id.php" target="main"><?php echo "ChangeUserID" ?></a></li>

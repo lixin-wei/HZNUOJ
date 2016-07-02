@@ -11,7 +11,8 @@
 
 <?php
   $title="Problem Status";
-  require_once("header.php");
+  if ($_GET['cid']) require_once("contest_header.php");
+  else require_once("header.php");
 ?>
 <div class="am-container" style="margin-top:40px;">
   <h3 style="color:red;">Problems <?php echo $id?> Status</h3>
