@@ -1,5 +1,5 @@
 <?php
-
+header("Content-type: text/html; charset=gb2312");
 ?>
 
 <?php if (!isset($_POST['class_checkbox'])) { ?>
@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <meta name="description" content="">
@@ -36,7 +36,7 @@
 				//           on users.user_id=solution.user_id
 				//         ORDER BY class";
 
-				$sql = "SELECT DISTINCT(class) FROM users ORDER BY class";
+				$sql = "SELECT DISTINCT(class) FROM team ORDER BY class";
 				$result = mysql_query($sql) or die(mysql_error());
 
 				$i = 0;
@@ -60,6 +60,10 @@
 <?php
 	
 	} else {
+		// TODO delete
+		error_reporting(-1);
+		ini_set("display_errors","On");
+		//
 
 		$cids = $_POST['cids'];
 		$cids = explode(',', $cids);
@@ -124,53 +128,61 @@
 	        
 	        //echo $rows_cnt;
 	        //echo $root_dir."/".$cid;
-	        if (is_dir($root_dir."/".$cid)) {
-				delete_dir($root_dir."/".$cid);
-				//echo "delete $root_dir/$cid";
-			}
+        		if (is_dir($root_dir."/".$cid)) {
+			delete_dir($root_dir."/".$cid);
+			echo "delete $root_dir/$cid"."<br />";
+		}
 
-			mkdir($root_dir."/".$cid, 0777);
-			echo "create dir ".$root_dir."/".$cid."<br />";
+		mkdir($root_dir."/".$cid, 0777);
+		echo "create dir ".$root_dir."/".$cid."<br />"."<br />";
+		echo $rows_cnt."<br />";
 
-	        for ($i = 0; $i < $rows_cnt; $i++) {
-	        	$row = mysql_fetch_object($result);
-	        	$sid = $row->solution_id;
-	        	
-	        	$sql = "select class from (select user_id from solution where solution_id = '$sid') solution left join users on users.user_id=solution.user_id";
-	        	$temp_result = mysql_query($sql);
-	        	$temp_row = mysql_fetch_object($temp_result);
-	        	$sclass = $temp_row->class;
-
-	        	if (!empty($class_array[$sclass])) {
-
-	        		$fp = fopen($root_dir."/$cid/solution_of_$sclass.txt", "a+");
+	             for ($i = 0; $i < $rows_cnt; $i++) {
+		        	$row = mysql_fetch_object($result);
+		        	$sid = $row->solution_id;
 		        	
-		        	$source = $row->source;
-		        	
-					//echo "/**************************************************************<br />";
-		        	fwrite($fp, "\r\n**************************************************************\r\n");
-
-		        	//echo "<pre>".htmlspecialchars($source)."</pre>";
-		        	fwrite($fp, $source);
-		        	
-		        	$sql = "select * from solution where solution_id=$sid";
+		        	//echo $sid."<br />";
+		        	$sql = "select team.class from team,solution where team.user_id=solution.user_id AND solution_id='$sid'";
 		        	$temp_result = mysql_query($sql);
-		        	$srow = mysql_fetch_object($temp_result);
-		        	$sproblem_id = $srow->problem_id;
-		        	$suser_id = $srow->user_id;
-		        	$slanguage = $srow->language;
-		        	$sresult = $srow->result;
-		        	$stime = $srow->time;
-		        	$smemory = $srow->memory;
-		        	$sip = $srow->ip;
-		        	
-		        	$sql = "select nick from users where user_id='$suser_id'";
-		        	$temp_result = mysql_query($sql);
-		        	$srow = mysql_fetch_object($temp_result);
-		        	$snick = $srow->nick;
-		        	
+		        	$temp_row = mysql_fetch_object($temp_result);
+		        	$sclass = $temp_row->class;
+
+		        	$rows_cnt_temp = mysql_num_rows($temp_result);
+		        	// echo $rows_cnt_temp."<br />";
+		        	//$sclass = mb_convert_encoding($sclass, "utf-8", "gb2312");
+			// echo $sclass."<br />";
+
+
+		        	if (!empty($class_array[$sclass])) {
+		        		//echo "hello"."<br />";
+		        		$fp = fopen($root_dir."/$cid/solution_of_$sclass.txt", "a+") or die("can not open the file");
+			        	
+			        	$source = $row->source;
+			        	
+						//echo "/**************************************************************<br />";
+			        	fwrite($fp, "\r\n**************************************************************\r\n");
+
+			        	//echo "<pre>".htmlspecialchars($source)."</pre>";
+			        	fwrite($fp, $source);
+			        	
+			        	$sql = "select * from solution where solution_id=$sid";
+			        	$temp_result = mysql_query($sql);
+			        	$srow = mysql_fetch_object($temp_result);
+			        	$sproblem_id = $srow->problem_id;
+			        	$suser_id = $srow->user_id;
+			        	$slanguage = $srow->language;
+			        	$sresult = $srow->result;
+			        	$stime = $srow->time;
+			        	$smemory = $srow->memory;
+			        	$sip = $srow->ip;
+			        	
+			        	$sql = "select nick from team where user_id='$suser_id'";
+			        	$temp_result = mysql_query($sql);
+			        	$srow = mysql_fetch_object($temp_result);
+			        	$snick = $srow->nick;
+			        	
 				//echo "Problem: $sproblem_id<br />User: $suser_id&nbsp;($snick)<br />";
-				fwrite($fp, "\r\n\r\nProblem: $sproblem_id\r\nUser: $suser_id&nbsp;($snick)\r\n");
+				fwrite($fp, "\r\n\r\nProblem: $sproblem_id\r\nUser: $suser_id $snick\r\n");
 				//echo "Language: ".$language_name[$slanguage]."<br />Result: ".$judge_result[$sresult]."<br />";
 				fwrite($fp, "Language: ".$language_name[$slanguage]."\r\nResult: ".$judge_result[$sresult]."\r\n");
 				//echo "Sresult: ".$sresult."<br />";
@@ -187,43 +199,63 @@
 				
 				//echo "****************************************************************/<br /><br />";
 				fwrite($fp, "****************************************************************\r\n\r\n");
-			}
-	    	}
+				}
+		    	}
 
-	    	foreach ($class_array as $key => $value) {
-	    		if ($value == true) {
-	    			if (file_exists($root_dir."/$cid/solution_of_$key.txt")) {
-	    				$fp = fopen($root_dir."/$cid/solution_of_$key.txt", "a+");
-	    				fclose($fp);
-	    			}
-	    		}
-	    	}
+		    	foreach ($class_array as $key => $value) {
+		    		if ($value == true) {
+		    			if (file_exists($root_dir."/$cid/solution_of_$key.txt")) {
+		    				$fp = fopen($root_dir."/$cid/solution_of_$key.txt", "a+");
+		    				fclose($fp);
+		    				echo "create file solution_of_$key.txt"."<br />";
+		    			}
+		    		}
+		    	}
 		}
 
 		function downloads($name) {
 				
-	        $file_dir=""; 
-	         
-	        if (!file_exists($file_dir.$name)){
-	            header("Content-type: text/html; charset=utf-8");
-	            echo "File not found!";
-	            exit; 
-	        } else {
-	            $file = fopen($file_dir.$name,"r"); 
-	            Header("Content-type: application/octet-stream");
-	            Header("Accept-Ranges: bytes");
-	            Header("Accept-Length: ".filesize($file_dir . $name));
-	            Header("Content-Disposition: attachment; filename=".$name);
-	            echo fread($file, filesize($file_dir.$name));
-	            fclose($file);
-	        }
+		        $file_dir=""; 
+		         
+		        if (!file_exists($file_dir.$name)){
+		            // echo $file_dir.$name;
+		            echo "File not found!";
+		            exit(0); 
+		        } else {
+		            $file = fopen($file_dir.$name,"r"); 
+		            Header("Content-type: application/octet-stream");
+		            Header("Accept-Ranges: bytes");
+		            Header("Accept-Length: ".filesize($file_dir . $name));
+		            Header("Content-Disposition: attachment; filename=".$name);
+		            echo fread($file, filesize($file_dir.$name));
+		            fclose($file);
+		        }
 		}
+		//function end
 
-		foreach ($class_checkbox as $key => $value) {
-			$class_array[$value] = true;
-		}
+		// foreach ($class_checkbox as $key => $value) {
+		// 	$value = mb_convert_encoding($value, "gb2312");
+		// 	$class_array[$value] = true;
+		// }
+		$temp = mb_convert_encoding('物联网151', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('物联网152', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('计算机151', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('计算机152', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('计算机153', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('软工151', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('软工152', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		$temp = mb_convert_encoding('其它', 'gb2312', 'utf-8');
+		$class_array[$temp] = true;
+		var_dump($class_array);
 
-		$root_dir = "../hhhh";
+		$root_dir = "../../hhhh";
 		//$root_dir = realpath($root_dir);
 
 		$link = mysql_connect('172.17.151.2', 'root', 'hznujudge');
@@ -236,7 +268,7 @@
 		mysql_select_db('jol', $link);
 
 		delete_dir($root_dir);
-		mkdir($root_dir, 0777);
+		mkdir($root_dir, 0777) or die("can not create file");
 
 		foreach ($cids as $cid) {
 			$cid = intval($cid);
@@ -249,8 +281,11 @@
 			// if (!is_dir($root_dir)) {
 			// 	mkdir($root_dir);
 			// }
-
-			create($cid);
+			try {
+				create($cid);
+			} catch (Exception $e) {
+				print $e->getMessage(); 
+			}
 		 
 			if (file_exists($zipname)) {
 				unlink($zipname);
@@ -287,7 +322,7 @@
 			 // Zip archive will be created only after closing object
 			 $zip->close();
 
-		    downloads($zipname);
+		 downloads($zipname);
 		 //    $file = $zip;
 		 //    if (file_exists($file))
 			// {

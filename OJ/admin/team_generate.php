@@ -2,7 +2,7 @@
   /**
    * This file is modified
    * by yybird
-   * @2016.06.30
+   * @2016.07.02
   **/
 ?>
 
@@ -55,10 +55,9 @@
       for($i=$no;$i<$no+$teamnumber;$i++){
         $user_id=$prefix.($i<10?('0'.$i):$i);
         $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
-                          if(isset($pieces[$i-1]))
-                            $nick=$pieces[$i-1];
-                          else
-        $nick="NULL";
+        while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
+        if(isset($pieces[$i-1])) $nick=$pieces[$i-1];
+        else $nick="NULL";
         echo "<tr><td>$nick</td><td>$class</td><td>$contest_id</td><td>$user_id</td><td>$password</td></tr>";
         
         $password=pwGen($password);

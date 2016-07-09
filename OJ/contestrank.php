@@ -197,7 +197,7 @@ $sql="SELECT
               (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
               INNER JOIN (SELECT * FROM team WHERE contest_id='$cid') team
               on team.user_id=solution.user_id
-            WHERE team.class='null' or team.class is null
+            WHERE team.class='null' or team.class is null or team.class='其它'
             ORDER BY team.user_id,in_date";
   } else {
     if (!$user_limit)
@@ -251,7 +251,6 @@ $sql="SELECT
     if (strcmp($user_name,$n_user)){
       $user_cnt++;
       $U[$user_cnt]=new TM();
-
       $U[$user_cnt]->user_id=$row['user_id'];
       $U[$user_cnt]->nick=$row['nick'];
       $U[$user_cnt]->real_name = $row['real_name'];
@@ -262,35 +261,36 @@ $sql="SELECT
     else
       $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
   }
+  mysql_free_result($result);
 
   // 查询user部分
   if (isset($sql_u)) {
     $result = mysql_query($sql_u);// or die("Error! ".mysql_error());
     if($result) $rows_cnt=mysql_num_rows($result);
     else $rows_cnt=0;
-  }
-  for ($i=0; $i<$rows_cnt; $i++){
-    if($OJ_MEMCACHE) $row=$result[$i];
-    else $row=mysql_fetch_array($result);
 
-    $n_user=$row['user_id'];
-    if (strcmp($user_name,$n_user)){
-      $user_cnt++;
-      $U[$user_cnt]=new TM();
+    for ($i=0; $i<$rows_cnt; $i++){
+      if($OJ_MEMCACHE) $row=$result[$i];
+      else $row=mysql_fetch_array($result);
 
-      $U[$user_cnt]->user_id=$row['user_id'];
-      $U[$user_cnt]->nick=$row['nick'];
-      $U[$user_cnt]->real_name = $row['real_name'];
-      $user_name=$n_user;
+      $n_user=$row['user_id'];
+      if (strcmp($user_name,$n_user)){
+        $user_cnt++;
+        $U[$user_cnt]=new TM();
+        $U[$user_cnt]->user_id=$row['user_id'];
+        $U[$user_cnt]->nick=$row['nick'];
+        $U[$user_cnt]->real_name = $row['real_name'];
+        $user_name=$n_user;
+      }
+      if(time()<$end_time&&$lock<strtotime($row['in_date']))
+        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
+      else
+        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
     }
-    if(time()<$end_time&&$lock<strtotime($row['in_date']))
-      $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
-    else
-      $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
   }
   /* 获取查询结果 start */
 
-
+//echo $U[0]->solved;
   if(!$OJ_MEMCACHE) mysql_free_result($result);
   usort($U,"s_cmp");
 

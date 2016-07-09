@@ -27,7 +27,7 @@
   </p>
       
   <!-- 编译器选项表格 start -->
-  <table border="1">
+  <table class="am-table am-table-bordered am-table-striped am-table-compact">
     <tr>
       <td><center>语言</center></td>
       <td><center>编译器版本</center></td>
@@ -41,7 +41,7 @@
     <tr>
       <td><center>C++</center></td>
       <td><center>g++ 4.8.2</center></td>
-      <td><center><font color=blue>g++ Main.cc -o Main  -fno-asm -O2 -Wall -lm --static -DONLINE_JUDGE</font></center></td>
+      <td><center><font color=blue>g++ Main.cc -o Main  -fno-asm -O2 -Wall -lm --static  -std=c++11 -DONLINE_JUDGE</font></center></td>
     </tr>
     <tr>
       <td><center>Pascal</center></td>
@@ -53,7 +53,7 @@
       <td><center>openjdk 1.7.0_79</center></td>
       <td><center><font color="blue">javac -J-Xms32m -J-Xmx256m Main.java</font>
       <br>
-      <font size="-1" color="red">*Java has 2 more seconds and 512M more memory when running and judging.</font></center>
+      <font size="-1" color="red">Languages except C/C++ has 2 more seconds and 128M more memory when running and judging.</font></center>
       </td>
     </tr>
     <tr>
@@ -103,29 +103,48 @@
     下面是 1000题的参考答案
   </p>
 
-C++:<br>
-<pre><font color="blue">
-#include &lt;iostream&gt;
-using namespace std;
-int main(){
-  int a,b;
-  while(cin >> a >> b)
-      cout << a+b << endl;
-return 0;
-}
-</font></pre>
-C:<br>
-<pre><font color="blue">
+<div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
+  <ul class="am-tabs-nav am-nav am-nav-tabs">
+    <li class="am-active"><a href="javascript: void(0)">C</a></li>
+    <li><a href="javascript: void(0)">C++</a></li>
+    <li><a href="javascript: void(0)">Pascal</a></li>
+    <li><a href="javascript: void(0)">Java</a></li>
+    <li><a href="javascript: void(0)">Ruby</a></li>
+    <li><a href="javascript: void(0)">Bash</a></li>
+    <li><a href="javascript: void(0)">Python2</a></li>
+    <li><a href="javascript: void(0)">PHP</a></li>
+    <li><a href="javascript: void(0)">Perl</a></li>
+    <li><a href="javascript: void(0)">C#</a></li>
+    <li><a href="javascript: void(0)">Lua</a></li>
+  </ul>
+
+  <div class="am-tabs-bd">
+<div class="am-tab-panel am-active">
+    <pre>
 #include &lt;stdio.h&gt;
-int main(){
-  int a,b;
-  while(scanf("%d %d",&amp;a, &amp;b) != EOF)
-      printf("%d\n",a+b);
-return 0;
+int main()
+{
+   int a, b;
+   while(scanf("%d%d", &a, &b) != EOF)
+      printf("%d\n", a + b);
 }
-</font></pre>
-PASCAL:<br>
-<pre><font color="blue">
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
+#include &lt;iostream&gt; 
+using namespace std;
+int main()
+{
+    int a, b;
+    while(cin>> a >> b)
+    cout << a + b << endl;
+    return 0;
+}
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
 program p1001(Input,Output); 
 var 
 a,b:Integer; 
@@ -136,21 +155,164 @@ begin
      Writeln(a+b); 
    end; 
 end.
-</font></pre>
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
+//package main
+//注意不要添加包名称，否则会报错。
 
-Java:<br>
-<pre><font color="blue">
+import java.io.*;
 import java.util.*;
-public class Main{
-public static void main(String args[]){
-	Scanner cin = new Scanner(System.in);
-	int a, b;
-	while (cin.hasNext()){
-		a = cin.nextInt(); b = cin.nextInt();
-		System.out.println(a + b);
-	}
+class Test {
 }
-}</font></pre>
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner cin = new Scanner(System.in);
+        int a, b;
+        while(cin.hasNextInt())
+        {
+            a = cin.nextInt();
+            b = cin.nextInt();
+            System.out.println(a + b);
+        }
+    }
+}
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
+a=gets
+while a != nil && a != "" && a != "\r" && a != "\n" do
+    arr = a.split(" ")
+    sum = 0
+    arr.each_with_index do |value, index|
+        sum = sum + value.to_i
+    end
+    puts sum.to_s
+    a=gets
+end
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
+#!/bin/bash
+ 
+read -a arr
+#echo ${#arr[@]}
+while [ ${#arr[@]} -eq 2 ]
+do
+sum=$((${arr[0]}+${arr[1]}))
+echo "$sum"
+read -a arr
+done
+    </pre>
+</div>
+<div class="am-tab-panel">
+    <pre>
+#!/usr/bin/env python  
+# coding=utf-8  
+# Python使用的是2.7，缩进可以使用tab、4个空格或2个空格，但是只能任选其中一种，不能多种混用
+while 1:
+  a=[]  
+  s = raw_input()
+  # raw_input()里面不要有任何提示信息
+  if s != "":
+    for x in s.split():  
+        a.append(int(x))  
+       
+    print sum(a)
+  else:
+    break
+    </pre>
+</div>
+    <div class="am-tab-panel">
+        <pre>
+< ?php
+function solveMeFirst($a,$b){
+    return $a + $b;
+}
+$handle = fopen ("php://stdin","r");
+$s = fgets($handle);
+while ($s != "") {
+  $a = explode(" ", $s);
+  $sum = solveMeFirst((int)$a[0],(int)$a[1]);
+  print ($sum);
+  print ("\n");
+  $s = fgets($handle);
+}
+fclose($handle);
+?>
+        </pre>
+    </div>
+    <div class="am-tab-panel">
+        <pre>
+while (defined(my $line = &lt;STDIN&gt;)) {
+    $line =~ s/\s+$//;
+    my @tokens = split(/ +/, $line);
+    my $a = $tokens[0];
+    my $b = $tokens[1];
+    printf("%d\n", $a + $b);
+}
+        </pre>
+    </div>
+    <div class="am-tab-panel">
+        <pre>
+using System;
+using System.Linq;
+
+namespace ConsoleApplication
+{
+    public class Program
+    {
+        private static void Main()
+        {
+            string line;
+            while((line = Console.ReadLine()) != null)
+            {
+                Console.WriteLine(line.Split().Select(int.Parse).Sum());
+            }
+        }
+    }
+}
+        </pre>
+    </div>
+    <div class="am-tab-panel">
+        <pre>
+local count = 0
+function string.split(str, delimiter)
+  if str==nil or str=='' or delimiter==nil then
+    return nil
+  end
+  
+    local result = {}
+    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match)
+    end
+    return result
+end
+while true do
+  local line = io.read()
+  if line == nil or line == "" then break end
+  local tb = string.split(line, " ")
+  local sum = 0
+  for i=1, #tb do
+    local a = tonumber(tb[i])
+    sum = sum+a
+  end
+  if count>0 then
+    io.write("\n")
+  end
+  io.write(string.format("%d", sum))
+  count = count+1
+end
+        </pre>
+    </div>
+  </div>
+</div>
+
 
   <hr>
 
@@ -166,33 +328,93 @@ public static void main(String args[]){
   </p>
 
   <hr>
-
-  <p>
-    <font color=green>Q</font>：系统返回信息都是什么意思?<br>
-    <font color=red>A</font>：详见下述：<br>
-    <p><font color=blue>Pending</font> : 系统忙，你的答案在排队等待. </p>
-    <p><font color=blue>Pending Rejudge</font>: 因为数据更新或其他原因，系统将重新判你的答案.</p>
-    <p><font color=blue>Compiling</font> : 正在编译.<br>
-  </p>
-  <p><font color="blue">Running &amp; Judging</font>: 正在运行和判断.<br></p>
-  <p><font color=blue>Accepted</font> : 程序通过!<br>
-    <br>
-    <font color=blue>Presentation Error</font> : 答案基本正确，但是格式不对。<br>
-    <br>
-    <font color=blue>Wrong Answer</font> : 答案不对，仅仅通过样例数据的测试并不一定是正确答案，一定还有你没想到的地方.<br>
-    <br>
-    <font color=blue>Time Limit Exceeded</font> : 运行超出时间限制，检查下是否有死循环，或者应该有更快的计算方法。<br>
-    <br>
-    <font color=blue>Memory Limit Exceeded</font> : 超出内存限制，数据可能需要压缩，检查内存是否有泄露。<br>
-    <br>
-    <font color=blue>Output Limit Exceeded</font>: 输出超过限制，你的输出比正确答案长了两倍.<br>
-    <br>
-    <font color=blue>Runtime Error</font> : 运行时错误，非法的内存访问，数组越界，指针漂移，调用禁用的系统函数。请点击后获得详细输出。<br>
-  </p>
-  <p><font color=blue>Compile Error</font> : 编译错误，请点击后获得编译器的详细输出。<br><br></p>
-  <hr>
-
-  <p>
+<p>
+    <font color="green">Q</font>：系统返回信息都是什么意思?<br>
+    <font color="red">A</font>：详见下述：<br>
+</p>
+  <table class="am-table am-table-bordered am-table-striped am-table-compact am-text-center">
+      <tr>
+          <td width="255">评测结果 </td>
+          <td width="87">缩写</td>
+          <td width="678">含义</td>
+      </tr>
+      <tr >
+          <td class="ltd"">Pending </td>
+          <td class="mtd"">PD</td>
+          <td class="rtd"">您的提交正排队等待评测。</td>
+      </tr>
+      <tr >
+          <td class="ltd"">Pending Rejudge</td>
+          <td class="mtd"">PR</td>
+          <td class="rtd"">因为数据更新或其他原因，系统将重新判你的答案。</td>
+      </tr>
+      <tr>
+          <td class="ltd">Compiling</td>
+          <td class="mtd">CP</td>
+          <td class="rtd">您提交的代码正在被编译。</td>
+      </tr>
+      <tr >
+          <td class="ltd">Running & Judging</td>
+          <td class="mtd">RN</td>
+          <td class="rtd">您的程序正在运行。 </td>
+      </tr>
+      <tr>
+          <td class="ltd">Judging</td>
+          <td class="mtd">JG</td>
+          <td class="rtd">我们 正在检查您程序的输出是否正确。 </td>
+      </tr>
+      <tr >
+          <td class="ltd">Accepted</td>
+          <td class="mtd">AC</td>
+          <td class="rtd">您的程序是正确的!。</td>
+      </tr>
+      <tr>
+          <td class="ltd">Presentation Error</td>
+          <td class="mtd">PE</td>
+          <td class="rtd">您的程序输出有格式问题，请检查是否多了或者少了空格                                                                                                                                                                                           （' '）、制表符（'\t'）或者换行符（'\n'） </td>
+      </tr>
+      <tr >
+          <td class="ltd">Wrong Answer</td>
+          <td class="mtd">WA</td>
+          <td class="rtd">您的程序输出结果错误。</td>
+      </tr>
+      <tr>
+          <td class="ltd">Runtime Error</td>
+          <td class="mtd">RE</td>
+          <td class="rtd">您的程序在运行时发生错误。 </td>
+      </tr>
+      <tr >
+          <td class="ltd">Time Limit Exceeded</td>
+          <td class="mtd">TLE</td>
+          <td class="rtd">您的程序运行的时间已经超出了题目的时间限制。 </td>
+      </tr>
+      <tr>
+          <td class="ltd">Memory Limit Exceeded</td>
+          <td class="mtd">MLE</td>
+          <td class="rtd">您的程序运行的内存已经超出了题目的内存限制。 </td>
+      </tr>
+      <tr >
+          <td class="ltd">Output Limit Exceeded</td>
+          <td class="mtd">OLE</td>
+          <td class="rtd">您的程序输出内容太多，超过了这个题目的输出限制。</td>
+      </tr>
+      <tr>
+          <td class="ltd">Compile Error</td>
+          <td class="mtd">CE</td>
+          <td class="rtd">您的程序语法出现问题，编译器无法编译。 </td>
+      </tr>
+      <tr >
+          <td class="ltd">System Error</td>
+          <td class="mtd">SE</td>
+          <td class="rtd">评判系统内部出现错误 ，我们会尽快处理。 </td>
+      </tr>
+      <tr>
+          <td class="ltd">Out Of Contest Time</td>
+          <td class="mtd">OCT</td>
+          <td class="rtd">考试已经结束，不再评测提交。</td>
+      </tr>
+  </table>
+<hr>
     <font color=green>Q</font>：如何参加在线比赛？<br>
     <font color=red>A</font>：<a href=registerpage.php>注册</a> 一个帐号，然后就可以练习，点击比赛列表Contests可以看到正在进行的比赛并参加。<br>
   </p><br>
@@ -214,6 +436,6 @@ public static void main(String args[]){
     <font color=green size="+2">其他问题请访问<a href="..\bbs"><?php echo $OJ_NAME?>论坛系统</a></font>
   </center>
 
-	 <?php require_once("footer.php");?>
+   <?php require_once("footer.php");?>
      
 </div><!--end wrapper-->

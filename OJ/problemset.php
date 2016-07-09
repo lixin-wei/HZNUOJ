@@ -225,7 +225,7 @@
     if ($OJ=="HZNU" || $OJ=="C") {
       if($OJ=='C') $view_problemset[$i][2]="<td><a href='problem.php?OJ=C&id=".$p_id."'>".$row->title."</a></td>";
       else $view_problemset[$i][2]="<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
-      $view_problemset[$i][3] = "<td>";
+      $view_problemset[$i][3] = "<td class='am-text-center'>";
       if ($show_tag) {
           $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger am-round'>".$row->tag1."</span>";
           $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning am-round'>".$row->tag2."</span>";
