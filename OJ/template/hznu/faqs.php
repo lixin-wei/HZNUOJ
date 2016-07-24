@@ -8,7 +8,26 @@
    * @2016.03.23
   **/
 ?>
-
+    <link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
+    <link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
+    <script src='highlight/scripts/shCore.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+    <script src='highlight/scripts/shBrushLua.js' type='text/javascript'></script>
+    <script language='javascript'>
+      SyntaxHighlighter.config.bloggerMode = false;
+      SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
 <?php $title="F.A.Qs";?>
 <?php require_once("header.php"); ?>
 
@@ -102,217 +121,30 @@
       <br>
     下面是 1000题的参考答案
   </p>
-
-<div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="doc-tab-demo-1">
-  <ul class="am-tabs-nav am-nav am-nav-tabs">
-    <li class="am-active"><a href="javascript: void(0)">C</a></li>
-    <li><a href="javascript: void(0)">C++</a></li>
-    <li><a href="javascript: void(0)">Pascal</a></li>
-    <li><a href="javascript: void(0)">Java</a></li>
-    <li><a href="javascript: void(0)">Ruby</a></li>
-    <li><a href="javascript: void(0)">Bash</a></li>
-    <li><a href="javascript: void(0)">Python2</a></li>
-    <li><a href="javascript: void(0)">PHP</a></li>
-    <li><a href="javascript: void(0)">Perl</a></li>
-    <li><a href="javascript: void(0)">C#</a></li>
-    <li><a href="javascript: void(0)">Lua</a></li>
-  </ul>
-
-  <div class="am-tabs-bd">
-<div class="am-tab-panel am-active">
-    <pre>
-#include &lt;stdio.h&gt;
-int main()
-{
-   int a, b;
-   while(scanf("%d%d", &a, &b) != EOF)
-      printf("%d\n", a + b);
-}
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-#include &lt;iostream&gt; 
-using namespace std;
-int main()
-{
-    int a, b;
-    while(cin>> a >> b)
-    cout << a + b << endl;
-    return 0;
-}
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-program p1001(Input,Output); 
-var 
-a,b:Integer; 
-begin 
- while not eof(Input) do 
-   begin 
-     Readln(a,b); 
-     Writeln(a+b); 
-   end; 
-end.
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-//package main
-//注意不要添加包名称，否则会报错。
-
-import java.io.*;
-import java.util.*;
-class Test {
-}
-public class Main
-{
-    public static void main(String args[])
-    {
-        Scanner cin = new Scanner(System.in);
-        int a, b;
-        while(cin.hasNextInt())
-        {
-            a = cin.nextInt();
-            b = cin.nextInt();
-            System.out.println(a + b);
-        }
-    }
-}
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-a=gets
-while a != nil && a != "" && a != "\r" && a != "\n" do
-    arr = a.split(" ")
-    sum = 0
-    arr.each_with_index do |value, index|
-        sum = sum + value.to_i
-    end
-    puts sum.to_s
-    a=gets
-end
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-#!/bin/bash
- 
-read -a arr
-#echo ${#arr[@]}
-while [ ${#arr[@]} -eq 2 ]
-do
-sum=$((${arr[0]}+${arr[1]}))
-echo "$sum"
-read -a arr
-done
-    </pre>
-</div>
-<div class="am-tab-panel">
-    <pre>
-#!/usr/bin/env python  
-# coding=utf-8  
-# Python使用的是2.7，缩进可以使用tab、4个空格或2个空格，但是只能任选其中一种，不能多种混用
-while 1:
-  a=[]  
-  s = raw_input()
-  # raw_input()里面不要有任何提示信息
-  if s != "":
-    for x in s.split():  
-        a.append(int(x))  
-       
-    print sum(a)
-  else:
-    break
-    </pre>
-</div>
-    <div class="am-tab-panel">
-        <pre>
-< ?php
-function solveMeFirst($a,$b){
-    return $a + $b;
-}
-$handle = fopen ("php://stdin","r");
-$s = fgets($handle);
-while ($s != "") {
-  $a = explode(" ", $s);
-  $sum = solveMeFirst((int)$a[0],(int)$a[1]);
-  print ($sum);
-  print ("\n");
-  $s = fgets($handle);
-}
-fclose($handle);
+<?php
+  $sql="SELECT * FROM faq_codes";
+  $result=mysql_query($sql);
+  echo "<div class='am-tabs' data-am-tabs='{noSwipe: 1}' id='doc-tab-demo-2'>";
+    echo " <ul class='am-tabs-nav am-nav am-nav-tabs'>";
+      while($row=mysql_fetch_assoc($result)){
+        if($row['language']=="c")
+          echo "<li class='am-active'><a href='javascript: void(0)'>".$row['language_show']."</a></li>";
+        else echo "<li><a href='javascript: void(0)'>".$row['language_show']."</a></li>";
+      }
+    echo "</ul>";
+    $result=mysql_query($sql);
+    echo "<div class='am-tabs-bd'>";
+      while($row=mysql_fetch_assoc($result)){
+        if($row['language']=="c") echo "<div class='am-tab-panel am-active'>";
+        else echo "<div class='am-tab-panel'>";
+          echo "<pre class='brush:".$row['language']." '>";
+            echo htmlentities(str_replace("\r\n", "\n", $row['code'])) ;
+          echo "</pre>";
+        echo "</div>";
+      }
+    echo "</div>";
+  echo "</div>"
 ?>
-        </pre>
-    </div>
-    <div class="am-tab-panel">
-        <pre>
-while (defined(my $line = &lt;STDIN&gt;)) {
-    $line =~ s/\s+$//;
-    my @tokens = split(/ +/, $line);
-    my $a = $tokens[0];
-    my $b = $tokens[1];
-    printf("%d\n", $a + $b);
-}
-        </pre>
-    </div>
-    <div class="am-tab-panel">
-        <pre>
-using System;
-using System.Linq;
-
-namespace ConsoleApplication
-{
-    public class Program
-    {
-        private static void Main()
-        {
-            string line;
-            while((line = Console.ReadLine()) != null)
-            {
-                Console.WriteLine(line.Split().Select(int.Parse).Sum());
-            }
-        }
-    }
-}
-        </pre>
-    </div>
-    <div class="am-tab-panel">
-        <pre>
-local count = 0
-function string.split(str, delimiter)
-  if str==nil or str=='' or delimiter==nil then
-    return nil
-  end
-  
-    local result = {}
-    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
-        table.insert(result, match)
-    end
-    return result
-end
-while true do
-  local line = io.read()
-  if line == nil or line == "" then break end
-  local tb = string.split(line, " ")
-  local sum = 0
-  for i=1, #tb do
-    local a = tonumber(tb[i])
-    sum = sum+a
-  end
-  if count>0 then
-    io.write("\n")
-  end
-  io.write(string.format("%d", sum))
-  count = count+1
-end
-        </pre>
-    </div>
-  </div>
-</div>
-
 
   <hr>
 

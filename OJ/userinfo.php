@@ -126,113 +126,117 @@
   /* VJ计算部分 start */
   // 连接转入vjudge
   $connvj = mysql_connect($DB_VJHOST,$DB_VJUSER,$DB_VJPASS,true);
-  if (!$connvj) die('Could not connect: ' . mysql_error());
-  mysql_select_db("vhoj", $connvj);
-  mysql_query("set names utf8");
+  if (!$connvj) die('Could not connect to the VJDB, Please contact administrator to fix this problem.' . mysql_error());
+  if ($connvj) {
+	  mysql_select_db("vhoj", $connvj);
+	  mysql_query("set names utf8");
 
-  // get AC number and problem ID from all OJs
-  // ZOJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='ZOJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = mysql_query($sql) or die(mysql_error());
-  $ZJU = mysql_num_rows($result);
-  $zju_solved_set = array();
-  $zju_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$ZJU; $j++) {
-    $row = mysql_fetch_object($result);
-    $zju_solved_set[] = $row->C_ORIGIN_PROB;
-    $zju_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  mysql_free_result($result);
+	  // get AC number and problem ID from all OJs
+	  // ZOJ
+	  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='ZOJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
+	  $result = mysql_query($sql) or die(mysql_error());
+	  $ZJU = mysql_num_rows($result);
+	  $zju_solved_set = array();
+	  $zju_vj_id = array(); // 映射vj上的ID
+	  for ($j=0; $j<$ZJU; $j++) {
+	    $row = mysql_fetch_object($result);
+	    $zju_solved_set[] = $row->C_ORIGIN_PROB;
+	    $zju_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
+	  }
+	  mysql_free_result($result);
 
-  // HDOJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='HDU' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = mysql_query($sql) or die(mysql_error());
-  $HDU = mysql_num_rows($result);
-  $hdu_solved_set = array();
-  $hdu_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$HDU; $j++) {
-    $row = mysql_fetch_object($result);
-    $hdu_solved_set[] = $row->C_ORIGIN_PROB;
-    $hdu_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  mysql_free_result($result);
+	  // HDOJ
+	  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='HDU' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
+	  $result = mysql_query($sql) or die(mysql_error());
+	  $HDU = mysql_num_rows($result);
+	  $hdu_solved_set = array();
+	  $hdu_vj_id = array(); // 映射vj上的ID
+	  for ($j=0; $j<$HDU; $j++) {
+	    $row = mysql_fetch_object($result);
+	    $hdu_solved_set[] = $row->C_ORIGIN_PROB;
+	    $hdu_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
+	  }
+	  mysql_free_result($result);
 
-  // POJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='POJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = mysql_query($sql) or die(mysql_error());
-  $PKU = mysql_num_rows($result);
-  $pku_solved_set = array();
-  $pku_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$PKU; $j++) {
-    $row = mysql_fetch_object($result);
-    $pku_solved_set[] = $row->C_ORIGIN_PROB;
-    $pku_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  mysql_free_result($result);  
+	  // POJ
+	  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='POJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
+	  $result = mysql_query($sql) or die(mysql_error());
+	  $PKU = mysql_num_rows($result);
+	  $pku_solved_set = array();
+	  $pku_vj_id = array(); // 映射vj上的ID
+	  for ($j=0; $j<$PKU; $j++) {
+	    $row = mysql_fetch_object($result);
+	    $pku_solved_set[] = $row->C_ORIGIN_PROB;
+	    $pku_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
+	  }
+	  mysql_free_result($result);  
 
-  // UVA
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='UVA' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = mysql_query($sql) or die(mysql_error());
-  $UVA = mysql_num_rows($result);
-  $uva_solved_set = array();
-  $uva_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$UVA; $j++) {
-    $row = mysql_fetch_object($result);
-    $uva_solved_set[] = $row->C_ORIGIN_PROB;
-    $uva_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  mysql_free_result($result);  
+	  // UVA
+	  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='UVA' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
+	  $result = mysql_query($sql) or die(mysql_error());
+	  $UVA = mysql_num_rows($result);
+	  $uva_solved_set = array();
+	  $uva_vj_id = array(); // 映射vj上的ID
+	  for ($j=0; $j<$UVA; $j++) {
+	    $row = mysql_fetch_object($result);
+	    $uva_solved_set[] = $row->C_ORIGIN_PROB;
+	    $uva_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
+	  }
+	  mysql_free_result($result);  
 
-  // Codeforces
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='CodeForces' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = mysql_query($sql) or die(mysql_error());
-  $CF = mysql_num_rows($result);
-  $cf_solved_set = array();
-  $cf_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$CF; $j++) {
-    $row = mysql_fetch_object($result);
-    $cf_solved_set[] = $row->C_ORIGIN_PROB;
-    $cf_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  mysql_free_result($result);  
+	  // Codeforces
+	  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='CodeForces' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
+	  $result = mysql_query($sql) or die(mysql_error());
+	  $CF = mysql_num_rows($result);
+	  $cf_solved_set = array();
+	  $cf_vj_id = array(); // 映射vj上的ID
+	  for ($j=0; $j<$CF; $j++) {
+	    $row = mysql_fetch_object($result);
+	    $cf_solved_set[] = $row->C_ORIGIN_PROB;
+	    $cf_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
+	  }
+	  mysql_free_result($result);  
 
-  // 获取vjudge用户数存入user_cnt_divisor
-  $sql = "SELECT C_USERNAME FROM t_user";
-  $result  = mysql_query($sql) or die(mysql_error());
-  if($result) $user_cnt_divisor = mysql_num_rows($result);
-  else $user_cnt_divisor = 1;
-  mysql_free_result($result);
-//  echo $user_cnt_divisor;
+	  // 获取vjudge用户数存入user_cnt_divisor
+	  $sql = "SELECT C_USERNAME FROM t_user";
+	  $result  = mysql_query($sql) or die(mysql_error());
+	  if($result) $user_cnt_divisor = mysql_num_rows($result);
+	  else $user_cnt_divisor = 1;
+	  mysql_free_result($result);
+	//  echo $user_cnt_divisor;
 
-  // 获取该用户AC的所有题目，存入result
-  $sql = "SELECT DISTINCT C_PROBLEM_ID FROM t_submission WHERE C_USERNAME='".$user_mysql."' AND C_STATUS='Accepted'";
-  $result = mysql_query($sql) or die(mysql_error());
+	  // 获取该用户AC的所有题目，存入result
+	  $sql = "SELECT DISTINCT C_PROBLEM_ID FROM t_submission WHERE C_USERNAME='".$user_mysql."' AND C_STATUS='Accepted'";
+	  $result = mysql_query($sql) or die(mysql_error());
 
-  // 获取该用户AC的题目数量，存入rows_cnt
-  if($result) $rows_cnt = mysql_num_rows($result);
-  else $rows_cnt = 0;
+	  // 获取该用户AC的题目数量，存入rows_cnt
+	  if($result) $rows_cnt = mysql_num_rows($result);
+	  else $rows_cnt = 0;
 
-  // 对于每道AC的题目，计算其分数，并加至strength
-  for ($j=0; $j<$rows_cnt; $j++) {
-    // 获取题号
-    $row = mysql_fetch_object($result);
-    $prob_id = $row->C_PROBLEM_ID;
-    // 获取AC人数
-    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS ac_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id." AND C_STATUS='Accepted'";
-    $y_result = mysql_query($sql) or die(mysql_error());
-    $y_row = mysql_fetch_object($y_result);
-    $solved = $y_row->ac_user;
-    // 获取提交人数
-    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS sub_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id;
-    $submit = $y_row->sub_user;
-    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
-    if ($scores < 10) $scores = 10;
-    $strength += $scores;
-    mysql_free_result($y_result);
-  }
-  mysql_free_result($result);
-  /* VJ计算部分 start */
-
+	  // 对于每道AC的题目，计算其分数，并加至strength
+	  for ($j=0; $j<$rows_cnt; $j++) {
+	    // 获取题号
+	    $row = mysql_fetch_object($result);
+	    $prob_id = $row->C_PROBLEM_ID;
+	    // 获取AC人数
+	    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS ac_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id." AND C_STATUS='Accepted'";
+	    $y_result = mysql_query($sql) or die(mysql_error());
+	    $y_row = mysql_fetch_object($y_result);
+	    $solved = $y_row->ac_user;
+	    // 获取提交人数
+	    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS sub_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id;
+	    $submit = $y_row->sub_user;
+	    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
+	    if ($scores < 10) $scores = 10;
+	    $strength += $scores;
+	    mysql_free_result($y_result);
+	  }
+	  mysql_free_result($result);
+	  /* VJ计算部分 start */
+}
+else {
+	echo "could not connect to the VJDB";
+}
 
 
 

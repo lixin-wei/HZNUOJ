@@ -13,11 +13,11 @@
   else include "header.php";
 ?>
 
-<div class="container">
+<div class="am-container">
   <!-- Main component for a primary marketing message or call to action -->
   <div class="jumbotron">
     <link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-    <link href='highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+    <link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
     <script src='highlight/scripts/shCore.js' type='text/javascript'></script>
     <script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
     <script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
@@ -56,7 +56,7 @@
         echo "****************************************************************/\n\n";
         $auth=ob_get_contents();
         ob_end_clean();
-        echo htmlentities(str_replace("\n\r","\n",$view_source),ENT_QUOTES,"utf-8")."\n".$auth."</pre>";
+        echo htmlentities(str_replace("\r\n","\n",$view_source),ENT_QUOTES,"utf-8")."\n".$auth."</pre>";
       } else {
         echo "I am sorry, You could not view this code!";
       }
@@ -68,6 +68,5 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<?php include("template/$OJ_TEMPLATE/js.php");?>	    
 
 <?php include "footer.php" ?>
