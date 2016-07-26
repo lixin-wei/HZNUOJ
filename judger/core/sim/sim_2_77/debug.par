@@ -1,0 +1,23 @@
+/*	This file is part of the software similarity tester SIM.
+	Written by Dick Grune, Vrije Universiteit, Amsterdam.
+	$Id: debug.par,v 1.6 2014-01-26 13:51:27 Gebruiker Exp $
+*/
+
+#undef	DB_ALL
+
+#undef	DB_HASH				/* print hash value info */
+#undef	DB_FORW_REF			/* print & check forward references */
+#undef	DB_TEXT				/* print all text parts */
+#undef	DB_POS				/* print positions in files */
+#undef	DB_NL_BUFF			/* print the newline count buffer */
+#undef	DB_RUN				/* print all run activity */
+
+#if	defined(lint) || defined(DB_ALL)
+#define	DB_HASH
+#define	DB_FORW_REF
+#define	DB_TEXT
+#define	DB_POS
+#define	DB_NL_BUFF
+#define	DB_RUN
+#endif
+

@@ -1,0 +1,63 @@
+HUST JOL安装说明 
+	by zhblue(newsclan@gmail.com)
+自动安装使用install.sh，运行前阅读脚本头部说明设置数据库帐号。使用root运行。
+
+
+手动安装顺序如下：
+
+下载源码
+	http://code.google.com/p/hustoj/
+	svn checkout http://hustoj.googlecode.com/svn/trunk/ hustoj-read-only
+创建数据库
+	mysql
+	set names utf8; 
+	create database jol;
+	use jol;
+	source db.sql
+配置Web界面
+        cp -R web /var/www/html/JudgeOnline
+注册用户
+	http://127.0.0.1/JudgeOnline/registerpage.php
+	注册一个普通帐号
+创建管理员
+    insert into privilege(user_id,rightstr) values('zhblue','administrator');
+    zhblue 为需要加管理员权限的帐号
+管理员登录
+          普通登录后访问http://127.0.0.1/JudgeOnline/admin
+##########添加用户
+useradd --uid 1536 judge
+judge_client.cc:424  
+        setuid(1536);       ==>       //设置判题用户//
+编译判题服务器、客户端
+
+
+          需要make g++ libmysql++-dev 
+	(yum install g++ mysql-devel  / apt-get install g++ libmysql++-dev)
+    mkdir /home/judge/
+    mkdir /home/judge/etc
+    mkdir /home/judge/data
+    mkdir /home/judge/log
+    mkdir /home/judge/run0
+
+cd hustoj-read-only/core/
+sudo ./make.sh
+
+
+          判题配置文件 
+########################/home/judge/etc/judge.conf###########################
+    	OJ_HOST_NAME=localhost    #数据库地址
+	OJ_USER_NAME=jol #数据库用户名
+	OJ_PASSWORD=# 数据库密码
+	OJ_DB_NAME=jol #数据库名
+	OJ_PORT_NUMBER=3306 #数据库端口
+	OJ_RUNNING=1 #可以同时运行几个进程
+	OJ_SLEEP_TIME=1 #如果有空闲 要休眠多久
+	OJ_TOTAL=1 #总共有多少台机器负责判题
+	OJ_MOD=0 #当前机器评判取模为多少的提交
+########################/home/judge/etc/judge.conf###########################
+
+设置启动脚本 
+   with root or sudo
+   echo "/usr/bin/judged" > /etc/init.d/judged
+   chmod +x  /etc/init.d/judged
+   ln -s /etc/init.d/judged /etc/rc3.d/S99judged

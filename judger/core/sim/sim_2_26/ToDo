@@ -1,0 +1,11 @@
+- remove language.h from algollike.h
+
+X Mon Apr 11 13:23:41 1994: sim_orca
+X Thu May 13 23:02:46 1993: sim ook voor C++ en Ada
+
+Are these still useful?:
+- unsigned int ????; changing to int may change the semantics!
++ register - removed
+
+? DB_HASH
+? How good is the hashing? Need better statistics.

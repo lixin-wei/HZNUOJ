@@ -1,0 +1,295 @@
+.\"	This file is part of the software similarity tester SIM.
+.\"	Written by Dick Grune, Vrije Universiteit, Amsterdam.
+.\"	$Id: sim.1,v 2.21 2012-06-05 14:58:39 Gebruiker Exp $
+.\"
+.TH SIM 1 2012/05/02
+.SH NAME
+sim \- find similarities in C, Java, Pascal, Modula-2, Lisp, Miranda, or text files
+.SH SYNOPSIS
+.B sim_c
+[
+.B \-[defFiMnpPRsST]
+.B \-r
+.I N
+.B \-t
+.I N
+.B \-w
+.I N
+.B \-o
+.I F
+]
+file ... [
+.B /
+[ file ... ] ]
+.br
+.B sim_c
+\&...
+.br
+.B sim_java
+\&...
+.br
+.B sim_pasc
+\&...
+.br
+.B sim_m2
+\&...
+.br
+.B sim_lisp
+\&...
+.br
+.B sim_mira
+\&...
+.br
+.B sim_text
+\&...
+.br
+.SH DESCRIPTION
+.I Sim_c
+reads the C files
+.I file ...
+and looks for segments of text that are similar; two segments of program text
+are similar if they only differ in layout, comment, identifiers and
+the contents of numbers, strings and characters.
+If any runs of sufficient length
+are found, they are reported on standard output; the number of significant
+tokens in the run is given between square brackets.
+.PP
+.I Sim_java
+does the same for Java,
+.I sim_pasc
+for Pascal,
+.I sim_m2
+for Modula-2,
+.I sim_mira
+for Miranda,
+and
+.I sim_lisp
+for Lisp.
+.I Sim_text
+works on arbitrary text; it is occasionally useful on shell scripts.
+.PP
+The program can be used for finding copied pieces of code in
+purportedly unrelated programs (with
+.B \-s
+or
+.BR \-S ),
+or for finding accidentally duplicated code in larger projects (with
+.BR \-f ).
+.PP
+If a
+.B /
+is present between the input files, the latter are divided into a group of
+"new" files (before the
+.BR / )
+and a group of "old" files; if there is no
+.BR / ,
+all files are "new".
+Old files are never compared to each other.
+.PP
+Since the similarity tester reads the files several times, it cannot read from
+standard input.
+.PP
+There are the following options:
+.TP
+.B \-d
+The output is in a diff(1)-like format instead of the default
+2-column format.
+.TP
+.B \-e
+Each file is compared to each file in isolation; this will find all
+similarities between all texts involved, regardless of duplicates.
+.TP
+.B \-f
+Runs are restricted to segments with balancing parentheses, to isolate
+potential routine bodies (not in text).
+.TP
+.B \-F
+The names of routines in calls are required to match exactly
+(not in text).
+.TP
+.B \-i
+The names of the files to be compared are read from standard input, including
+a possible
+.BR / ;
+the file names need to be separated by layout.
+This allows a very large number of file names to be specified; it differs from
+the @ facility provided by some compilers in that it handles file names only,
+and does not recognize option arguments.
+.TP
+.B \-M
+Memory usage information is displayed on standard error output.
+.TP
+.B \-n
+Similarities found are only summarized, not displayed.
+.TP
+.B "\-o F"
+The output is written to the file named
+.IR F .
+.TP
+.B \-p
+The output is given in similarity percentages; see below; implies \fB\-e\fP
+and \fB\-s\fP.
+.TP
+.B \-P
+As
+.B \-p
+but more extensive; implies \fB\-e\fP and \fB\-s\fP.
+.TP
+.B "\-r N"
+The minimum run length is set to
+.I N
+units; the default is 24 tokens, except in
+.IR sim_text ,
+where it is 8 words.
+.TP
+.B \-R
+Directories in the input list are entered recursively, and all files they
+contain are involved in the comparison.
+.TP
+.B \-s
+The contents of a file are not compared to itself (\-s for "not self").
+.TP
+.B \-S
+The contents of the new files are compared to the old files only \- not
+between themselves.
+.TP
+.B "\-t N"
+In combination with the
+.B \-p
+option, sets the threshold (in percents) below which similarities will not be
+reported; the default is 1, except in
+.IR sim_text ,
+where it is 20.
+.TP
+.B \-T
+A more terse and uniform form of output is produced, which may be more
+suitable for postprocessing.
+.TP
+.B "\-w N"
+The page width used is set to
+.I N
+columns; the default is 80.
+.TP
+.B "\-\-"
+(A secret option, which prints the input as the similarity checker sees it,
+and then stops.)
+.PP
+The
+.B \-p
+option results in lines of the form
+.nf
+.ft C
+        F consists for x % of G material
+.ft P
+.fi
+meaning that \fCx\fP % of \fCF\fP's text can also be found in \fCG\fP.
+Note that this relation is not symmetric; it is in fact quite possible for one
+file to consist for 100 % of text from another file, while the other file
+consists for only 1 % of text of the first file, if their lengths differ
+enough.
+Each file is reported only once in the position of the \&\fCF\fP in the above
+line.
+This simplifies the identification of a set of files
+.IR "A[1] ... A[n]" ,
+where the concatenation of these files is also present.
+This restriction can be lifted by using the
+.B \-P
+option instead.
+A threshold can be set using the
+.B \-t
+option; this option is ignored under \fB\-P\fP.
+Note that the granularity of the recognized text is still governed by the
+.B \-r
+option or its default.
+.PP
+.I Sim_text
+accepts  s p a c e d   t e x t  as normal text.
+.PP
+The program can handle UNICODE file names under Windows.
+This is relevant only under the
+.B \-R
+option, since there is no way to give UNICODE file names from the command line.
+.PP
+Care has been taken to keep all internal processes linear in the length of the
+input, with the exception of the matching process which is almost linear,
+using a hash table; various other tables are used for speed-up.
+If, however, there is not enough memory for the tables, they are discarded in
+order of unimportance, under which conditions the algorithms revert to their
+quadratic nature.
+.SH EXAMPLES
+The call
+.nf
+.ft C
+        sim_c *.c
+.ft P
+.fi
+highlights duplicate code in the directory.
+(It is useful to remove generated files first.)
+A call
+.nf
+.ft C
+        sim_c -f -F *.c
+.ft P
+.fi
+can pinpoint them further.
+.PP
+A call
+.nf
+.ft C
+        sim_text -e -p -s new/* / old/*
+.ft P
+.fi
+compares each file in \fCnew/*\fP to each subsequent file in \fCnew/*\fP and
+\fCold/*\fP, and if any pair has more that 20% in common, that fact is
+reported.
+Usually a similarity of 30% or more is significant; lower than 20% is probably
+coincidence; and in between is doubtful.
+.PP
+A call
+.nf
+.ft C
+        sim_text -e -n -s -r100 new/* / old/*
+.ft P
+.fi
+compares the same files, and reports large common segments.
+Both approaches are good for plagiarism detection.
+.SH LIMITATIONS
+Repetitive input is the bane of similarity checking.
+If we have a file containing 4 copies of similar text,
+.nf
+    A1 A2 A3 A4
+.fi
+where the numbers serve only to distinguish the similar copies,
+there are 7 similarities: A1=A2, A1=A3, A1=A4, A2=A3, A2=A4, A3=A4, and
+A1A2=A3A4, even discarding the overlapping A1A2A3=A2A3A4.
+Of these, only 3 are meaningful: A1=A2, A2=A3, and A3=A4.
+And for a table with 20 lines similar to each other, not unusual in a program,
+there are 715 similarities, of which at most 19 are meaningful.
+Reporting all 715 of them is clearly unacceptable.
+.PP
+To remedy this, finding the similarities is performed as follows:
+For each position in the text, the largest segment is found, of which a
+non-overlapping copy occurs in the text following it.
+That segment and its copy are reported and scanning resumes at the position
+just after the segment.
+For the above example this results in the similarities A1A2=A3A4 and A3=A4,
+which is quite satisfactory, and for N similar segments roughly \fIlog N\fP
+messages are given.
+.PP
+A drawback of this heuristic is that the output is sensitive to the
+order of the input files.
+If we have two files
+.nf
+    file1 = A1, file2 = A2A3
+.fi
+then the order "file1 file2" gives "A1=A2, A2=A3" and
+"file2 file1" gives "A2=A3, A3=A1"; but both reports convey the same
+information.
+.SH BUGS
+Since it uses
+.I lex(1)
+on some systems, it may crash on any weird construction that overflows
+.IR lex 's
+internal buffers.
+.SH AUTHOR
+Dick Grune, Vrije Universiteit, Amsterdam; dick@dickgrune.com.

@@ -1,0 +1,8 @@
+/*	This file is part of the software similarity tester SIM.
+	Written by Dick Grune, Vrije Universiteit, Amsterdam.
+	$Id: settings.par,v 1.2 2012-06-05 14:58:39 Gebruiker Exp $
+*/
+
+#define	DEFAULT_MIN_RUN_SIZE	24	/* default minimum run size */
+
+#define	DEFAULT_PAGE_WIDTH	80	/* default page width */
