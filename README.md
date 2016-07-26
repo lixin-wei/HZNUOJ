@@ -3,7 +3,7 @@ HZNUOJ is based on [HUSTOJ](https://github.com/zhblue/hustoj)
 
 Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
 
-for security concern, I've delete web/OJ/include/db_info.inc.php from all commits.
+for security concern, I've deleted web/OJ/include/db_info.inc.php from all commits.
 
 and here is te template of this file, you can create it yourself.
 
