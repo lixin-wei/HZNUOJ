@@ -1,7 +1,8 @@
 # HZNUOJ
 HZNUOJ is based on [HUSTOJ](https://github.com/zhblue/hustoj)
 
-Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
+
+site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
 
 for security concern, I've deleted web/OJ/include/db_info.inc.php from all commits.
 
