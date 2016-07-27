@@ -107,6 +107,7 @@ for (; $row=mysql_fetch_array($result); ++$i) {
   if ($news_importance[$i] == 2) $news_title[$i] .= "&nbsp;&nbsp;&nbsp;&nbsp;<i class='am-icon-star-half-o'></i>";
   if ($news_importance[$i] == 3) $news_title[$i] .= "&nbsp;&nbsp;&nbsp;&nbsp;<i class='am-icon-star'></i>";
 }
+
 mysql_free_result($result);
 /* 获取公告 end */
 

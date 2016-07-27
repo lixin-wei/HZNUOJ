@@ -6,7 +6,9 @@
 #and run this with root
 
 #CENTOS/REDHAT/FEDORA WEBBASE=/var/www/html APACHEUSER=apache 
-WEBBASE=/var/www/html
+#WEBBASE=/var/www
+
+# put HZNUOJ file to the var/ and rename it to 'www' then run this bash
 APACHEUSER=www-data
 DBUSER=root
 DBPASS=root
@@ -19,7 +21,7 @@ sudo yum -y update
 sudo yum -y install php httpd php-mysql mysql-server php-xml php-gd gcc-c++  mysql-devel php-mbstring glibc-static flex
 sudo /etc/init.d/mysqld start
 
-sudo svn checkout https://github.com/zhblue/hustoj/trunk/trunk hustoj-read-only
+#sudo svn checkout https://github.com/zhblue/hustoj/trunk/trunk hustoj-read-only
 
 #create user and homedir
 sudo  /usr/sbin/useradd -m -u 1536 judge
@@ -27,13 +29,12 @@ sudo  /usr/sbin/useradd -m -u 1536 judge
 
 
 #compile and install the core
-cd hustoj-read-only/core/
+cd ../core
 sudo ./make.sh
 cd ../..
 #install web and db
-sudo cp -R hustoj-read-only/web $WEBBASE/JudgeOnline
-sudo chmod -R 771 $WEBBASE/JudgeOnline
-sudo chown -R $APACHEUSER $WEBBASE/JudgeOnline
+sudo chmod -R 771 web
+sudo chown -R $APACHEUSER web
 sudo mysql -h localhost -u$DBUSER -p$DBPASS < db.sql
 
 #create work dir set default conf

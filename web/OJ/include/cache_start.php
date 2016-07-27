@@ -1,4 +1,5 @@
 <?php
+        //ini_set("display_errors","On");
         require_once("./include/db_info.inc.php");
         //cache head start
         if(!isset($cache_time)) $cache_time=10;
