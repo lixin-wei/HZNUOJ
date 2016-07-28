@@ -276,8 +276,8 @@
     if ($flag){
 
       if ($row['result']>=4){
-        $view_status[$i][4]= "<div id=center class=red>".$row['memory']."</div>";
-        $view_status[$i][5]= "<div id=center class=red>".$row['time']."</div>";
+        $view_status[$i][4]= "<div id=center class=red>".$row['memory']."kB"."</div>";
+        $view_status[$i][5]= "<div id=center class=red>".$row['time']."ms"."</div>";
         //echo "=========".$row['memory']."========";
       }else{
         $view_status[$i][4]= "---";

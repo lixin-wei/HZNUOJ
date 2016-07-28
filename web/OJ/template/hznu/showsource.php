@@ -43,7 +43,7 @@
         if($sresult==4){//AC
           $res_class="success";
           $time=$stime."ms";
-          $memory=$smemory."kb";
+          $memory=$smemory."kB";
         }
         else if($sresult<=3){//pending or rejudging or compling or judging
           $res_class="default";
