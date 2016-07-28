@@ -31,7 +31,7 @@
 <!-- Sample Input 和 Sample Output 的背景色 start -->
 <style type="text/css">
   .sampledata {
-      background: none repeat scroll 0 0 #8DB8FF;
+      /*background: none repeat scroll 0 0 #8DB8FF;*/
       font-family: Monospace;
       font-size: 18px;
       white-space: pre;
