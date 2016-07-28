@@ -30,12 +30,12 @@ sudo  /usr/sbin/useradd -m -u 1536 judge
 
 #compile and install the core
 cd ../core
-sudo ./make.sh
+sudo bash ./make.sh
 cd ../..
 #install web and db
 sudo chmod -R 771 web
 sudo chown -R $APACHEUSER web
-sudo mysql -h localhost -u$DBUSER -p$DBPASS < db.sql
+#sudo mysql -h localhost -u$DBUSER -p$DBPASS < db.sql
 
 #create work dir set default conf
 sudo    mkdir /home/judge
