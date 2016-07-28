@@ -35,6 +35,8 @@ cd ../..
 #install web and db
 sudo chmod -R 771 web
 sudo chown -R $APACHEUSER web
+sudo chmod -R 770 judger
+sudo chown -R root judger
 #sudo mysql -h localhost -u$DBUSER -p$DBPASS < db.sql
 
 #create work dir set default conf
