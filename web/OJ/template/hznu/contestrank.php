@@ -203,35 +203,35 @@
           if(r == 1) { // 冠军
             cell.innerHTML = "&nbsp;Winner";
             cell.style.cssText="background-color:#ce0000;";
-            cell.className="am-badge am-round am-icon-trophy";
+            cell.className="am-badge am-icon-trophy";
           }
           var tmp = 1; // 只有第一名被占用
           // if (total*goldRate-1 > 3) { // 金牌数大于3时启动
           //   if (r == 2) {
           //     cell.innerHTML = "&nbsp;2nd";
-          //     cell.className="am-btn am-btn-primary am-round am-btn-sm am-icon-angellist";
+          //     cell.className="am-btn am-btn-primary am-btn-sm am-icon-angellist";
           //   }
           //   if (r == 3) {
           //     cell.innerHTML = "&nbsp;3rd";
-          //     cell.className="am-btn am-btn-warning am-round am-btn-sm am-icon-angellist";
+          //     cell.className="am-btn am-btn-warning am-btn-sm am-icon-angellist";
           //   }
           //   tmp = 3; // 前三名都被占用
           // }
           if(r>tmp && r<=total*goldRate+1) { // 金牌
             cell.style.cssText="background-color:#f8c100;";
-            cell.className="am-badge am-round";
+            cell.className="am-badge";
           }
           if(r>total*goldRate+1 && r<=total*silverRate+1) { // 银牌
             cell.style.cssText="background-color:#a4a4a4;";
-            cell.className="am-badge am-round";
+            cell.className="am-badge";
           }
           if(r>total*silverRate+1 && r<=total*bronzeRate+1) { // 铜牌
             cell.style.cssText="background-color:#815d18;";
-            cell.className="am-badge am-round";
+            cell.className="am-badge";
           }
           if(r>total*bronzeRate+1 && ac>0) { // 铁牌
             cell.style.cssText="background-color:transparent;color:black;";
-            cell.className="am-badge am-round";
+            cell.className="am-badge";
           }
         }
       }

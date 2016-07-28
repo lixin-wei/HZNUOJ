@@ -176,8 +176,8 @@
         $view_contest[$i][2].= "<span class=green> $MSG_LeftTime ".formatTimeLength($left)." </span></font>";
       }
         $private=intval($row->private);
-        if ($private==0) $view_contest[$i][4]= "<span class='am-badge am-badge-success am-round'>$MSG_Public</span>";
-        else $view_contest[$i][5]= "<span class='am-badge am-badge-danger am-round'>$MSG_Private</span>";
+        if ($private==0) $view_contest[$i][4]= "<span class='am-badge am-badge-success'>$MSG_Public</span>";
+        else $view_contest[$i][5]= "<span class='am-badge am-badge-danger'>$MSG_Private</span>";
         $view_contest[$i][6]=$row->user_id;
         $i++;
       }

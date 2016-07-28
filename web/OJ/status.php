@@ -5,7 +5,6 @@
    * @2016.07.01
   **/
 ?>
-
 <?php
   header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
   header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -23,20 +22,20 @@
   require_once("./include/const.inc.php");
 
     if ($OJ_TEMPLATE == "hznu")
-      $judge_color=Array( "am-btn am-btn-secondary am-round am-btn-sm", // Pending
-                          "am-btn am-btn-secondary am-round am-btn-sm", // Pending & Rejudging
-                          "am-btn am-btn-secondary am-round am-btn-sm", // Running & Judging
-                          "am-btn am-btn-secondary am-round am-btn-sm", // Compliing
-                          "am-btn am-btn-success am-round am-btn-sm", // AC
-                          "am-btn am-btn-danger am-round am-btn-sm", // PE
-                          "am-btn am-btn-danger am-round am-btn-sm", // WA
-                          "am-btn am-btn-warning am-round am-btn-sm", // TLE
-                          "am-btn am-btn-warning am-round am-btn-sm", // MLE
-                          "am-btn am-btn-warning am-round am-btn-sm", // OLE
-                          "am-btn am-btn-warning am-round am-btn-sm", // RE
-                          "am-btn am-btn-primary am-round am-btn-sm", // CE
-                          "am-btn am-btn-warning am-round am-btn-sm",
-                          "am-btn am-btn-primary am-round am-btn-sm",
+      $judge_color=Array( "am-badge am-badge-secondary am-text-sm", // Pending
+                          "am-badge am-badge-secondary am-text-sm", // Pending & Rejudging
+                          "am-badge am-badge-secondary am-text-sm", // Running & Judging
+                          "am-badge am-badge-secondary am-text-sm", // Compliing
+                          "am-badge am-badge-success am-text-sm", // AC
+                          "am-badge am-badge-danger am-text-sm", // PE
+                          "am-badge am-badge-danger am-text-sm", // WA
+                          "am-badge am-badge-warning am-text-sm", // TLE
+                          "am-badge am-badge-warning am-text-sm", // MLE
+                          "am-badge am-badge-warning am-text-sm", // OLE
+                          "am-badge am-badge-warning am-text-sm", // RE
+                          "am-badge am-badge-primary am-text-sm", // CE
+                          "am-badge am-badge-warning am-text-sm",
+                          "am-badge am-badge-primary am-text-sm",
 
                         );
     else if($OJ_TEMPLATE!="classic") 
@@ -251,9 +250,9 @@
         if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
           $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."'>*".$judge_result[$row['result']]."</span>";
           if($ok)
-            $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm am-round'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
+            $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-badge am-badge-secondary am-text-sm'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
           else
-            $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-round am-btn-sm'>".$row['sim_s_id']."</span>";
+            $view_status[$i][3].= "<span class='am-badge am-badge-secondary am-text-sm'>".$row['sim_s_id']."</span>";
           if(isset($_GET['showsim'])&&isset($row[13]))
             $view_status[$i][3].= "$row[13]";
         } else {
@@ -266,7 +265,7 @@
       }
     }
     if ($row['result']!=4&&isset($row['pass_rate'])&&$row['pass_rate']>0&&$row['pass_rate']<.98)
-      $view_status[$i][3].="<span class='am-btn am-btn-secondary am-round am-btn-sm'>". (100-$row['pass_rate']*100)."%</span>";
+      $view_status[$i][3].="<span class='am-badge am-badge-secondary am-text-sm'>". (100-$row['pass_rate']*100)."%</span>";
     if(isset($_SESSION['http_judge'])) {
       $view_status[$i][3].="<form class='http_judge_form form-inline'><input type=hidden name=sid value='".$row['solution_id']."'>";
       $view_status[$i][3].="</form>";

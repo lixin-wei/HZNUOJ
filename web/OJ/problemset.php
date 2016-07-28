@@ -227,9 +227,9 @@
       else $view_problemset[$i][2]="<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
       $view_problemset[$i][3] = "<td class='am-text-center'>";
       if ($show_tag) {
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger am-round'>".$row->tag1."</span>";
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning am-round'>".$row->tag2."</span>";
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary am-round'>".$row->tag3."</span>";
+          $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>";
+          $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>";
+          $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>";
       }
       $view_problemset[$i][3] .= "</td>";
       $view_problemset[$i][4] = "<td class='am-text-center'><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";

@@ -38,17 +38,17 @@
     Current Status: &nbsp;<span style="color:red;">
       <?php
         if ($now>$end_time) 
-          echo "<span class='am-badge am-badge-danger am-radius'>Ended</span>";
+          echo "<span class='am-badge am-badge-danger '>Ended</span>";
         else if ($now<$start_time) 
-          echo "<span class='am-badge am-badge-warning am-radius'>Not Started</span>";
+          echo "<span class='am-badge am-badge-warning '>Not Started</span>";
         else 
-          echo "<span class='am-badge am-badge-secondary am-radius'>Running</span>";
+          echo "<span class='am-badge am-badge-secondary '>Running</span>";
       ?>&nbsp;&nbsp;
       <?php
         if ($view_private=='0') 
-          echo "<span class='am-badge am-badge-success am-round'>Public</font>";
+          echo "<span class='am-badge am-badge-success'>Public</font>";
         else 
-          echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger am-round'>Private</font>"; 
+          echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger'>Private</font>"; 
       ?>
   </span></h3>
   <hr />

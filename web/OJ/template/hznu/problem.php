@@ -116,23 +116,23 @@
       }
     ?>
     " style="color:white">
-      <button type="button" class="am-btn am-btn-sm am-btn-success am-radius">Submit</button>
+      <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
     </a>&nbsp;&nbsp;
     <?php
       if (isset($_GET['cid'])) {
     ?>
-    <a href="problemstatus.php?<?php echo "cid=".$cid."&id=".$row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary am-radius">Status</button></a>&nbsp;&nbsp;
+    <a href="problemstatus.php?<?php echo "cid=".$cid."&id=".$row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
       } else {
 
     ?>
-    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary am-radius">Status</button></a>&nbsp;&nbsp;
+    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
       }
       if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
     ?>
-        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger am-radius'>Edit</button></a>&nbsp;&nbsp;
-        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning am-radius'>Test Data</button></a>
+        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
+        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
     <?php
       }
     ?>
@@ -195,14 +195,14 @@
       }
     ?>
     " style="color:white">
-      <button type="button" class="am-btn am-btn-sm am-btn-success am-radius">Submit</button>
+      <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
     </a>&nbsp;&nbsp;
-    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary am-radius">Status</button></a>&nbsp;&nbsp;
+    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
       if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
     ?>
-        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger am-radius'>Edit</button></a>&nbsp;&nbsp;
-        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning am-radius'>Test Data</button></a>
+        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
+        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
     <?php
       }
     ?>

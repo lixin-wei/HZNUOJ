@@ -21,9 +21,9 @@
     <form class="am-form am-form-inline" action='problem.php'>
       <div class="am-form-group am-form-icon">
         <i class="am-icon-search"></i>
-        <input type="text" class="am-form-field am-round" placeholder="  &nbsp;Input problem ID" name="id">
+        <input type="text" class="am-form-field" placeholder="  &nbsp;Input problem ID" name="id">
       </div>
-      <button type="submit" class="am-btn am-btn-warning am-round ">Go</button>
+      <button type="submit" class="am-btn am-btn-warning ">Go</button>
     </form>
   </div>
   <!-- 通过ProblemID查找 end-->
@@ -32,10 +32,10 @@
     <form class="am-form am-form-inline">
       <div class="am-form-group am-form-icon">
         <i class="am-icon-binoculars"></i>
-        <input type="text" class="am-form-field am-round" placeholder=" &nbsp;Input keywords" name="search">
+        <input type="text" class="am-form-field" placeholder=" &nbsp;Input keywords" name="search">
         <input type="hidden" name="OJ" value="<?php echo $OJ ?>">
       </div>
-      <button type="submit" class="am-btn am-btn-secondary am-round ">Search</button>
+      <button type="submit" class="am-btn am-btn-secondary ">Search</button>
     </form>
   </div>
   <!-- 通过关键词查找 end -->

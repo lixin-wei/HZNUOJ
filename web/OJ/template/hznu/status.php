@@ -22,9 +22,9 @@
     <tr>
       <td>
         <form action="status.php" method="get" class="am-form am-form-inline" role="form">
-          <div class="am-form-group"><input type="text" class="am-form-field am-round" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo $problem_id?>"></div>
+          <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo $problem_id?>"></div>
           <div class="am-form-group">
-              <input type="text" class="am-form-field am-round" placeholder=" &nbsp;User ID" name="user_id" value="<?php echo $user_id?>">
+              <input type="text" class="am-form-field" placeholder=" &nbsp;User ID" name="user_id" value="<?php echo $user_id?>">
             <?php if (isset($cid)) echo "<input type='hidden' name='cid' value='$cid'>";?>
           </div>
           Language:&nbsp
@@ -78,12 +78,12 @@
               </select>
               <span class="am-form-caret"></span>
             </div>
-          <button type="submit" class="am-btn am-btn-secondary am-round"><span class='am-icon-filter'></span> Filter</button>
+          <button type="submit" class="am-btn am-btn-secondary"><span class='am-icon-filter'></span> Filter</button>
         </form>
       </td>
       <td>
         <form action="status.php" method="get" class="am-form am-form-inline" role="form">
-          &nbsp&nbsp&nbsp<button type="submit" class="am-btn am-btn-default am-round">Reset</button>
+          &nbsp&nbsp&nbsp<button type="submit" class="am-btn am-btn-default">Reset</button>
         </form>
       </td>
     </tr>

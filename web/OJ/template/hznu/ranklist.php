@@ -47,9 +47,9 @@
         &nbsp;&nbsp;&nbsp;
         <div class="am-form-group am-form-icon">
           <i class="am-icon-search"></i>
-          <input type="text" class="am-form-field am-round" placeholder=" &nbsp;Input user ID" name="user">
+          <input type="text" class="am-form-field" placeholder=" &nbsp;Input user ID" name="user">
         </div>
-        <button type="submit" class="am-btn am-btn-warning am-round ">Go</button>
+        <button type="submit" class="am-btn am-btn-warning ">Go</button>
       </form>
     </div>
     <!-- 用户查找 end -->
