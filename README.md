@@ -10,7 +10,7 @@ HZNUOJ deeply modified the web client, and add more features.
 3. ...
 
 # Installation
-Ubuntu 14.04 recomended, installer may not work well in later version.
+Ubuntu 14.04 is recomended, installer may not work well in later version.
 
 Simply clone the repository, then run judger/install/install.sh.
 
