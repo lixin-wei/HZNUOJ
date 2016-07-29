@@ -1,8 +1,6 @@
 **HZNUOJ is based on [HUSTOJ](https://github.com/zhblue/hustoj)**
-_______________
 
-#Site address
-[acm.hznu.edu.cn](http://acm.hznu.edu.cn)
+Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
 
 #Features
 HZNUOJ deeply modified the web client, and add more features.
@@ -13,9 +11,13 @@ HZNUOJ deeply modified the web client, and add more features.
 
 # Installation
 Ubuntu 14.04 recomended, installer may not work well in later version.
+
 Simply clone the repository, then run judger/install/install.sh.
+
 Then you need to modify apache settings, change the default sever dir to /var/www/web/OJ.
+
 And for security concern, I've deleted web/OJ/include/db_info.inc.php from all commits, so you may need to create it yourself.
+
 Here is the template of this file.
 
 ```php
