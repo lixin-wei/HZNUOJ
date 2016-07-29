@@ -20,7 +20,7 @@
 
 <style>
   .bg{
-    background-image: url(template/hznu/bg_image2.jpg);
+    background-image: url(template/hznu/ojINDEX.jpg);
     background-repeat: no-repeat;
     background-position: top;
   }
