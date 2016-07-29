@@ -11,10 +11,10 @@ HZNUOJ deeply modified the web client, and add more features.
 
 # Plans
 1. Perfect the tag system, make it more friendly to use.
-    1. A more friendly tag-add interface.
-    2. Search by tag.
-    3. Tag can only use particular words.
-    4. ...
+    * A more friendly tag-add interface.
+    * Search by tag.
+    * Tag can only use particular words.
+    * ...
 2. Reconstruct the problemset system.
 3. Reconstruct the privilege system. 
 
