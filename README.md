@@ -2,12 +2,22 @@
 
 Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
 
-#Features
+# Features
 HZNUOJ deeply modified the web client, and add more features.
 
 1. Brand new UI and more JS effect, use amazeUI framework.
 2. Tag system, help users more easily to find the problem they want.
 3. ...
+
+# Plans
+1. Perfect the tag system, make it more friendly to use.
+    1. A more friendly tag-add interface.
+    2. Search by tag.
+    3. Tag can only use particular words.
+    4. ...
+2. Reconstruct the problemset system.
+3. Reconstruct the privilege system. 
+
 
 # Installation
 Ubuntu 14.04 is recomended, installer may not work well in later version.
