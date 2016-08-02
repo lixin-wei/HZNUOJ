@@ -3,5 +3,6 @@
 /web/JudgeOnline/
 /web/OJ/upload/*
 /index.html
+/web/index.html
 /OJ/index.html
 /web/OJ/include/db_info.inc.php

@@ -106,7 +106,7 @@
           <!-- Contest部分 end -->
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="faqs.php">F.A.Qs</a></li>
-          <!-- <li><a href="../bbs/" target='_blank'>BBS</a></li> -->
+          <li><a href="../bbs/" target='_blank'>BBS</a></li>
           <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
         </ul>
 

@@ -18,8 +18,8 @@
 
   require_once('../include/db_info.inc.php');
 
-  $origin = "JudgeOnline";
-  $dest = "OJ";
+  $origin = "/web/OJ";
+  $dest = "/OJ";
 
   $sql = "SELECT problem_id, description FROM problem";
   $result = mysql_query($sql);
@@ -29,13 +29,14 @@
     $pid = $row['problem_id'];  
     $a[$pid] = $row['description'];
     $a[$pid] = str_replace($origin, $dest, (string)$a[$pid]);
+    // echo substr(strstr((string)$a[$pid], $origin), 0, 10)."<br>";
     // file_put_contents('log.txt',$a[$pid],FILE_APPEND); 
   }
 
 //  echo $a[1848];
 
-  // echo $a[2014]; 
-  for ($i=1000; $i<=2014; $i++) {
+   echo $a[500200]; 
+  for ($i=500000; $i<=500208; $i++) {
     $sql = "UPDATE problem SET description='$a[$i]' WHERE problem_id=$i";
     mysql_query($sql);
   }

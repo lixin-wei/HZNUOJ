@@ -53,13 +53,13 @@ echo <<<sss
         <hr>
         <div class='am-text-center'>
           Problem_ID: <span class="am-badge am-badge-primary am-text-sm">
-                        <a href='/web/OJ/problem.php?id=$pid' style='color: white;'>$pid</a>
+                        <a href='/OJ/problem.php?id=$pid' style='color: white;'>$pid</a>
                       </span>
           Result: <span class="am-badge am-badge-$res_class am-text-sm">$judge_result[$sresult]</span>
           Time: <span class="am-badge am-badge-warning am-text-sm">$time</span>
           Memory: <span class="am-badge am-badge-warning am-text-sm">$memory</span>
           Author: <span class="am-badge am-badge-secondary am-text-sm">
-                    <a href='/web/OJ/userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
+                    <a href='/OJ/userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
                   </span>
         </div>
         <hr>
