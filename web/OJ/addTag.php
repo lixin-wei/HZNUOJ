@@ -13,17 +13,17 @@
   require_once("include/db_info.inc.php");
 
   // tag太长，则弹出警告并退出
-  if (strlen($_GET['myTag']) > 30) {
+  if (strlen($_POST['myTag']) > 30) {
     echo "<script>alert('Your tag is too long!');history.go(-1);</script>";
     exit(0);
   }
 
   // 在user_id和problem_id都具备的情况下才能添加tag
-  if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
+  if (isset($_SESSION['user_id']) && isset($_POST['id'])) {
     
     $uid = $_SESSION['user_id'];
-    $pid = $_GET['id'];
-    $tag = $_GET['myTag'];
+    $pid = $_POST['id'];
+    $tag = $_POST['myTag'];
 
     // 如果用户还没AC本题，则弹出警告并退出
     $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$pid' AND result='4'";
@@ -36,7 +36,7 @@
 
 
     $sql = "SELECT tag FROM tag WHERE user_id='$uid' AND problem_id='$pid'";
-    $result = mysql_query($sql);    
+    $result = mysql_query($sql);
     if (mysql_num_rows($result)) {
       $sql = "UPDATE tag SET tag='$tag' WHERE user_id='$uid' AND problem_id='$pid'";
       mysql_query($sql);

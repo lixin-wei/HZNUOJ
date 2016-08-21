@@ -6,6 +6,8 @@
    * last modified
    * by yybird
    * @2016.05.25
+   * by D_Star
+   * @2016.08.xx
   **/
 ?>
 
@@ -45,7 +47,7 @@
   <?php
     if ($show_tag && !isset($_GET['cid'])) { 
   ?> 
-      <form class='am-form am-form-inline' style="text-align:center" action="addTag.php">
+      <form id='tagForm' class='am-form am-form-inline' style="text-align:center" action=''>
         <div class="am-form-group">
   <?php
           echo "<span><i class='am-icon-tag'></i> Tags: </span>";
@@ -67,7 +69,9 @@
         <div class='am-form-group'>
           <input class='col-sm-9' type='text' style="width:80px;height:20px;font-size:10px" value='<?php echo $my_tag; ?>' name='myTag'></input>
         </div>
-        <div class='am-form-group'><button type='submit' style='border:none;background-color:transparent;'><i class='am-icon-check' ></i></button></div>
+        <div class='am-form-group'>
+          <button type='button' id='tagSubmit' style='border:none;background-color:transparent;'><i class='am-icon-check' ></i></button>
+        </div>
         <input type='hidden' value='<?php echo $id ?>' name='id'></input>
     <?php
       }
@@ -212,3 +216,17 @@
 
 </div>
 <?php require_once("footer.php"); ?>
+
+<!-- ajax for adding user's own tag -->
+<script>
+  $("#tagSubmit").click(function(){
+    $.ajax({
+      url: 'addTag.php',
+      type: 'post',
+      data: $("#tagForm").serialize(),
+      success: function(data){
+        window.location.reload();
+      },
+    });
+  });
+</script>
