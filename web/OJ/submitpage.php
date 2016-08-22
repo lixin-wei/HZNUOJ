@@ -133,7 +133,6 @@ if(!$view_src){
    if(file_exists($template_file)){
   $view_src=file_get_contents($template_file);
    }
-
 }
 
 

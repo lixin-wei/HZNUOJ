@@ -165,56 +165,56 @@ echo "[<a href=status.php?".$str2."&top=".$bottom."&prevtop=$top>Next Page</a>]"
     <!-- Placed at the end of the document so the pages load faster -->
     <?php include("template/$OJ_TEMPLATE/js.php");?>	    
 <script type="text/javascript">
-var i=0;
-var judge_result=[<?php
-foreach($judge_result as $result){
-echo "'$result',";
-}
-?>''];
+  var i=0;
+  var judge_result=[<?php
+  foreach($judge_result as $result){
+    echo "'$result',";
+  }
+  ?>''];
 //alert(judge_result[0]);
 function auto_refresh(){
-	var tb=window.document.getElementById('result-tab');
-//alert(tb);
-	var rows=tb.rows;
-	for(var i=1;i<rows.length;i++){
-		var cell=rows[i].cells[3].children[0].innerHTML;
-		rows[i].cells[3].className="td_result";
-	//	alert(cell);
-		var sid=rows[i].cells[0].innerHTML;
-	        for(var j=0;j<4;j++){
-			if(cell.indexOf(judge_result[j])!=-1){
-//			   alert(sid);
-			   fresh_result(sid);
-			}
-		}
-	}
+  var tb=window.document.getElementById('result-tab');
+  //alert(tb);
+  var rows=tb.rows;
+  for(var i=1;i<rows.length;i++){
+      var cell=rows[i].cells[3].children[0].innerHTML;
+      rows[i].cells[3].className="td_result";
+      //	alert(cell);
+      var sid=rows[i].cells[0].innerHTML;
+      for(var j=0;j<4;j++){
+      if(cell.indexOf(judge_result[j])!=-1){
+        //			   alert(sid);
+        fresh_result(sid);
+      }
+    }
+  }
 }
 function findRow(solution_id){
-var tb=window.document.getElementById('result-tab');
-var rows=tb.rows;
-for(var i=1;i<rows.length;i++){
-var cell=rows[i].cells[0];
+  var tb=window.document.getElementById('result-tab');
+  var rows=tb.rows;
+  for(var i=1;i<rows.length;i++){
+    var cell=rows[i].cells[0];
 // alert(cell.innerHTML+solution_id);
 if(cell.innerHTML==solution_id) return rows[i];
 }
 }
 function fresh_result(solution_id)
 {
-var xmlhttp;
-if (window.XMLHttpRequest)
+  var xmlhttp;
+  if (window.XMLHttpRequest)
 {// code for IE7+, Firefox, Chrome, Opera, Safari
-xmlhttp=new XMLHttpRequest();
+  xmlhttp=new XMLHttpRequest();
 }
 else
 {// code for IE6, IE5
-xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 }
 xmlhttp.onreadystatechange=function()
 {
-if (xmlhttp.readyState==4 && xmlhttp.status==200)
-{
-var tb=window.document.getElementById('result-tab');
-var row=findRow(solution_id);
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  {
+    var tb=window.document.getElementById('result-tab');
+    var row=findRow(solution_id);
 //alert(row);
 var r=xmlhttp.responseText;
 var ra=r.split(",");
@@ -226,9 +226,9 @@ row.cells[4].innerHTML=ra[1];
 row.cells[5].innerHTML=ra[2];
 
 if(ra[0]<4)
-window.setTimeout("fresh_result("+solution_id+")",2000);
+  window.setTimeout("fresh_result("+solution_id+")",2000);
 else
-window.location.reload();
+  window.location.reload();
 }
 }
 xmlhttp.open("GET","status-ajax.php?solution_id="+solution_id,true);
@@ -236,27 +236,27 @@ xmlhttp.send();
 }
 //<?php if ($last>0&&$_SESSION['user_id']==$_GET['user_id']) echo "fresh_result($last);";?>
 //alert(123);
-   var hj_ss="<select class='http_judge form-control' length='2' name='result'>";
-	for(var i=0;i<10;i++){
-   		hj_ss+="	<option value='"+i+"'>"+judge_result[i]+" </option>";
-	}
-   hj_ss+="</select>";
-   hj_ss+="<input name='manual' type='hidden'>";
-   hj_ss+="<input class='http_judge form-control' size=5 title='输入判定原因与提示' name='explain' type='text'>";
-   hj_ss+="<input class='http_judge btn' name='manual' value='确定' type='submit'>";
+var hj_ss="<select class='http_judge form-control' length='2' name='result'>";
+for(var i=0;i<10;i++){
+ hj_ss+="	<option value='"+i+"'>"+judge_result[i]+" </option>";
+}
+hj_ss+="</select>";
+hj_ss+="<input name='manual' type='hidden'>";
+hj_ss+="<input class='http_judge form-control' size=5 title='输入判定原因与提示' name='explain' type='text'>";
+hj_ss+="<input class='http_judge btn' name='manual' value='确定' type='submit'>";
 
 auto_refresh();
 $(".http_judge_form").append(hj_ss);
 $(".http_judge_form").submit(function (){
-   var sid=this.children[0].value;
-   $.post("admin/problem_judge.php",$(this).serialize(),function(data,textStatus){
-   		if(textStatus=="success")window.setTimeout("fresh_result("+sid+")",1000);
-	})
-   return false;
+ var sid=this.children[0].value;
+ $.post("admin/problem_judge.php",$(this).serialize(),function(data,textStatus){
+   if(textStatus=="success")window.setTimeout("fresh_result("+sid+")",1000);
+ })
+ return false;
 });
 $(".td_result").mouseover(function (){
 //   $(this).children(".btn").hide(300);
-   $(this).children(".http_judge_form").show(600);
+$(this).children(".http_judge_form").show(600);
 });
 $(".http_judge_form").hide();
 </script>

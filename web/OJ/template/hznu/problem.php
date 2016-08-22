@@ -224,7 +224,9 @@
       url: 'addTag.php',
       type: 'post',
       data: $("#tagForm").serialize(),
-      success: function(data){
+      async: false,
+      success: function(data,status){
+        //alert(data+"\r\n"+status);
         window.location.reload();
       },
     });
