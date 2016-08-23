@@ -40,7 +40,7 @@ Here is the template of this file.
 <?php  
 
   static  $DB_HOST="localhost";
-  static  $DB_VJHOST="172.17.151.3";
+  static  $DB_VJHOST="";
   static  $DB_NAME="jol";
   static  $DB_VJNAME="vhoj";
   static  $DB_USER="root";
