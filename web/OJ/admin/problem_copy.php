@@ -1,7 +1,7 @@
 <?php require_once ("admin-header.php");
-if (!(isset($_SESSION['administrator']))){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
-	exit(1);
+if (!HAS_PRI("inner_function")) {
+  echo "Permission denied!";
+  exit(1);
 }
 ?>
 <ol>

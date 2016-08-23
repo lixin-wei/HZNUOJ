@@ -7,8 +7,9 @@
 ?>
 
 <?php require_once("admin-header.php");?>
-<?php if (!(isset($_SESSION['administrator'])|| isset($_SESSION['password_setter']) )){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
+<?php
+if (!HAS_PRI("edit_user_profile")) {
+	echo "Permission denied!";
 	exit(1);
 }
 if(isset($_POST['do'])){

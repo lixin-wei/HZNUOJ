@@ -1,9 +1,10 @@
 <?php require("admin-header.php");
 
-if (!$GE_TA){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
+if (!HAS_PRI("rejudge")) {
+	echo "Permission denied!";
 	exit(1);
-}?>
+}
+?>
 <?php if(isset($_POST['do'])){
 	require_once("../include/check_post_key.php");
 	if (isset($_POST['rjpid'])){

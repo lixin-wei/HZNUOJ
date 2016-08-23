@@ -16,9 +16,17 @@
       <?php require_once("../include/db_info.inc.php");?>
       <?php require_once("admin-header.php"); ?>
       <?php
-        if (!$GE_TA) { // 没有管理权限
-            echo "<a href='../loginpage.php'>Please Login First!</a>";
-            exit(1);
+        $type = "OJ";
+        if (isset($_GET['type'])) {
+          $type = $_GET['type'];
+        }
+        if ($type=="C" && !HAS_PRI("edit_c_problem")) {
+          echo "Permission denied!";
+          exit(1);
+        }
+        if ($type=="OJ" && !HAS_PRI("edit_hznu_problem")) {
+          echo "Permission denied!";
+          exit(1);
         }
       ?>
       <?php include_once("kindeditor.php") ; ?>

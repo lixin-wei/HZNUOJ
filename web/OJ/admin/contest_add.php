@@ -13,6 +13,10 @@
 <?php
   require_once("../include/db_info.inc.php");
   require_once("../include/const.inc.php");
+  if (!HAS_PRI("edit_contest")) {
+    echo "Permission denied!";
+    exit(1);
+  }
   $description="";
   if (isset($_POST['syear'])) {
     require_once("../include/check_post_key.php");

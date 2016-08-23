@@ -10,8 +10,8 @@
   require("admin-header.php");
   require_once("../include/set_get_key.php");
 
-  if (!(isset($_SESSION['administrator']))){
-    echo "<a href='../loginpage.php'>Please Login First!</a>";
+  if (!HAS_PRI("edit_privilege")) {
+    echo "Permission denied!";
     exit(1);
   }
   echo "<title>Privilege List</title>"; 

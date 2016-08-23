@@ -23,11 +23,11 @@
     if (isset($_GET['type'])) {
       $type = $_GET['type'];
     }
-    if ($type=="C" && !$GE_TA) {
+    if ($type=="C" && !HAS_PRI("edit_c_problem")) {
       echo "Permission denied!";
       exit(1);
     }
-    if ($type=="OJ" && !$GE_T) {
+    if ($type=="OJ" && !HAS_PRI("edit_hznu_problem")) {
       echo "Permission denied!";
       exit(1);
     }

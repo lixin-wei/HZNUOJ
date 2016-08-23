@@ -9,8 +9,8 @@
 <?php 
   require("admin-header.php");
   require_once("../include/set_get_key.php");
-  if (!$GE_T){
-    echo "<a href='../loginpage.php'>Please Login First!</a>";
+  if (!HAS_PRI("edit_news")) {
+    echo "Permission denied!";
     exit(1);
   }
   echo "<title>News List</title>";

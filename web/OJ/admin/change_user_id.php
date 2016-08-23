@@ -19,7 +19,10 @@
 
 
   require_once('../include/db_info.inc.php');
-
+  if (!HAS_PRI("edit_user_profile")) {
+    echo "Permission denied!";
+    exit(1);
+  }
   if (isset($_POST['origin']) && isset($_POST['dest'])) {
 
     $origin = $_POST['origin'];

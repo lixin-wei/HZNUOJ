@@ -11,7 +11,11 @@
   include_once("kindeditor.php") ;
   include_once("../include/const.inc.php");
 
-
+  if (!HAS_PRI("edit_contest")) {
+    echo "Permission denied!";
+    exit(1);
+  }
+  
   if (isset($_POST['syear'])) { // 如果有POST过来的信息，则获取POST值并更新
 
     /* 更新部分 start */

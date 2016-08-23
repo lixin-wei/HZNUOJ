@@ -1,20 +1,14 @@
 <?php
   /**
    * This file is modified
-   * by yybird
-   * @2016.05.25
+   * by yybird @2016.05.25
+   * by D_Star @2016.08.23
   **/
 ?>
 
 <?php @session_start();
   //ini_set("display_errors","On");
-  
   require_once(dirname(__FILE__)."/static.php");
-  // 管理权限
-  $GE_A = isset($_SESSION['administrator']); // 权限在管理员及以上
-  $GE_T = isset($_SESSION['administrator']) || isset($_SESSION['teacher']); // 权限在教师以上
-  $GE_TA = isset($_SESSION['administrator']) || isset($_SESSION['teacher']) || isset($_SESSION['teacher_assistant']); // 权限在助教及以上
-
   //if(date('H')<5||date('H')>21||isset($_GET['dark'])) $OJ_CSS="dark.css";
   if (isset($_SESSION['OJ_LANG'])) $OJ_LANG=$_SESSION['OJ_LANG'];
 
@@ -38,4 +32,24 @@
   date_default_timezone_set("PRC");
   mysql_query("SET time_zone ='+8:00'");
 
+
+  // 管理权限
+  $GE_A = isset($_SESSION['administrator']); // 权限在管理员及以上
+  $GE_T = isset($_SESSION['administrator']) || isset($_SESSION['teacher']); // 权限在教师以上
+  $GE_TA = isset($_SESSION['administrator']) || isset($_SESSION['teacher']) || isset($_SESSION['teacher_assistant']); // 权限在助教及以上
+  
+
+  function HAS_PRI($pri_str){  // if has privilege
+    //non-realtime
+    //return $_SESSION[$pri_str];
+    
+    //realtime checking
+    $res=mysql_query("SELECT `rightstr` FROM `privilege` WHERE `user_id`='".mysql_real_escape_string($_SESSION['user_id'])."'");
+    while($group_name=mysql_fetch_assoc($res)['rightstr']){
+      $rs=mysql_query("SELECT * FROM privilege_distribution WHERE group_name='$group_name'");
+      $arr=mysql_fetch_assoc($rs);
+      if($arr[$pri_str])return true;
+    }
+    return false;
+  }
 ?>

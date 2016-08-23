@@ -17,11 +17,11 @@
     require_once("../lang/$OJ_LANG.php");
   }
   require_once("../include/set_get_key.php");
-  if ($type=="C" && !$GE_TA) {
+  if ($type=="C" && !HAS_PRI("edit_c_problem")) {
     echo "Permission denied!";
     exit(1);
   }
-  if ($type=="OJ" && !$GE_T) {
+  if ($type=="OJ" && !HAS_PRI("edit_hznu_problem")) {
     echo "Permission denied!";
     exit(1);
   }
@@ -78,8 +78,8 @@
   echo "<form method=post action=contest_add.php>";
   echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
   echo "<tr><td>PID<td>Title<td>Author<td>Date";
-  if($GE_TA){
-          if($GE_TA)   echo "<td>Status<td>Delete";
+  if(HAS_PRI('edit_c_problem')){
+          echo "<td>Status<td>Delete";
           echo "<td>Edit<td>TestData</tr>";
   }
   for (;$row=mysql_fetch_object($result);){
@@ -89,21 +89,17 @@
           echo "<td><a href='../problem.php?id=$row->problem_id'>".$row->title."</a>";
           echo "<td>".$row->author."</td>";
           echo "<td>".$row->in_date;
-          if($GE_TA){
-                  if($GE_TA){
-                          echo "<td><a href=problem_df_change.php?id=$row->problem_id&getkey=".$_SESSION['getkey'].">"
-                          .($row->defunct=="N"?"<span titlc='click to reserve it' style='color: green;'>Available</span>":"<span style='color: red;' title='click to be available'>Reserved</span>")."</a><td>";
-                          if($OJ_SAE||function_exists("system")){
-                                ?>
-                                <a href='#' onclick='javascript:if(confirm("Delete?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>";'>
-                                Delete</a>
-                                <?php
-                          }
-                  }
-                  if($GE_TA){
-                          echo "<td><a href=problem_edit.php?id=$row->problem_id&getkey=".$_SESSION['getkey'].">Edit</a>";
-                          echo "<td><a href=quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes>TestData</a>";
-                  }
+          if(HAS_PRI('edit_c_problem')){
+            echo "<td><a href=problem_df_change.php?id=$row->problem_id&getkey=".$_SESSION['getkey'].">"
+            .($row->defunct=="N"?"<span titlc='click to reserve it' style='color: green;'>Available</span>":"<span style='color: red;' title='click to be available'>Reserved</span>")."</a><td>";
+            if($OJ_SAE||function_exists("system")){
+                  ?>
+                  <a href='#' onclick='javascript:if(confirm("Delete?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>";'>
+                  Delete</a>
+                  <?php
+            }
+            echo "<td><a href=problem_edit.php?id=$row->problem_id&getkey=".$_SESSION['getkey'].">Edit</a>";
+            echo "<td><a href=quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes>TestData</a>";
           }
           echo "</tr>";
   }

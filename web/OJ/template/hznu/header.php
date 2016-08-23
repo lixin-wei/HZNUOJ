@@ -150,8 +150,8 @@ BOT;
           if ($show_tag) echo "<li><a href='changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
           else echo "<li><a href='changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
           echo "<li><a href='logout.php'><span class='am-icon-reply'></span> Logout</a></li>";
-
-          if($GE_TA){
+          
+          if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
               <li><a href="admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
                       </ul>

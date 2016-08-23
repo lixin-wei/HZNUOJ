@@ -8,8 +8,8 @@
 
 <?php require_once("admin-header.php");?>
 <?php 
-  if (!(isset($_SESSION['administrator']))){
-    echo "<a href='../loginpage.php'>Please Login First!</a>";
+  if (!HAS_PRI("edit_privilege")) {
+    echo "Permission denied!";
     exit(1);
   }
   if(isset($_POST['do'])){

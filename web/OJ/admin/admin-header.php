@@ -28,7 +28,7 @@
 </script>
 <?php 
   require_once("../include/db_info.inc.php");
-  if (!$GE_TA) {
+  if (!HAS_PRI('enter_admin_page')) {
     echo "<a href='../loginpage.php'>Please Login First!</a>";
     exit(1);
   }
