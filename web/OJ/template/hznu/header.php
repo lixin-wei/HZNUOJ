@@ -81,13 +81,13 @@
           <li class='am-dropdown' data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >ProblemSet <span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content ">
-              <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="problemset.php" && $OJ=="HZNU") {echo "class='am-active'";} ?>><a href="problemset.php">HZNU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=C"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=C">C Lecture</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=CodeForces"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=CodeForces">CodeForces</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=HDU"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=HDU">HDU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=POJ"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=POJ">PKU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=UVA"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=UVA">UVA</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=ZOJ"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=ZOJ">ZJU</a></li>
+              <li><a href="problemset.php">All</a></li>
+              <?php
+              $___res = mysql_query("SELECT set_name,set_name_show FROM problemset");
+              while($___row = mysql_fetch_array($___res)){
+                echo "<li><a href='problemset.php?OJ=$___row[0]'>$___row[1]</a></li>";
+              }
+              ?>
             </ul>
           </li>
           <!-- ProblemSet部分 end -->

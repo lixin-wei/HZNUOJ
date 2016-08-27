@@ -40,8 +40,8 @@
 
   <p>
     <font color=green>Q</font>：这个在线裁判系统使用什么样的编译器和编译选项?<br>
-    <font color=red>A</font>：系统运行于<a href="http://www.ubuntu.com">Ubuntu 14.04</a>
-    <br><br>
+    <font color=red>A</font>：系统运行于<a href="http://www.ubuntu.com">Ubuntu 14.04</a><br>
+    <br>
     对应的编译器和编译选项如下:<br>
   </p>
       
@@ -247,11 +247,20 @@
       </tr>
   </table>
 <hr>
+  <p>
     <font color=green>Q</font>：如何参加在线比赛？<br>
     <font color=red>A</font>：<a href=registerpage.php>注册</a> 一个帐号，然后就可以练习，点击比赛列表Contests可以看到正在进行的比赛并参加。<br>
   </p><br>
   <hr>
-
+  <p>
+    <font color=green>Q</font>：比赛的排名规则？<br>
+    <font color=red>A</font>
+    ：HZNUOJ比赛的排名规则与ACM/ICPC的排名规则相同。<br/>
+    每题耗时：Accepted的那一刻距离比赛开始的时间。<br/>
+    总罚时：所有AC了的题的（耗时+错误次数*20min）的和。<br/>
+    排名时，AC题数优先，题数相同时按罚时排序。 <br/>
+  </p><br/>
+  <hr>
   <p>
     <font color=green>Q</font>：等级是如何划分的？<br>
     <font color=red>A</font>：等级划分与小说《斗破苍穹》一致，自低向高分别为斗之气、斗者、斗师、大斗师、斗灵、斗王、斗皇、斗宗、斗尊、斗圣、斗帝，除斗帝外，每一阶又分不同等级，阶数越高，升级越困难。除此之外，每一阶还有不同的代表颜色，该阶等级越高，颜色越深。<br>
@@ -263,10 +272,11 @@
     <font color=red>A</font>：等级由实力（Strength）决定，当实力达到一定值后自然会升级，而实力又从刷题中来，每道题后面均标有分数（Scores），代表AC这道题之后能提升多少实力。一般来说，越少人做的题目，分数越高，一起刷题的人越多，每道题的分数也越高。需要说明的是，用户的实力值是会根据大环境动态变化的（其实是因为分数在动态变化），如果你AC的题目被更多人AC出来了，你的实力值会下降，另外一方面，OJ内有更多强者涌入的时候，你的实力值也会提升。所以，想要快速升级，那就多刷题，刷难题！<br>
   </p><br>
   <hr>
-
-  <center>
+  <font color=green>Q</font>：运行环境?<br>
+  <font color=red>A</font>：系统运行于<a href="http://www.ubuntu.com">Ubuntu 14.04</a><br>
+<!--   <center>
     <font color=green size="+2">其他问题请访问<a href="..\bbs"><?php echo $OJ_NAME?>论坛系统</a></font>
-  </center>
+  </center> -->
 
    <?php require_once("footer.php");?>
      

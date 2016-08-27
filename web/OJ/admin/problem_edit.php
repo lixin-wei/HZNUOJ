@@ -92,7 +92,6 @@
       } else {
         require_once("../include/check_post_key.php");
         $id=intval($_POST['problem_id']);
-        if(!$GE_TA) exit();  
         $title=$_POST['title'];
         $time_limit=$_POST['time_limit'];
         $memory_limit=$_POST['memory_limit'];

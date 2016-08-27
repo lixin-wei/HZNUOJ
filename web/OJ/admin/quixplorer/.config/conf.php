@@ -9,10 +9,6 @@
 <?php
 require_once("../../include/db_info.inc.php");
 @session_start();
- if (!$GE_TA){
-	echo "<a href='../../loginpage.php'>Please Login First!</a>";
-	exit(1);
-}
 
 //------------------------------------------------------------------------------
 // Configuration Variables

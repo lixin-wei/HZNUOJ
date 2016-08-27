@@ -18,8 +18,6 @@
   require_once("./include/db_info.inc.php");
 
   if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
-
-
   /* 获取我的标签 start */
   $my_tag;
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
@@ -32,7 +30,6 @@
     mysql_free_result($result);
   }
   /* 获取我的标签 end */
-
   /* 判断当前用户是否已AC本题 start*/
   $is_solved = false;
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
@@ -83,6 +80,7 @@
     $result=mysql_query($sql);
     $rows_cnt=mysql_num_rows($result);
     $row=mysql_fetch_row($result);
+    
     $contest_ok=true;
     if ($row[1] && !isset($_SESSION['c'.$cid])) $contest_ok=false;
     if ($row[2]=='Y') $contest_ok=false;
@@ -115,9 +113,8 @@
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }
-  $result=mysql_query($sql) or die(mysql_error());
 
-       
+  $result=mysql_query($sql) or die(mysql_error());
   if (mysql_num_rows($result)!=1){
     $view_errors="";
     if(isset($_GET['id'])){
