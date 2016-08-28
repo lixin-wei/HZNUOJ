@@ -107,8 +107,8 @@
       <tr>
         <th style='width:2%;'></th>
         <th class='am-text-center' style='width:8%;'>Prob.ID</th>
-        <th class='am-text-center' style='width:39%;'>Title</th>
-        <th class='am-text-center' style='width:14%;'>Tags</th>
+        <th class='am-text-center' style='width:35%;'>Title</th>
+        <th class='am-text-center' style='width:18%;'>Tags</th>
         <th class='am-text-center' style='width:10%;'>Author</th>
         <th class='am-text-center' style='width:25%;'>Source</th>
         <th class='am-text-center' style='width:8%;'>AC/Sub</th>
