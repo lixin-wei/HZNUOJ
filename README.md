@@ -1,6 +1,8 @@
 **HZNUOJ is based on [HUSTOJ](https://github.com/zhblue/hustoj)**
 
-Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
+Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)(isn't working temporarily because of the G20)
+
+Spare address [www.hsacm.cn](http://www.hsacm.cn)
 
 # Features
 HZNUOJ deeply modified the web client, and add more features.
