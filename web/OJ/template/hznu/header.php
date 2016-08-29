@@ -62,6 +62,9 @@
         margin-top: 20px;
         margin-bottom: 20px;
       }
+      .am-badge{
+        font-weight: normal;
+      }
     </style>
   </head>
   <body class='am-with-topbar-fixed-top bg'>
