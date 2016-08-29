@@ -16,25 +16,26 @@
 <div class="am-container">
   <!-- Main component for a primary marketing message or call to action -->
   <div class="jumbotron">
-    <link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-    <link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
-    <script src='highlight/scripts/shCore.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
-    <script language='javascript'>
-      SyntaxHighlighter.config.bloggerMode = false;
-      SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
-      SyntaxHighlighter.all();
-    </script>
+<link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
+<script src='highlight/scripts/shCore.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<script src='highlight/scripts/shBrushLua.js' type='text/javascript'></script>
+<script language='javascript'>
+  SyntaxHighlighter.config.bloggerMode = false;
+  SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
+  SyntaxHighlighter.all();
+</script>
     <?php
       if ($ok==true){
         $res_class="danger";

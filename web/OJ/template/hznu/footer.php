@@ -14,15 +14,35 @@
   <a href="https://github.com/wlx65003/HZNUOJ">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
   It's maintained by <a href="mailto:yybird@hsACM.cn">yybird</a> && <a href="userinfo.php?user=hhhh">hhhh</a> && <a href="mailto:wlx65005@163.com">D_Star</a> now <br />
   ★Server Time: <span id='footerdate'></span><?php //echo date('20y-m-d h:i:s',time()); ?>★
+
+  <!-- go to top btn START -->
+  <div class="amz-toolbar" id="go-top" style="display: none; position: fixed; bottom: 15px; right: 15px;">
+    <a data-am-smooth-scroll href="#" title="回到顶部" class="am-icon-btn am-icon-arrow-up"></a>
+  </div>
+  <!-- go to top btn END -->
 </footer>
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="AmazeUI/js/jquery.min.js"></script>
 <script src="AmazeUI/js/amazeui.min.js"></script>
+<script src="AmazeUI/js/handlebars.min.js"></script>
+
 <!--<![endif]-->
 <!--[if lte IE 8 ]>
 <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <![endif]-->
 
+<!-- go to top btn auto hide START -->
+<script type="text/javascript">
+  $(window).on("scroll load",function(){
+    if($(window).scrollTop()>=400){
+      $("#go-top").fadeIn("fast");
+    }
+    else{
+      $("#go-top").fadeOut("fast");
+    }
+  });
+</script>
+<!-- go to top btn auto hide END -->
 <!-- 动态显示时间 start -->
 <script>
   var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime()-new Date().getTime();
