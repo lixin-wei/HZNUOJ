@@ -45,19 +45,38 @@
 
   $pr_flag=false;
   $co_flag=false;
+
   if (isset($_GET['id'])) { // 如果是比赛外的题目
-
-
     $id=intval($_GET['id']);
     //require("oj-header.php");
-    if (!$GE_TA || (!$GE_T&&$GE_TA&&$_GET['id']<=$BORDER)) // 没有管理权限或只有助教权限但是题目不在C语言区
-      $sql="SELECT * FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
-                      SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
-                                      SELECT `contest_id` FROM `contest` WHERE `end_time`>'$now' or `private`='1'))";
-    else // 如果是教师以上权限，拥有所有题目的完全查看权限
+    $res = mysql_query("SELECT problemset from problem WHERE problem_id=$id");
+    $set_name = mysql_fetch_array($res)[0];
+    $now=strftime("%Y-%m-%d %H:%M",time());
+    if (HAS_PRI("see_hidden_".$set_name."_problem"))
       $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
+    else 
+      $sql=<<<sql
+        SELECT 
+          * 
+        FROM 
+          problem
+        WHERE 
+          defunct='N' 
+          AND problem_id=$id
+          AND problem_id
+          NOT IN ( 
+            SELECT DISTINCT
+              contest_problem.problem_id
+            FROM
+              contest_problem
+            JOIN
+              contest
+            ON
+              (contest.end_time>'$now' OR contest.private=1) AND contest.defunct='N'
+              AND contest_problem.contest_id=contest.contest_id
+          )
+sql;
     $pr_flag=true;
-
 
   } else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目
 

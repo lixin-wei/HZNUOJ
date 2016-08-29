@@ -49,7 +49,7 @@
       <div class="am-form-group">
         <label class="am-u-sm-4 am-form-label">ProblemSet:</label>
         <div class="am-u-sm-8">
-          <select class='select-problemset' type='text'>
+          <select data-am-selected class='select-problemset' type='text'>
             <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> >All</option>
             <?php
             $res = mysql_query("SELECT set_name,set_name_show FROM problemset");

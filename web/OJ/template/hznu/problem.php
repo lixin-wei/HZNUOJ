@@ -133,7 +133,7 @@
     <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
       }
-      if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
+      if (HAS_PRI("edit_".$set_name."_problem")) {
     ?>
         <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
         <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
@@ -203,7 +203,7 @@
     </a>&nbsp;&nbsp;
     <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
-      if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
+      if (HAS_PRI("edit_".$set_name."_problem")) {
     ?>
         <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
         <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
