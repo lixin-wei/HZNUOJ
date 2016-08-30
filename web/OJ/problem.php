@@ -72,7 +72,7 @@
             JOIN
               contest
             ON
-              (contest.end_time>'$now' OR contest.private=1) AND contest.defunct='N'
+              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
               AND contest_problem.contest_id=contest.contest_id
           )
 sql;

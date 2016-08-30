@@ -112,14 +112,11 @@
             JOIN
               contest
             ON
-              NOT(contest.start_time<='$now' AND contest.end_time>'$now')  #problems that not in runing contest
-              OR contest.private
-              (contest.end_time>'$now' OR contest.private=1) AND contest.defunct='N'
+              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
               AND contest_problem.contest_id=contest.contest_id
           )
 sql;
       }
-      
       //count the number of problem START
       $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
       $cnt += mysql_fetch_array($res)[0];
@@ -142,8 +139,7 @@ sql;
   /* 获取数据库查询语句 end */
 
 
-
-  //echo "sql:".$sql;
+  //echo "<pre>".htmlentities($sql)."</pre>";
   $result=mysql_query($sql) or die(mysql_error());
 
 
