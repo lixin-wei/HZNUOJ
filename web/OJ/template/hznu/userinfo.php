@@ -55,7 +55,7 @@
           <tr><td class="am-primary">School</td><td class="am-warning"><?php echo $school?></td></tr>
           <tr><td class="am-primary">Email</td><td class="am-warning"><?php echo $email?></td></tr>
           <?php
-            if ($GE_TA) {
+            if (HAS_PRI("see_hidden_user_info")) {
           ?>
               <tr><td class="am-danger"></td><td class="am-danger">The follows are  admin only</td></</tr>
               <tr><td class="am-primary">Student ID</td><td class="am-warning"><?php echo $stu_id?></td></tr>

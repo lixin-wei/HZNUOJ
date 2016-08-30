@@ -8,13 +8,13 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #fdf6e3;
-  color: #657b83;
+  background: #002b36;
+  color: #839496;
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: #93a1a1;
+  color: #586e75;
 }
 
 /* Solarized Green */
@@ -72,7 +72,7 @@ Orginal Style from ethanschoonover.com/solarized (c) Jeremy Hull <sourdrums@gmai
 }
 
 .hljs-formula {
-  background: #eee8d5;
+  background: #073642;
 }
 
 .hljs-emphasis {

@@ -112,6 +112,8 @@
             JOIN
               contest
             ON
+              NOT(contest.start_time<='$now' AND contest.end_time>'$now')  #problems that not in runing contest
+              OR contest.private
               (contest.end_time>'$now' OR contest.private=1) AND contest.defunct='N'
               AND contest_problem.contest_id=contest.contest_id
           )

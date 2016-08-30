@@ -172,19 +172,17 @@
   <h2><b><font color='#0000cd'>Hint</font></b></h2>
   <?php echo "<div>".$row->hint."</div>"; ?>
 
-  <?php
-    if (!isset($_GET['cid'])) {
-  ?>
+
   <h2><b><font color='#0000cd'>Author</font></b></h2>
   <?php 
-    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
-    else echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
+    echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
   ?>
-
+  <?php
+    if (!isset($_GET['cid'])) { // hide source if the problem is in contest
+  ?>
   <h2><b><font color='#0000cd'>Source</font></b></h2>
   <?php 
-    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->source'>".nl2br($row->source)."</a></p></div>"; 
-    else echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
+    echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
     } 
   ?>
 

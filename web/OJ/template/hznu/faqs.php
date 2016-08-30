@@ -10,26 +10,28 @@
 ?>
 <?php $title="F.A.Qs";?>
 <?php require_once("header.php"); ?>
-<link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-<link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
-<script src='highlight/scripts/shCore.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
-<script src='highlight/scripts/shBrushLua.js' type='text/javascript'></script>
-<script language='javascript'>
-  SyntaxHighlighter.config.bloggerMode = false;
-  SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
-  SyntaxHighlighter.all();
+<!-- highlight.js START-->
+<link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/>
+<script src='highlight/highlight.pack.js' type='text/javascript'></script>
+<script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script>
+<style type="text/css">
+  .hljs-line-numbers {
+      text-align: right;
+      border-right: 1px solid #ccc;
+      color: #999;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+  }
+</style>
+<script>
+  hljs.initHighlightingOnLoad();
+  hljs.initLineNumbersOnLoad();
 </script>
+<!-- highlight.js END-->
 <div class="am-container"> 
   <hr>
   <center>
@@ -120,6 +122,12 @@
       <br>
     下面是 1000题的参考答案
   </p>
+
+  <style type="text/css">
+    .code-bk-tsp {
+      background-color: transparent;
+    }
+  </style>
 <?php
   $sql="SELECT * FROM faq_codes";
   $result=mysql_query($sql);
@@ -136,9 +144,9 @@
       while($row=mysql_fetch_assoc($result)){
         if($row['language']=="c") echo "<div class='am-tab-panel am-active'>";
         else echo "<div class='am-tab-panel'>";
-          echo "<pre class='brush:".$row['language']." '>";
+          echo "<pre class='code-bk-tsp'><code class='code-bk-tsp'>";
             echo htmlentities(str_replace("\r\n", "\n", $row['code'])) ;
-          echo "</pre>";
+          echo "</code></pre>";
         echo "</div>";
       }
     echo "</div>";

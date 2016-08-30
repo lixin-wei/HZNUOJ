@@ -52,14 +52,25 @@
       ?>
   </span></h3>
   <hr />
-  <table class="am-table am-table-striped">
+  <style type="text/css">
+    td {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .table-problem {
+      table-layout: fixed;
+    }
+  </style>
+  <table class="am-table am-table-striped table-problem">
     <thead>
-      <th style='width:30px'></th>
-      <th class='am-text-center' style='width:200px'>Problem ID</th>
-      <th class='am-text-center'>Title</th>
-      <th class='am-text-center' style='width:350px'>Source</th>
-      <th class='am-text-center' style='width:80px'>AC</th>
-      <th class='am-text-center' style='width:80px'>Submssion</th>
+      <th style='width: 3%'></th>
+      <th class='am-text-center' style='width: 15%'>Problem ID</th>
+      <th class='am-text-center' style='width: 50%'>Title</th>
+      <th class='am-text-center' style='width: 15%'>Author</th>
+      <th class='am-text-center' style='width: 8%'>AC</th>
+      <th class='am-text-center' style='width: 9%'>Submssion</th>
     </thead>
     <tbody>
       <?php

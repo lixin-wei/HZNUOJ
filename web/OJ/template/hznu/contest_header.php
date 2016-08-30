@@ -33,6 +33,9 @@
         width: 100%;
         max-width: 1400px;
       }
+      .am-badge {
+        font-weight: normal;
+      }
     </style>
   </head>
 <body>
@@ -83,7 +86,7 @@ echo <<<BOT
                       <li><a href="logout.php"><span class="am-icon-reply"></span> Logout</a></li>
 BOT;
 
-          if($GE_TA){
+          if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
               <li><a href="admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
                       </ul>

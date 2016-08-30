@@ -36,6 +36,7 @@
   $view_user_id=$suser_id=$row->user_id;
   $pid = $row->problem_id;
   $cid = $row->contest_id;
+  $num = $row->num;
   mysql_free_result($result);
   /* 获取solution信息 end */
 

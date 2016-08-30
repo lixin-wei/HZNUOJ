@@ -286,7 +286,7 @@
 
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
           $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上
-          (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || //6 solution在比赛中，比赛结束了且开放了源代码查看
+          (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
           (!is_numeric($row['contest_id']) && $GE_TA) || // 不在比赛中，权限在助教以上
           (is_numeric($row['contest_id']) && !$GE_T && $GE_TA && !$defunct_TA) // 在比赛中，没屏蔽助教
         ) { // 可以查看代码的情况

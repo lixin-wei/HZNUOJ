@@ -111,7 +111,7 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source,contest_problem.num as pnum
+    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source, author as author, contest_problem.num as pnum
             FROM `contest_problem`,`problem`
             WHERE `contest_problem`.`problem_id`=`problem`.`problem_id` 
             AND `contest_problem`.`contest_id`=$cid ORDER BY `contest_problem`.`num` 
@@ -138,10 +138,7 @@
       }
       $view_problemset[$cnt][1] .= "Problem &nbsp;".$pid;
       $view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
-      if ($now>$end_time || isset($_SESSION['administrator'])) // 比赛结束或者当前用户是管理员，则显示题目来源 
-        $view_problemset[$cnt][3]=$row->source ;
-      else // 否则不显示题目来源
-        $view_problemset[$cnt][3]="";
+      $view_problemset[$cnt][3]=$row->author;
       $view_problemset[$cnt][4]=$row->accepted ;
       $view_problemset[$cnt][5]=$row->submit ;
       $cnt++;
