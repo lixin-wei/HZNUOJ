@@ -259,6 +259,7 @@
     <font color=red>A</font>：<a href=registerpage.php>注册</a> 一个帐号，然后就可以练习，点击比赛列表Contests可以看到正在进行的比赛并参加。<br>
   </p><br>
   <hr>
+
   <p>
     <font color=green>Q</font>：比赛的排名规则？<br>
     <font color=red>A</font>
@@ -268,6 +269,14 @@
     排名时，AC题数优先，题数相同时按罚时排序。 <br/>
   </p><br/>
   <hr>
+  <p>
+    <font color=green>Q：</font>为什么有些题目突然不见了？<br>
+    <font color=red>A：</font>
+    一般是因为这道题被放进了一个正在进行的比赛中了，等到比赛结束就好了。<br/>
+    当然也有可能是题目出问题了，被管理员暂时隐藏了。<br/>
+  </p><br/>
+  <hr>
+  
   <p>
     <font color=green>Q</font>：等级是如何划分的？<br>
     <font color=red>A</font>：等级划分与小说《斗破苍穹》一致，自低向高分别为斗之气、斗者、斗师、大斗师、斗灵、斗王、斗皇、斗宗、斗尊、斗圣、斗帝，除斗帝外，每一阶又分不同等级，阶数越高，升级越困难。除此之外，每一阶还有不同的代表颜色，该阶等级越高，颜色越深。<br>
