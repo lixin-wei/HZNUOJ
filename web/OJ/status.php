@@ -8,7 +8,7 @@
 <?php
   header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
   header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-
+  
   ////////////////////////////Common head
   $cache_time=2;
   $OJ_CACHE_SHARE=false;
@@ -182,20 +182,13 @@
 
   $last=0;
   for ($i=0;$i<$rows_cnt;$i++){
-  if($OJ_MEMCACHE) $row=$result[$i];
-  else $row=mysql_fetch_array($result);
-  //$view_status[$i]=$row;
-  if($i==0&&$row['result']<4) $last=$row['solution_id'];
+    if($OJ_MEMCACHE) $row=$result[$i];
+    else $row=mysql_fetch_array($result);
+    //$view_status[$i]=$row;
+    if($i==0&&$row['result']<4) $last=$row['solution_id'];
 
-  if ($top==-1) $top=$row['solution_id'];
-  $bottom=$row['solution_id'];
-
-  // flag 是代码查看链接不被屏蔽的情况
-  $flag = ( !is_running(intval($row['contest_id']))) || // 不在正在进行的比赛中
-            $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
-            (!$GE_T && $GE_TA && !$defunct_TA) || // 是助教且该比赛没屏蔽助教
-            (isset($_SESSION['user_id'])&&!strcmp($row['user_id'],$_SESSION['user_id']) // 提交者本人
-          );
+    if ($top==-1) $top=$row['solution_id'];
+    $bottom=$row['solution_id'];
 
     $cnt=1-$cnt;
   
@@ -223,29 +216,29 @@
 
     $WA_or_PE = (intval($row['result'])==5||intval($row['result'])==6);
 
+    // =========reinfo, includes WA,RE,PE,TSET_RUN===========
     // 确认该用户是否可以查看reinfo
-    $ok = false; // ok 为该用户权限是否满足要求
+    $flag = true;// flag is whether uesr can see memory, time and language info.
     if (isset($_GET['cid'])) {
-
-      $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||
+      $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||// himself
                 (!is_running(intval($cid)) && $open_source) || // 比赛已经结束了且开放源代码查看
-                $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
-                (!$GE_T && $GE_TA && !$defunct_TA) // 是助教且该比赛没屏蔽助教
-              );
-      if ($flag) $ok = true;
-    } else {
-      if ($GE_TA || isset($_SESSION['source_browser'])) $ok = true; // 所有有管理权限的成员均可查看
+                is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
+                !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")// if he can see souce code , he can see these info in passing
+              ); 
     }
-    $can_read_reinfo = ( ($WA_or_PE&&($OJ_SHOW_DIFF||$ok)) || $row['result']==10 || $row['result']==13) && // 属于可看类型且
-                      ( (isset($_SESSION['user_id'])&&$row['user_id']==$_SESSION['user_id']) || $ok ); // 有查看权限
+    $info_can_be_read = ( $WA_or_PE || $row['result']==10 || $row['result']==13); // 属于可看类型且
 
 
     $view_status[$i][3]="";
-    if (intval($row['result'])==11 && ((isset($_SESSION['user_id'])&&$row['user_id']==$_SESSION['user_id']) || $GE_TA || isset($_SESSION['source_browser']))){
-      $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='$MSG_Click_Detail'>".$MSG_Compile_Error."</a>";
-    } else if ($can_read_reinfo) {
+    
+    if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
+      //only user himself and admin can see CE info.
+        $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='$MSG_Click_Detail'>".$MSG_Compile_Error."</a>";
+    }
+    else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others
       $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='$MSG_Click_Detail'>".$judge_result[$row['result']]."</a>";
-    } else {
+    }
+    else {
       if(!$lock||$lock_time>$row['in_date']||$row['user_id']==$_SESSION['user_id']){
         if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
           $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."'>*".$judge_result[$row['result']]."</span>";
@@ -272,7 +265,7 @@
     }
           
     
-    if ($flag){
+    if ($flag){ 
 
       if ($row['result']>=4){
         $view_status[$i][4]= "<div id=center class=red>".$row['memory']."kB"."</div>";
@@ -285,10 +278,9 @@
       //echo $row['result'];
 
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
-          $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上
           (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
-          (!is_numeric($row['contest_id']) && $GE_TA) || // 不在比赛中，权限在助教以上
-          (is_numeric($row['contest_id']) && !$GE_T && $GE_TA && !$defunct_TA) // 在比赛中，没屏蔽助教
+          is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
+          !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")
         ) { // 可以查看代码的情况
         $view_status[$i][6]= "<a target='_blank' href=showsource.php?id=".$row['solution_id'].">".$language_name[$row['language']]."</a>";
         if($row["problem_id"]>0){
@@ -310,7 +302,6 @@
     }
     $view_status[$i][8]= $row['in_date'];
     //$view_status[$i][9]= $row['judger'];
-
   }
   if(!$OJ_MEMCACHE) mysql_free_result($result);
 

@@ -40,7 +40,12 @@
     hljs.initLineNumbersOnLoad();
   </script>
   <!-- highlight.js END-->
-
+  <style type="text/css">
+    .solution-info {
+      display: inline-block;
+      margin: 5px;
+    }
+  </style>
     <?php
       if ($ok==true){
         $res_class="danger";
@@ -57,22 +62,33 @@
 
         echo "<hr>";
         echo "<div class='am-text-center'>";
+        echo "<div class='solution-info'>";
         echo "Problem_ID: ";
         if (is_numeric($cid)){
           $p_lable=$PID[$num];
-          echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a> ";
+          echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
         }
-        else echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?id=$pid' style='color: white;'>$pid</a> ";
+        else echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?id=$pid' style='color: white;'>$pid</a>";
         echo "</span>";
-        echo "Result: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span> ";
-        echo "Time: <span class='am-badge am-badge-warning am-text-sm'>$time</span> ";
-        echo "Memory: <span class='am-badge am-badge-warning am-text-sm'>$memory</span> ";
-        echo "Author: <span class='am-badge am-badge-secondary am-text-sm'>";
-        echo "<a href='userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>";
-        echo "</span> ";
         echo "</div>";
-        echo "<hr>";
-
+        echo <<<sss
+          <div class='solution-info'>
+            Result: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span>
+          </div>
+          <div class='solution-info'>
+            Time: <span class='am-badge am-badge-warning am-text-sm'>$time</span>
+          </div>
+          <div class='solution-info'>
+            Memory: <span class='am-badge am-badge-warning am-text-sm'>$memory</span>
+          </div>
+          <div class='solution-info'>
+            Author: <span class='am-badge am-badge-secondary am-text-sm'>
+            <a href='userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
+            </span>
+          </div>
+        </div>
+        <hr>
+sss;
         // ****mail function currently stashed
         // if($view_user_id!=$_SESSION['user_id'])
         //   echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";

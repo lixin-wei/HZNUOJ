@@ -37,11 +37,8 @@ $id=strval(intval($_GET['sid']));
 $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
 $result=mysql_query($sql);
 $row=mysql_fetch_object($result);
-$ok = false;
-if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) $ok = true;
-if ($GE_TA) $ok = true;
 $view_reinfo="";
-if ($ok==true){
+if (can_see_res_info($id)){
 	if($row->user_id!=$_SESSION['user_id'])
 		$view_mail_link= "<a href='mail.php?to_user=$row->user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
 	mysql_free_result($result);

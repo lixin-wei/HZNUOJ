@@ -190,10 +190,9 @@
     if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;  // 是本人，可以查看该代码
     else { // 不是本人的情况下
       if ($irc) { // the problem is in running contest
-        return ( $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
-                      (!$GE_T && $GE_TA && !$idc) // 是助教且包含该题的所有运行中的比赛都没屏蔽助教
-                    );
-      } else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
+        return HAS_PRI("see_source_in_contest");
+      }
+      else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
         $sql = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
         $result = mysql_query($sql);
         $row = mysql_fetch_object($result);
@@ -201,11 +200,10 @@
         $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
         mysql_free_result($result);
         return  ( (!is_running(intval($cid))  && $open_source) || // 比赛已经结束了且开放源代码查看
-                       $GE_T || isset($_SESSION['source_browser']) || // 权限在教师以上或者有看代码权限
-                       (!$GE_T && $GE_TA && !$defunct_TA) // 是助教且该比赛没屏蔽助教
-                     );
+                   HAS_PRI("see_source_in_contest")
+                );
       } else { // 该代码不是在比赛中的
-        if ($GE_TA || isset($_SESSION['source_browser'])) return true; // 所有有管理权限的成员均可查看
+        if (HAS_PRI("see_source_out_of_contest")) return true;
       }
     }
     /* 判断是否有查看权限 end */
@@ -214,7 +212,7 @@
   }
 
 
-  function canSeeWAinfo($sid) {
+  function can_see_res_info($sid) {
 
     global $OJ_SHOW_DIFF;
     global $GE_T, $GE_TA;
@@ -226,25 +224,28 @@
     $row=mysql_fetch_object($result);
     $pid = $row->problem_id;
     $cid = $row->contest_id;
+    $type = $row->result;
     mysql_free_result($result);
     /* 获取solution信息 end */
 
-
     /* 判断是否有查看权限 start */
-    if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id'] && $OJ_SHOW_DIFF) return true;  // 是本人
-    else { // 不是本人的情况下
-      if ($GE_T || isset($_SESSION['source_browser']) )return true;
-      if (!$GE_TA) return false;
-      if (is_numeric($cid)) { // 比赛中
-        $sql = "SELECT defunct_TA FROM contest WHERE contest_id='$cid'";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_object($result);
-        $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
-        mysql_free_result($result);
-        if (is_running(intval($cid)) && $defunct_TA) return false;
-        else return true;
+    if($type==10 || $type==11){//RE or CE
+      if(isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;// is himself
+      else {
+        if (is_numeric($cid)) {
+          return HAS_PRI("see_wa_info_in_contest");
+        } else { // 该代码不是在比赛中的
+          return HAS_PRI("see_wa_info_out_of_contest");
+        }
+      }
+    }
+    //WA or others
+    if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id'] && $OJ_SHOW_DIFF) return true;  // is himself and show_diff is true
+    else {
+      if (is_numeric($cid)) {
+        return HAS_PRI("see_wa_info_in_contest");
       } else { // 该代码不是在比赛中的
-        if ($GE_TA || isset($_SESSION['source_browser'])) return true; // 所有有管理权限的成员均可查看
+        return HAS_PRI("see_wa_info_out_of_contest");
       }
     }
     /* 判断是否有查看权限 end */
