@@ -2,7 +2,7 @@
 
 Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)(isn't working temporarily because of the G20)
 
-Spare address [www.hsacm.cn](http://www.hsacm.cn)
+Spare address [www.hsacm.cn](http://www.hsacm.cn)(isn't working now, either.)
 
 # Features
 HZNUOJ deeply modified the web client, and add more features.
