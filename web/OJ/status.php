@@ -242,7 +242,7 @@
       if(!$lock||$lock_time>$row['in_date']||$row['user_id']==$_SESSION['user_id']){
         if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
           $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."'>*".$judge_result[$row['result']]."</span>";
-          if($ok)
+          if(HAS_PRI("see_compare"))
             $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-badge am-badge-secondary am-text-sm'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
           else
             $view_status[$i][3].= "<span class='am-badge am-badge-secondary am-text-sm'>".$row['sim_s_id']."</span>";

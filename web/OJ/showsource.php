@@ -22,8 +22,6 @@
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }
-
-
   /* 获取solution信息 start */
   $sid=strval(intval($_GET['id']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
