@@ -92,7 +92,7 @@ sql;
 
     
 
-    if (!$GE_T)
+    if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid AND `start_time`<='$now'";
     else
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid";

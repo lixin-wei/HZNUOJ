@@ -34,11 +34,6 @@
 
 
   // 管理权限
-  $GE_A = isset($_SESSION['administrator']); // 权限在管理员及以上
-  $GE_T = isset($_SESSION['administrator']) || isset($_SESSION['teacher']); // 权限在教师以上
-  $GE_TA = isset($_SESSION['administrator']) || isset($_SESSION['teacher']) || isset($_SESSION['teacher_assistant']); // 权限在助教及以上
-  
-
   function HAS_PRI($pri_str){  // if has privilege
     //non-realtime
     //return $_SESSION[$pri_str];

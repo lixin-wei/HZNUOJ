@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])){
 }
 require_once("include/db_info.inc.php");
 require_once("include/const.inc.php");
+require_once("include/my_func.inc.php");
   $now=strftime("%Y-%m-%d %H:%M",time());
 $user_id=$_SESSION['user_id'];
 if (isset($_POST['cid'])){
@@ -16,19 +17,20 @@ if (isset($_POST['cid'])){
 				where `num`='$pid' and contest_id=$cid";
 }else{
 	$id=intval($_POST['id']);
-	$sql="SELECT `problem_id` from `problem` where `problem_id`='$id' and problem_id not in (select distinct problem_id from contest_problem where `contest_id` IN (
-			SELECT `contest_id` FROM `contest` WHERE 
-			(`end_time`>'$now' or private=1)and `defunct`='N'
-			))";
-	if(!isset($_SESSION['administrator']))
-		$sql.=" and defunct='N'";
+	if(HAS_PRI("see_hidden_".get_problemset($id)."_problem"))
+		$sql="SELECT `problem_id` from `problem` where `problem_id`='$id'";
+	else
+		$sql="SELECT `problem_id` from `problem` where `problem_id`='$id' and problem_id not in (select distinct problem_id from contest_problem where `contest_id` IN (
+				SELECT `contest_id` FROM `contest` WHERE 
+				(`end_time`>'$now' or private=1)and `defunct`='N'
+				)) AND defunct='N'";
 }
-//echo $sql;	
+//echo $sql;
 
 $res=mysql_query($sql);
-if ($res&&mysql_num_rows($res)<1&&!$GE_TA&&!((isset($cid)&&$cid<=0)||(isset($id)&&$id<=0))){
+if ($res&&mysql_num_rows($res)<1&&!((isset($cid)&&$cid<=0) || (isset($id)&&$id<=0))){
 		mysql_free_result($res);
-		$view_errors=  "Where do find this link? No such problem.<br>";
+		$view_errors=  "No such problem or you don't have the corresponding privilege!<br>";
 		require("template/".$OJ_TEMPLATE."/error.php");
 		exit(0);
 }

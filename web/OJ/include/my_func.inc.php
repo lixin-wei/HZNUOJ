@@ -148,7 +148,6 @@
   function canSeeSource($sid) {
 
     global $OJ_AUTO_SHARE;
-    global $GE_T, $GE_TA;
 
 
     /* 获取solution信息 start */
@@ -215,7 +214,6 @@
   function can_see_res_info($sid) {
 
     global $OJ_SHOW_DIFF;
-    global $GE_T, $GE_TA;
 
 
     /* 获取solution信息 start */
@@ -251,5 +249,10 @@
     /* 判断是否有查看权限 end */
 
     return false;
+  }
+
+  function get_problemset($pid){
+    $res=mysql_query("SELECT problemset FROM problem WHERE problem_id=$pid");
+    return mysql_fetch_array($res)[0];
   }
 ?>
