@@ -22,7 +22,7 @@ HZNUOJ deeply modified the web client and add more features.
 
 
 # Installation
-Ubuntu 14.04 is recommended, an installer may not work well in the later version.
+Ubuntu 14.04 is recommended, the installer may not work well in the later version.
 
 Simply clone the repository, then run judger/install/install.sh.
 
