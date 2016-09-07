@@ -18,3 +18,6 @@ if (!HAS_PRI("inner_function")) {
 * from-to will working will empty IN <br>
 * if using IN,from-to will not working.<br>
 * IN can go with "," seperated problem_ids like [1000,1020]
+<?php 
+  require_once("admin-footer.php")
+?>

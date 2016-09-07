@@ -57,3 +57,6 @@ if (!HAS_PRI("rejudge")) {
 		<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
 		<input type=submit value=submit>
 	</form>
+<?php 
+  require_once("admin-footer.php")
+?>

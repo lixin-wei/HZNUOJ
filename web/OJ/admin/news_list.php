@@ -34,5 +34,7 @@
 
   echo "</tr></form>";
   echo "</table></center>";
-  require("../oj-footer.php");
+?>
+<?php 
+  require_once("admin-footer.php")
 ?>

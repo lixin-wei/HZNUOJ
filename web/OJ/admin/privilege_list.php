@@ -33,5 +33,7 @@ for (;$row=mysql_fetch_object($result);){
   echo "</tr>";
 }
 echo "</table></center>";
-require("../oj-footer.php");
+?>
+<?php 
+  require_once("admin-footer.php")
 ?>

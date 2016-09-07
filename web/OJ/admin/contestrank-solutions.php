@@ -1,21 +1,9 @@
-<?php
-header("Content-type: text/html; charset=gb2312");
-?>
 
+<?php 
+  require_once("admin-header.php")
+?>
 <?php if (!isset($_POST['class_checkbox'])) { ?>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <link rel="icon" href="../../favicon.ico">
-      <title> contestrank-solution </title>
-  </head>
-  <body>
     <?php 
       require_once("../include/db_info.inc.php");
       if (!HAS_PRI("inner_function")) {
@@ -60,9 +48,6 @@ header("Content-type: text/html; charset=gb2312");
       ?>
       <input type='submit'></input>&nbsp;<input type='reset'></input>
     </form>
-  </body>
-</html>
-
 <?php
   
   } else {
@@ -354,4 +339,7 @@ header("Content-type: text/html; charset=gb2312");
       // echo "<h1>Content error</h1><p>The file does not exist!</p>";
     }
   }
+?>
+<?php 
+  require_once("admin-footer.php")
 ?>

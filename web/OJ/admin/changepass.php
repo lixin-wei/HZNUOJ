@@ -40,3 +40,6 @@ if(isset($_POST['do'])){
 	<input type='hidden' name='do' value='do'>
 	<input type=submit value='Change'>
 </form>
+<?php 
+  require_once("admin-footer.php")
+?>

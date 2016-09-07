@@ -52,3 +52,6 @@
   <input type=submit value='Add'>
   <input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
 </form> -->
+<?php 
+  require_once("admin-footer.php")
+?>

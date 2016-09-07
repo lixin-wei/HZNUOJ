@@ -74,7 +74,7 @@
   <form action=problem_list.php><input name=keyword><input type=submit value="<?php echo $MSG_SEARCH?>" ></form>
 
   <?php
-  echo "<center><table class='table table-striped' width=90% BORDER=1>";
+  echo "<center><table class='table table-striped table-hover' width=90%>";
   echo "<form method=post action=contest_add.php>";
   echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
   echo "<tr><td>PID<td>Title<td>Author<td>Date";
@@ -107,4 +107,7 @@
   echo "</tr></form>";
   echo "</table></center>";
   require("../oj-footer.php");
+?>
+<?php 
+  require_once("admin-footer.php")
 ?>

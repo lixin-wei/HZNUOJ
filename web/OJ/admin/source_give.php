@@ -28,3 +28,6 @@ if (!HAS_PRI("inner_function")) {
   <?php require_once("../include/set_post_key.php");?>
   <input type=submit value='GiveMySourceToHim'>
 </form>
+<?php 
+  require_once("admin-footer.php")
+?>

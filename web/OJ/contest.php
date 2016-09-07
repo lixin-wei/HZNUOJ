@@ -88,7 +88,7 @@
       if($password!=""&&$password==$row->password) $_SESSION['c'.$cid]=true;
       if ($row->private && !isset($_SESSION['c'.$cid])) $contest_ok=false;
       if ($row->defunct=='Y') $contest_ok=false;
-      if (isset($_SESSION['administrator'])) $contest_ok=true;
+      if (HAS_PRI("edit_contest")) $contest_ok=true;
                   
       $now=time();
       $start_time=strtotime($row->start_time);
@@ -98,7 +98,7 @@
       $view_start_time=$row->start_time;
       $view_end_time=$row->end_time;
 
-      if (!isset($_SESSION['administrator']) && $now<$start_time){
+      if (!HAS_PRI("edit_contest") && $now<$start_time){
         $view_errors = "<font style='color:red;text-decoration:underline;'>The contest hasn't start yet!</font>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
@@ -128,7 +128,7 @@
       $view_problemset[$cnt][0]="";
       if (isset($_SESSION['user_id'])) 
         $view_problemset[$cnt][0]=check_ac($cid,$cnt);
-      if ($now>$end_time || isset($_SESSION['administrator'])) // 比赛结束，或者当前用户是管理员则显示 Problem ID
+      if ($now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者当前用户是管理员则显示 Problem ID
         $view_problemset[$cnt][1]= "$row->pid &nbsp ";
       // $view_problemset[$cnt][1] .= "Problem &nbsp;".(chr($cnt+ord('A')));
       if ($cnt < 26) $pid = chr($cnt+ord('A'));

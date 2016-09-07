@@ -98,3 +98,6 @@
   
 <?php }
 ?>
+<?php 
+  require_once("admin-footer.php")
+?>

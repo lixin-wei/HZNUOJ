@@ -15,7 +15,7 @@
  *
  */
 @session_start();
-if (!(isset($_SESSION['administrator']) || isset($_SESSION['teacher']) || isset($_SESSION['teacher_assistant']))){
+if (!HAS_PRI("upload_files")){
   echo "<a href='../loginpage.php'>Permission denied!</a>";
   exit(1);
 }

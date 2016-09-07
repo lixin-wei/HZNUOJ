@@ -103,7 +103,7 @@ sql;
     $contest_ok=true;
     if ($row[1] && !isset($_SESSION['c'.$cid])) $contest_ok=false;
     if ($row[2]=='Y') $contest_ok=false;
-    if (isset($_SESSION['administrator'])) $contest_ok=true;
+    if (HAS_PRI("edit_contest")) $contest_ok=true;
 
     $ok_cnt=$rows_cnt==1;              
     $langmask=$row[0];

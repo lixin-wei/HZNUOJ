@@ -52,3 +52,6 @@ if you fail on import big files[10M+],try enlarge your [memory_limit]  setting i
 <br>
 
 free problem set FPS-xml can be download at <a href=http://code.google.com/p/freeproblemset/downloads/list>FPS-Googlecode</a>
+<?php 
+  require_once("admin-footer.php")
+?>

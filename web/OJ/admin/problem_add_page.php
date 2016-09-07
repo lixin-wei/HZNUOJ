@@ -5,17 +5,6 @@
    * @2016.05.24
   **/
 ?>
-
-<html>
-  <head>
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-Control" content="no-cache">
-    <meta http-equiv="Content-Language" content="zh-cn">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>New Problem</title>
-  </head>
-  <body leftmargin="30" >
-
   <?php 
     require_once("../include/db_info.inc.php");
     require_once("admin-header.php");
@@ -83,6 +72,6 @@
       <input type='hidden' value=<?php echo $type ?> name='type'></input>
     </form>
     <p><?php require_once("../oj-footer.php");?></p>
-  </body>
-</html>
-
+<?php 
+  require_once("admin-footer.php")
+?>

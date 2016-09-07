@@ -37,3 +37,6 @@ Copy from acm.zju.edu.cn
 </li>
 
 </ol>
+<?php 
+  require_once("admin-footer.php")
+?>

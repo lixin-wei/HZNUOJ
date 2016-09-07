@@ -98,4 +98,6 @@
     <?php require_once("../include/set_post_key.php");?>
   </form>
 
-
+<?php 
+  require_once("admin-footer.php")
+?>

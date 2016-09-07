@@ -49,7 +49,7 @@
 
 
 <?php
-  echo "<center><table class='table table-striped' width=90% border=1>";
+  echo "<center><table class='table table-striped table-hover' width=90%>";
   echo "<tr><td>ContestID<td>Title<td>StartTime<td>EndTime<td>Private<td>Status<td>Edit<td>Copy<td>Export<td>Logs";
   echo "</tr>";
   for (;$row=mysql_fetch_object($result);){
@@ -72,5 +72,5 @@
     echo "</tr>";
   }
 echo "</table></center>";
-require("../oj-footer.php");
+require_once("admin-footer.php")
 ?>

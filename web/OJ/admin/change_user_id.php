@@ -19,6 +19,7 @@
 
 
   require_once('../include/db_info.inc.php');
+  require_once("admin-header.php");
   if (!HAS_PRI("edit_user_profile")) {
     echo "Permission denied!";
     exit(1);
@@ -93,3 +94,6 @@
   to : <input type='text' name='dest'>
   <input type='submit' value='Submit'>
 </form>
+<?php 
+  require_once("admin-footer.php")
+?>
