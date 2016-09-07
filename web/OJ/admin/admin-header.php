@@ -19,12 +19,7 @@
 </head>
 <body>
 
-<script>
-  $("document").ready(function (){
-    $("form").append("<div id='csrf' />");
-    $("#csrf").load("../csrf.php");
-  });
-</script>
+
 <?php 
   require_once("../include/db_info.inc.php");
   if (!HAS_PRI('enter_admin_page')) {
@@ -59,8 +54,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Problems<span class="caret"></span></a>
             <ul class="dropdown-menu">
             <?php 
-              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_add_page.php?type=C'>Add C Problem</a></li>";
-              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_list.php?type=C'>C ProblemList</a></li>";
+              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_add_page.php?type=c'>Add C Problem</a></li>";
+              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_list.php?type=c'>C ProblemList</a></li>";
               if(HAS_PRI("edit_hznu_problem")) echo "<li><a href='problem_add_page.php'>Add Problem</a></li>";
               if(HAS_PRI("edit_hznu_problem")) echo "<li><a href='problem_list.php'>Problem List</a></li>";
             ?>

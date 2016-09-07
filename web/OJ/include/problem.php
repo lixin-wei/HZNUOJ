@@ -8,8 +8,9 @@
 
 <?php
 
-  function addproblem($type, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj,$OJ_DATA) {
+  function addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj,$OJ_DATA) {
     $title=mysql_real_escape_string($title);
+    $problemset=mysql_real_escape_string($problemset);
     $time_limit=mysql_real_escape_string($time_limit);
     $memory_limit=mysql_real_escape_string($memory_limit);
     $description=mysql_real_escape_string($description);
@@ -23,26 +24,15 @@
     $author = mysql_real_escape_string($author);
     $source=mysql_real_escape_string($source);
   //  $spj=($spj);
-    if ($type == "C") {
-      $sql = "INSERT into `problem` (`title`,`time_limit`,`memory_limit`,
-      `description`,`input`,`output`,`sample_input`,`sample_output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
-      VALUES('$title','$time_limit','$memory_limit','$description','$input','$output',
-          '$sample_input','$sample_output','$hint','$author','$source','$spj',NOW(),'Y')";
-      @mysql_query ( $sql ) or die ( mysql_error () );
-      $pid = mysql_insert_id ();
-    } else {
-      $sql = "SELECT MAX(problem_id) AS pid FROM problem WHERE problem_id<500000";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_object($result);
-      $pid = $row->pid+1;
-      $sql = "INSERT into `problem` (problem_id, `title`,`time_limit`,`memory_limit`,
-      `description`,`input`,`output`,`sample_input`,`sample_output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
-      VALUES($pid, '$title','$time_limit','$memory_limit','$description','$input','$output',
-          '$sample_input','$sample_output','$hint','$author','$source','$spj',NOW(),'Y')";
-      mysql_query($sql) or die (mysql_error());
-    }
+    $sql = "INSERT into `problem` (`problemset`,`title`,`time_limit`,`memory_limit`,
+    `description`,`input`,`output`,`sample_input`,`sample_output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
+    VALUES('$problemset','$title','$time_limit','$memory_limit','$description','$input','$output',
+        '$sample_input','$sample_output','$hint','$author','$source','$spj',NOW(),'Y')";
+    @mysql_query ( $sql ) or die ( mysql_error () );
+    $pid = mysql_insert_id ();
     // echo $sql;
-    
+    echo '$problemset:'.$problemset;
+    echo "<pre>".$sql."</pre>";
     echo "<br>Add $pid  ";
     if (isset ( $_POST ['contest_id'] )) {
       $sql = "select count(*) FROM `contest_problem` WHERE `contest_id`=" . strval ( intval ( $_POST ['contest_id'] ) );

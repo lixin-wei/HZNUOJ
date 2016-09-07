@@ -52,8 +52,9 @@
     $res = mysql_query("SELECT problemset from problem WHERE problem_id=$id");
     $set_name = mysql_fetch_array($res)[0];
     $now=strftime("%Y-%m-%d %H:%M",time());
-    if (HAS_PRI("see_hidden_".$set_name."_problem"))
+    if (HAS_PRI("see_hidden_".$set_name."_problem")){
       $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
+    }
     else 
       $sql=<<<sql
         SELECT 

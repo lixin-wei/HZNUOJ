@@ -43,7 +43,9 @@
     while($group_name=mysql_fetch_assoc($res)['rightstr']){
       $rs=mysql_query("SELECT * FROM privilege_distribution WHERE group_name='$group_name'");
       $arr=mysql_fetch_assoc($rs);
-      if($arr[$pri_str])return true;
+      if($arr[$pri_str]){
+        return true;
+      }
     }
     return false;
   }
