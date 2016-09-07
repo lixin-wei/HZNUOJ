@@ -5,9 +5,9 @@ Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)(isn't working temporaril
 Spare address [www.hsacm.cn](http://www.hsacm.cn)(isn't working now, either.)
 
 # Features
-HZNUOJ deeply modified the web client, and add more features.
+HZNUOJ deeply modified the web client and add more features.
 
-1. Brand new UI and more JS effect, use amazeUI framework.
+1. Brand new UI and more JS effect, use the amazeUI framework.
 2. Tag system, help users more easily to find the problem they want.
 3. ...
 
@@ -22,10 +22,10 @@ HZNUOJ deeply modified the web client, and add more features.
 
 
 # Installation
-Ubuntu 14.04 is recomended, installer may not work well in later version.
+Ubuntu 14.04 is recommended, an installer may not work well in the later version.
 
 Simply clone the repository, then run judger/install/install.sh.
 
-Then you need to modify apache settings, change the default sever dir to /var/www/web/OJ.
+Then you need to modify apache settings, change the default server dir to /var/www/web/OJ.
 
-You may should modify web/OJ/include/db_info.inc.php with your own database information.
+You may modify web/OJ/include/db_info.inc.php with your own database information.
