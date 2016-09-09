@@ -9,20 +9,6 @@
     <title>Edit Problem</title>
       <?php require_once("../include/db_info.inc.php");?>
       <?php require_once("admin-header.php"); ?>
-      <?php
-        $type = "OJ";
-        if (isset($_GET['type'])) {
-          $type = $_GET['type'];
-        }
-        if ($type=="C" && !HAS_PRI("edit_c_problem")) {
-          echo "Permission denied!";
-          exit(1);
-        }
-        if ($type=="OJ" && !HAS_PRI("edit_hznu_problem")) {
-          echo "Permission denied!";
-          exit(1);
-        }
-      ?>
       <?php include_once("kindeditor.php") ; ?>
   <?php 
     if(isset($_GET['id'])) {
@@ -32,7 +18,12 @@
         $sql="SELECT * FROM `problem` WHERE `problem_id`=".intval($_GET['id']);
         $result=mysql_query($sql);
         $row=mysql_fetch_object($result);
-   ?>
+        if (!HAS_PRI("edit_".$row->problemset."_problem")) {
+          require_once("error.php");
+          exit(0);
+        }
+  ?>
+
   <div class="container" style="width: 800px">
     <h1>Edit problem</h1>
     <hr/>
@@ -57,14 +48,17 @@
           <?php
             $res=mysql_query("SELECT * FROM problemset");
             while($row2=mysql_fetch_array($res)){
-              echo "<option value=".$row2['set_name'];
-              if($row2['set_name']==$row->problemset){
-                echo " selected='true'";
+              if(HAS_PRI("edit_".$row2['set_name']."_problem")){
+                echo "<option value=".$row2['set_name'];
+                if($row2['set_name']==$row->problemset){
+                  echo " selected='true'";
+                }
+                echo ">";
+                echo $row2['set_name_show'];
+                echo "</oition>";
               }
-              echo ">";
-              echo $row2['set_name_show'];
-              echo "</oition>";
             }
+            
           ?>
           </select>
         </div>

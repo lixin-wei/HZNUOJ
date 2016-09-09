@@ -8,15 +8,28 @@
   <?php 
     require_once("../include/db_info.inc.php");
     require_once("admin-header.php");
-    $type = "OJ";
-    if (isset($_GET['type'])) {
-      $type = $_GET['type'];
-    }
-    if (!HAS_PRI("edit_".$type."_problem")) {
-      echo "Permission denied!";
-      exit(1);
-    }
   ?>
+<?php
+  $first=true;
+  $html_select="";
+  $res=mysql_query("SELECT * FROM problemset");
+  while($row=mysql_fetch_array($res)){
+    if(HAS_PRI("edit_".$row['set_name']."_problem")){
+      $html_select .= "<option value=".$row['set_name'];
+      if($first){
+        $first=false;
+        $html_select .= " selected='true'";
+      }
+      $html_select .= ">";
+      $html_select .= $row['set_name_show'];
+      $html_select .= "</oition>";
+    }
+  }
+  if($first==true){
+    require_once("error.php");
+    exit(1);
+  }
+?>
 <div class="container" style="width: 800px;">
   <?php include_once("kindeditor.php"); ?>
     <h1>Add New problem</h1>
@@ -38,20 +51,7 @@
         <label for="" class="col-sm-2 control-label">Problemset</label>
         <div class="col-sm-10">
           <select class="form-control" name="problemset">
-          <?php
-            $first=true;
-            $res=mysql_query("SELECT * FROM problemset");
-            while($row=mysql_fetch_array($res)){
-              echo "<option value=".$row['set_name'];
-              if($first){
-                $first=false;
-                echo " selected='true'";
-              }
-              echo ">";
-              echo $row['set_name_show'];
-              echo "</oition>";
-            }
-          ?>
+            <?php echo $html_select; ?>
           </select>
         </div>
       </div>

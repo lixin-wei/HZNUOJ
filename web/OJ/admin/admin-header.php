@@ -10,10 +10,6 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <!--
-  <link rel=stylesheet href='../include/hoj.css' type='text/css'>
-  -->
-  <script src="../template/bs3/jquery.min.js"></script>
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
@@ -23,8 +19,16 @@
 <?php 
   require_once("../include/db_info.inc.php");
   if (!HAS_PRI('enter_admin_page')) {
-    echo "<a href='../loginpage.php'>Please Login First!</a>";
+    require_once("error.php");
     exit(1);
+  }
+  $can_see_problem=false;
+  $res=mysql_query("SELECT * FROM problemset");
+  while($row=mysql_fetch_array($res)){
+    if(HAS_PRI("edit_".$row['set_name']."_problem")){
+      $can_see_problem=true;
+      break;
+    }
   }
 ?>
   <style type="text/css">
@@ -50,17 +54,17 @@
         <?php
           echo "<li><a href='index.php'>See OJ</a></li>";
         ?>
+        <?php
+        if($can_see_problem)echo<<<sss
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Problems<span class="caret"></span></a>
             <ul class="dropdown-menu">
-            <?php 
-              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_add_page.php?type=c'>Add C Problem</a></li>";
-              if(HAS_PRI("edit_c_problem")) echo "<li><a href='problem_list.php?type=c'>C ProblemList</a></li>";
-              if(HAS_PRI("edit_hznu_problem")) echo "<li><a href='problem_add_page.php'>Add Problem</a></li>";
-              if(HAS_PRI("edit_hznu_problem")) echo "<li><a href='problem_list.php'>Problem List</a></li>";
-            ?>
+              <li><a href='problem_add_page.php'>Add Problem</a></li>
+              <li><a href='problem_list.php'>Problem List</a></li>
             </ul>
           </li>
+sss;
+        ?>
         <?php
           if(HAS_PRI("rejudge")) echo "<li><a href='rejudge.php'>Rejudge</a></li>";
           //*************slide相关功能暂时被弃用
@@ -68,15 +72,17 @@
           //if(HAS_PRI("'slideList' ")) echo "<li><a href='slide_list.php'>'slideList' </a></li>";
           //*************
         ?>
+        <?php
+          if(HAS_PRI("edit_news"))echo<<<sss
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">News<span class="caret"></span></a>
             <ul class="dropdown-menu">
-            <?php
-              if(HAS_PRI("edit_news")) echo "<li><a href='news_add_page.php'>Add News</a></li>";
-              if(HAS_PRI("edit_news")) echo "<li><a href='news_list.php'>News List</a></li>";
-            ?>
+              <li><a href='news_add_page.php'>Add News</a></li>
+              <li><a href='news_list.php'>News List</a></li>
             </ul>
           </li>
+sss;
+        ?>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contest<span class="caret"></span></a>
             <ul class="dropdown-menu">
