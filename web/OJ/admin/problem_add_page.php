@@ -27,7 +27,7 @@
   }
   if($first==true){
     require_once("error.php");
-    exit(1);
+    exit(0);
   }
 ?>
 <div class="container" style="width: 800px;">
@@ -74,35 +74,35 @@
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10"><textarea name="description" id="" cols="80" rows="13" class="kindeditor"></textarea></div>
+        <div class="col-sm-10"><textarea name="description" id="" rows="13" class="kindeditor"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Input</label>
-        <div class="col-sm-10"><textarea name="input" id="" cols="80" rows="13" class="kindeditor"></textarea></div>
+        <div class="col-sm-10"><textarea name="input" id="" rows="13" class="kindeditor"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Output</label>
-        <div class="col-sm-10"><textarea name="output" id="" cols="80" rows="13" class="kindeditor"></textarea></div>
+        <div class="col-sm-10"><textarea name="output" id="" rows="13" class="kindeditor"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Sample Input</label>
-        <div class="col-sm-10"><textarea name="sample_input" id="" cols="80" rows="13"></textarea></div>
+        <div class="col-sm-10"><textarea name="sample_input" id="" rows="13"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Sample Output</label>
-        <div class="col-sm-10"><textarea name="sample_output" id="" cols="80" rows="13"></textarea></div>
+        <div class="col-sm-10"><textarea name="sample_output" id="" rows="13"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Test Input</label>
-        <div class="col-sm-10"><textarea name="test_input" id="" cols="80" rows="13"></textarea></div>
+        <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Test Output</label>
-        <div class="col-sm-10"><textarea name="test_input" id="" cols="80" rows="13"></textarea></div>
+        <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Hint</label>
-        <div class="col-sm-10"><textarea name="hint" id="" cols="80" rows="13" class="kindeditor"></textarea></div>
+        <div class="col-sm-10"><textarea name="hint" id="" rows="13" class="kindeditor"></textarea></div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-2 control-label">Special judge</label>
@@ -151,7 +151,7 @@
       </div>
       <div align=center>
         <?php require_once("../include/set_post_key.php");?>
-        <input type=submit value=Submit name=submit></input>
+        <button type=submit value=submit class="btn btn-default">Submit</button>
       </div>
       <input type='hidden' value=<?php echo $type ?> name='type'></input>
     </form>

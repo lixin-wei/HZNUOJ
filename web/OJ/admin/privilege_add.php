@@ -8,7 +8,7 @@
 
 <?php require_once("admin-header.php");?>
 <?php 
-  if (!HAS_PRI("edit_privilege")) {
+  if (!HAS_PRI("edit_privilege_group")) {
     echo "Permission denied!";
     exit(1);
   }
@@ -22,7 +22,7 @@
     else echo "No such user!";
   }
 ?>
-
+<h1>Add Privilege For User</h1><hr/>
 <form method=post>
   <?php require("../include/set_post_key.php");?>
   <b>Add privilege for User:</b><br />

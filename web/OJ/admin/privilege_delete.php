@@ -1,6 +1,6 @@
 <?php require_once("admin-header.php");?>
 <?php require_once("../include/check_get_key.php");
-if (!HAS_PRI("edit_privilege")) {
+if (!HAS_PRI("edit_privilege_group")) {
 	echo "Permission denied!";
 	exit(1);
 }

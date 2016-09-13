@@ -3,7 +3,7 @@
 <title>JudgeOnline Administration</title>
 </head>
 <frameset rows="*">
-<frame name="status" src="../status.php">
+<frame name="status" src="../index.php">
 <noframes>
 
 </noframes>

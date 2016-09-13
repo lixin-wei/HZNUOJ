@@ -166,7 +166,7 @@
       </div>
       <div align=center>
         <?php require_once("../include/set_post_key.php");?>
-        <input type=submit value=Submit name=submit></input>
+        <button type=submit value=submit class="btn btn-default">Submit</button>
       </div>
       <input type='hidden' value=<?php echo $type ?> name='type'></input>
     </form>

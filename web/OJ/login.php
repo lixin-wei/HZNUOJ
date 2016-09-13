@@ -66,7 +66,7 @@
     $uid = uc_user_register($user_id, $password, $email);
 
     echo "<script language='javascript'>\n";
-    //echo "history.go(-2);\n";
+    echo "history.go(-2);\n";
     echo "</script>";
 
   } else {

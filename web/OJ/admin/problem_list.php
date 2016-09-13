@@ -9,20 +9,12 @@
 <?php 
   require("admin-header.php");
   require_once("permission.php");
-  $type = "OJ";
-  if (isset($_GET['type'])) {
-    $type = $_GET['type'];
-  }
   if(isset($OJ_LANG)){
     require_once("../lang/$OJ_LANG.php");
   }
   require_once("../include/set_get_key.php");
-  if ($type=="C" && !HAS_PRI("edit_c_problem")) {
-    echo "Permission denied!";
-    exit(1);
-  }
-  if ($type=="OJ" && !HAS_PRI("edit_hznu_problem")) {
-    echo "Permission denied!";
+  if (!$can_see_problem) {
+    require_once("error.php");
     exit(1);
   }
   $keyword=$_GET['keyword'];
@@ -71,12 +63,12 @@
   if($keyword) $sql="select `problem_id`,`title`,`in_date`,`defunct` FROM `problem` where title like '%$keyword%' or source like '%$keyword%'";
   $result=mysql_query($sql) or die(mysql_error());
   ?>
-  <form action=problem_list.php><input name=keyword><input type=submit value="<?php echo $MSG_SEARCH?>" ></form>
+  <form action=problem_list.php><input name=keyword><button type=submit class="btn btn-default"><?php echo $MSG_SEARCH?></button></form>
 
   <?php
   echo "<center><table class='table table-striped table-hover' width=90%>";
   echo "<form method=post action=contest_add.php>";
-  echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
+  echo "<tr><td colspan=8><button type=submit name='problem2contest' class='btn btn-default'>CheckToNewContest</button>";
   echo "<tr><td>PID<td>Title<td>Author<td>Date";
   if(HAS_PRI('edit_c_problem')){
           echo "<td>Status<td>Delete";
@@ -103,7 +95,7 @@
           }
           echo "</tr>";
   }
-  echo "<tr><td colspan=8><input type=submit name='problem2contest' value='CheckToNewContest'>";
+  echo "<tr><td colspan=8><button type=submit name='problem2contest' class='btn btn-default'>CheckToNewContest</button>";
   echo "</tr></form>";
   echo "</table></center>";
   require("../oj-footer.php");
