@@ -1,3 +1,4 @@
+
 <?php
 /*------------------------------------------------------------------------------
      The contents of this file are subject to the Mozilla Public License
@@ -27,94 +28,105 @@
 ------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------
 Author: The QuiX project
-	quix@free.fr
-	http://www.quix.tk
-	http://quixplorer.sourceforge.net
+  quix@free.fr
+  http://www.quix.tk
+  http://quixplorer.sourceforge.net
 
 Comment:
-	QuiXplorer Version 2.3
-	Main File
-	
-	Have Fun...
+  QuiXplorer Version 2.3
+  Main File
+
+  Have Fun...
 ------------------------------------------------------------------------------*/
+require_once("../../include/db_info.inc.php");
+
+$dir=$GLOBALS["dir"];
+
+if(HAS_PRI("edit_hznu_problem") && $dir<500000);
+else if(HAS_PRI("edit_c_problem") && $dir>=500000);
+else {
+  echo "Permission denied!";
+  exit(1);
+}
+
 //------------------------------------------------------------------------------
 umask(002); // Added to make created files/dirs group writable
 //------------------------------------------------------------------------------
-require "./.include/init.php";	// Init
+require "./.include/init.php";  // Init
 //------------------------------------------------------------------------------
-switch($GLOBALS["action"]) {		// Execute action
+switch($GLOBALS["action"]) {    // Execute action
 //------------------------------------------------------------------------------
 // EDIT FILE
 case "edit":
-	require "./.include/fun_edit.php";
-	edit_file($GLOBALS["dir"], $GLOBALS["item"]);
+  require "./.include/fun_edit.php";
+  edit_file($GLOBALS["dir"], $GLOBALS["item"]);
 break;
 //------------------------------------------------------------------------------
 // DELETE FILE(S)/DIR(S)
 case "delete":
-	require "./.include/fun_del.php";
-	del_items($GLOBALS["dir"]);
+  require "./.include/fun_del.php";
+  del_items($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // COPY/MOVE FILE(S)/DIR(S)
-case "copy":	case "move":
-	require "./.include/fun_copy_move.php";
-	copy_move_items($GLOBALS["dir"]);
+case "copy":  case "move":
+  require "./.include/fun_copy_move.php";
+  copy_move_items($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // DOWNLOAD FILE
 case "download":
-	ob_start(); // prevent unwanted output
-	require "./.include/fun_down.php";
-	ob_end_clean(); // get rid of cached unwanted output
-	download_item($GLOBALS["dir"], $GLOBALS["item"]);
-	ob_start(false); // prevent unwanted output
-	exit;
+  ob_start(); // prevent unwanted output
+  require "./.include/fun_down.php";
+  ob_end_clean(); // get rid of cached unwanted output
+  download_item($GLOBALS["dir"], $GLOBALS["item"]);
+  ob_start(false); // prevent unwanted output
+  exit;
 break;
 //------------------------------------------------------------------------------
 // UPLOAD FILE(S)
 case "upload":
-	require "./.include/fun_up.php";
-	upload_items($GLOBALS["dir"]);
+  require "./.include/fun_up.php";
+  upload_items($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // CREATE DIR/FILE
 case "mkitem":
-	require "./.include/fun_mkitem.php";
-	make_item($GLOBALS["dir"]);
+  require "./.include/fun_mkitem.php";
+  make_item($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // CHMOD FILE/DIR
 case "chmod":
-	require "./.include/fun_chmod.php";
-	chmod_item($GLOBALS["dir"], $GLOBALS["item"]);
+  require "./.include/fun_chmod.php";
+  chmod_item($GLOBALS["dir"], $GLOBALS["item"]);
 break;
 //------------------------------------------------------------------------------
 // SEARCH FOR FILE(S)/DIR(S)
 case "search":
-	require "./.include/fun_search.php";
-	search_items($GLOBALS["dir"]);
+  require "./.include/fun_search.php";
+  search_items($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // CREATE ARCHIVE
 case "arch":
-	require "./.include/fun_archive.php";
-	archive_items($GLOBALS["dir"]);
+  require "./.include/fun_archive.php";
+  archive_items($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // USER-ADMINISTRATION
 case "admin":
-	require "./.include/fun_admin.php";
-	show_admin($GLOBALS["dir"]);
+  require "./.include/fun_admin.php";
+  show_admin($GLOBALS["dir"]);
 break;
 //------------------------------------------------------------------------------
 // DEFAULT: LIST FILES & DIRS
 case "list":
 default:
-	require "./.include/fun_list.php";
-	list_dir($GLOBALS["dir"]);
+  require "./.include/fun_list.php";
+  list_dir($GLOBALS["dir"]);
 //------------------------------------------------------------------------------
-}				// end switch-statement
+}       // end switch-statement
 //------------------------------------------------------------------------------
 show_footer();
 //------------------------------------------------------------------------------

@@ -33,19 +33,19 @@
       pats[5]=/Alarm clock/;
       exps[5]="进程因为时间原因被杀死，检查是否有死循环，本错误等价于超时TLE";
       function explain(){
-      //alert("asdf");
-      var errmsg=document.getElementById("errtxt").innerHTML;
-      var expmsg="辅助解释：<br>";
-      for(var i=0;i<pats.length;i++){
-      var pat=pats[i];
-      var exp=exps[i];
-      var ret=pat.exec(errmsg);
-      if(ret){
-      expmsg+=ret+":"+exp+"<br>";
-      }
-      }
-      document.getElementById("errexp").innerHTML=expmsg;
-      //alert(expmsg);
+        //alert("asdf");
+        var errmsg=document.getElementById("errtxt").innerHTML;
+        var expmsg="辅助解释：<br>";
+        for(var i=0;i<pats.length;i++){
+          var pat=pats[i];
+          var exp=exps[i];
+          var ret=pat.exec(errmsg);
+          if(ret){
+            expmsg+=ret+":"+exp+"<br>";
+          }
+        }
+        document.getElementById("errexp").innerHTML=expmsg;
+        //alert(expmsg);
       }
       explain();
     </script>

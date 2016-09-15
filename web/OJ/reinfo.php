@@ -36,8 +36,7 @@
   }
 
   $id=strval(intval($_GET['sid']));
-  $ok = canSeeWAinfo($id);
-
+  $ok = can_see_res_info($id);
   if ($ok==true){
     if($row->user_id!=$_SESSION['user_id'])
       $view_mail_link= "<a href='mail.php?to_user=$row->user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";

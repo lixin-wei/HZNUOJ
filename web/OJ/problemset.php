@@ -14,92 +14,24 @@
   require_once('./include/setlang.php');
   $view_title= "Problem Set";
 
+  //get all problemsets START
 
+  //get all problemsets END
   /* 获取OJ start */
   if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
-  else $OJ = "HZNU";
+  else $OJ = "all";
   /* 获取OJ end */
 
 
-  /* 选择数据库连接 start */
-  if ($OJ!="HZNU" && $OJ!="C") { // 不是HZNUOJ的题目，则连接转入vjudge
-    $connvj = mysql_connect($DB_VJHOST,$DB_VJUSER,$DB_VJPASS,true);
-    if (!$connvj) die('Could not connect: ' . mysql_error());
-    mysql_select_db("vhoj", $connvj);
-    mysql_query("set names utf8");
-  }
-  /* 选择数据库连接 end */
-
-
-  /* 计算页数cnt start */
-  $first = 1000; // 题号以几开头
-  $page_cnt = 100; // 每页显示多少道题
-  $border = 500000; // 普通题目和C语言题目的分界
-  $sql = "";
-
-  // 获取数据库语句
-  if ($OJ == "HZNU") 
-    $sql="SELECT max(`problem_id`) as upid FROM `problem` WHERE problem_id<'$border'";
-  else if ($OJ == "C") {
-    $first = 500000;
-    $sql = "SELECT max(problem_id) AS upid FROM problem WHERE problem_id>='$border'";
-  } else if ($OJ=="CodeForces" || $OJ=="UVA")
-    $sql = "SELECT COUNT(C_originProb) AS num FROM t_problem WHERE C_originOJ='$OJ'";
-  else
-    $sql="SELECT MAX(C_originProb) AS upid FROM t_problem WHERE C_originOJ='$OJ'";
-
-  // 执行数据库操作
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
-  if ($OJ=="CodeForces" || $OJ=="UVA") {
-    $cnt=intval($row->num)/$page_cnt; // 页数
-  } else {
-    $cnt=intval($row->upid)-$first;
-    $cnt=$cnt/$page_cnt; // 页数
-  }
-  mysql_free_result($result);
-  /* 计算页数cnt end */
+  $page_cnt = 100;
 
 
   //remember page
   $page="1";
   if (isset($_GET['page'])) {
     $page = intval($_GET['page']);
-    if($OJ=="HZNU" && isset($_SESSION['user_id'])){
-      $sql="UPDATE users SET volume=$page WHERE user_id='".$_SESSION['user_id']."'";
-      mysql_query($sql);
-    } else if ($OJ=="C" && isset($_SESSION['user_id'])) {
-      $sql="UPDATE users SET volume_c=$page WHERE user_id='".$_SESSION['user_id']."'";
-      mysql_query($sql);
-    }
-  } else {
-    if (($OJ=="HZNU") && isset($_SESSION['user_id'])) {
-      $sql="SELECT volume FROM users WHERE user_id='".$_SESSION['user_id']."'";
-      $result=@mysql_query($sql);
-      $row=mysql_fetch_array($result);
-      $page=intval($row[0]);
-    } else if ($OJ=="C" && isset($_SESSION['user_id'])) {
-      $sql="SELECT volume_c FROM users WHERE user_id='".$_SESSION['user_id']."'";
-      $result=@mysql_query($sql);
-      $row=mysql_fetch_array($result);
-      $page=intval($row[0]);
-    }
-    mysql_free_result($result);
-    if(!is_numeric($page)||$page<0)
-        $page='1';
   }
   //end of remember page
-
-
-  /* 计算该页起始题号和结束题号 start */
-  if ($OJ == "CodeForces") {
-    $pstart = ((intval($page)-1)*25+1)."A";
-    $pend = (intval($page)*25)."E";
-  } else {
-    $pstart = $first+$page_cnt*intval($page)-$page_cnt;
-    $pend=$pstart+$page_cnt;
-  }
-  /* 计算该页起始题号和结束题号 end */
 
 
   /* 是否显示标签 start */
@@ -125,12 +57,7 @@
   /* 获取当前用户提交过的题目 start */
   $sub_arr=Array();
   if (isset($_SESSION['user_id'])) {
-    if ($OJ == "HZNU") 
-      $sql="SELECT `problem_id` FROM `solution` WHERE problem_id<'$border' AND `user_id`='".$_SESSION['user_id']."'"." group by `problem_id`";
-    else if ($OJ == "C")
-      $sql="SELECT `problem_id` FROM `solution` WHERE problem_id>='$border' AND `user_id`='".$_SESSION['user_id']."'"." group by `problem_id`";
-    else
-      $sql = "SELECT C_ORIGIN_PROB FROM t_submission WHERE C_USERNAME='".$_SESSION['user_id']."' AND C_ORIGIN_OJ='$OJ' GROUP BY C_ORIGIN_PROB";
+    $sql="SELECT `problem_id` FROM `solution` WHERE `user_id`='".$_SESSION['user_id']."'"." group by `problem_id`";
     $result=@mysql_query($sql) or die(mysql_error());
     while ($row=mysql_fetch_array($result))
       $sub_arr[$row[0]]=true;
@@ -141,12 +68,7 @@
   /* 获取当前用户已AC的题目 start */
   $acc_arr=Array();
   if (isset($_SESSION['user_id'])) {
-    if ($OJ == "HZNU") 
-      $sql="SELECT `problem_id` FROM `solution` WHERE problem_id<'$border' AND `user_id`='".$_SESSION['user_id']."'"." AND `result`=4"." group by `problem_id`";
-    else if ($OJ == "C")
-      $sql="SELECT `problem_id` FROM `solution` WHERE problem_id>='$border' AND `user_id`='".$_SESSION['user_id']."'"." AND `result`=4"." group by `problem_id`";
-    else
-      $sql = "SELECT C_ORIGIN_PROB FROM t_submission WHERE C_USERNAME='".$_SESSION['user_id']."' AND C_ORIGIN_OJ='$OJ' AND C_STATUS_CANONICAL='AC' GROUP BY C_ORIGIN_PROB";
+    $sql="SELECT `problem_id` FROM `solution` WHERE `user_id`='".$_SESSION['user_id']."'"." AND `result`=4"." group by `problem_id`";
     $result=@mysql_query($sql) or die(mysql_error());
     while ($row=mysql_fetch_array($result))
       $acc_arr[$row[0]]=true;
@@ -157,118 +79,106 @@
   /* 获取sql语句中的筛选部分 start */
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
     $search=mysql_real_escape_string($_GET['search']);
-    if ($OJ == "HZNU")
-      $filter_sql=" problem_id<'$border' AND ( title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%')"; 
-    else if ($OJ == "C")
-      $filter_sql=" problem_id>='$border' AND ( title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%')"; 
-    else 
-      $filter_sql=" ( C_TITLE like '%$search%' or C_SOURCE like '%$search%')";  
+      $filter_sql="title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%'"; 
   } else {
-    if ($OJ=="HZNU" || $OJ=="C") 
-      $filter_sql="  `problem_id`>='".strval($pstart)."' AND `problem_id`<'".strval($pend)."' ";
-    else if ($OJ=="ZOJ" || $OJ=="HDU" || $OJ=="POJ")
-      $filter_sql="  C_originProb>='".strval($pstart)."' AND C_originProb<'".strval($pend)."' ";
-    else
-      $filter_sql = "1";
+      $filter_sql="1";
   }
-  /* 获取sql语句中的筛选部分 end */
-  
 
-  /* 获取数据库查询语句 start */
-  if ($OJ=="HZNU" || $OJ=="C") {
-    if (($OJ=="HZNU"&&$GE_A) || ($OJ=="C"&&$GE_TA)) { // 有查看隐藏题目权限
-      $sql="SELECT `problem_id`,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3 FROM `problem` WHERE $filter_sql ";
-    } else { // 无查看隐藏题目权限
-      $now=strftime("%Y-%m-%d %H:%M",time());
-      $sql="SELECT `problem_id`,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3 FROM `problem` ".
-            "WHERE `defunct`='N' and $filter_sql AND `problem_id` NOT IN (
-              SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN (
-                SELECT `contest_id` FROM `contest` WHERE 
-                (`end_time`>'$now' or private=1)and `defunct`='N'
-              )
-            ) ";
+  /* 获取sql语句中的筛选部分 end */
+  $res_set = mysql_query("SELECT set_name FROM problemset");
+  $first = true;
+  $sql = "";
+  $cnt = 0;
+  while($set_name=mysql_fetch_array($res_set)[0]){
+    if($OJ=='all' || $OJ==$set_name){
+      if(HAS_PRI("see_hidden_".$set_name."_problem")){
+        $t_sql=" FROM `problem` WHERE $filter_sql AND problemset='$set_name'";
+      }
+      else{
+        $now=strftime("%Y-%m-%d %H:%M",time());
+        $t_sql=<<<sql
+        FROM 
+          problem
+        WHERE 
+          defunct='N' 
+          AND $filter_sql
+          AND problemset='$set_name' 
+          AND problem_id
+          NOT IN ( 
+            SELECT DISTINCT
+              contest_problem.problem_id
+            FROM
+              contest_problem
+            JOIN
+              contest
+            ON
+              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
+              AND contest_problem.contest_id=contest.contest_id
+          )
+sql;
+      }
+      //count the number of problem START
+      $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
+      $cnt += mysql_fetch_array($res)[0];
+      //count the number of problem END
+
+      $t_sql = "SELECT `problem_id`,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3 ".$t_sql;
+      if($first) $first = false;
+      else $t_sql = " UNION ".$t_sql;
+      $sql .= $t_sql;
+
+
     }
-    $sql.=" ORDER BY `problem_id`";
-  } else { // 查看VJ题目
-    $sql = "SELECT DISTINCT C_ID,C_originProb,C_TITLE,C_SOURCE,C_originOJ FROM t_problem WHERE C_originOJ='$OJ' AND C_TITLE!='N/A' AND $filter_sql ORDER BY C_originProb";
   }
+  $sql.=" ORDER BY `problem_id`";
+  $st=($page-1)*$page_cnt;
+  $sql.=" LIMIT $st,$page_cnt";
+
+  if($first) $sql="";
+  //echo "sql:".$sql."\n";
   /* 获取数据库查询语句 end */
 
 
-  $view_total_page=$cnt+1;
+  //echo "<pre>".htmlentities($sql)."</pre>";
+  $result=mysql_query($sql) or die(mysql_error());
+
+
+
+  /* 计算页数cnt start */
+  $view_total_page=$cnt/$page_cnt+$cnt%$page_cnt?1:0;// 页数
   $cnt=0;
   $view_problemset=Array();
   $i=0;
+  /* 计算页数cnt end */
 
-
-  /* 查询并把结果放入表格 start */
-  $result=mysql_query($sql) or die(mysql_error());
+  /* 把结果放入表格 start */
   while ($row=mysql_fetch_object($result)) {
     $view_problemset[$i]=Array();
 
     // 获取problem ID
-    if ($OJ=="HZNU" || $OJ=="C")
-      $p_id = $row->problem_id;
-    else
-      $p_id = $row->C_originProb;
-
+    $p_id = $row->problem_id;
     // 将信息放入表格
     if (isset($sub_arr[$p_id])) {
       if (isset($acc_arr[$p_id])) 
-        $view_problemset[$i][0] = "<td class='am-text-center' style='width:30px'><font color='green'>Y</font></td>";
+        $view_problemset[$i][0] = "<td style='width:30px'><font color='green'>Y</font></td>";
       else 
-        $view_problemset[$i][0] = "<td class='am-text-center' style='width:30px'><font color='red'>N</font></td>";
+        $view_problemset[$i][0] = "<td style='width:30px'><font color='red'>N</font></td>";
     } else {
-      $view_problemset[$i][0] = "<td class='am-text-center' style='width:30px'></td>";
+      $view_problemset[$i][0] = "<td style='width:30px'></td>";
     }
-    $view_problemset[$i][1]="<td class='am-text-center'>".$p_id."</td>";
-    if ($OJ=="HZNU" || $OJ=="C") {
-      if($OJ=='C') $view_problemset[$i][2]="<td><a href='problem.php?OJ=C&id=".$p_id."'>".$row->title."</a></td>";
-      else $view_problemset[$i][2]="<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
-      $view_problemset[$i][3] = "<td class='am-text-center'>";
-      if ($show_tag) {
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>";
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>";
-          $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>";
-      }
-      $view_problemset[$i][3] .= "</td>";
-      $view_problemset[$i][4] = "<td class='am-text-center'><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";
-      $view_problemset[$i][5] = "<td class='am-text-center'><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
-      $view_problemset[$i][6]="<td class='am-text-center'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
-      $view_problemset[$i][7]="<td class='am-text-center'>".$row->score."</td>";
-    } else {
-      $view_problemset[$i][2]="<td><a href='".$VJ_URL."/problem/viewProblem.action?id=".$row->C_ID."'>".$row->C_TITLE."</a></td>";
-      $view_problemset[$i][3] = "<td></td>";
-      $view_problemset[$i][4] = "<td></td>";
-      $view_problemset[$i][5]="<td class='am-text-center'><nobr>".strip_tags(mb_substr($row->C_SOURCE,0,40,'utf8'))."</nobr></td>";
-      // 获取AC次数
-      $sql_tmp = "SELECT COUNT(*) AS ac_num, COUNT(DISTINCT C_USER_ID) AS ac_user 
-                  FROM t_submission WHERE C_ORIGIN_PROB='".$row->C_originProb."' AND C_ORIGIN_OJ='$OJ' AND C_STATUS_CANONICAL='AC'";
-      $result_tmp = mysql_query($sql_tmp) or die(mysql_error());
-      $row_tmp = mysql_fetch_object($result_tmp);
-      $AC_num = $row_tmp->ac_num;
-      $AC_user = $row_tmp->ac_user;
-      mysql_free_result($result_tmp);
-     // 获取提交次数
-      $sql_tmp = "SELECT COUNT(*) AS sub_num, COUNT(DISTINCT C_USER_ID) AS sub_user 
-                  FROM t_submission WHERE C_ORIGIN_PROB='".$row->C_originProb."' AND C_ORIGIN_OJ='$OJ'";
-      $result_tmp = mysql_query($sql_tmp) or die(mysql_error());
-      $row_tmp = mysql_fetch_object($result_tmp);
-      $sub_num = $row_tmp->sub_num;
-      $sub_user = $row_tmp->sub_user;
-      mysql_free_result($result_tmp);
-      $view_problemset[$i][6]="<td class='am-text-center'><a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&probNum=".$row->C_originProb."&res=1&orderBy=run_id'>".$AC_num."</a>/<a href='".$VJ_URL."/problem/status.action#un=&OJId=$OJ&res=0&probNum=".$row->C_originProb."'>".$sub_num."</a></td>";
-      // 获取vjudge上的用户数
-      $sql_tmp = "SELECT COUNT(*) AS cnt FROM t_user";
-      $result_tmp = mysql_query($sql_tmp) or die(mysql_error());
-      $row_tmp = mysql_fetch_object($result_tmp);
-      $user_cnt = $row_tmp->cnt;
-      mysql_free_result($result_tmp);
-      // 计算分数
-      $score = 100.0 * (1-($AC_user+$sub_user/2.0)/$user_cnt);
-      if ($score < 10) $score = 10;
-      $view_problemset[$i][7]="<td class='am-text-center'>".round($score, 2)."</td>";
+    $view_problemset[$i][1] = "<td>".$p_id."</td>";
+    $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+    $view_problemset[$i][3] = "<td >";
+    if ($show_tag) {
+        $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>";
+        $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>";
+        $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>";
     }
+    $view_problemset[$i][3] .= "</td>";
+    $view_problemset[$i][4] = "<td><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";
+    $view_problemset[$i][5] = "<td><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
+    $view_problemset[$i][6]="<td><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
+    $view_problemset[$i][7]="<td >".$row->score."</td>";
     $i++;
   }
   mysql_free_result($result);

@@ -36,9 +36,9 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    if (!$GE_TA || (!$GE_T&&$GE_TA&&$_GET['id']<=$BORDER)) { // 没有管理权限或只有助教权限但是题目不在C语言区  即不够权限看隐藏题
+    if (!HAS_PRI("see_hidden_".get_problemset($id)."_problem")) { // 不够权限看隐藏题
       //判断是否是开放题
-      $sql_tmp = "SELECT * FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
+      $sql_tmp = "SELECT problem_id FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
                       SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
                                       SELECT `contest_id` FROM `contest` WHERE `end_time`>NOW()))";
       $result_tmp = mysql_query($sql_tmp);
@@ -133,7 +133,6 @@ if(!$view_src){
    if(file_exists($template_file)){
   $view_src=file_get_contents($template_file);
    }
-
 }
 
 

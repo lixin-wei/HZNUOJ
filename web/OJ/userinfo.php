@@ -360,7 +360,7 @@ else {
 
 
 
-  if (isset($_SESSION['administrator'])){
+  if (HAS_PRI("see_hidden_user_info")){
     $sql="SELECT * FROM `loginlog` WHERE `user_id`='$user_mysql' order by `time` desc LIMIT 0,10";
     $result=mysql_query($sql) or die(mysql_error());
     $view_userinfo=array();

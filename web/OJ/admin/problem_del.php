@@ -8,11 +8,12 @@
 
 <?php
   require_once("admin-header.php");
-  require_once("permission.php");
+  require_once("../include/set_get_key.php");
   ini_set("display_errors","On");
   require_once("../include/check_get_key.php");
-  if (!$p_ok) {
-    echo "<a href='../loginpage.php'>Permission denied!</a>";
+  require_once("../include/my_func.inc.php");
+  if (!HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
+    require_once("error.php");
     exit(1);
   }
 ?> 

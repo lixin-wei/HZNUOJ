@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])){
         exit(0);
 }
 $contest_id=intval($_GET['cid']);
-if (!(isset($_SESSION['m'.$contest_id])||isset($_SESSION['administrator']))){
+if (!(isset($_SESSION['m'.$contest_id])||HAS_PRI("inner_function"))){
         $view_errors= "<a href=./loginpage.php>No privileges!</a>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);

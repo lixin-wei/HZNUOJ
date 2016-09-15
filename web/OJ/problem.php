@@ -18,8 +18,6 @@
   require_once("./include/db_info.inc.php");
 
   if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
-
-
   /* 获取我的标签 start */
   $my_tag;
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
@@ -32,7 +30,6 @@
     mysql_free_result($result);
   }
   /* 获取我的标签 end */
-
   /* 判断当前用户是否已AC本题 start*/
   $is_solved = false;
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
@@ -48,19 +45,39 @@
 
   $pr_flag=false;
   $co_flag=false;
+
   if (isset($_GET['id'])) { // 如果是比赛外的题目
-
-
     $id=intval($_GET['id']);
     //require("oj-header.php");
-    if (!$GE_TA || (!$GE_T&&$GE_TA&&$_GET['id']<=$BORDER)) // 没有管理权限或只有助教权限但是题目不在C语言区
-      $sql="SELECT * FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
-                      SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
-                                      SELECT `contest_id` FROM `contest` WHERE `end_time`>'$now' or `private`='1'))";
-    else // 如果是教师以上权限，拥有所有题目的完全查看权限
+    $res = mysql_query("SELECT problemset from problem WHERE problem_id=$id");
+    $set_name = mysql_fetch_array($res)[0];
+    $now=strftime("%Y-%m-%d %H:%M",time());
+    if (HAS_PRI("see_hidden_".$set_name."_problem")){
       $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
+    }
+    else 
+      $sql=<<<sql
+        SELECT 
+          * 
+        FROM 
+          problem
+        WHERE 
+          defunct='N' 
+          AND problem_id=$id
+          AND problem_id
+          NOT IN ( 
+            SELECT DISTINCT
+              contest_problem.problem_id
+            FROM
+              contest_problem
+            JOIN
+              contest
+            ON
+              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
+              AND contest_problem.contest_id=contest.contest_id
+          )
+sql;
     $pr_flag=true;
-
 
   } else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目
 
@@ -76,17 +93,18 @@
 
     
 
-    if (!$GE_T)
+    if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid AND `start_time`<='$now'";
     else
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid";
     $result=mysql_query($sql);
     $rows_cnt=mysql_num_rows($result);
     $row=mysql_fetch_row($result);
+    
     $contest_ok=true;
     if ($row[1] && !isset($_SESSION['c'.$cid])) $contest_ok=false;
     if ($row[2]=='Y') $contest_ok=false;
-    if (isset($_SESSION['administrator'])) $contest_ok=true;
+    if (HAS_PRI("edit_contest")) $contest_ok=true;
 
     $ok_cnt=$rows_cnt==1;              
     $langmask=$row[0];
@@ -115,9 +133,8 @@
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }
-  $result=mysql_query($sql) or die(mysql_error());
 
-       
+  $result=mysql_query($sql) or die(mysql_error());
   if (mysql_num_rows($result)!=1){
     $view_errors="";
     if(isset($_GET['id'])){

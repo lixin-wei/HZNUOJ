@@ -57,9 +57,10 @@
     mysql_free_result($result);
     $sql = "UPDATE problem SET tag1='$tag1', tag2='$tag2', tag3='$tag3' WHERE problem_id='$pid'";
     mysql_query($sql);
-  
+    $sql = "SELECT tag, COUNT(tag) AS sum FROM (SELECT tag FROM tag WHERE problem_id='$pid') AS t GROUP BY tag ORDER BY sum DESC LIMIT 3";
+    $result = mysql_query($sql);
+    while($row=mysql_fetch_assoc($result)){
+      print_r($row);
+    }
   }
-
 ?>
-
-<!-- <script language='javascript'>history.go(-1);</script> -->

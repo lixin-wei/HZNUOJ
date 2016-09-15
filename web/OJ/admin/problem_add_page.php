@@ -5,84 +5,159 @@
    * @2016.05.24
   **/
 ?>
-
-<html>
-  <head>
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-Control" content="no-cache">
-    <meta http-equiv="Content-Language" content="zh-cn">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>New Problem</title>
-  </head>
-  <body leftmargin="30" >
-
   <?php 
     require_once("../include/db_info.inc.php");
     require_once("admin-header.php");
-    $type = "OJ";
-    if (isset($_GET['type'])) {
-      $type = $_GET['type'];
-    }
-    if ($type=="C" && !$GE_TA) {
-      echo "Permission denied!";
-      exit(1);
-    }
-    if ($type=="OJ" && !$GE_T) {
-      echo "Permission denied!";
-      exit(1);
-    }
   ?>
+<?php
+  $first=true;
+  $html_select="";
+  $res=mysql_query("SELECT * FROM problemset");
+  while($row=mysql_fetch_array($res)){
+    if(HAS_PRI("edit_".$row['set_name']."_problem")){
+      $html_select .= "<option value=".$row['set_name'];
+      if($first){
+        $first=false;
+        $html_select .= " selected='true'";
+      }
+      $html_select .= ">";
+      $html_select .= $row['set_name_show'];
+      $html_select .= "</oition>";
+    }
+  }
+  if($first==true){
+    require_once("error.php");
+    exit(0);
+  }
+?>
+<div class="container" style="width: 800px;">
   <?php include_once("kindeditor.php"); ?>
     <h1>Add New problem</h1>
-
-    <form method=POST action='problem_add.php'>
-      <input type=hidden name=problem_id value="New Problem">
-      <p align=left>Problem Id:&nbsp;&nbsp;New Problem</p>
-      <p align=left>Title:<input class="input input-xxlarge" type=text name=title size=71></p>
-      <p align=left>Time Limit:<input type=text name=time_limit size=20 value=1>S</p>
-      <p align=left>Memory Limit:<input type=text name=memory_limit size=20 value=128>MByte</p>
-      <p align=left>Description:<br>
-        <textarea class="kindeditor" rows=13 name=description cols=80></textarea>
-      </p>
-      <p align=left>Input:<br>
-        <textarea  class="kindeditor" rows=13 name=input cols=80></textarea>
-      </p>
-      <p align=left>Output:<br>
-        <textarea  class="kindeditor" rows=13 name=output cols=80></textarea>
-      </p>
-      <p align=left>Sample Input:<br><textarea  class="input input-xxlarge"  rows=13 name=sample_input cols=80></textarea></p>
-      <p align=left>Sample Output:<br><textarea  class="input input-xxlarge"  rows=13 name=sample_output cols=80></textarea></p>
-      <p align=left>Test Input:<br><textarea  class="input input-xxlarge" rows=13 name=test_input cols=80></textarea></p>
-      <p align=left>Test Output:<br><textarea  class="input input-xxlarge"  rows=13 name=test_output cols=80></textarea></p>
-      <p align=left>Hint:<br>
-        <textarea class="kindeditor" rows=13 name=hint cols=80></textarea>
-      </p>
-      <p>SpecialJudge: N<input type=radio name=spj value='0' checked>Y<input type=radio name=spj value='1'></p>
-      <p>Author:<br>
-        XING: <textarea name='xing' rows='1' cols='70' style='width:100px'></textarea>
-        MING: <textarea name='ming' rows='1' cols='70' style='width:100px'></textarea>
-      </p>
-      <p align=left>Source: <textarea name=source rows=1 cols=70></textarea></p>
-      <p align=left>contest:
-        <select  name=contest_id>
-        <?php 
-          $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
-          $result=mysql_query($sql);
-          echo "<option value=''>none</option>";
-          if (mysql_num_rows($result)!=0) {
-            while ($row=mysql_fetch_object($result)) 
-              echo "<option value='$row->contest_id'>$row->contest_id $row->title</option>";
-          }
-    ?>
-        </select>
-      </p>
+    <hr/>
+    <form class="form-horizontal" method=POST action='problem_add.php' id="problem_form">
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Problem Id</label>
+        <div class="col-sm-10">
+          <input class="form-control" disabled="true" type=text name=problem_id value="New Problem">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-10">
+          <input class="form-control" type=text name=title>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Problemset</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="problemset">
+            <?php echo $html_select; ?>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Limit</label>
+        <div class="col-sm-5">
+          <div class="input-group">
+            <div class="input-group-addon">Time</div>
+            <input class="form-control" type="text" name="time_limit" value="1">
+            <div class="input-group-addon">s</div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class=" input-group">
+            <div class="input-group-addon">Memory</div>
+            <input class="form-control" type="text" name="memory_limit" value="128">
+            <div class="input-group-addon">MB</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10"><textarea name="description" id="" rows="13" class="kindeditor"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Input</label>
+        <div class="col-sm-10"><textarea name="input" id="" rows="13" class="kindeditor"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Output</label>
+        <div class="col-sm-10"><textarea name="output" id="" rows="13" class="kindeditor"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Sample Input</label>
+        <div class="col-sm-10"><textarea name="sample_input" id="" rows="13"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Sample Output</label>
+        <div class="col-sm-10"><textarea name="sample_output" id="" rows="13"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Test Input</label>
+        <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Test Output</label>
+        <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Hint</label>
+        <div class="col-sm-10"><textarea name="hint" id="" rows="13" class="kindeditor"></textarea></div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Special judge</label>
+        <div class="col-sm-10">
+          <label class="radio-inline"><input type="radio" name="spj" value="0" checked>N</label>
+          <label class="radio-inline"><input type="radio" name="spj" value="1">Y</label>
+        </div>
+      </div>
+      <hr/>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Author</label>
+        <div class="col-sm-5">
+          <div class="input-group">
+            <div class="input-group-addon">Last name(XING)</div>
+            <input class="form-control" type="text" name="xing">
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class=" input-group">
+            <div class="input-group-addon">First name(MING)</div>
+            <input class="form-control" type="text" name="ming">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Source</label>
+        <div class="col-sm-10">
+          <input class="form-control" type=text name=source>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">contest</label>
+        <div class="col-sm-10">
+          <select class="form-control" type=text name=contest_id>
+          <?php 
+            $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
+            $result=mysql_query($sql);
+            echo "<option value=''>none</option>";
+            if (mysql_num_rows($result)!=0) {
+              while ($row=mysql_fetch_object($result)) 
+                echo "<option value='$row->contest_id'>$row->contest_id $row->title</option>";
+            }
+          ?>
+          </select>
+        </div>
+      </div>
       <div align=center>
         <?php require_once("../include/set_post_key.php");?>
-        <input type=submit value=Submit name=submit></input>
+        <button type=submit value=submit class="btn btn-default">Submit</button>
       </div>
       <input type='hidden' value=<?php echo $type ?> name='type'></input>
     </form>
     <p><?php require_once("../oj-footer.php");?></p>
-  </body>
-</html>
-
+</div><!-- container -->
+  
+<?php 
+  require_once("admin-footer.php")
+?>

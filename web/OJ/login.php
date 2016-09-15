@@ -1,8 +1,8 @@
 <?php
   /**
    * This file is modified
-   * by yybird
-   * @2016.06.17
+   * by yybird @2016.06.17
+   * by D_Star @2016.08.23
   **/
 ?>
 
@@ -37,10 +37,21 @@
   }
 
   if ($login) { // 登录成功
+    echo $login;
     $_SESSION['user_id']=$login;
     echo mysql_error();
-    while ($result&&$row=mysql_fetch_assoc($result))
-      $_SESSION[$row['rightstr']]=true;
+
+    //set privileges (for non-realtime privilege check)
+    while($group_name=mysql_fetch_assoc($result)['rightstr']){
+      $rs=mysql_query("SELECT * FROM privilege_distribution WHERE group_name='$group_name'");
+      $arr=mysql_fetch_assoc($rs);
+      //print_r($arr);
+      foreach ($arr as $key => $value) {
+        if($key!="group_name"){
+          $_SESSION[$key]=$value;
+        }
+      }
+    }
     mysql_free_result($result);
 
     $sql = "SELECT email FROM users WHERE user_id='".$user_id."'";

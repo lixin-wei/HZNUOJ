@@ -1,9 +1,10 @@
 <?php require("admin-header.php");
 
-if (!$GE_TA){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
+if (!HAS_PRI("rejudge")) {
+	echo "Permission denied!";
 	exit(1);
-}?>
+}
+?>
 <?php if(isset($_POST['do'])){
 	require_once("../include/check_post_key.php");
 	if (isset($_POST['rjpid'])){
@@ -41,18 +42,21 @@ if (!$GE_TA){
 	<li>Problem
 	<form action='rejudge.php' method=post>
 		<input type=input name='rjpid'>	<input type='hidden' name='do' value='do'>
-		<input type=submit value=submit>
+		<button type=submit class="btn btn-default">Submit</button>
 		<?php require_once("../include/set_post_key.php");?>
 	</form>
 	<li>Solution
 	<form action='rejudge.php' method=post>
 		<input type=input name='rjsid'>	<input type='hidden' name='do' value='do'>
 		<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
-		<input type=submit value=submit>
+		<button type=submit class="btn btn-default">Submit</button>
 	</form>
 	<li>Contest
 	<form action='rejudge.php' method=post>
 		<input type=input name='rjcid'>	<input type='hidden' name='do' value='do'>
 		<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
-		<input type=submit value=submit>
+		<button type=submit class="btn btn-default">Submit</button>
 	</form>
+<?php 
+  require_once("admin-footer.php")
+?>

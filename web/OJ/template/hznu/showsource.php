@@ -9,32 +9,43 @@
   **/
 ?>
 <?php 
-  if (is_numeric($cid)) include "contest_header.php";
-  else include "header.php";
+  if (is_numeric($cid)) require_once "contest_header.php";
+  else require_once "header.php";
+  require_once("include/const.inc.php")
 ?>
 
 <div class="am-container">
   <!-- Main component for a primary marketing message or call to action -->
   <div class="jumbotron">
-    <link href='highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-    <link href='highlight/styles/shThemeEclipse.css' rel='stylesheet' type='text/css'/>
-    <script src='highlight/scripts/shCore.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCss.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushJava.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPython.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
-    <script src='highlight/scripts/shBrushVb.js' type='text/javascript'></script>
-    <script language='javascript'>
-      SyntaxHighlighter.config.bloggerMode = false;
-      SyntaxHighlighter.config.clipboardSwf = 'highlight/scripts/clipboard.swf';
-      SyntaxHighlighter.all();
-    </script>
+
+  <!-- highlight.js START-->
+  <link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/>
+  <script src='highlight/highlight.pack.js' type='text/javascript'></script>
+  <script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script>
+  <style type="text/css">
+    .hljs-line-numbers {
+        text-align: right;
+        border-right: 1px solid #ccc;
+        color: #999;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+  </style>
+  <script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+  </script>
+  <!-- highlight.js END-->
+  <style type="text/css">
+    .solution-info {
+      display: inline-block;
+      margin: 5px;
+    }
+  </style>
     <?php
       if ($ok==true){
         $res_class="danger";
@@ -49,22 +60,35 @@
           $res_class="default";
         }
 
-echo <<<sss
-        <hr>
-        <div class='am-text-center'>
-          Problem_ID: <span class="am-badge am-badge-primary am-text-sm">
-                        <a href='/OJ/problem.php?id=$pid' style='color: white;'>$pid</a>
-                      </span>
-          Result: <span class="am-badge am-badge-$res_class am-text-sm">$judge_result[$sresult]</span>
-          Time: <span class="am-badge am-badge-warning am-text-sm">$time</span>
-          Memory: <span class="am-badge am-badge-warning am-text-sm">$memory</span>
-          Author: <span class="am-badge am-badge-secondary am-text-sm">
-                    <a href='/OJ/userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
-                  </span>
+        echo "<hr>";
+        echo "<div class='am-text-center'>";
+        echo "<div class='solution-info'>";
+        echo "Problem_ID: ";
+        if (is_numeric($cid)){
+          $p_lable=$PID[$num];
+          echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
+        }
+        else echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?id=$pid' style='color: white;'>$pid</a>";
+        echo "</span>";
+        echo "</div>";
+        echo <<<sss
+          <div class='solution-info'>
+            Result: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span>
+          </div>
+          <div class='solution-info'>
+            Time: <span class='am-badge am-badge-warning am-text-sm'>$time</span>
+          </div>
+          <div class='solution-info'>
+            Memory: <span class='am-badge am-badge-warning am-text-sm'>$memory</span>
+          </div>
+          <div class='solution-info'>
+            Author: <span class='am-badge am-badge-secondary am-text-sm'>
+            <a href='userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
+            </span>
+          </div>
         </div>
         <hr>
 sss;
-
         // ****mail function currently stashed
         // if($view_user_id!=$_SESSION['user_id'])
         //   echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
@@ -73,15 +97,14 @@ sss;
         if ($brush=='obj-c') $brush='c';
         if ($brush=='freebasic') $brush='vb';
         if ($brush=='swift') $brush='csharp';
-        echo "<pre class=\"brush:".$brush.";\">";
+        echo "<pre style='background-color: transparent;'><code style='background-color: transparent;'>";
         echo htmlentities(str_replace("\r\n","\n",$view_source),ENT_QUOTES,"utf-8");
-        echo "</pre>";
+        echo "</code></pre>";
       } else {
         echo "<div am-text-center><h2>I am sorry, You could not view this code!</h2></div>";
       }
     ?>
   </div>
-
 </div> <!-- /container -->
 
 <!-- Bootstrap core JavaScript

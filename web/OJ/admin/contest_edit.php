@@ -11,9 +11,12 @@
   include_once("kindeditor.php") ;
   include_once("../include/const.inc.php");
 
-
+  if (!HAS_PRI("edit_contest")) {
+    echo "Permission denied!";
+    exit(1);
+  }
+  
   if (isset($_POST['syear'])) { // 如果有POST过来的信息，则获取POST值并更新
-
     /* 更新部分 start */
     require_once("../include/check_post_key.php");
     $starttime=intval($_POST['syear'])."-".intval($_POST['smonth'])."-".intval($_POST['sday'])." ".intval($_POST['shour']).":".intval($_POST['sminute']).":00";
@@ -41,7 +44,6 @@
     echo $langmask; 
 
     $cid=intval($_POST['cid']);
-    if(!($GE_T)) exit();
     $sql = "UPDATE `contest` 
             SET `title`='$title',description='$description',`start_time`='$starttime',`end_time`='$endtime',
                 `private`='$private', user_limit='$user_limit', defunct_TA='$defunct_TA', open_source='$open_source',

@@ -11,7 +11,10 @@
   if(isset($OJ_LANG)){
     require_once("../lang/$OJ_LANG.php");
   }
-
+  if (!HAS_PRI("edit_contest")) {
+    echo "Permission denied!";
+    exit(1);
+  }
   echo "<title>Problem List</title>";
   echo "<center><h2>Contest List</h2></center>";
   require_once("../include/set_get_key.php");
@@ -46,8 +49,8 @@
 
 
 <?php
-  echo "<center><table class='table table-striped' width=90% border=1>";
-  echo "<tr><td>ContestID<td>Title<td>StartTime<td>EndTime<td>Private<td>Status<td>Edit<td>Copy<td>Export<td>Logs";
+  echo "<center><table class='table table-striped table-hover' width=90%>";
+  echo "<tr><th>ContestID<th>Title<th>StartTime<th>EndTime<th>Private<th>Status<th>Edit<th>Copy<th>Export<th>Logs";
   echo "</tr>";
   for (;$row=mysql_fetch_object($result);){
     echo "<tr>";
@@ -56,16 +59,12 @@
     echo "<td>".$row->start_time;
     echo "<td>".$row->end_time;
     $cid=$row->contest_id;
-    if($GE_T) {
+    if(HAS_PRI("edit_contest")) {
       echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->private=="0"?"<span class=green>Public</span>":"<span class=red>Private<span>")."</a>";
       echo "<td><a href=contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->defunct=="N"?"<span style='color: green;'>Available</span>":"<span style='color: red;'>Reserved</span>")."</a>";
       echo "<td><a href=contest_edit.php?cid=$row->contest_id>Edit</a>";
       echo "<td><a href=contest_add.php?cid=$row->contest_id>Copy</a>";
-      if($GE_T){
-        echo "<td><a href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">Export</a>";
-      } else {
-        echo "<td>";
-      }
+      echo "<td><a href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">Export</a>";
       echo "<td> <a href=\"../export_contest_code.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">Logs</a>";
     } else {
       echo "<td colspan=5 align=right><a href=contest_add.php?cid=$row->contest_id>Copy</a><td>";
@@ -73,5 +72,5 @@
     echo "</tr>";
   }
 echo "</table></center>";
-require("../oj-footer.php");
+require_once("admin-footer.php")
 ?>

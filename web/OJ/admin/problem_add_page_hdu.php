@@ -18,8 +18,8 @@
 <center>
 <?php require_once("../include/db_info.inc.php");?>
 <?php require_once("admin-header.php");
-if (!(isset($_SESSION['administrator']))){
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
+if (!HAS_PRI("inner_function")){
+	echo "You are not allowed to view this page!";
 	exit(1);
 }
 ?>

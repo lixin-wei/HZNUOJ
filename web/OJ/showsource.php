@@ -22,8 +22,6 @@
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }
-
-
   /* 获取solution信息 start */
   $sid=strval(intval($_GET['id']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
@@ -36,6 +34,7 @@
   $view_user_id=$suser_id=$row->user_id;
   $pid = $row->problem_id;
   $cid = $row->contest_id;
+  $num = $row->num;
   mysql_free_result($result);
   /* 获取solution信息 end */
 

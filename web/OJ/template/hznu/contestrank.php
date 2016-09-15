@@ -58,7 +58,6 @@
   <!-- 工具栏 start -->
   <div class='am-text-center'>
     <?php 
-      if($GE_TA)
         echo "[ <a href='contestrank.xls.php?cid=".$cid."'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;&nbsp;&nbsp;";
       if (!$_GET['scroll'])
         echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";

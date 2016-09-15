@@ -62,6 +62,9 @@
         margin-top: 20px;
         margin-bottom: 20px;
       }
+      .am-badge{
+        font-weight: normal;
+      }
     </style>
   </head>
   <body class='am-with-topbar-fixed-top bg'>
@@ -81,13 +84,13 @@
           <li class='am-dropdown' data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >ProblemSet <span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content ">
-              <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="problemset.php" && $OJ=="HZNU") {echo "class='am-active'";} ?>><a href="problemset.php">HZNU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=C"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=C">C Lecture</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=CodeForces"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=CodeForces">CodeForces</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=HDU"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=HDU">HDU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=POJ"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=POJ">PKU</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=UVA"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=UVA">UVA</a></li>
-              <li <?php if($_SERVER["REQUEST_URI"]=="/OJ/problemset.php?OJ=ZOJ"){echo "class='am-active'";} ?>><a href="problemset.php?OJ=ZOJ">ZJU</a></li>
+              <li><a href="problemset.php">All</a></li>
+              <?php
+              $___res = mysql_query("SELECT set_name,set_name_show FROM problemset");
+              while($___row = mysql_fetch_array($___res)){
+                echo "<li><a href='problemset.php?OJ=$___row[0]'>$___row[1]</a></li>";
+              }
+              ?>
             </ul>
           </li>
           <!-- ProblemSet部分 end -->
@@ -108,6 +111,7 @@
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="faqs.php">F.A.Qs</a></li>
           <li><a href="../bbs/" target='_blank'>BBS</a></li>
           <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
+          <!-- <li><a href="tools.php">Tools</a></li> -->
         </ul>
 
         <!-- 用户部分 start -->
@@ -150,8 +154,8 @@ BOT;
           if ($show_tag) echo "<li><a href='changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
           else echo "<li><a href='changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
           echo "<li><a href='logout.php'><span class='am-icon-reply'></span> Logout</a></li>";
-
-          if($GE_TA){
+          
+          if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
               <li><a href="admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
                       </ul>

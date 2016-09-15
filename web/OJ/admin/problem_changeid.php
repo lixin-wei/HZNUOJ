@@ -9,8 +9,8 @@
 <?php 
   require("admin-header.php");
 
-  if (!(isset($_SESSION['administrator']))){
-    echo "<a href='../loginpage.php'>Permission denied!</a>";
+  if (!HAS_PRI("inner_function")) {
+    echo "Permission denied!";
     exit(1);
   }
   function writable($path){
@@ -97,4 +97,7 @@
   </form>
   
 <?php }
+?>
+<?php 
+  require_once("admin-footer.php")
 ?>

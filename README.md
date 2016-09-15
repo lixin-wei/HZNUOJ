@@ -27,3 +27,5 @@ Simply clone the repository, then run judger/install/install.sh.
 Then you need to modify apache settings, change the default server dir to /var/www/web/OJ.
 
 You may modify web/OJ/include/db_info.inc.php with your own database information.
+
+

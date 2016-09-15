@@ -9,8 +9,8 @@
 <?php 
   require("admin-header.php");
   require_once("../include/db_info.inc.php");
-  if (!$GE_T){
-    echo "<a href='../loginpage.php'>Please Login First!</a>";
+  if (!HAS_PRI("generate_team")) {
+    echo "Permission denied!";
     exit(1);
   }
 ?>
@@ -98,4 +98,6 @@
     <?php require_once("../include/set_post_key.php");?>
   </form>
 
-
+<?php 
+  require_once("admin-footer.php")
+?>

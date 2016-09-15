@@ -5,7 +5,7 @@
         if(!isset($cache_time)) $cache_time=10;
         $file="cache/cache_".$_SERVER["REQUEST_URI"].".html";
         $sid=$OJ_NAME;
-        $OJ_CACHE_SHARE=(isset($OJ_CACHE_SHARE)&&$OJ_CACHE_SHARE)&&!isset($_SESSION['administrator']);
+        $OJ_CACHE_SHARE=(isset($OJ_CACHE_SHARE)&&$OJ_CACHE_SHARE)&&!HAS_PRI("inner_function");
         if (!$OJ_CACHE_SHARE&&isset($_SESSION['user_id'])){
                 $sid.=session_id().$_SERVER['REMOTE_ADDR'];
         }

@@ -18,7 +18,7 @@ $OJ_CACHE_SHARE=false;
 <?php 
 $view_online=Array();
 		
-if (isset($_SESSION['administrator'])){
+if (HAS_PRI("see_hidden_user_info")){
 
 		
 		if(isset($_GET['search'])){

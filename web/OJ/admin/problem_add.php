@@ -9,21 +9,17 @@
 <?php 
   require_once ("admin-header.php");
   require_once("../include/check_post_key.php");
-  $type = $_POST ['type'];
-  if ($type=="C" && !$GE_TA) {
-    echo "Permission denied!";
-    exit(1);
-  }
-  if ($type=="OJ" && !$GE_T) {
-    echo "Permission denied!";
-    exit(1);
-  }
   require_once ("../include/db_info.inc.php");
   require_once ("../include/problem.php");
 ?>
 <?php // contest_id
   
   $title = $_POST ['title'];
+  $problemset= $_POST['problemset'];
+  if(!HAS_PRI("edit_".$problemset."_problem")){
+  	echo "Permission denied!";
+  	exit(0);
+  }
   $time_limit = $_POST ['time_limit'];
   $memory_limit = $_POST ['memory_limit'];
   $description = $_POST ['description'];
@@ -56,6 +52,7 @@
   $spj = $_POST ['spj'];
   if (get_magic_quotes_gpc ()) {
     $title = stripslashes ( $title);
+    $problemset = stripslashes($problemset);
     $time_limit = stripslashes ( $time_limit);
     $memory_limit = stripslashes ( $memory_limit);
     $description = stripslashes ( $description);
@@ -71,7 +68,7 @@
     $source = stripslashes ( $source );
   }
   //echo "->".$OJ_DATA."<-"; 
-  $pid=addproblem($type, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj, $OJ_DATA );
+  $pid=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj, $OJ_DATA );
   $basedir = "$OJ_DATA/$pid";
   mkdir ( $basedir );
   if(strlen($sample_output)&&!strlen($sample_input)) $sample_input="0";
@@ -88,4 +85,6 @@
   echo "<a href=quixplorer/index.php?action=list&dir=$pid&order=name&srt=yes>Add More Test Data</a>";
   /*  */
 ?>
-<?php require_once ("../oj-footer.php"); ?>
+<?php 
+  require_once("admin-footer.php")
+?>

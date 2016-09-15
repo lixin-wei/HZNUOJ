@@ -133,7 +133,7 @@
     <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
       }
-      if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
+      if (HAS_PRI("edit_".$set_name."_problem")) {
     ?>
         <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
         <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
@@ -172,19 +172,17 @@
   <h2><b><font color='#0000cd'>Hint</font></b></h2>
   <?php echo "<div>".$row->hint."</div>"; ?>
 
-  <?php
-    if (!isset($_GET['cid'])) {
-  ?>
+
   <h2><b><font color='#0000cd'>Author</font></b></h2>
   <?php 
-    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
-    else echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
+    echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
   ?>
-
+  <?php
+    if (!isset($_GET['cid'])) { // hide source if the problem is in contest
+  ?>
   <h2><b><font color='#0000cd'>Source</font></b></h2>
   <?php 
-    if($OJ=="C") echo "<div><p><a href='problemset.php?OJ=C&search=$row->source'>".nl2br($row->source)."</a></p></div>"; 
-    else echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
+    echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
     } 
   ?>
 
@@ -203,7 +201,7 @@
     </a>&nbsp;&nbsp;
     <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
     <?php
-      if ($GE_T || ($GE_TA&&$_GET['id']>=$BORDER)) {
+      if (HAS_PRI("edit_".$set_name."_problem")) {
     ?>
         <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
         <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
@@ -224,7 +222,9 @@
       url: 'addTag.php',
       type: 'post',
       data: $("#tagForm").serialize(),
-      success: function(data){
+      async: false,
+      success: function(data,status){
+        //alert(data+"\r\n"+status);
         window.location.reload();
       },
     });

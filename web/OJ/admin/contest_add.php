@@ -7,12 +7,13 @@
 ?>
 
 <?php require_once("admin-header.php");?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf8">
-<title>Add a contest</title>
-
 <?php
   require_once("../include/db_info.inc.php");
   require_once("../include/const.inc.php");
+  if (!HAS_PRI("edit_contest")) {
+    echo "Permission denied!";
+    exit(1);
+  }
   $description="";
   if (isset($_POST['syear'])) {
     require_once("../include/check_post_key.php");
@@ -193,7 +194,8 @@ $lang_count=count($language_ext);
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
   </form>
 <?php }
-require_once("../oj-footer.php");
-
 ?>
 
+<?php 
+  require_once("admin-footer.php")
+?>

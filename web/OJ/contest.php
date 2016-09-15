@@ -88,7 +88,7 @@
       if($password!=""&&$password==$row->password) $_SESSION['c'.$cid]=true;
       if ($row->private && !isset($_SESSION['c'.$cid])) $contest_ok=false;
       if ($row->defunct=='Y') $contest_ok=false;
-      if (isset($_SESSION['administrator'])) $contest_ok=true;
+      if (HAS_PRI("edit_contest")) $contest_ok=true;
                   
       $now=time();
       $start_time=strtotime($row->start_time);
@@ -98,7 +98,7 @@
       $view_start_time=$row->start_time;
       $view_end_time=$row->end_time;
 
-      if (!isset($_SESSION['administrator']) && $now<$start_time){
+      if (!HAS_PRI("edit_contest") && $now<$start_time){
         $view_errors = "<font style='color:red;text-decoration:underline;'>The contest hasn't start yet!</font>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
@@ -111,7 +111,7 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source,contest_problem.num as pnum
+    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source, author as author, contest_problem.num as pnum
             FROM `contest_problem`,`problem`
             WHERE `contest_problem`.`problem_id`=`problem`.`problem_id` 
             AND `contest_problem`.`contest_id`=$cid ORDER BY `contest_problem`.`num` 
@@ -128,7 +128,7 @@
       $view_problemset[$cnt][0]="";
       if (isset($_SESSION['user_id'])) 
         $view_problemset[$cnt][0]=check_ac($cid,$cnt);
-      if ($now>$end_time || isset($_SESSION['administrator'])) // 比赛结束，或者当前用户是管理员则显示 Problem ID
+      if ($now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者当前用户是管理员则显示 Problem ID
         $view_problemset[$cnt][1]= "$row->pid &nbsp ";
       // $view_problemset[$cnt][1] .= "Problem &nbsp;".(chr($cnt+ord('A')));
       if ($cnt < 26) $pid = chr($cnt+ord('A'));
@@ -138,10 +138,7 @@
       }
       $view_problemset[$cnt][1] .= "Problem &nbsp;".$pid;
       $view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
-      if ($now>$end_time || isset($_SESSION['administrator'])) // 比赛结束或者当前用户是管理员，则显示题目来源 
-        $view_problemset[$cnt][3]=$row->source ;
-      else // 否则不显示题目来源
-        $view_problemset[$cnt][3]="";
+      $view_problemset[$cnt][3]=$row->author;
       $view_problemset[$cnt][4]=$row->accepted ;
       $view_problemset[$cnt][5]=$row->submit ;
       $cnt++;
