@@ -145,7 +145,7 @@ sql;
 
 
   /* 计算页数cnt start */
-  $view_total_page=$cnt/$page_cnt+$cnt%$page_cnt?1:0;// 页数
+  $view_total_page=$cnt/$page_cnt+($cnt%$page_cnt?1:0);// 页数
   $cnt=0;
   $view_problemset=Array();
   $i=0;

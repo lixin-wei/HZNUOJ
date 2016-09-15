@@ -49,8 +49,7 @@
   if($first) $sql="";
   // get problems END
   /* 计算页数cnt start */
-  $cnt=$cnt/$page_cnt; // 页数
-  $view_total_page=$cnt+1;
+  $view_total_page=$cnt/$page_cnt+($cnt%$page_cnt?1:0);// 页数
   /* 计算页数cnt end */
 
 ?>
