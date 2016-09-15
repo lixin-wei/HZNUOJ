@@ -9,13 +9,15 @@
 <?php 
   require_once("admin-header.php");
   require_once("../include/check_get_key.php");
-  require_once("../include/check_get_key.php");
+  require_once("../include/my_func.inc.php");
   if (!HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
+  echo "string";
     require_once("error.php");
     exit(1);
   }
 ?>
 <?php $id=intval($_GET['id']);
+
 $sql="SELECT `defunct` FROM `problem` WHERE `problem_id`=$id";
 $result=mysql_query($sql);
 $row=mysql_fetch_row($result);
