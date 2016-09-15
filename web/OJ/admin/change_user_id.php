@@ -20,8 +20,10 @@
 
   require_once('../include/db_info.inc.php');
   require_once("admin-header.php");
+  require_once("../include/my_func.inc.php");
   if (!HAS_PRI("edit_user_profile")) {
-    echo "Permission denied!";
+    $view_error="You can't edit this user!";
+    require_once("error.php");
     exit(1);
   }
   if (isset($_POST['origin']) && isset($_POST['dest'])) {
@@ -29,7 +31,11 @@
     $origin = $_POST['origin'];
     $dest = $_POST['dest'];
     $exist = 0;
-
+    if(get_order(get_group($origin))<=get_order(get_group())){
+      $view_error="You can't edit this user!";
+      require_once("error.php");
+      exit(1);
+    }
     // OJ中判断用户是否存在
     $sql = "SELECT user_id FROM users WHERE user_id='$dest'";
     $result = mysql_query($sql);

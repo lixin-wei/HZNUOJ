@@ -6,11 +6,12 @@
   **/
 ?>
 
-<?php require_once("admin-header.php");
-require_once("../include/check_get_key.php");
-require_once("permission.php");
-  if (!$p_ok) {
-    echo "<a href='../loginpage.php'>Permission denied!</a>";
+<?php 
+  require_once("admin-header.php");
+  require_once("../include/check_get_key.php");
+  require_once("../include/check_get_key.php");
+  if (!HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
+    require_once("error.php");
     exit(1);
   }
 ?>

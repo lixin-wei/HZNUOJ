@@ -10,16 +10,16 @@
   require("admin-header.php");
   require_once("../include/set_get_key.php");
   if (!HAS_PRI("edit_news")) {
-    echo "Permission denied!";
+    require_once("error.php");
     exit(1);
   }
   echo "<title>News List</title>";
-  echo "<center><h2>News List</h2></center>";
-  $sql="select `news_id`,`user_id`,`title`,`time`,`defunct` FROM `news` order by `news_id` desc";
+  echo "<h1>News List</h1><hr/>";
+  $sql="select `news_id`,`user_id`,`title`,`time`,`defunct` FROM `news` order by `importance` desc";
   $result=mysql_query($sql) or die(mysql_error());
-  echo "<center><table width=90% border=1>";
+  echo "<center><table class='table table-condensed table-striped table-hover'>";
 
-  echo "<tr><td>PID<td>Title<td>Date<td>Status<td>Edit</tr>";
+  echo "<tr><th>PID<th>Title<th>Date<th>Status<th>Edit</tr>";
   for (;$row=mysql_fetch_object($result);) {
     echo "<tr>";
     echo "<td>".$row->news_id;

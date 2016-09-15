@@ -9,7 +9,8 @@
 <?php require_once("admin-header.php");?>
 <?php
 if (!HAS_PRI("edit_user_profile")) {
-	echo "Permission denied!";
+	$view_error="You can't edit this user!";
+	require_once("error.php");
 	exit(1);
 }
 if(isset($_POST['do'])){
@@ -20,6 +21,11 @@ if(isset($_POST['do'])){
 	
 	$user_id=$_POST['user_id'];
     $passwd =$_POST['passwd'];
+    if(get_order(get_group($user_id))<=get_order(get_group())){
+    	$view_error="You can't edit this user!";
+		require_once("error.php");
+		exit(1);
+    }
     if (get_magic_quotes_gpc ()) {
 		$user_id = stripslashes ( $user_id);
 		$passwd = stripslashes ( $passwd);

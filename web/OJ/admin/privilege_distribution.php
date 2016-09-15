@@ -31,7 +31,7 @@ if($_POST['data']){
       <ul id='pri_tag' class="nav nav-pills nav-stacked" role="tablist">
         <?php
         $html="";
-        $res=mysql_query("SELECT group_name FROM privilege_distribution");
+        $res=mysql_query("SELECT group_name FROM privilege_groups ORDER BY group_order");
         while($group_name=mysql_fetch_array($res)[0]){
           $html .= "<li role='presentation'><a href='#$group_name' role='tab' data-toggle='pill'>$group_name</a></li>";
         }

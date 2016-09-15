@@ -50,7 +50,7 @@
 
 <?php
   echo "<center><table class='table table-striped table-hover' width=90%>";
-  echo "<tr><td>ContestID<td>Title<td>StartTime<td>EndTime<td>Private<td>Status<td>Edit<td>Copy<td>Export<td>Logs";
+  echo "<tr><th>ContestID<th>Title<th>StartTime<th>EndTime<th>Private<th>Status<th>Edit<th>Copy<th>Export<th>Logs";
   echo "</tr>";
   for (;$row=mysql_fetch_object($result);){
     echo "<tr>";

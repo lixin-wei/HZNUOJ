@@ -255,4 +255,13 @@
     $res=mysql_query("SELECT problemset FROM problem WHERE problem_id=$pid");
     return mysql_fetch_array($res)[0];
   }
+  function get_order($group_name){
+    $sql="SELECT group_order FROM privilege_groups WHERE group_name='$group_name'";
+    //echo "<pre>sql:$sql</pre>";
+    return (mysql_fetch_array(mysql_query($sql))[0]);
+  }
+  function get_group($uid){
+    if($uid=="")$uid=$_SESSION['user_id'];
+    return (mysql_fetch_array(mysql_query("SELECT rightstr FROM privilege WHERE user_id='$uid'"))[0]);
+  }
 ?>

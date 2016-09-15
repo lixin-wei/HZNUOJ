@@ -24,11 +24,14 @@
     exit(0);
   }
   $can_see_problem=false;
+  $can_see_all_problems=true;
   $res=mysql_query("SELECT * FROM problemset");
   while($row=mysql_fetch_array($res)){
     if(HAS_PRI("edit_".$row['set_name']."_problem")){
       $can_see_problem=true;
-      break;
+    }
+    else{
+      $can_see_all_problems=false;
     }
   }
 ?>
@@ -126,9 +129,9 @@ sss;
 sss;
           }
           $html_li="";
+          $html_li .= "<li><a href='privilege_list.php'>Privilege List</a></li>";
           if(HAS_PRI("edit_privilege_group")){
             $html_li .= "<li><a href='privilege_add.php'>Add Privilege</a></li>";
-            $html_li .= "<li><a href='privilege_list.php'>Privilege List</a></li>";
           }
           if(HAS_PRI("edit_privilege_distribution")){
             $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
