@@ -30,16 +30,17 @@
     if($_GET['OJ']=='' || $_GET['OJ']==$set_name){
       if(HAS_PRI("see_hidden_".$set_name."_problem")){
         $t_sql=" FROM `problem` WHERE problemset='$set_name'";
-      }
-      //count the number of problem START
-      $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
-      $cnt += mysql_fetch_array($res)[0];
-      //count the number of problem END
+      
+        //count the number of problem START
+        $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
+        $cnt += mysql_fetch_array($res)[0];
+        //count the number of problem END
 
-      $t_sql = "SELECT `problem_id`, problemset ,`title`, `author`, `in_date`,`defunct` ".$t_sql;
-      if($first) $first = false;
-      else $t_sql = " UNION ".$t_sql;
-      $sql .= $t_sql;
+        $t_sql = "SELECT `problem_id`, problemset ,`title`, `author`, `in_date`,`defunct` ".$t_sql;
+        if($first) $first = false;
+        else $t_sql = " UNION ".$t_sql;
+        $sql .= $t_sql;
+      }
     }
   }
   $sql.=" ORDER BY `problem_id` DESC ";
