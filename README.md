@@ -6,8 +6,9 @@ Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
 HZNUOJ deeply modified the web client and add more features.
 
 1. Brand new UI and more JS effect, use the amazeUI framework.
-2. Tag system, help users more easily to find the problem they want.
-3. ...
+2. A more flexible privilege system.
+3. Tag system, help users more easily to find the problem they want.
+4. ...
 
 # Plans
 1. Perfect the tag system, make it more friendly to use.
@@ -15,17 +16,18 @@ HZNUOJ deeply modified the web client and add more features.
     * Search by tag.
     * Tag can only use particular words.
     * ...
-2. Reconstruct the problemset system.
-3. Reconstruct the privilege system. 
-
+2. Board freeze function.
+3. Board rolling function.
 
 # Installation
 Ubuntu 14.04 is recommended, the installer may not work well in the later version.
 
-Simply clone the repository, then run judger/install/install.sh.
+Simply clone the repository, then run `judger/install/install.sh`.
 
-Then you need to modify apache settings, change the default server dir to /var/www/web/OJ.
+Then you need to modify apache settings, change the default server dir to `/var/www/web/OJ`.
 
-You may modify web/OJ/include/db_info.inc.php with your own database information.
+At last, move the whole repo as `/var/www`.
+
+You may modify `web/OJ/include/db_info.inc.php` with your own database information.
 
 
