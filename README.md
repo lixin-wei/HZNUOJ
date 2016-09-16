@@ -22,12 +22,12 @@ HZNUOJ deeply modified the web client and add more features.
 # Installation
 Ubuntu 14.04 is recommended, the installer may not work well in the later version.
 
-Simply clone the repository, then run judger/install/install.sh.
+Simply clone the repository, then run `judger/install/install.sh`.
 
-Then you need to modify apache settings, change the default server dir to /var/www/web/OJ.
+Then you need to modify apache settings, change the default server dir to `/var/www/web/OJ`.
 
-At last, move the whole repo as /var/www.
+At last, move the whole repo as `/var/www`.
 
-You may modify web/OJ/include/db_info.inc.php with your own database information.
+You may modify `web/OJ/include/db_info.inc.php` with your own database information.
 
 
