@@ -33,8 +33,8 @@
     $sql="UPDATE `news` set `title`='$title',`time`=now(),`content`='$content',user_id='$user_id', importance='$importance' WHERE `news_id`=$news_id";
     //echo $sql;
     mysql_query($sql) or die(mysql_error());
-    header("location:news_list.php");
-    exit();
+    echo "<script type='text/javascript'>window.location.href='news_list.php';</script>";
+    exit(0);
   } else {
     $news_id=intval($_GET['id']);
     $sql="SELECT * FROM `news` WHERE `news_id`=$news_id";
@@ -54,7 +54,7 @@
 <?php include("kindeditor.php"); ?>
 
 <form method=POST action='news_edit.php'>
-  <p align=center><font size=4 color=#333399>Edit a Contest</font></p>
+  <h1>Edit a Contest</h1><hr/>
   <input type=hidden name='news_id' value=<?php echo $news_id?>>
   <p align=left>Title:<input type=text name=title size=71 value='<?php echo $title?>'></p>
   <p align='left'>
@@ -71,7 +71,7 @@
     <textarea class=kindeditor name=content ><?php echo htmlentities($content,ENT_QUOTES,"UTF-8")?></textarea>
   </p>
   <?php require_once("../include/set_post_key.php");?>
-  <input type=submit></input>
+  <button type=submit class="btn btn-default">Submit</button>
 </form>
 <?php 
   require_once("admin-footer.php")

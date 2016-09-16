@@ -10,7 +10,7 @@
   require_once("admin-header.php");
   require_once("../include/check_get_key.php");
   if (!HAS_PRI("edit_news")) {
-    echo "Permission denied!";
+    require_once("error.php");
     exit(1);
   }
 ?>
