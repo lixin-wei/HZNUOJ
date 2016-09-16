@@ -37,7 +37,7 @@
   }
 
   if ($login) { // 登录成功
-    echo $login;
+    //echo $login;
     $_SESSION['user_id']=$login;
     echo mysql_error();
 
