@@ -16,7 +16,7 @@
 <?php
   if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
   else $OJ = "HZNU";
-
+  
   if ($_GET['cid']) require_once("contest_header.php");
   else require_once("header.php");
   function sss($str){
