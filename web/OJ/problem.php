@@ -45,7 +45,6 @@
 
   $pr_flag=false;
   $co_flag=false;
-
   if (isset($_GET['id'])) { // 如果是比赛外的题目
     $id=intval($_GET['id']);
     //require("oj-header.php");

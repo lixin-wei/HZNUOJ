@@ -19,13 +19,14 @@
   <!-- 通过ProblemID查找 start-->
   <div class='am-u-md-4'>
     <form class="am-form am-form-horizontal" action='problem.php'>
-      <div class="am-u-sm-9">
+      <div class="am-u-sm-7">
         <div class="am-form-group am-form-icon">
           <i class="am-icon-search"></i>
-          <input type="text" class="am-form-field" placeholder="  &nbsp;Input problem ID" name="id">
+          <input type="text" class="am-form-field" placeholder="  &nbsp;Problem ID" name="id">
         </div>
       </div>
-      <button type="submit" class="am-u-sm-3 am-btn am-btn-warning ">Go</button>
+      <button type="submit" class="am-u-sm-2 am-btn am-btn-warning ">Go</button>
+      <a class="am-u-sm-3 am-btn am-btn-success" id="random_choose">Lucky?</a>
     </form>
   </div>
   <!-- 通过ProblemID查找 end-->
@@ -35,7 +36,7 @@
       <div class="am-u-sm-9">
         <div class="am-form-group am-form-icon">
           <i class="am-icon-binoculars"></i>
-          <input type="text" class="am-form-field" placeholder=" &nbsp;Input keywords" name="search">
+          <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search">
           <input type="hidden" name="OJ" value="<?php echo $OJ ?>">
         </div>
       </div>
@@ -65,6 +66,11 @@
     </form>
   </div>
   <!-- by problemset -->
+  <!--random choose START-->
+  <div class="am-u-md-1">
+    
+  </div>
+  <!--random choose END-->
 </div>
 <!-- 题目查找 end -->
 <hr/>
@@ -163,3 +169,20 @@
   });
 </script>
 <!-- problem selector js END-->
+
+<!--random choose js START-->
+<?php
+  $cnt_problem=mysql_fetch_array(mysql_query("SELECT COUNT(problem_id) FROM problem WHERE defunct='N'"))[0];
+  //echo "<pre>$cnt_problem</pre>";
+  $sql="SELECT problem_id FROM problem WHERE defunct='N' LIMIT ".rand(0,$cnt_problem-1).",1";
+  $res=mysql_query($sql);
+  //echo "<pre>$sql</pre>";
+  $id=mysql_fetch_array($res)[0];
+  //echo "<pre>$id</pre>";
+?>
+<script type="text/javascript">
+  $("#random_choose").click(function(){
+    window.location.href="problem.php?id=<?php echo $id; ?>";
+  });
+</script>
+<!--random choose js END-->
