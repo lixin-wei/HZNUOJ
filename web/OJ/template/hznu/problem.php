@@ -16,7 +16,7 @@
 <?php
   if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
   else $OJ = "HZNU";
-
+  
   if ($_GET['cid']) require_once("contest_header.php");
   else require_once("header.php");
   function sss($str){
@@ -230,3 +230,32 @@
     });
   });
 </script>
+<!-- highlight.js START-->
+<link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/>
+<script src='highlight/highlight.pack.js' type='text/javascript'></script>
+<script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script>
+<style type="text/css">
+  .hljs-line-numbers {
+      text-align: right;
+      border-right: 1px solid #ccc;
+      color: #999;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+  }
+  code{
+    background: transparent;
+  }
+  pre.prettyprint{
+    background: transparent;
+  }
+</style>
+<script>
+  hljs.initHighlightingOnLoad();
+  hljs.initLineNumbersOnLoad();
+</script>
+
+<!-- highlight.js END-->

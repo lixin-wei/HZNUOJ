@@ -258,7 +258,14 @@
   function get_order($group_name){
     $sql="SELECT group_order FROM privilege_groups WHERE group_name='$group_name'";
     //echo "<pre>sql:$sql</pre>";
-    return (mysql_fetch_array(mysql_query($sql))[0]);
+    $res=mysql_query($sql);
+    if(mysql_num_rows($res)){
+      $ans=(mysql_fetch_array($res)[0]);
+    }
+    else{
+      $ans=99999;
+    }
+    return $ans;
   }
   function get_group($uid){
     if($uid=="")$uid=$_SESSION['user_id'];
