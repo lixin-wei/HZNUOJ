@@ -36,7 +36,7 @@
       <div class="am-u-sm-9">
         <div class="am-form-group am-form-icon">
           <i class="am-icon-binoculars"></i>
-          <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search">
+          <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search" value="<?php echo $search ?>">
           <input type="hidden" name="OJ" value="<?php echo $OJ ?>">
         </div>
       </div>
@@ -77,20 +77,27 @@
 <!-- 页标签 start -->
 <div class="am-container">
   <ul class="am-pagination am-text-center">
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo max($page-1, 1) ?>">&laquo; Prev</a></li>
+    <?php 
+    $arg_search="";
+    if(isset($_GET['search'])){
+      $arg_search="&search=$search";
+    }
+    ?>
+    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo max($page-1, 1) ; echo $arg_search; ?> ">&laquo; Prev</a></li>
     <?php 
       //分页
       for ($i=1;$i<=$view_total_page;$i++){
         $link="problemset.php?";
         if($OJ!="all")$link.="&OJ=$OJ";
         if($i!=1)$link.="&page=$i";
+        $link.=$arg_search;
         if($page==$i)
           echo "<li class='am-active'><a href='$link'>{$i}</a></li>";
         else
           echo "<li><a href='$link'>{$i}</a></li>";
       }
     ?>
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo min($page+1,intval($view_total_page)) ?>">Next &raquo;</a></li>
+    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo min($page+1,intval($view_total_page)); echo $arg_search; ?>">Next &raquo;</a></li>
   </ul>
 </div>
 <!-- 页标签 end -->
