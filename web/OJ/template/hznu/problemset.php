@@ -118,8 +118,8 @@
   <table class="am-table am-table-hover am-table-striped am-text-nowrap table-problem">
     <thead>
       <tr>
-        <th style='width:2%;'></th>
-        <th class='am-text-center' style='width:8%;'>Prob.ID</th>
+        <th style='width:3%;'></th>
+        <th class='am-text-center' style='width:7%;'>Prob.ID</th>
         <th class='am-text-center' style='width:35%;'>Title</th>
         <th class='am-text-center' style='width:18%;'>Tags</th>
         <th class='am-text-center' style='width:10%;'>Author</th>
