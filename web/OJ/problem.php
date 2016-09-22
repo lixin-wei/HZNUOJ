@@ -90,7 +90,10 @@ sql;
       exit(0);
     }
 
-    
+    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=(
+            SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid)";
+    $res = mysql_query($sql);
+    $set_name = mysql_fetch_array($res)[0];
 
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid AND `start_time`<='$now'";
