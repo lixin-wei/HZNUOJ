@@ -8,6 +8,10 @@
 
 <?php
   // ini_set("display_errors","On");
+  if(!HAS_PRI("download_ranklist")){
+    require_once("error.php");
+    exit(0);
+  }
   ob_start();
   header ( "content-type:   application/excel" );
 ?>
@@ -159,7 +163,7 @@ $user_name='';
 $U=array();
 if (!$user_limit) {
   $sql="SELECT 
-    users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class 
+    users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.stu_id,users.class 
       FROM 
         (select * from solution where solution.contest_id='$cid' and num>=0) solution 
       left join users 
@@ -178,6 +182,7 @@ if (!$user_limit) {
       }
       $U[$user_cnt]->Add($row->num,strtotime($row->in_date)-$start_time,intval($row->result),$mark_base,$mark_per_problem,$mark_per_punish);
       $U[$user_cnt]->real_name = $row->real_name;
+      $U[$user_cnt]->stu_id = $row->stu_id;
       $U[$user_cnt]->class = strtoupper($row->class);
     }
       mysql_free_result($result);
@@ -211,7 +216,7 @@ $rank=1;
 //echo "<style> td{font-size:14} </style>";
 //echo "<title>Contest RankList -- $title</title>";
 echo "<center><h3>Contest RankList -- $title</h3></center>";
-echo "<table border=1 align='center'><tr><td>Rank<td>User<td>Real Name<td>Class<td>Nick<td>Solved<td>Penalty";
+echo "<table border=1 align='center'><tr><td>Rank<td>User<td>Real Name<td>Student ID<td>Class<td>Nick<td>Solved<td>Penalty";
 for ($i=0;$i<$pid_cnt;$i++)
   echo "<td>$PID[$i]";
 echo "</tr>";
@@ -229,6 +234,7 @@ for ($i=0;$i<$user_cnt;$i++){
     $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
   }
   echo "<td>".$U[$i]->real_name."";
+  echo "<td>".$U[$i]->stu_id."";
   echo "<td>".$U[$i]->class."";
   echo "<td>".$U[$i]->nick."";
   echo "<td>$usolved";
