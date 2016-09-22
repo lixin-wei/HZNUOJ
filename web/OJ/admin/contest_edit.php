@@ -192,5 +192,5 @@
   Users:<textarea name="ulist" rows="20" cols="20"><?php if (isset($ulist)) { echo $ulist; } ?></textarea>
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
 </form>
-<?php require_once("../oj-footer.php");?>
+<?php require_once("admin-footer.php");?>
 
