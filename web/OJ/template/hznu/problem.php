@@ -263,7 +263,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
   $("pre.prettyprint").before("<button class='am-btn am-btn-block am-btn-default am-text-sm'>Toggle Code</button>");
-  $("pre").hide(0);
+  $("pre.prettyprint").hide(0);
 
 
   $("button").click(function(){
