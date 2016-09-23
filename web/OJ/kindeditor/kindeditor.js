@@ -302,6 +302,7 @@ K.options = {
 			'.font-weight', '.font-style', '.text-decoration', '.vertical-align', '.text-indent', '.margin-left'
 		],
 		pre : ['id', 'class'],
+		code : ['id', 'class'],
 		hr : ['id', 'class', '.page-break-after'],
 		'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del' : ['id', 'class'],
 		iframe : ['id', 'class', 'src', 'frameborder', 'width', 'height', '.width', '.height']

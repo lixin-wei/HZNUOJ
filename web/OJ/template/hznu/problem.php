@@ -260,10 +260,12 @@
   hljs.initHighlightingOnLoad();
   hljs.initLineNumbersOnLoad();
 </script>
+<!-- highlight.js END-->
+<!--auto folding code START-->
 <script type="text/javascript">
 $(document).ready(function(){
-  $("pre.prettyprint").before("<button class='am-btn am-btn-block am-btn-default am-text-sm'>Toggle Code</button>");
-  $("pre.prettyprint").hide(0);
+  $("pre code").parent().before("<button class='am-btn am-btn-block am-btn-default am-text-xs'>Toggle Code</button>");
+  $("pre code").parent().hide(0);
 
 
   $("button").click(function(){
@@ -271,4 +273,4 @@ $(document).ready(function(){
   });
 });
 </script>
-<!-- highlight.js END-->
+<!--auto folding code END-->
