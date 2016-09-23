@@ -8,15 +8,15 @@
 
 <?php
   // ini_set("display_errors","On");
-  if(!HAS_PRI("download_ranklist")){
-    require_once("error.php");
-    exit(0);
-  }
   ob_start();
   header ( "content-type:   application/excel" );
 ?>
 <?php 
   require_once("./include/db_info.inc.php");
+  if(!HAS_PRI("download_ranklist")){
+    require_once("error.php");
+    exit(0);
+  }
   global $mark_base,$mark_per_problem,$mark_per_punish;
   $mark_start=60;
   $mark_end=100;
