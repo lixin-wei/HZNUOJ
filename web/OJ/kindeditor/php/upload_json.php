@@ -15,12 +15,12 @@
  *
  */
 @session_start();
+
+require_once("../../include/db_info.inc.php");
 if (!HAS_PRI("upload_files")){
   echo "<a href='../loginpage.php'>Permission denied!</a>";
   exit(1);
 }
-
-
 require_once 'JSON.php';
 
 $php_path = dirname(__FILE__) . '/';
