@@ -55,7 +55,7 @@
   static  $OJ_QQ_ASEC='df709a1253ef8878548920718085e84b';
   static  $OJ_QQ_CBURL='192.168.0.108';
 
-  static $ICON_PATH = "/icon.jpg";
+  static $ICON_PATH = "image/hznuoj.ico";
   static $VJ_URL = "http://vj.hsacm.com";
   static $GOLD_RATE = 0.10; // 金牌比例
   static $SILVER_RATE = 0.20; // 银牌比例

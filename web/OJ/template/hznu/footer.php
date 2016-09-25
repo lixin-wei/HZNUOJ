@@ -22,9 +22,12 @@
   <!-- go to top btn END -->
 </footer>
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="AmazeUI/js/jquery.min.js"></script>
-<script src="AmazeUI/js/amazeui.min.js"></script>
-<script src="AmazeUI/js/handlebars.min.js"></script>
+
+<!-- <script src="AmazeUI/js/jquery.min.js"></script> -->
+<!-- <script src="AmazeUI/js/amazeui.min.js"></script> -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+<!-- <script src="AmazeUI/js/handlebars.min.js"></script> -->
 
 <!--<![endif]-->
 <!--[if lte IE 8 ]>
