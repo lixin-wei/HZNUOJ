@@ -19,6 +19,8 @@ if(isset($_GET['uid'])){
 }
 ?>
 
-<script language=javascript>
-	window.setTimeOut(1000,"history.go(-1)");
+<script>
+	history.go(-1);
 </script>
+
+<?php require_once("admin-footer.php") ?>
