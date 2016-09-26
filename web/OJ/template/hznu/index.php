@@ -158,8 +158,8 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
   $res=mysql_query($sql);
   $cnt=mysql_fetch_array($res)[0];
   $series_data.="$cnt,";
-  if($i==1)$xAxis_data.="'today',";
-  else if($i==2) $xAxis_data.="'yesterday',";
+  if($i==0)$xAxis_data.="'today',";
+  else if($i==1) $xAxis_data.="'yesterday',";
   else $xAxis_data.="'".(-$i+1)." days',";
 }
 ?>
