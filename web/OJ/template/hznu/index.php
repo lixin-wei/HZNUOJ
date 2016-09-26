@@ -153,8 +153,8 @@ sss;
 $tot_days=20;
 $series_data="";
 $xAxis_data="";
-for($i=$tot_days ; $i>=1 ; --$i){
-  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(NOW(), interval -$i+1 day) AND in_date>date_add(NOW(), interval -$i day)";
+for($i=$tot_days-1 ; $i>=0 ; --$i){
+  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day)";
   $res=mysql_query($sql);
   $cnt=mysql_fetch_array($res)[0];
   $series_data.="$cnt,";
