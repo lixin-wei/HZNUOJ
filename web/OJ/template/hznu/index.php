@@ -49,9 +49,9 @@
   <div class="am-g ill" style="height: 30px;"></div>
   <div class='am-g'>
     <!-- 公告模块 start -->
-    <div class="am-u-md-9">
+    <div class="am-u-md-8">
       <div class="am-panel am-panel-primary" id="accordion0">
-        <div class="am-panel-hd" class="am-panel-title" data-am-collapse="{parent: '#accordion0', target: '#do-not-say-0'}">公告</div>
+        <div class="am-panel-hd" class="am-panel-title" data-am-collapse="{parent: '#accordion0', target: '#do-not-say-0'}">News</div>
         <div id="do-not-say-0" class="am-panel-collapse am-collapse am-in">
           <div class="am-panel-bd">
             <div class="am-panel-group" id="accordion"> 
@@ -87,8 +87,26 @@ sss;
     </div>
     <!-- 公告模块 end -->
 
+    
+    <!--Submission Statics START-->
+    <div class="am-u-md-4">
+      <?php
+      $sql="SELECT count(*) FROM solution WHERE in_date<=NOW() AND in_date>date_add(NOW(), interval -1 day)";
+      $res=mysql_query($sql);
+      $cnt=mysql_fetch_array($res)[0];
+      ?>
+      <div class="am-panel am-panel-primary">
+        <div class="am-panel-hd">Statics</div>
+        <div id="submission_chart" style="width: 100%;height: 250px;"></div>
+      </div>
+    </div>
+    <!--Submission Statics END-->
+  </div>
+  
+  
+
     <!-- 邮箱登录模块 start -->
-    <div class="am-u-md-3">
+<!--     <div class="am-u-md-3">
       <style>
         .bizmail_loginpanel{font-size:12px;width:250px;height:auto;border:1px solid #cccccc;background:#ffffff;}
         .bizmail_LoginBox{padding:10px 15px;}
@@ -107,7 +125,7 @@ sss;
       <script type="text/javascript">
         writeLoginPanel({domainlist:"hsacm.cn;hsacm.com", mode:"vertical"});
       </script>
-    </div>
+    </div> -->
     <!-- 邮箱登录模块 end -->
 
   </div>
@@ -120,4 +138,64 @@ sss;
     window.open('http://www.pixiv.net/member_illust.php?mode=medium&illust_id=13212258');
     //window.location.href="http://pixiv.net/member.php?id=430651";
   });
+</script>
+<!-- <script type="text/javascript" src="charts/echarts.min.js"></script> -->
+<script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var submission_chart = echarts.init(document.getElementById('submission_chart'));
+    submission_chart.showLoading();
+</script>
+
+
+<!--get recent submission json START-->
+<?php
+$tot_days=20;
+$series_data="";
+$xAxis_data="";
+for($i=$tot_days ; $i>=1 ; --$i){
+  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(NOW(), interval -$i+1 day) AND in_date>date_add(NOW(), interval -$i day)";
+  $res=mysql_query($sql);
+  $cnt=mysql_fetch_array($res)[0];
+  $series_data.="$cnt,";
+  if($i==1)$xAxis_data.="'today',";
+  else if($i==2) $xAxis_data.="'yesterday',";
+  else $xAxis_data.="'".(-$i+1)." days',";
+}
+?>
+<!--get recent submission json END-->
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    // 指定图表的配置项和数据
+    var option = {
+        color: ['#3398DB'],
+        title: {
+            text: 'Submissions In Recent Days',
+            padding: 15
+        },
+        tooltip: {},
+        legend: {
+            show: false,
+            data:['submissions']
+        },
+        xAxis: {
+            data: [<?php echo $xAxis_data; ?>],
+        },
+        yAxis: {},
+        series: [{
+            name: 'submissions',
+            type: 'bar',
+            data: [<?php echo $series_data; ?>]
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    submission_chart.setOption(option);
+    submission_chart.hideLoading();
+});
+$(window).resize(function(){
+  submission_chart.resize();
+});
 </script>
