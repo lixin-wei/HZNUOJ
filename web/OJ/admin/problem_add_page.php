@@ -92,14 +92,14 @@
         <label class="col-sm-2 control-label">Sample Output</label>
         <div class="col-sm-10"><textarea name="sample_output" id="" rows="13"></textarea></div>
       </div>
-      <div class="form-group">
+<!--       <div class="form-group">
         <label class="col-sm-2 control-label">Test Input</label>
         <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label">Test Output</label>
         <div class="col-sm-10"><textarea name="test_input" id="" rows="13"></textarea></div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Hint</label>
         <div class="col-sm-10"><textarea name="hint" id="" rows="13" class="kindeditor"></textarea></div>
