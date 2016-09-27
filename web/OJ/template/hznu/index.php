@@ -151,13 +151,23 @@ sss;
 <!--get recent submission json START-->
 <?php
 $tot_days=20;
-$series_data="";
+$series_not_ac_data="";
+$series_ac_data="";
 $xAxis_data="";
 for($i=$tot_days-1 ; $i>=0 ; --$i){
-  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day)";
+
+
+  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result != 4";
   $res=mysql_query($sql);
   $cnt=mysql_fetch_array($res)[0];
-  $series_data.="$cnt,";
+  $series_not_ac_data.="$cnt,";
+
+  $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result = 4";
+  $res=mysql_query($sql);
+  $cnt=mysql_fetch_array($res)[0];
+  $series_ac_data.="$cnt,";
+
+
   if($i==0)$xAxis_data.="'today',";
   else if($i==1) $xAxis_data.="'yesterday',";
   else $xAxis_data.="'".(-$i+1)." days',";
@@ -170,25 +180,45 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
 $(document).ready(function(){
     // 指定图表的配置项和数据
     var option = {
-        color: ['#3398DB'],
+        color: ['#3398DB','#5EB95E'],
         title: {
             text: 'Submissions In Recent Days',
-            padding: 15
+            padding: 15,
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+            },
+            formatter : function(params){
+                var tot=params[0].data+params[1].data;
+                var ac=params[1].data;
+                return "AC: "+ac+"<br>Total: "+tot;
+            },
+        },
         legend: {
             show: false,
-            data:['submissions']
+            data:['submissions'],
         },
         xAxis: {
+            type: 'category',
             data: [<?php echo $xAxis_data; ?>],
         },
         yAxis: {},
-        series: [{
-            name: 'submissions',
-            type: 'bar',
-            data: [<?php echo $series_data; ?>]
-        }]
+        series: [
+            {
+                name: 'submissions',
+                type: 'bar',
+                stack: 'total',
+                data: [<?php echo $series_not_ac_data; ?>],
+            },
+            {
+                name: 'AC',
+                type: 'bar',
+                stack: 'total',
+                data: [<?php echo $series_ac_data; ?>],
+            },
+        ]
     };
 
     // 使用刚指定的配置项和数据显示图表。
