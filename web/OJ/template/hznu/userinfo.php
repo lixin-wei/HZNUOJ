@@ -73,7 +73,8 @@
     <div class='am-u-md-6' align="center">
       <label>用户评价</label><br>
       <a href="charts/show_fore.php?user=<?php echo $_GET['user']?>">用于教学的过程性评价详情请点这里</a>
-      <script src="charts/echarts.min.js"></script>
+      <!--<script src="charts/echarts.min.js"></script>-->
+      <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script>
       <div id='chart' style='height:400px;width:470px'></div>
       <script type="text/javascript">
         var chart = echarts.init(document.getElementById('chart'));
