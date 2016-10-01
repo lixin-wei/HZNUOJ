@@ -111,14 +111,52 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source, author as author, contest_problem.num as pnum
-            FROM `contest_problem`,`problem`
-            WHERE `contest_problem`.`problem_id`=`problem`.`problem_id` 
-            AND `contest_problem`.`contest_id`=$cid ORDER BY `contest_problem`.`num` 
-                ) problem
-                left join (select problem_id pid1,count(1) accepted from solution where result=4 and contest_id=$cid group by pid1) p1 on problem.pid=p1.pid1
-                left join (select problem_id pid2,count(1) submit from solution where contest_id=$cid  group by pid2) p2 on problem.pid=p2.pid2
-    order by pnum";//AND `problem`.`defunct`='N'
+    $sql=<<<SQL
+      SELECT
+        *
+      FROM
+        (
+          SELECT
+            `problem`.`title` AS `title`,
+            `problem`.`problem_id` AS `pid`,
+            source AS source,
+            author AS author,
+            num AS pnum
+          FROM
+            `contest_problem`,
+            `problem`
+          WHERE
+            `contest_problem`.`problem_id` = `problem`.`problem_id`
+          AND `contest_problem`.`contest_id` = $cid
+          ORDER BY
+            `contest_problem`.`num`
+        ) problem
+      LEFT JOIN (
+        SELECT
+          problem_id pid1,
+          Count(DISTINCT user_id) accepted
+        FROM
+          solution
+        WHERE
+          result = 4
+        AND contest_id = $cid
+        GROUP BY
+          pid1
+      ) p1 ON problem.pid = p1.pid1
+      LEFT JOIN (
+        SELECT
+          problem_id pid2,
+          Count(1) submit
+        FROM
+          solution
+        WHERE
+          contest_id = $cid
+        GROUP BY
+          pid2
+      ) p2 ON problem.pid = p2.pid2
+      ORDER BY
+        pnum
+SQL;
 
     $result=mysql_query($sql);
     $view_problemset=Array();
