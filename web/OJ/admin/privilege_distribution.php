@@ -14,7 +14,7 @@ if($_POST['data']){
     foreach ($data as $group_name => $arr) {
       foreach ($arr as $key => $value) {
         $sql = "UPDATE privilege_distribution SET $key='$value' WHERE group_name='$group_name';";
-        mysql_query($sql);
+        $mysqli->query($sql);
       }
     }
     // echo "<pre>";
@@ -39,8 +39,8 @@ if($_POST['data']){
       <ul id='pri_tag' class="nav nav-pills nav-stacked" role="tablist">
         <?php
         $html="";
-        $res=mysql_query("SELECT group_name FROM privilege_groups ORDER BY group_order");
-        while($group_name=mysql_fetch_array($res)[0]){
+        $res=$mysqli->query("SELECT group_name FROM privilege_groups ORDER BY group_order");
+        while($group_name=$res->fetch_array()[0]){
           $html .= "<li role='presentation'><a href='#$group_name' role='tab' data-toggle='pill'>$group_name</a></li>";
         }
         echo $html;
@@ -56,8 +56,8 @@ if($_POST['data']){
       <div class="tab-content">
         <?php
         $html="";
-        $res=mysql_query("SELECT * FROM privilege_distribution");
-        while($row=mysql_fetch_assoc($res)){
+        $res=$mysqli->query("SELECT * FROM privilege_distribution");
+        while($row=$res->fetch_assoc()){
           $html .= "<div role='tabpanel' class='tab-pane' id='{$row['group_name']}'>";
           foreach ($row as $key => $value) if($key!="group_name"){
             $html .= "<div class='checkbox'><label>";

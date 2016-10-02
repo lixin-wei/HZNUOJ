@@ -59,16 +59,16 @@
   $cid=intval($_GET['cid']);
 
   $sql="SELECT `start_time`,`title`,`end_time`,user_limit FROM `contest` WHERE `contest_id`='$cid'";
-//$result=mysql_query($sql) or die(mysql_error());
-//$rows_cnt=mysql_num_rows($result);
+//$result=$mysqli->query($sql) or die($mysqli->error);
+//$rows_cnt=$result->num_rows;
   if($OJ_MEMCACHE){
     require("./include/memcache.php");
-    $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   } else {
-    $result = mysql_query($sql);// or die("Error! ".mysql_error());
-    if($result) $rows_cnt = mysql_num_rows($result);
+    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt = $result->num_rows;
     else $rows_cnt=0;
   }
 
@@ -77,16 +77,16 @@
   $end_time=0;
   $user_limit = 0;
   if ($rows_cnt>0){
-  //      $row=mysql_fetch_array($result);
+  //      $row=$result->fetch_array();
     if($OJ_MEMCACHE) $row=$result[0];
-    else $row=mysql_fetch_array($result);
+    else $row=$result->fetch_array();
     $start_time=strtotime($row['start_time']);
     $end_time=strtotime($row['end_time']);
     $title=$row['title'];  
     $user_limit = $row['user_limit']=="Y"?1:0;
   }
 
-  if(!$OJ_MEMCACHE) mysql_free_result($result);
+  if(!$OJ_MEMCACHE) $result->free();
   if ($start_time==0){
     $view_errors= "No Such Contest";
     require("template/".$OJ_TEMPLATE."/error.php");
@@ -104,24 +104,24 @@
 
 
   $sql="SELECT count(1) as pbc FROM `contest_problem` WHERE `contest_id`='$cid'";
-  //$result=mysql_query($sql);
+  //$result=$mysqli->query($sql);
   if($OJ_MEMCACHE){
   //        require("./include/memcache.php");
-    $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   }else{
-    $result = mysql_query($sql);// or die("Error! ".mysql_error());
-    if($result) $rows_cnt=mysql_num_rows($result);
+    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt=$result->num_rows;
     else $rows_cnt=0;
   }
 
   if($OJ_MEMCACHE) $row=$result[0];
-  else $row=mysql_fetch_array($result);
+  else $row=$result->fetch_array();
 
-  //$row=mysql_fetch_array($result);
+  //$row=$result->fetch_array();
   $pid_cnt=intval($row['pbc']);
-  if(!$OJ_MEMCACHE)mysql_free_result($result);
+  if(!$OJ_MEMCACHE)$result->free();
 
   /* 获取班级列表 start */
   $classSet = Array();
@@ -133,9 +133,9 @@
                 left join users
               on users.user_id=solution.user_id
             ORDER BY class";
-    $result = mysql_query($sql) or die(mysql_error());
-    while ($row=mysql_fetch_object($result)) $classSet[] = $row->class;
-    mysql_free_result($result);
+    $result = $mysqli->query($sql) or die($mysqli->error);
+    while ($row=$result->fetch_object()) $classSet[] = $row->class;
+    $result->free();
   } 
   $sql = "SELECT
             DISTINCT(class)
@@ -144,13 +144,13 @@
             RIGHT JOIN (SELECT * FROM team WHERE contest_id='$cid') team
             on team.user_id=solution.user_id
           ORDER BY class";    
-  $result = mysql_query($sql) or die(mysql_error());
-  while ($row=mysql_fetch_object($result)) $classSet[] = $row->class;
-  mysql_free_result($result);
+  $result = $mysqli->query($sql) or die($mysqli->error);
+  while ($row=$result->fetch_object()) $classSet[] = $row->class;
+  $result->free();
   /* 获取班级列表 end */
 
 
-  if(!$OJ_MEMCACHE) mysql_free_result($result);
+  if(!$OJ_MEMCACHE) $result->free();
 
 /* origin sql
 $sql="SELECT
@@ -224,12 +224,12 @@ $sql="SELECT
   /* 执行查询 start */  
   if($OJ_MEMCACHE){
     // require("./include/memcache.php");
-    $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   } else {
-    $result = mysql_query($sql);// or die("Error! ".mysql_error());
-    if($result) $rows_cnt=mysql_num_rows($result);
+    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt=$result->num_rows;
     else $rows_cnt=0;
   }
   /* 执行查询 end */  
@@ -245,7 +245,7 @@ $sql="SELECT
   // 查询team部分
   for ($i=0; $i<$rows_cnt; $i++){
     if($OJ_MEMCACHE) $row=$result[$i];
-    else $row=mysql_fetch_array($result);
+    else $row=$result->fetch_array();
 
     $n_user=$row['user_id'];
     if (strcmp($user_name,$n_user)){
@@ -261,17 +261,17 @@ $sql="SELECT
     else
       $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
   }
-  mysql_free_result($result);
+  $result->free();
 
   // 查询user部分
   if (isset($sql_u)) {
-    $result = mysql_query($sql_u);// or die("Error! ".mysql_error());
-    if($result) $rows_cnt=mysql_num_rows($result);
+    $result = $mysqli->query($sql_u);// or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt=$result->num_rows;
     else $rows_cnt=0;
 
     for ($i=0; $i<$rows_cnt; $i++){
       if($OJ_MEMCACHE) $row=$result[$i];
-      else $row=mysql_fetch_array($result);
+      else $row=$result->fetch_array();
 
       $n_user=$row['user_id'];
       if (strcmp($user_name,$n_user)){
@@ -291,16 +291,16 @@ $sql="SELECT
   /* 获取查询结果 start */
 
 //echo $U[0]->solved;
-  if(!$OJ_MEMCACHE) mysql_free_result($result);
+  if(!$OJ_MEMCACHE) $result->free();
   usort($U,"s_cmp");
 
   ////firstblood
   $first_blood=array();
   for($i=0;$i<$pid_cnt;$i++){
      $sql="select user_id from solution where contest_id=$cid and result=4 and num=$i order by in_date limit 1";
-     $result=mysql_query($sql);
-     $row_cnt=mysql_num_rows($result);
-     $row=mysql_fetch_array($result);
+     $result=$mysqli->query($sql);
+     $row_cnt=$result->num_rows;
+     $row=$result->fetch_array();
      if($row_cnt==1){
         $first_blood[$i]=$row['user_id'];
      }else{

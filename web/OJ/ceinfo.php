@@ -35,23 +35,23 @@ function is_valid($str2){
 
 $id=strval(intval($_GET['sid']));
 $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
-$result=mysql_query($sql);
-$row=mysql_fetch_object($result);
+$result=$mysqli->query($sql);
+$row=$result->fetch_object();
 $view_reinfo="";
 if (can_see_res_info($id)){
 	if($row->user_id!=$_SESSION['user_id'])
 		$view_mail_link= "<a href='mail.php?to_user=$row->user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
-	mysql_free_result($result);
+	$result->free();
 	$sql="SELECT `error` FROM `compileinfo` WHERE `solution_id`='".$id."'";
-	$result=mysql_query($sql);
-	$row=mysql_fetch_object($result);
+	$result=$mysqli->query($sql);
+	$row=$result->fetch_object();
 	if($row&&is_valid($row->error))	
 		$view_reinfo= htmlspecialchars(str_replace("\n\r","\n",$row->error));
 	
         
-	mysql_free_result($result);
+	$result->free();
 }else{
-	mysql_free_result($result);
+	$result->free();
 	$view_errors= "I am sorry, You could not view this message!";
 	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);

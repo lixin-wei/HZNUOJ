@@ -25,8 +25,8 @@
   }
   $can_see_problem=false;
   $can_see_all_problems=true;
-  $res=mysql_query("SELECT * FROM problemset");
-  while($row=mysql_fetch_array($res)){
+  $res=$mysqli->query("SELECT * FROM problemset");
+  while($row=$res->fetch_array()){
     if(HAS_PRI("edit_".$row['set_name']."_problem")){
       $can_see_problem=true;
     }

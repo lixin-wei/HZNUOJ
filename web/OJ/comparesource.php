@@ -27,21 +27,21 @@
   }
   $id=strval(intval($_GET['left']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
   $slanguage=$row->language;
   $sresult=$row->result;
   $stime=$row->time;
   $smemory=$row->memory;
   $sproblem_id=$row->problem_id;
   $view_user_id=$suser_id=$row->user_id;
-  mysql_free_result($result);
+  $result->free();
 
 
   $view_source="No source code available!";
   $sql="SELECT `source` FROM `source_code` WHERE `solution_id`=".$id;
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
   if($row) $view_source=$row->source;
 
   /////////////////////////Template

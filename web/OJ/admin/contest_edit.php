@@ -22,13 +22,13 @@
     $starttime=intval($_POST['syear'])."-".intval($_POST['smonth'])."-".intval($_POST['sday'])." ".intval($_POST['shour']).":".intval($_POST['sminute']).":00";
     $endtime=intval($_POST['eyear'])."-".intval($_POST['emonth'])."-".intval($_POST['eday'])." ".intval($_POST['ehour']).":".intval($_POST['eminute']).":00";
 
-    $title=mysql_real_escape_string($_POST['title']);
-    $password=mysql_real_escape_string($_POST['password']);
-    $description=mysql_real_escape_string($_POST['description']);
-    $private=mysql_real_escape_string($_POST['private']);
-    $user_limit = mysql_real_escape_string($_POST['user_limit']);
-    $defunct_TA = mysql_real_escape_string($_POST['defunct_TA']);
-    $open_source = mysql_real_escape_string($_POST['open_source']);
+    $title=$mysqli->real_escape_string($_POST['title']);
+    $password=$mysqli->real_escape_string($_POST['password']);
+    $description=$mysqli->real_escape_string($_POST['description']);
+    $private=$mysqli->real_escape_string($_POST['private']);
+    $user_limit = $mysqli->real_escape_string($_POST['user_limit']);
+    $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
+    $open_source = $mysqli->real_escape_string($_POST['open_source']);
     if (get_magic_quotes_gpc ()) {
         $title = stripslashes ( $title);
         $password = stripslashes ( $password);
@@ -50,9 +50,9 @@
                 `langmask`=$langmask  ,password='$password'
             WHERE `contest_id`=$cid";
     //echo $sql;
-    mysql_query($sql) or die(mysql_error());
+    $mysqli->query($sql) or die($mysqli->error);
     $sql="DELETE FROM `contest_problem` WHERE `contest_id`=$cid";
-    mysql_query($sql);
+    $mysqli->query($sql);
     $plist=trim($_POST['cproblem']);
     $pieces = explode(',', $plist);
     if (count($pieces)>0 && strlen($pieces[0])>0){
@@ -60,21 +60,21 @@
         VALUES ('$cid','$pieces[0]',0)";
       for ($i=1;$i<count($pieces);$i++)
         $sql_1=$sql_1.",('$cid','$pieces[$i]',$i)";
-      mysql_query("update solution set num=-1 where contest_id=$cid");
+      $mysqli->query("update solution set num=-1 where contest_id=$cid");
       for ($i=0;$i<count($pieces);$i++){
         $sql_2="update solution set num='$i' where contest_id='$cid' and problem_id='$pieces[$i]';";
-        mysql_query($sql_2);
+        $mysqli->query($sql_2);
       }
       //echo $sql_1;
       
-      mysql_query($sql_1) or die(mysql_error());
+      $mysqli->query($sql_1) or die($mysqli->error);
       $sql="update `problem` set defunct='N' where `problem_id` in ($plist)";
-      mysql_query($sql) or die(mysql_error());
+      $mysqli->query($sql) or die($mysqli->error);
   
   }
   
 /*  $sql="DELETE FROM `privilege` WHERE `rightstr`='c$cid'";
-  mysql_query($sql);
+  $mysqli->query($sql);
   $pieces = explode("\n", trim($_POST['ulist']));
   if (count($pieces)>0 && strlen($pieces[0])>0){
     $sql_1="INSERT INTO `privilege`(`user_id`,`rightstr`) 
@@ -82,7 +82,7 @@
     for ($i=1;$i<count($pieces);$i++)
       $sql_1=$sql_1.",('".trim($pieces[$i])."','c$cid')";
     //echo $sql_1;
-    mysql_query($sql_1) or die(mysql_error());
+    $mysqli->query($sql_1) or die($mysqli->error);
   }*/
   
   echo "<script>window.location.href=\"contest_list.php\";</script>";
@@ -92,13 +92,13 @@
 }else{
   $cid=intval($_GET['cid']);
   $sql="SELECT * FROM `contest` WHERE `contest_id`=$cid";
-  $result=mysql_query($sql);
-  if (mysql_num_rows($result)!=1){
-    mysql_free_result($result);
+  $result=$mysqli->query($sql);
+  if ($result->num_rows!=1){
+    $result->free();
     echo "No such Contest!";
     exit(0);
   }
-  $row=mysql_fetch_assoc($result);
+  $row=$result->fetch_array();
   $starttime=$row['start_time'];
   $endtime=$row['end_time'];
   $private=$row['private'];
@@ -109,20 +109,20 @@
   $langmask=$row['langmask'];
   $description=$row['description'];
   $title=htmlentities($row['title'],ENT_QUOTES,"UTF-8");
-  mysql_free_result($result);
+  $result->free();
   $plist="";
   $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid ORDER BY `num`";
-  $result=mysql_query($sql) or die(mysql_error());
-  for ($i=mysql_num_rows($result);$i>0;$i--){
-    $row=mysql_fetch_row($result);
+  $result=$mysqli->query($sql) or die($mysqli->error);
+  for ($i=$result->num_rows;$i>0;$i--){
+    $row=$result->fetch_row();
     $plist=$plist.$row[0];
     if ($i>1) $plist=$plist.',';
   }
   $ulist="";
   $sql="SELECT `user_id` FROM `privilege` WHERE `rightstr`='c$cid' order by user_id";
-  $result=mysql_query($sql) or die(mysql_error());
-  for ($i=mysql_num_rows($result);$i>0;$i--){
-    $row=mysql_fetch_row($result);
+  $result=$mysqli->query($sql) or die($mysqli->error);
+  for ($i=$result->num_rows;$i>0;$i--){
+    $row=$result->fetch_row();
     $ulist=$ulist.$row[0];
     if ($i>1) $ulist=$ulist."\n";
   }

@@ -37,11 +37,11 @@
   }else if ($len==0) $nick=$user_id;
   $password=$_POST['opassword'];
   $sql="SELECT `user_id`,`password` FROM `users` WHERE `user_id`='".$user_id."'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_array($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_array();
   if ($row && pwCheck($password,$row['password'])) $rows_cnt = 1;
   else $rows_cnt = 0;
-  mysql_free_result($result);
+  $result->free();
   if ($rows_cnt==0){
     $err_str=$err_str."Old Password Wrong";
     $err_cnt++;
@@ -73,9 +73,9 @@
   }
   if (strlen($_POST['npassword'])==0) $password=pwGen($_POST['opassword']);
   else $password=pwGen($_POST['npassword']);
-  $nick=mysql_real_escape_string(htmlspecialchars ($nick));
-  $school=mysql_real_escape_string(htmlspecialchars ($school));
-  $email=mysql_real_escape_string(htmlspecialchars ($email));
+  $nick=$mysqli->real_escape_string(htmlspecialchars ($nick));
+  $school=$mysqli->real_escape_string(htmlspecialchars ($school));
+  $email=$mysqli->real_escape_string(htmlspecialchars ($email));
   echo $class;
   $sql="UPDATE `users` SET"
   ."`password`='".($password)."',"
@@ -85,10 +85,10 @@
   ."`stu_id`='".($stu_id)."',"
   ."`real_name`='".($real_name)."', "
   ."`email`='".($email)."' "
-  ."WHERE `user_id`='".mysql_real_escape_string($user_id)."'"
+  ."WHERE `user_id`='".$mysqli->real_escape_string($user_id)."'"
   ;
   //echo $sql;
   //exit(0);
-  mysql_query($sql);// or die("Insert Error!\n");
+  $mysqli->query($sql);// or die("Insert Error!\n");
   header("Location: ./");
 ?>

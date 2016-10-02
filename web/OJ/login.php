@@ -26,8 +26,8 @@
     $user_id= stripslashes($user_id);
     $password= stripslashes($password);
   }
-  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".mysql_real_escape_string($user_id)."'";
-  $result=mysql_query($sql);
+  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$mysqli->real_escape_string($user_id)."'";
+  $result=$mysqli->query($sql);
 
   // 比对用户名和密码
   $login=check_login($user_id,$password, $cid);
@@ -39,12 +39,12 @@
   if ($login) { // 登录成功
     //echo $login;
     $_SESSION['user_id']=$login;
-    echo mysql_error();
+    echo $mysqli->error;
 
     //set privileges (for non-realtime privilege check)
-    while($group_name=mysql_fetch_assoc($result)['rightstr']){
-      $rs=mysql_query("SELECT * FROM privilege_distribution WHERE group_name='$group_name'");
-      $arr=mysql_fetch_assoc($rs);
+    while($group_name=$result->fetch_array()['rightstr']){
+      $rs=$mysqli->query("SELECT * FROM privilege_distribution WHERE group_name='$group_name'");
+      $arr=$rs->fetch_array();
       //print_r($arr);
       foreach ($arr as $key => $value) {
         if($key!="group_name"){
@@ -52,11 +52,11 @@
         }
       }
     }
-    mysql_free_result($result);
+    $result->free();
 
     $sql = "SELECT email FROM users WHERE user_id='".$user_id."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql) or die($mysqli->error);
+    $row = $result->fetch_array();
     $email = $row[0];
 //    echo $email;
 

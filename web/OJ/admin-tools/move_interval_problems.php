@@ -27,40 +27,40 @@
     for($from=500000 ; $from<=500217 ; $from++){
       $to=$from-500000+1+1926;
       $row=0;
-      if($result=mysql_query("select 1 from problem where problem_id=$to")){
-        $row=mysql_num_rows($result);
-        mysql_free_result($result);
+      if($result=$mysqli->query("select 1 from problem where problem_id=$to")){
+        $row=$result->num_rows;
+        $result->free();
       }
       
       if($row==0){
         rename("$OJ_DATA/$from","$OJ_DATA/$to");
         $sql="UPDATE `problem` SET `problem_id`=$to WHERE `problem_id`=".$from;
-        if(!mysql_query($sql)){
+        if(!$mysqli->query($sql)){
            rename("$OJ_DATA/$to","$OJ_DATA/$from");
            exit(1);
         }
         $sql="UPDATE `solution` SET `problem_id`=$to WHERE `problem_id`=".$from;
-        if(!mysql_query($sql)){
+        if(!$mysqli->query($sql)){
            rename("$OJ_DATA/$to","$OJ_DATA/$from");
            exit(1);
         }
         $sql="UPDATE `contest_problem` SET `problem_id`=$to WHERE `problem_id`=".$from;
-        if(!mysql_query($sql)){
+        if(!$mysqli->query($sql)){
            rename("$OJ_DATA/$to","$OJ_DATA/$from");
            exit(1);
         }
         $sql="UPDATE `topic` SET `pid`=$to WHERE `pid`=".$from;
-        if(!mysql_query($sql)){
+        if(!$mysqli->query($sql)){
            rename("$OJ_DATA/$to","$OJ_DATA/$from");
            exit(1);
         }
         $sql="select max(problem_id) from problem";
-        if($result=mysql_query($sql)){
-          $f=mysql_fetch_array($result);
+        if($result=$mysqli->query($sql)){
+          $f=$result->fetch_array();
           $nextid=$f[0]+1;
-          mysql_free_result($result);
+          $result->free();
           $sql="ALTER TABLE problem AUTO_INCREMENT = $nextid";
-          mysql_query($sql);
+          $mysqli->query($sql);
         }
         
         echo "done!";

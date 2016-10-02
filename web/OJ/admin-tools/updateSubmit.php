@@ -7,46 +7,46 @@
 
 	// get all problem id
 	$sql = "SELECT problem_id FROM problem";
-	$result_prob  = mysql_query($sql) or die(mysql_error());
-	if($result_prob) $prob_cnt = mysql_num_rows($result_prob);
+	$result_prob  = $mysqli->query($sql) or die($mysqli->error);
+	if($result_prob) $prob_cnt = $result_prob->num_rows;
   else $prob_cnt = 0;
 	
   for ($i=0; $i<$prob_cnt; $i++) {
-		$row_prob = mysql_fetch_object($result_prob);
+		$row_prob = $result_prob->fetch_object();
 		$prob_id = $row_prob->problem_id;
 
 		// get AC numbers
 		$sql = "SELECT count(*) AS num FROM solution WHERE result=4 AND problem_id=".$prob_id;
-		$result = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_object($result);
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		$row = $result->fetch_object();
 		$AC = $row->num;
-		mysql_free_result($result);
+		$result->free();
 
 		// get AC user numbers
 		$sql = "SELECT count(DISTINCT user_id) AS num FROM solution WHERE result=4 AND problem_id=".$prob_id;
-		$result = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_object($result);
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		$row = $result->fetch_object();
 		$solved_user = $row->num;
-		mysql_free_result($result);
+		$result->free();
 
 		// get submit numbers
 		$sql = "SELECT count(*) AS num FROM solution WHERE problem_id=".$prob_id;
-		$result = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_object($result);
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		$row = $result->fetch_object();
 		$submit = $row->num;
-		mysql_free_result($result);
+		$result->free();
 
 		// get submit user numbers
 		$sql = "SELECT count(DISTINCT user_id) AS num FROM solution WHERE problem_id=".$prob_id;
-		$result = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_object($result);
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		$row = $result->fetch_object();
 		$submit_user = $row->num;
-		mysql_free_result($result);
+		$result->free();
 
 		// update
 		$sql = "UPDATE problem SET accepted=".$AC.", solved_user=".$solved_user.", submit=".$submit.", submit_user=".$submit_user." WHERE problem_id=".$prob_id;
-		mysql_query($sql) or die(mysql_error());
+		$mysqli->query($sql) or die($mysqli->error);
   }
-  mysql_free_result($result_prob);
+  $result_prob->free();
 	echo "update submit successfully!"
 ?>

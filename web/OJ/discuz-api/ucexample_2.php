@@ -28,7 +28,7 @@ $db = new dbstuff;
 $db->connect($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 unset($dbhost, $dbuser, $dbpw, $dbname, $pconnect);
 
-//$r = mysql_query("SELECT DATABASE()") or die(mysql_error());
+//$r = $mysqli->query("SELECT DATABASE()") or die($mysqli->error);
 //echo mysql_result($r,0);
 
 include './uc_client/client.php';

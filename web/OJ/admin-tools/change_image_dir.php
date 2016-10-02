@@ -7,8 +7,8 @@ ini_set("display_errors","On");
 require_once('../include/db_info.inc.php');
 
 $sql="SELECT * FROM problem";
-$result=mysql_query($sql);
-while ($row=mysql_fetch_assoc($result)) {
+$result=$mysqli->query($sql);
+while ($row=$result->fetch_array()) {
 	// $str = $row["description"];
 	// $isMatched = preg_match('/<img.*src=\"\/OJ\/.*\".*>/', $str, $matches);
 	// var_dump($isMatched, $matches);
@@ -18,7 +18,7 @@ while ($row=mysql_fetch_assoc($result)) {
 	$id=$row["problem_id"];
 	$sql2="UPDATE problem SET description='$des' WHERE problem_id='$id'";
 	//echo $sql2;
-	mysql_query($sql2);
+	$mysqli->query($sql2);
 	//echo $row["description"];
 }
 echo "succeed!";

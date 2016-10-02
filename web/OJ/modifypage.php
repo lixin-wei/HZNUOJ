@@ -24,9 +24,9 @@
     exit(0);
   }
   $sql="SELECT * FROM `users` WHERE `user_id`='".$_SESSION['user_id']."'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
-  mysql_free_result($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
+  $result->free();
   
   /////////////////////////Template
   require("template/".$OJ_TEMPLATE."/modifypage.php");

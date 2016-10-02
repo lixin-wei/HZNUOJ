@@ -9,7 +9,7 @@
   if(isset($_GET['id'])){
   	
   	$sql="DELETE FROM news WHERE news_id='{$_GET['id']}'";
-  	mysql_query($sql);
+  	$mysqli->query($sql);
   }
   require_once("admin-footer.php");
 ?>

@@ -6,15 +6,15 @@ if (!HAS_PRI("edit_privilege_group")) {
 	exit(1);
 }
 if(isset($_GET['uid'])){
-	$user_id=mysql_real_escape_string($_GET['uid']);
-	$rightstr =mysql_real_escape_string($_GET['rightstr']);
+	$user_id=$mysqli->real_escape_string($_GET['uid']);
+	$rightstr =$mysqli->real_escape_string($_GET['rightstr']);
 	if (get_order($rightstr)<=get_order(get_group())) {
 		require_once("error.php");
 		exit(1);
 	}
 	$sql="DELETE from `privilege` where user_id='$user_id' and rightstr='$rightstr'";
-	mysql_query($sql);
-	if (mysql_affected_rows()==1) echo "$user_id $rightstr deleted!";
+	$mysqli->query($sql);
+	if ($mysqli->affected_rows==1) echo "$user_id $rightstr deleted!";
 	else echo "No such privilege!";
 }
 ?>

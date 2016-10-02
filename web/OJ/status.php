@@ -51,12 +51,12 @@
     $sql=$sql." AND `contest_id`='$cid' and num>=0 ";
     $str2=$str2."&cid=$cid";
     $sql_lock="SELECT * FROM `contest` WHERE `contest_id`='$cid'";
-    $result=mysql_query($sql_lock) or die(mysql_error());
-    $rows_cnt=mysql_num_rows($result);
+    $result=$mysqli->query($sql_lock) or die($mysqli->error);
+    $rows_cnt=$result->num_rows;
     $start_time=0;
     $end_time=0;
     if ($rows_cnt>0){
-      $row=mysql_fetch_object($result);
+      $row=$result->fetch_object();
       $start_time=strtotime($row->start_time);
       $title=$row->title;
       $end_time=strtotime($row->end_time);
@@ -155,12 +155,12 @@
 
   if($OJ_MEMCACHE){
     require("./include/memcache.php");
-    $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   } else{
-    $result = mysql_query($sql);// or die("Error! ".mysql_error());
-    if($result) $rows_cnt=mysql_num_rows($result);
+    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt=$result->num_rows;
     else $rows_cnt=0;
   }
   $top=$bottom=-1;
@@ -178,7 +178,7 @@
   $last=0;
   for ($i=0;$i<$rows_cnt;$i++){
     if($OJ_MEMCACHE) $row=$result[$i];
-    else $row=mysql_fetch_array($result);
+    else $row=$result->fetch_array();
     //$view_status[$i]=$row;
     if($i==0&&$row['result']<4) $last=$row['solution_id'];
 
@@ -298,7 +298,7 @@
     $view_status[$i][8]= $row['in_date'];
     //$view_status[$i][9]= $row['judger'];
   }
-  if(!$OJ_MEMCACHE) mysql_free_result($result);
+  if(!$OJ_MEMCACHE) $result->free();
 
   
 ?>

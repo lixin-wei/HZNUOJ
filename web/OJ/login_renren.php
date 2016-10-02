@@ -38,14 +38,14 @@ if(array_key_exists('code',$_GET)){
         $school = "";
         // check first
         $sql = "SELECT `user_id` FROM `users` where `user_id`='$uname'";
-        $res = mysql_query($sql);
-        $row_num = mysql_num_rows($res);
+        $res = $mysqli->query($sql);
+        $row_num = $res->num_rows;
         if ($row_num == 0){
             $sql="INSERT INTO `users`("
                     ."`user_id`,`email`,`ip`,`accesstime`,`password`,`reg_time`,`nick`,`school`)"
             ."VALUES('".$uname."','".$email."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$school."')";
            // reg it
-           mysql_query($sql);
+           $mysqli->query($sql);
         }
         // login it
 		$_SESSION['user_id']=$uname;

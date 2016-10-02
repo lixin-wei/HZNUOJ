@@ -25,13 +25,13 @@
   //echo $sql;
   if($OJ_MEMCACHE){
     require("./include/memcache.php");
-    $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   } else {
-    $result = mysql_query($sql);// or die("Error! ".mysql_error());
+    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
     if($result) 
-      $rows_cnt=mysql_num_rows($result);
+      $rows_cnt=$result->num_rows;
     else 
       $rows_cnt=0;
   }
@@ -39,7 +39,7 @@
     if($OJ_MEMCACHE)
       $row=$result[$i];
     else
-      $row=mysql_fetch_array($result);
+      $row=$result->fetch_array();
     if(isset($_GET['tr'])){
       $res=$row['result'];
       if ($res==11) {
@@ -47,15 +47,15 @@
       } else {
         $sql="SELECT `error` FROM `runtimeinfo` WHERE `solution_id`='".$solution_id."'";
       }
-      $result=mysql_query($sql);
-      $row=mysql_fetch_array($result);
+      $result=$mysqli->query($sql);
+      $row=$result->fetch_array();
       if($row){
         if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE"))
           echo str_replace("\n","<br>",htmlspecialchars(str_replace("\n\r","\n",$row['error'])));
         else
           echo htmlspecialchars(str_replace("\n\r","\n",$row['error']));
         $sql="delete from custominput where solution_id=".$solution_id;
-        mysql_query($sql);     
+        $mysqli->query($sql);     
       }
       //echo $sql.$res;
     }else{
@@ -63,5 +63,5 @@
       //echo "hhhh".",".$row['memory'].",".$row['time'];
     }
 }
-if(!$OJ_MEMCACHE)mysql_free_result($result);
+if(!$OJ_MEMCACHE)$result->free();
 ?>

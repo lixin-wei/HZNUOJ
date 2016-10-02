@@ -17,15 +17,15 @@
   }
   if(isset($_POST['do'])){
     require_once("../include/check_post_key.php");
-    $user_id=mysql_real_escape_string($_POST['user_id']);
+    $user_id=$mysqli->real_escape_string($_POST['user_id']);
     $rightstr =$_POST['rightstr'];
     if($rightstr<=get_order(get_group())){
       require_once("error.php");
       exit(1);
     }
     $sql="INSERT INTO `privilege` VALUES('$user_id','$rightstr','N')";
-    mysql_query($sql);
-    if (mysql_affected_rows()==1) echo "$user_id $rightstr added!";
+    $mysqli->query($sql);
+    if ($mysqli->affected_rows==1) echo "$user_id $rightstr added!";
     else echo "No such user!";
   }
 ?>
@@ -37,8 +37,8 @@
   Privilege:
   <select name="rightstr">
     <?php
-      $res=mysql_query("SELECT * FROM privilege_groups");
-      while($row=mysql_fetch_array($res)){
+      $res=$mysqli->query("SELECT * FROM privilege_groups");
+      while($row=$res->fetch_array()){
         if($row['group_order']>get_order(get_group())){
           echo '<option value="'.$row['group_name'].'">'.$row['group_name'].'</option>';
         }

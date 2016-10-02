@@ -26,15 +26,15 @@
     else
       system("rm -rf $basedir");
         $sql="delete FROM `problem` WHERE `problem_id`=$id";
-        mysql_query($sql) or die(mysql_error());
+        $mysqli->query($sql) or die($mysqli->error);
         $sql="select max(problem_id) FROM `problem`" ;
-        $result=mysql_query($sql);
-        $row=mysql_fetch_row($result);
+        $result=$mysqli->query($sql);
+        $row=$result->fetch_row();
         $max_id=$row[0];
         $max_id++;
-        mysql_free_result($result);
+        $result->free();
         $sql="ALTER TABLE problem AUTO_INCREMENT = $max_id;";
-        mysql_query($sql);
+        $mysqli->query($sql);
         ?>
         <script language=javascript>
                 history.go(-1);

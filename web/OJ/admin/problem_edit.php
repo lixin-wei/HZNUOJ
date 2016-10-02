@@ -16,8 +16,8 @@
   ?>
   <?php 
         $sql="SELECT * FROM `problem` WHERE `problem_id`=".intval($_GET['id']);
-        $result=mysql_query($sql);
-        $row=mysql_fetch_object($result);
+        $result=$mysqli->query($sql);
+        $row=$result->fetch_object();
         if (!HAS_PRI("edit_".$row->problemset."_problem")) {
           require_once("error.php");
           exit(0);
@@ -46,8 +46,8 @@
         <div class="col-sm-10">
           <select class="form-control" name="problemset">
           <?php
-            $res=mysql_query("SELECT * FROM problemset");
-            while($row2=mysql_fetch_array($res)){
+            $res=$mysqli->query("SELECT * FROM problemset");
+            while($row2=$res->fetch_array()){
               if(HAS_PRI("edit_".$row2['set_name']."_problem")){
                 echo "<option value=".$row2['set_name'];
                 if($row2['set_name']==$row->problemset){
@@ -154,10 +154,10 @@
           <select class="form-control" type=text name=contest_id>
           <?php 
             $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
-            $result=mysql_query($sql);
+            $result=$mysqli->query($sql);
             echo "<option value=''>none</option>";
-            if (mysql_num_rows($result)!=0) {
-              while ($row=mysql_fetch_object($result)) 
+            if ($result->num_rows!=0) {
+              while ($row=$result->fetch_object()) 
                 echo "<option value='$row->contest_id'>$row->contest_id $row->title</option>";
             }
           ?>
@@ -236,25 +236,25 @@
           fputs($fp,preg_replace("(\r\n)","\n",$sample_output));
           fclose($fp);
         }
-        $title=mysql_real_escape_string($title);
-        $time_limit=mysql_real_escape_string($time_limit);
-        $memory_limit=mysql_real_escape_string($memory_limit);
-        $description=mysql_real_escape_string($description);
-        $input=mysql_real_escape_string($input);
-        $output=mysql_real_escape_string($output);
-        $sample_input=mysql_real_escape_string($sample_input);
-        $sample_output=mysql_real_escape_string($sample_output);
+        $title=$mysqli->real_escape_string($title);
+        $time_limit=$mysqli->real_escape_string($time_limit);
+        $memory_limit=$mysqli->real_escape_string($memory_limit);
+        $description=$mysqli->real_escape_string($description);
+        $input=$mysqli->real_escape_string($input);
+        $output=$mysqli->real_escape_string($output);
+        $sample_input=$mysqli->real_escape_string($sample_input);
+        $sample_output=$mysqli->real_escape_string($sample_output);
     //  $test_input=($test_input);
     //  $test_output=($test_output);
-        $hint=mysql_real_escape_string($hint);
-        $author=mysql_real_escape_string($author);
-        $source=mysql_real_escape_string($source);
+        $hint=$mysqli->real_escape_string($hint);
+        $author=$mysqli->real_escape_string($author);
+        $source=$mysqli->real_escape_string($source);
     //  $spj=($spj);
   
         $sql="UPDATE `problem` set `problemset`='$problemset',`title`='$title',`time_limit`='$time_limit',`memory_limit`='$memory_limit',
             `description`='$description',`input`='$input',`output`='$output',`sample_input`='$sample_input',`sample_output`='$sample_output',`hint`='$hint',author='$author',`source`='$source',`spj`=$spj,`in_date`=NOW()
             WHERE `problem_id`=$id";
-        @mysql_query($sql) or die(mysql_error());
+        @$mysqli->query($sql) or die($mysqli->error);
         echo "Edit OK!";
         //echo $sql;
         echo "<a href='../problem.php?id=$id'>See The Problem!</a>";

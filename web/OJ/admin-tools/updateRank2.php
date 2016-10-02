@@ -28,25 +28,25 @@
 
   // 获取解题数大于10的用户数量存入user_cnt_divisor
   $sql = "SELECT user_id FROM users WHERE solved>10";
-  $result_user  = mysql_query($sql) or die(mysql_error());
-  if($result_user) $user_cnt_divisor = mysql_num_rows($result_user);
+  $result_user  = $mysqli->query($sql) or die($mysqli->error);
+  if($result_user) $user_cnt_divisor = $result_user->num_rows;
   else $user_cnt_divisor = 1;
-  mysql_free_result($result_user);
+  $result_user->free();
   echo $user_cnt_divisor."<br>";
 
   // 获取用户总量
   $sql = "SELECT user_id FROM users";
-  $result_user  = mysql_query($sql) or die(mysql_error());
-  if($result_user) $user_cnt = mysql_num_rows($result_user);
+  $result_user  = $mysqli->query($sql) or die($mysqli->error);
+  if($result_user) $user_cnt = $result_user->num_rows;
   else $user_cnt = 0;
 
   $user_info = array();
   for ($i=0; $i<$user_cnt; $i++) {
-    $row_user = mysql_fetch_object($result_user);
+    $row_user = $result_user->fetch_object();
     $user_info[$i] = new User();
     $user_info[$i]->user_id = $row_user->user_id;
   }
-  mysql_free_result($result_user);
+  $result_user->free();
   echo $user_cnt."<br>";
 
   // 获取hznuoj分数
@@ -57,10 +57,10 @@
 
     // 获取该用户AC的所有题目，存入result
     $sql = "SELECT DISTINCT problem_id FROM solution WHERE user_id='".$user_mysql."' AND result=4";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = $mysqli->query($sql) or die($mysqli->error);
 
     // 获取该用户AC的题目数量，存入rows_cnt
-    if($result) $rows_cnt = mysql_num_rows($result);
+    if($result) $rows_cnt = $result->num_rows;
     else $rows_cnt = 0;
     
     $user_info[$i]->strength = 0;
@@ -69,34 +69,33 @@
 
     // 对于每道AC的题目，计算其分数，并加至strength
     for ($j=0; $j<$rows_cnt; $j++) {
-      $row = mysql_fetch_object($result);
+      $row = $result->fetch_object();
       $prob_id = $row->problem_id;
       $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$prob_id;
-      $y_result = mysql_query($sql) or die(mysql_error());
-      $y_row = mysql_fetch_object($y_result);
+      $y_result = $mysqli->query($sql) or die($mysqli->error);
+      $y_row = $y_result->fetch_object();
       $solved = $y_row->solved_user;
       $submit = $y_row->submit_user;
       $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
       if ($scores < 10) $scores = 10;
       $user_info[$i]->strength += $scores;
-      mysql_free_result($y_result);
+      $y_result->free();
     }
-    mysql_free_result($result);
+    $result->free();
 
   }
 
   // 连接转入vjudge
-  $connvj = mysql_connect($DB_VJHOST,$DB_VJUSER,$DB_VJPASS,true);
-  if (!$connvj) die('Could not connect: ' . mysql_error());
-  mysql_select_db("vhoj", $connvj);
-  mysql_query("set names utf8");
+  $connvj = new mysqli($DB_VJHOST,$DB_VJUSER,$DB_VJPASS,"vhoj");
+  if ($connvj->connect_errno) die('Could not connect: ' . $connvj->error);
+  $connvj->query("set names utf8");
 
   // 获取vjudge用户数存入user_cnt_divisor
   $sql = "SELECT C_USERNAME FROM t_user";
-  $result_user  = mysql_query($sql) or die(mysql_error());
-  if($result_user) $user_cnt_divisor = mysql_num_rows($result_user);
+  $result_user  = $connvj->query($sql) or die($connvj->error);
+  if($result_user) $user_cnt_divisor = $result_user->num_rows;
   else $user_cnt_divisor = 1;
-  mysql_free_result($result_user);
+  $result_user->free();
   //echo $user_cnt_divisor;
 
   // 获取各个OJ的解题数
@@ -106,38 +105,38 @@
     
     // ZOJ
     $sql = "SELECT COUNT(DISTINCT C_ORIGIN_PROB) AS num FROM t_submission WHERE C_ORIGIN_OJ='ZOJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_object($result);
+    $result = $connvj->query($sql) or die($connvj->error);
+    $row = $result->fetch_object();
     $user_info[$i]->ZJU = $row->num;
-    mysql_free_result($result);
+    $result->free();
 
     // HDOJ
     $sql = "SELECT COUNT(DISTINCT C_ORIGIN_PROB) AS num FROM t_submission WHERE C_ORIGIN_OJ='HDU' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_object($result);
+    $result = $connvj->query($sql) or die($connvj->error);
+    $row = $result->fetch_object();
     $user_info[$i]->HDU = $row->num;
-    mysql_free_result($result);
+    $result->free();
 
     // POJ
     $sql = "SELECT COUNT(DISTINCT C_ORIGIN_PROB) AS num FROM t_submission WHERE C_ORIGIN_OJ='POJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_object($result);
+    $result = $connvj->query($sql) or die($connvj->error);
+    $row = $result->fetch_object();
     $user_info[$i]->PKU = $row->num;
-    mysql_free_result($result);   
+    $result->free();   
 
     // UVA
     $sql = "SELECT COUNT(DISTINCT C_ORIGIN_PROB) AS num FROM t_submission WHERE C_ORIGIN_OJ='UVA' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_object($result);
+    $result = $connvj->query($sql) or die($connvj->error);
+    $row = $result->fetch_object();
     $user_info[$i]->UVA = $row->num;
-    mysql_free_result($result);
+    $result->free();
 
     // Codeforces
     $sql = "SELECT COUNT(DISTINCT C_ORIGIN_PROB) AS num FROM t_submission WHERE C_ORIGIN_OJ='CodeForces' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-    $result = mysql_query($sql) or die(mysql_error());
-    $row = mysql_fetch_object($result);
+    $result = $connvj->query($sql) or die($connvj->error);
+    $row = $result->fetch_object();
     $user_info[$i]->CF = $row->num;
-    mysql_free_result($result);
+    $result->free();
 
   }
 
@@ -149,21 +148,21 @@
 
     // 获取该用户AC的所有题目，存入result
     $sql = "SELECT DISTINCT C_PROBLEM_ID FROM t_submission WHERE C_USERNAME='".$user_mysql."' AND C_STATUS='Accepted'";
-    $result = mysql_query($sql) or die(mysql_error());
+    $result = $connvj->query($sql) or die($connvj->error);
 
     // 获取该用户AC的题目数量，存入rows_cnt
-    if($result) $rows_cnt = mysql_num_rows($result);
+    if($result) $rows_cnt = $result->num_rows;
     else $rows_cnt = 0;
 
     // 对于每道AC的题目，计算其分数，并加至strength
     for ($j=0; $j<$rows_cnt; $j++) {
       // 获取题号
-      $row = mysql_fetch_object($result);
+      $row = $result->fetch_object();
       $prob_id = $row->C_PROBLEM_ID;
       // 获取AC人数
       $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS ac_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id." AND C_STATUS='Accepted'";
-      $y_result = mysql_query($sql) or die(mysql_error());
-      $y_row = mysql_fetch_object($y_result);
+      $y_result = $connvj->query($sql) or die($connvj->error);
+      $y_row = $y_result->fetch_object();
       $solved = $y_row->ac_user;
       // 获取提交人数
       $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS sub_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id;
@@ -171,20 +170,15 @@
       $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
       if ($scores < 10) $scores = 10;
       $user_info[$i]->strength += $scores;
-      mysql_free_result($y_result);
+      $y_result->free();
     }
     // echo $user_mysql.":".$user_info[$i]->strength."<br>";
 
-    mysql_free_result($result);
+    $result->free();
 
   }
-
+  $connvj->close();
   // 连接转回hustoj
-  $conn = mysql_connect($DB_HOST,$DB_USER,$DB_PASS,true);
-  if (!$conn) die('Could not connect: ' . mysql_error());
-  mysql_select_db("jol", $conn);
-  mysql_query("set names utf8");
-
 
   require_once('../include/rank.inc.php');
 
@@ -217,7 +211,7 @@
             PKU=".$user_info[$i]->PKU.",
             UVA=".$user_info[$i]->UVA.",
             CF=".$user_info[$i]->CF." WHERE user_id='".$user_mysql."'";
-    $result=mysql_query($sql);
+    $result=$mysqli->query($sql);
   }
 
   echo "update rank successfully!";

@@ -35,12 +35,12 @@ function submitSolution($pid,$solution,$language)
 	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length)
 	VALUES('$pid','".$_SESSION['user_id']."',NOW(),'$language','127.0.0.1','$len')";
 	
-	mysql_query ( $sql );
+	$mysqli->query ( $sql );
 	$insert_id = mysql_insert_id ();
-	$solution=mysql_real_escape_string($solution);
+	$solution=$mysqli->real_escape_string($solution);
 	//echo "submiting$language.....";
 	$sql = "INSERT INTO `source_code`(`solution_id`,`source`)VALUES('$insert_id','$solution')";
-	mysql_query ( $sql );
+	$mysqli->query ( $sql );
 
 }
 ?>
@@ -58,9 +58,9 @@ function hasProblem($title){
 	require("../include/db_info.inc.php");
 	$md5=md5($title);
 	$sql="select 1 from problem where md5(title)='$md5'";  
-	$result=mysql_query ( $sql );
-	$rows_cnt=mysql_num_rows($result);		
-	mysql_free_result($result);
+	$result=$mysqli->query ( $sql );
+	$rows_cnt=$result->num_rows;		
+	$result->free();
 	//echo "row->$rows_cnt";			
 	return  ($rows_cnt>0);
 
@@ -153,16 +153,16 @@ if ($_FILES ["fps"] ["error"] > 0) {
 						$newpath=dirname($_SERVER['REQUEST_URI'] )."/../upload/pimg".$pid."_".$testno.".".$ext;
 						if($OJ_SAE) $newpath=$SAE_STORAGE_ROOT."upload/pimg".$pid."_".$testno.".".$ext;
 						
-						$src=mysql_real_escape_string($src);
-						$newpath=mysql_real_escape_string($newpath);
+						$src=$mysqli->real_escape_string($src);
+						$newpath=$mysqli->real_escape_string($newpath);
 						$sql="update problem set description=replace(description,'$src','$newpath') where problem_id=$pid";  
-						mysql_query ( $sql );
+						$mysqli->query ( $sql );
 						$sql="update problem set input=replace(input,'$src','$newpath') where problem_id=$pid";  
-						mysql_query ( $sql );
+						$mysqli->query ( $sql );
 						$sql="update problem set output=replace(output,'$src','$newpath') where problem_id=$pid";  
-						mysql_query ( $sql );
+						$mysqli->query ( $sql );
 						$sql="update problem set hint=replace(hint,'$src','$newpath') where problem_id=$pid";  
-						mysql_query ( $sql );
+						$mysqli->query ( $sql );
 						array_push($did,$src);
 				}
 				

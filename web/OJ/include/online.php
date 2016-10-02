@@ -71,7 +71,7 @@ class online{
 	 */
 	function __construct()
 	{
-		$this->ip = mysql_real_escape_string($_SERVER['REMOTE_ADDR']);
+		$this->ip = $mysqli->real_escape_string($_SERVER['REMOTE_ADDR']);
       
       
          if( !empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ){
@@ -84,12 +84,12 @@ class online{
 
         }
 
-		$this->ua = mysql_real_escape_string(htmlspecialchars($_SERVER['HTTP_USER_AGENT']));
-		$this->uri = mysql_real_escape_string($_SERVER['PHP_SELF']);
+		$this->ua = $msyqli->real_escape_string(htmlspecialchars($_SERVER['HTTP_USER_AGENT']));
+		$this->uri = $mysqli->real_escape_string($_SERVER['PHP_SELF']);
 		if(isset($_SERVER['HTTP_REFERER'])){
-			$this->refer = mysql_real_escape_string(htmlspecialchars($_SERVER['HTTP_REFERER']));
+			$this->refer = $mysqli->real_escape_string(htmlspecialchars($_SERVER['HTTP_REFERER']));
 	    }
-		$this->hash = mysql_real_escape_string(session_id());
+		$this->hash = $mysqli->real_escape_string(session_id());
 		//$this->db = new mysqli(DBHOST, DBUSER, DBPASSWORD, )
 
 		//check user existed!
@@ -115,12 +115,12 @@ class online{
 		$ret = array();
 		
 		$sql = 'SELECT * FROM online';
-		$res = mysql_query($sql);
+		$res = $mysqli->query($sql);
 		//$sql = 'ALTER TABLE `jol`.`online` ENGINE = MEMORY';
-		//$res = mysql_query($sql);
+		//$res = $mysqli->query($sql);
 		if($res ){
-			while($rt = mysql_fetch_object($res)) $ret[] = $rt;
-			mysql_free_result($res);
+			while($rt = $res->fetch_object()) $ret[] = $rt;
+			->free();
 		}
 		return $ret;
 	}
@@ -133,13 +133,13 @@ class online{
 	function getRecord($ip)
 	{
 		$sql = "SELECT * FROM online WHERE ip = '$ip'";
-		$res = mysql_query($sql);
-		if(mysql_num_rows($res)){
-			$ret = mysql_fetch_object($res);
+		$res = $mysqli->query($sql);
+		if($res->num_rows){
+			$ret = $res->fetch_object();
 		}else{
 			return false;
 		}
-		mysql_free_result($res);
+		->free();
 		return $ret;
 	}
 	
@@ -152,12 +152,12 @@ class online{
 	function get_num()
 	{
 		$sql = 'SELECT count(ip) as nums FROM online';
-		$res = mysql_query($sql);
+		$res = $mysqli->query($sql);
 		$ret = 0;
 		if($res){
-			$ret = mysql_fetch_object($res);
+			$ret = $res->fetch_object();
 			$ret = $ret->nums;
-			mysql_free_result($res);
+			->free();
 	    }
 		return $ret;
 	}
@@ -169,8 +169,8 @@ class online{
 	function exist()
 	{
 		$sql = "SELECT * FROM online WHERE hash = '$this->hash'";
-		$res = mysql_query($sql);
-		if($res&&mysql_num_rows($res) == 0)
+		$res = $mysqli->query($sql);
+		if($res&&$res->num_rows == 0)
 			return false;
 		else
 			return true;
@@ -186,7 +186,7 @@ class online{
 		$now = time();
 		$sql = "INSERT INTO online(hash, ip, ua, uri, refer, firsttime, lastmove)
 				VALUES ('$this->hash', '$this->ip', '$this->ua', '$this->uri', '$this->refer', '$now', '$now')";
-		mysql_query($sql);
+		$mysqli->query($sql);
 	}
 
 	/**
@@ -206,7 +206,7 @@ class online{
 				WHERE
 					hash = '$this->hash'
 				";
-		mysql_query($sql);
+		$mysqli->query($sql);
 	}
 	/**
 	 * clean the duration user
@@ -216,6 +216,6 @@ class online{
 	function clean()
 	{
 		$sql = 'DELETE FROM online WHERE lastmove<'.(time()-ONLINE_DURATION);
-		mysql_query($sql);
+		$mysqli->query($sql);
 	}
 }

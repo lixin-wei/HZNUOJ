@@ -92,8 +92,8 @@ sss;
     <div class="am-u-md-4">
       <?php
       $sql="SELECT count(*) FROM solution WHERE in_date<=NOW() AND in_date>date_add(NOW(), interval -1 day)";
-      $res=mysql_query($sql);
-      $cnt=mysql_fetch_array($res)[0];
+      $res=$mysqli->query($sql);
+      $cnt=$res->fetch_array()[0];
       ?>
       <div class="am-panel am-panel-primary">
         <div class="am-panel-hd">Statics</div>
@@ -158,13 +158,13 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
 
 
   $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result != 4";
-  $res=mysql_query($sql);
-  $cnt=mysql_fetch_array($res)[0];
+  $res=$mysqli->query($sql);
+  $cnt=$res->fetch_array()[0];
   $series_not_ac_data.="$cnt,";
 
   $sql="SELECT count(*) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result = 4";
-  $res=mysql_query($sql);
-  $cnt=mysql_fetch_array($res)[0];
+  $res=$mysqli->query($sql);
+  $cnt=$res->fetch_array()[0];
   $series_ac_data.="$cnt,";
 
 

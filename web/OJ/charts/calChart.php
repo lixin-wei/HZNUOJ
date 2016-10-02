@@ -14,15 +14,15 @@
   require_once("DBTools.php");
 
   // 获取基本信息
-  $userid = mysql_real_escape_string($_GET["user"]);
+  $userid = $mysqli->real_escape_string($_GET["user"]);
   $sql = "SELECT * FROM users WHERE user_id='$userid'";
-  $result = mysql_query($sql);
-  if (mysql_num_rows($result) == 0) { 
+  $result = $mysqli->query($sql);
+  if ($result->num_rows == 0) { 
     echo "incorrect user id";
     exit();
   }
-  $row = mysql_fetch_array($result);
-  mysql_free_result($result);
+  $row = $result->fetch_array();
+  $result->free();
 
   $stu = new Student();
   $stu->user_id = $userid;

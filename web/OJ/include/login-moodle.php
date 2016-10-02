@@ -14,11 +14,11 @@
 		$password=md5($password.$moodle_salt);
 		$ret=false;
 		$moodle_pre="mdl_";
-		$sql="select password from ".$moodle_pre."user where username='".mysql_real_escape_string($user_id)."'";
+		$sql="select password from ".$moodle_pre."user where username='".$mysqli->real_escape_string($user_id)."'";
 		if($moodle_conn){
 			mysql_select_db($moodle_db,$moodle_conn);
-			$result=mysql_query($sql,$moodle_conn);
-			$row=mysql_fetch_row($result);
+			$result=$mysqli->query($sql,$moodle_conn);
+			$row=$result->fetch_row();
 			if($row&&$password==$row[0]){
 				$ret=$user_id;
 			}

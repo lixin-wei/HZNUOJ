@@ -17,7 +17,7 @@ class dbstuff {
 				$dbcharset = !$dbcharset && in_array(strtolower($charset), array('gbk', 'big5', 'utf-8')) ? str_replace('-', '', $charset) : $dbcharset;
 				$serverset = $dbcharset ? 'character_set_connection='.$dbcharset.', character_set_results='.$dbcharset.', character_set_client=binary' : '';
 				$serverset .= $this->version() > '5.0.1' ? ((empty($serverset) ? '' : ',').'sql_mode=\'\'') : '';
-				$serverset && mysql_query("SET $serverset", $this->link);
+				$serverset && $mysqli->query("SET $serverset", $this->link);
 			}
 			$dbname && @mysql_select_db($dbname, $this->link);
 		}
@@ -43,7 +43,7 @@ class dbstuff {
 		global $debug, $discuz_starttime, $sqldebug, $sqlspenttimes;
 
 		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ?
-			'mysql_unbuffered_query' : 'mysql_query';
+			'mysql_unbuffered_query' : '$mysqli->query';
 		if(!($query = $func($sql, $this->link))) {
 			if(in_array($this->errno(), array(2006, 2013)) && substr($type, 0, 5) != 'RETRY') {
 				$this->close();
@@ -64,7 +64,7 @@ class dbstuff {
 	}
 
 	function error() {
-		return (($this->link) ? mysql_error($this->link) : mysql_error());
+		return (($this->link) ? mysql_error($this->link) : $mysqli->error);
 	}
 
 	function errno() {
@@ -77,7 +77,7 @@ class dbstuff {
 	}
 
 	function num_rows($query) {
-		$query = mysql_num_rows($query);
+		$query = $query->num_rows;
 		return $query;
 	}
 
@@ -86,7 +86,7 @@ class dbstuff {
 	}
 
 	function free_result($query) {
-		return mysql_free_result($query);
+		return $query->free();
 	}
 
 	function insert_id() {
@@ -94,7 +94,7 @@ class dbstuff {
 	}
 
 	function fetch_row($query) {
-		$query = mysql_fetch_row($query);
+		$query = $query->fetch_row();
 		return $query;
 	}
 

@@ -26,29 +26,29 @@
       $title = stripslashes ( $title);
       $content = stripslashes ( $content );
     }
-    $title=mysql_real_escape_string($title);
-    $content=mysql_real_escape_string($content);
-    $user_id=mysql_real_escape_string($user_id);
+    $title=$mysqli->real_escape_string($title);
+    $content=$mysqli->real_escape_string($content);
+    $user_id=$mysqli->real_escape_string($user_id);
 
     $sql="UPDATE `news` set `title`='$title',`time`=now(),`content`='$content',user_id='$user_id', importance='$importance' WHERE `news_id`=$news_id";
     //echo $sql;
-    mysql_query($sql) or die(mysql_error());
+    $mysqli->query($sql) or die($mysqli->error);
     echo "<script type='text/javascript'>window.location.href='news_list.php';</script>";
     exit(0);
   } else {
     $news_id=intval($_GET['id']);
     $sql="SELECT * FROM `news` WHERE `news_id`=$news_id";
-    $result=mysql_query($sql);
-    if (mysql_num_rows($result)!=1){
-      mysql_free_result($result);
+    $result=$mysqli->query($sql);
+    if ($result->num_rows!=1){
+      $result->free();
       echo "No such News!";
       exit(0);
     }
-    $row=mysql_fetch_assoc($result);
+    $row=$result->fetch_array();
     $title=htmlentities($row['title'],ENT_QUOTES,"UTF-8");
     $content=$row['content'];
     $importance = $row['importance'];
-    mysql_free_result($result);
+    $result->free();
   }
 ?>
 <?php include("kindeditor.php"); ?>

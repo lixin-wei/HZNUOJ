@@ -83,15 +83,15 @@
   }
 
 
-       //         $result = mysql_query ( $sql ); //mysql_error();
+       //         $result = $mysqli->query ( $sql ); //$mysqli->error;
   if($OJ_MEMCACHE){
     require("./include/memcache.php");
-    $result = mysql_query_cache($sql) ;//or die("Error! ".mysql_error());
+    $result = $mysqli->query_cache($sql) ;//or die("Error! ".$mysqli->error);
     if($result) $rows_cnt=count($result);
     else $rows_cnt=0;
   } else {
-    $result = mysql_query($sql) or die("Error! ".mysql_error());
-    if($result) $rows_cnt=mysql_num_rows($result);
+    $result = $mysqli->query($sql) or die("Error! ".$mysqli->error);
+    if($result) $rows_cnt=$result->num_rows;
     else $rows_cnt=0;
   }
 
@@ -101,7 +101,7 @@
     if($OJ_MEMCACHE)
 			$row=$result[$i];
     else
-			$row=mysql_fetch_array($result);
+			$row=$result->fetch_array();
     
 		$rank ++;
     $total = $row['solved']+$row['ZJU']+$row['HDU']+$row['PKU']+$row['UVA']+$row['CF'];
@@ -128,9 +128,9 @@
 
   /* 获取所有班级 start */
   $sql_class = "SELECT DISTINCT(class) FROM users";
-  $result_class = mysql_query($sql_class);
+  $result_class = $mysqli->query($sql_class);
   $classSet = array();
-  while ($row_class = mysql_fetch_array($result_class)) {
+  while ($row_class = $result_class->fetch_array()) {
     $class = $row_class['class'];
 //    echo $class."<br />";
     if (!is_null($class) && $class!="" && $class!="null" && $class!="其它") {
@@ -147,36 +147,36 @@
     }
   }
   rsort($classSet);
-  mysql_free_result($result_class);
+  $result_class->free();
   /* 获取所有班级 end */
 
 
-if(!$OJ_MEMCACHE)mysql_free_result($result);
+if(!$OJ_MEMCACHE)$result->free();
 
                 $sql = "SELECT count(1) as `mycount` FROM `users` ".$filter_sql;
-        //        $result = mysql_query ( $sql );
+        //        $result = $mysqli->query ( $sql );
         if($OJ_MEMCACHE){
           // require("./include/memcache.php");
-                $result = mysql_query_cache($sql);// or die("Error! ".mysql_error());
+                $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
                 if($result) $rows_cnt=count($result);
                 else $rows_cnt=0;
         }else{
 
-                $result = mysql_query($sql);// or die("Error! ".mysql_error());
-                if($result) $rows_cnt=mysql_num_rows($result);
+                $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
+                if($result) $rows_cnt=$result->num_rows;
                 else $rows_cnt=0;
         }
         if($OJ_MEMCACHE)
                 $row=$result[0];
         else
-                $row=mysql_fetch_array($result);
-                echo mysql_error ();
+                $row=$result->fetch_array();
+                echo $mysqli->error;
   //$row = mysql_fetch_object ( $result );
                 $view_total=$row['mycount'];
 
   //              mysql_free_result ( $result );
 
-if(!$OJ_MEMCACHE)  mysql_free_result($result);
+if(!$OJ_MEMCACHE)  $result->free();
 
 
 /////////////////////////Template

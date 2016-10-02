@@ -17,23 +17,23 @@
     exit(1);
   }
   // $keyword=$_GET['keyword'];
-  // $keyword=mysql_real_escape_string($keyword);
+  // $keyword=$mysqli->real_escape_string($keyword);
   if($_GET['page'])$page=$_GET['page'];
   else $page=1;
   $page_cnt=100;
   // get problems START
-  $res_set = mysql_query("SELECT set_name FROM problemset");
+  $res_set = $mysqli->query("SELECT set_name FROM problemset");
   $first = true;
   $sql = "";
   $cnt = 0;
-  while($set_name=mysql_fetch_array($res_set)[0]){
+  while($set_name=$res_set->fetch_array()[0]){
     if($_GET['OJ']=='' || $_GET['OJ']==$set_name){
       if(HAS_PRI("see_hidden_".$set_name."_problem")){
         $t_sql=" FROM `problem` WHERE problemset='$set_name'";
       
         //count the number of problem START
-        $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
-        $cnt += mysql_fetch_array($res)[0];
+        $res = $mysqli->query("SELECT COUNT('problem_id')".$t_sql);
+        $cnt += $res->fetch_array()[0];
         //count the number of problem END
 
         $t_sql = "SELECT `problem_id`, problemset ,`title`, `author`, `in_date`,`defunct` ".$t_sql;
@@ -73,8 +73,8 @@
       
     <?php
       echo "<option value='' selected>All</option>";
-      $res=mysql_query("SELECT set_name FROM problemset");
-      while($set_name=mysql_fetch_array($res)[0]){
+      $res=$mysqli->query("SELECT set_name FROM problemset");
+      while($set_name=$res->fetch_array()[0]){
         if(HAS_PRI("edit_".$set_name."_problem"))
         echo "<option value='$set_name'". ($set_name==$_GET['OJ']?" selected ":" ").">$set_name</option>";
       }
@@ -83,7 +83,7 @@
     <hr/>
 <?php
   //echo "<pre>$sql</pre>";
-  $result=mysql_query($sql) or die(mysql_error());
+  $result=$mysqli->query($sql) or die($mysqli->error);
   ?>
 
   <?php
@@ -93,7 +93,7 @@
   echo "<tr><td>PID<td>Title<td>Author<td>Problemset<td>Date";
   echo "<td>Status<td>Delete";
   echo "<td>Edit<td>TestData</tr>";
-  while($row=mysql_fetch_object($result)){
+  while($row=$result->fetch_object()){
           echo "<tr>";
           echo "<td>".$row->problem_id;
           echo "<input type=checkbox name='pid[]' value='$row->problem_id'>";

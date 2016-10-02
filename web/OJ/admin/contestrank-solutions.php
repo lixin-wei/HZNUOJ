@@ -31,11 +31,11 @@
         //         ORDER BY class";
 
         $sql = "SELECT DISTINCT(class) FROM team ORDER BY class";
-        $result = mysql_query($sql) or die(mysql_error());
+        $result = $mysqli->query($sql) or die($mysqli->error);
 
         $i = 0;
         $classSet = array();
-        while ($row = mysql_fetch_object($result)) {
+        while ($row = $result->fetch_object()) {
           if ($row->class == '' || $row->class == 'null')
             continue;
           $classSet[$i] = $row->class;
@@ -114,8 +114,8 @@
                     left join source_code
                     on source_code.solution_id=solution.solution_id";
 
-          $result = mysql_query($sql) or die(mysql_error());
-          $rows_cnt = mysql_num_rows($result);
+          $result = $mysqli->query($sql) or die($mysqli->error);
+          $rows_cnt = $result->num_rows;
           
           //echo $rows_cnt;
           //echo $root_dir."/".$cid;
@@ -129,16 +129,16 @@
     echo $rows_cnt."<br />";
 
                for ($i = 0; $i < $rows_cnt; $i++) {
-              $row = mysql_fetch_object($result);
+              $row = $result->fetch_object();
               $sid = $row->solution_id;
               
               //echo $sid."<br />";
               $sql = "select team.class from team,solution where team.user_id=solution.user_id AND solution_id='$sid'";
-              $temp_result = mysql_query($sql);
-              $temp_row = mysql_fetch_object($temp_result);
+              $temp_result = $mysqli->query($sql);
+              $temp_row = $temp_result->fetch_object();
               $sclass = $temp_row->class;
 
-              $rows_cnt_temp = mysql_num_rows($temp_result);
+              $rows_cnt_temp = $temp_result->num_rows;
               // echo $rows_cnt_temp."<br />";
               //$sclass = mb_convert_encoding($sclass, "utf-8", "gb2312");
       // echo $sclass."<br />";
@@ -157,8 +157,8 @@
                 fwrite($fp, $source);
                 
                 $sql = "select * from solution where solution_id=$sid";
-                $temp_result = mysql_query($sql);
-                $srow = mysql_fetch_object($temp_result);
+                $temp_result = $mysqli->query($sql);
+                $srow = $temp_result->fetch_object();
                 $sproblem_id = $srow->problem_id;
                 $suser_id = $srow->user_id;
                 $slanguage = $srow->language;
@@ -168,8 +168,8 @@
                 $sip = $srow->ip;
                 
                 $sql = "select nick from team where user_id='$suser_id'";
-                $temp_result = mysql_query($sql);
-                $srow = mysql_fetch_object($temp_result);
+                $temp_result = $mysqli->query($sql);
+                $srow = $temp_result->fetch_object();
                 $snick = $srow->nick;
                 
         //echo "Problem: $sproblem_id<br />User: $suser_id&nbsp;($snick)<br />";
@@ -248,10 +248,8 @@
 
     $root_dir = "../../hhhh";
     //$root_dir = realpath($root_dir);
-
-    $link = mysql_connect('172.17.151.2', 'root', 'hznujudge');
     //$link = mysql_connect('localhost', 'root', 'root');
-    mysql_query("set names GB2312;");
+    $mysqli->query("set names GB2312;");
     
     if (!$link) {
       die('connect fail');

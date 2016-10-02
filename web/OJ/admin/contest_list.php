@@ -20,9 +20,9 @@
   require_once("../include/set_get_key.php");
   $sql="SELECT max(`contest_id`) as upid, min(`contest_id`) as btid  FROM `contest`";
   $page_cnt=50;
-  $result=mysql_query($sql);
-  echo mysql_error();
-  $row=mysql_fetch_object($result);
+  $result=$mysqli->query($sql);
+  echo $mysqli->error;
+  $row=$result->fetch_object();
   $base=intval($row->btid);
   $cnt=intval($row->upid)-$base;
   $cnt=intval($cnt/$page_cnt)+(($cnt%$page_cnt)>0?1:0);
@@ -38,9 +38,9 @@
   }
   $sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where contest_id>=$pstart and contest_id <=$pend order by `contest_id` desc";
   $keyword=$_GET['keyword'];
-  $keyword=mysql_real_escape_string($keyword);
+  $keyword=$mysqli->real_escape_string($keyword);
   if($keyword) $sql="select `contest_id`,`title`,`start_time`,`end_time`,`private`,`defunct` FROM `contest` where title like '%$keyword%' ";
-  $result=mysql_query($sql) or die(mysql_error());
+  $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
 
 <form action=contest_list.php class=center>
@@ -52,7 +52,7 @@
   echo "<center><table class='table table-striped table-hover' width=90%>";
   echo "<tr><th>ContestID<th>Title<th>StartTime<th>EndTime<th>Private<th>Status<th>Edit<th>Copy<th>Export<th>Logs";
   echo "</tr>";
-  for (;$row=mysql_fetch_object($result);){
+  for (;$row=$result->fetch_object();){
     echo "<tr>";
     echo "<td>".$row->contest_id;
     echo "<td><a href='../contest.php?cid=$row->contest_id'>".$row->title."</a>";

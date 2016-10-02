@@ -82,9 +82,9 @@
   // 检查用户是否存在
   $password=pwGen($_POST['password']);
   $sql="SELECT `user_id` FROM `users` WHERE `users`.`user_id` = '".$user_id."'";
-  $result=mysql_query($sql);
-  $rows_cnt=mysql_num_rows($result);
-  mysql_free_result($result);
+  $result=$mysqli->query($sql);
+  $rows_cnt=$result->num_rows;
+  $result->free();
   if ($rows_cnt == 1){
     print "<script language='javascript'>\n";
     print "alert('User Existed!\\n');\n";
@@ -92,25 +92,25 @@
     exit(0);
   }
   // 在OJ上注册
-  $nick=mysql_real_escape_string(htmlspecialchars ($nick));
-  $school=mysql_real_escape_string(htmlspecialchars ($school));
-  $email=mysql_real_escape_string(htmlspecialchars ($email));
+  $nick=$mysqli->real_escape_string(htmlspecialchars ($nick));
+  $school=$mysqli->real_escape_string(htmlspecialchars ($school));
+  $email=$mysqli->real_escape_string(htmlspecialchars ($email));
   $ip=$_SERVER['REMOTE_ADDR'];
   $sql="INSERT INTO `users`("
   ."`user_id`,`email`,`ip`,`accesstime`,`password`,`reg_time`,`nick`,`school`,class, stu_id, real_name)"
   ."VALUES('".$user_id."','".$email."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$school."','".$class."','".$stu_id."','".$real_name."')";
 
-  mysql_query($sql) or die (mysql_error());
+  $mysqli->query($sql) or die ($mysqli->error);
 
   $sql="INSERT INTO `loginlog` VALUES('$user_id','$password','$ip',NOW())";
-  mysql_query($sql);
+  $mysqli->query($sql);
   $_SESSION['user_id']=$user_id;
 
   $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$_SESSION['user_id']."'";
   //echo $sql."<br />";
-  $result=mysql_query($sql);
-  echo mysql_error();
-  while ($row=mysql_fetch_assoc($result)){
+  $result=$mysqli->query($sql);
+  echo $mysqli->error;
+  while ($row=$result->fetch_array()){
     $_SESSION[$row['rightstr']]=true;
     //echo $_SESSION[$row['rightstr']]."<br />";
   }

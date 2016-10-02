@@ -22,10 +22,10 @@
   $dest = "/OJ";
 
   $sql = "SELECT problem_id, description FROM problem";
-  $result = mysql_query($sql);
+  $result = $mysqli->query($sql);
   $a = array();
 
-  while ($row = mysql_fetch_array($result)) {
+  while ($row = $result->fetch_array()) {
     $pid = $row['problem_id'];  
     $a[$pid] = $row['description'];
     $a[$pid] = str_replace($origin, $dest, (string)$a[$pid]);
@@ -38,7 +38,7 @@
    echo $a[500200]; 
   for ($i=500000; $i<=500208; $i++) {
     $sql = "UPDATE problem SET description='$a[$i]' WHERE problem_id=$i";
-    mysql_query($sql);
+    $mysqli->query($sql);
   }
 
 ?>

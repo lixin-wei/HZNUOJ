@@ -27,9 +27,9 @@
         $lost_email=stripslashes($lost_email);
   }
   $sql="SELECT `email` FROM `users` WHERE `user_id`='$lost_user_id'";
-  $result=mysql_query($sql);
-  $row = mysql_fetch_array($result);
-  mysql_free_result($result);
+  $result=$mysqli->query($sql);
+  $row = $result->fetch_array();
+  $result->free();
   if($row && $row['email']==$lost_email && strpos($lost_email,'@')){
     $_SESSION['lost_user_id']=$lost_user_id;
     $_SESSION['lost_key']=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,16));

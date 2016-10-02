@@ -20,9 +20,9 @@
   if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
     $uid = $_SESSION['user_id'];
     $sql = "SELECT tag FROM users WHERE user_id='$uid'";
-    $result = mysql_query($sql);
-    $row_h = mysql_fetch_array($result);
-    mysql_free_result($result);
+    $result = $mysqli->query($sql);
+    $row_h = $result->fetch_array();
+    $result->free();
     if ($row_h['tag'] == "N") $show_tag = false;
   } else if (isset($_SESSION['tag'])) {
     if ($_SESSION['tag'] == "N") $show_tag = false;
@@ -86,8 +86,8 @@
             <ul class="am-dropdown-content ">
               <li><a href="problemset.php">All</a></li>
               <?php
-              $___res = mysql_query("SELECT set_name,set_name_show FROM problemset");
-              while($___row = mysql_fetch_array($___res)){
+              $___res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
+              while($___row = $___res->fetch_array()){
                 echo "<li><a href='problemset.php?OJ=$___row[0]'>$___row[1]</a></li>";
               }
               ?>

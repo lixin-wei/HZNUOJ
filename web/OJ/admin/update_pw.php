@@ -8,22 +8,22 @@ if (!HAS_PRI("inner_function")){
 }
 function update_for_user($user_id){
 	$sql="SELECT `user_id`,`password` FROM `users` WHERE `user_id`='".$user_id."' ";
-	$result=mysql_query($sql);
-	$row = mysql_fetch_array($result);
+	$result=$mysqli->query($sql);
+	$row = $result->fetch_array();
 	if ($row){
 		$oldpw = $row['password'];
 		if (!isOldPW($oldpw)) return False;
 		$newpw = pwGen($row['password'],True);
 		$sql="UPDATE `users` set `password`='$newpw' where `user_id`='$user_id' LIMIT 1";
-		mysql_query($sql);
+		$mysqli->query($sql);
 		return True;
 	}
 	return False;
 }
 
 $sql="select user_id from `users`";
-$result=mysql_query($sql);
-while ($row=mysql_fetch_array($result)){
+$result=$mysqli->query($sql);
+while ($row=$result->fetch_array()){
 	$uid = $row['user_id'];
 	echo $uid.">".update_for_user($uid)."\n";
 }

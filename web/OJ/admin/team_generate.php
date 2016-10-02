@@ -42,9 +42,9 @@
     if ($_POST['class1'] == "其它") $class = "其它";
     else $class = $_POST['class1'].$_POST['class2'];
     $sql = "SELECT MAX(NO) AS start FROM team WHERE prefix='$prefix' AND contest_id='$contest_id'";
-    $result = mysql_query($sql);
+    $result = $mysqli->query($sql);
     if ($result) {
-      $row = mysql_fetch_array($result);
+      $row = $result->fetch_array();
       $no = $row['start']+1;
     }
     
@@ -64,7 +64,7 @@
                          
         $school=$_POST['school'];
         $sql="INSERT INTO `team`(`user_id`, prefix, NO, `ip`,`accesstime`,`password`,`reg_time`,`nick`,contest_id, class, `school`)"."VALUES('".$user_id."','".$prefix."','".$i."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$contest_id."','".$class."','".$school."')on DUPLICATE KEY UPDATE `ip`='".$_SERVER['REMOTE_ADDR']."',`accesstime`=NOW(),`password`='".$password."',`reg_time`=now(),nick='".$nick."',`school`='".$school."'";
-        mysql_query($sql) or die(mysql_error());
+        $mysqli->query($sql) or die($mysqli->error);
       }
       echo  "</table>";
     }

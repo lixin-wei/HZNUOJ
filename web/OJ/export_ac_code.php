@@ -10,11 +10,11 @@ $sql="select distinct source,problem_id from source_code right join
 		(select solution_id,problem_id from solution where user_id='".$_SESSION['user_id']."' and result=4) S 
 		on source_code.solution_id=S.solution_id order by problem_id";
 
-$result=mysql_query($sql);
-while($row=mysql_fetch_object($result)){
+$result=$mysqli->query($sql);
+while($row=$result->fetch_object()){
 	echo "Problem".$row->problem_id.":";
 	echo $row->source;
 	echo "------------------------------------------------------";
 }
-mysql_free_result($result);
+$result->free();
 ?>
