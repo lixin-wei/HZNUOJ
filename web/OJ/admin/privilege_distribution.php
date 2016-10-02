@@ -1,23 +1,31 @@
 
 <?php
 require_once("admin-header.php");
-if(!HAS_PRI("edit_privilege_distribution")){
-  require_once("error.php");
-  exit(0);
-}
+// if(!HAS_PRI("edit_privilege_distribution")){
+//   require_once("error.php");
+//   exit(0);
+// }
+$can_edit=HAS_PRI("edit_privilege_distribution");
+
 if($_POST['data']){
-  $data=$_POST['data'];
-  $sql="";
-  foreach ($data as $group_name => $arr) {
-    foreach ($arr as $key => $value) {
-      $sql = "UPDATE privilege_distribution SET $key='$value' WHERE group_name='$group_name';";
-      mysql_query($sql);
+  if($can_edit){
+    $data=$_POST['data'];
+    $sql="";
+    foreach ($data as $group_name => $arr) {
+      foreach ($arr as $key => $value) {
+        $sql = "UPDATE privilege_distribution SET $key='$value' WHERE group_name='$group_name';";
+        mysql_query($sql);
+      }
     }
+    // echo "<pre>";
+    // echo $sql;
+    // echo "</pre>";
   }
-  // echo "<pre>";
-  // echo $sql;
-  // echo "</pre>";
-  
+  else
+  {
+    require_once("error.php");
+    exit(0);
+  }
 }
 ?>
 <title>Privilege Distribution</title>
@@ -39,7 +47,9 @@ if($_POST['data']){
         ?>
       </ul>
       <hr/>
-      <center><button type="submit" class="btn btn-default">Submit</button></center>
+      <?php if ($can_edit): ?>
+        <center><button type="submit" class="btn btn-default">Submit</button></center>
+      <?php endif ?>
     </div><!--col-2-->
     <div class="col-sm-3">
       <!-- Tab panes -->
@@ -54,6 +64,7 @@ if($_POST['data']){
             $html .= "<input type='hidden' name='data[{$row['group_name']}][$key]' value=0>";
             $html .= "<input type='checkbox' name='data[{$row['group_name']}][$key]' value='1'";
             if($value)$html .= " checked ";
+            if(!$can_edit) $html.="disabled";
             $html .= ">";
             $html .= $key;
             $html .= "</label></div>";

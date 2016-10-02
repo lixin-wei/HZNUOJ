@@ -133,9 +133,7 @@ sss;
           if(HAS_PRI("edit_privilege_group")){
             $html_li .= "<li><a href='privilege_add.php'>Add Privilege</a></li>";
           }
-          if(HAS_PRI("edit_privilege_distribution")){
-            $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
-          }
+          $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
