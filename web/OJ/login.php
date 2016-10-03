@@ -61,9 +61,9 @@
 //    echo $email;
 
     // 数据库连接切换至bbs
-    require_once("./discuz-api/config.inc.php");
-    require_once("./discuz-api/uc_client/client.php");
-    $uid = uc_user_register($user_id, $password, $email);
+    //require_once("./discuz-api/config.inc.php");
+    //require_once("./discuz-api/uc_client/client.php");
+    //$uid = uc_user_register($user_id, $password, $email);
 
     echo "<script language='javascript'>\n";
     echo "history.go(-2);\n";
