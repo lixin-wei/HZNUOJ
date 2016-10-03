@@ -73,13 +73,13 @@ if(function_exists('apc_cache_info')){
 */
 
 /* 获取轮播图片路径 start */
-$slider_url = array();
-$sql = "SELECT * FROM slide WHERE defunct!='Y' ORDER BY img_id DESC LIMIT 5";
-$result = $mysqli->query($sql);
-for ($i=0; $row=$result->fetch_array(); ++$i) {
-  $slider_url[$i] = $row['url'];
-}
-$result->free();
+// $slider_url = array();
+// $sql = "SELECT * FROM slide WHERE defunct!='Y' ORDER BY img_id DESC LIMIT 5";
+// $result = $mysqli->query($sql);
+// for ($i=0; $row=$result->fetch_array(); ++$i) {
+//   $slider_url[$i] = $row['url'];
+// }
+// $result->free();
 /* 获取轮播图片路径 end */
 
 /* 获取公告 start */
