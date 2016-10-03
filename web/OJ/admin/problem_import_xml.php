@@ -36,7 +36,7 @@ function submitSolution($pid,$solution,$language)
 	VALUES('$pid','".$_SESSION['user_id']."',NOW(),'$language','127.0.0.1','$len')";
 	
 	$mysqli->query ( $sql );
-	$insert_id = mysql_insert_id ();
+	$insert_id = $mysqli->insert_id;
 	$solution=$mysqli->real_escape_string($solution);
 	//echo "submiting$language.....";
 	$sql = "INSERT INTO `source_code`(`solution_id`,`source`)VALUES('$insert_id','$solution')";

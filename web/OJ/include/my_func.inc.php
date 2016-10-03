@@ -150,7 +150,7 @@
   function canSeeSource($sid) {
 
     global $OJ_AUTO_SHARE;
-    global $mysql;
+    global $mysqli;
 
     /* 获取solution信息 start */
     $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";

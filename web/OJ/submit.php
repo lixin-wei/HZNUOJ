@@ -29,12 +29,12 @@ if (isset($_POST['cid'])){
 
 $res=$mysqli->query($sql);
 if ($res&&$res->num_rows<1&&!((isset($cid)&&$cid<=0) || (isset($id)&&$id<=0))){
-		->free();
+		$res->free();
 		$view_errors=  "No such problem or you don't have the corresponding privilege!<br>";
 		require("template/".$OJ_TEMPLATE."/error.php");
 		exit(0);
 }
-->free();
+$res->free();
 
 
 
@@ -131,7 +131,6 @@ $len=strlen($source);
 
 
 
-
 setcookie('lastlang',$language,time()+360000);
 
 $ip=$_SERVER['REMOTE_ADDR'];
@@ -164,8 +163,8 @@ if (0&&$res->num_rows==1){
 
 
 if((~$OJ_LANGMASK)&(1<<$language)){
-$store_id=0;
-if(isset($_SESSION['store_id'])) $store_id=$_SESSION['store_id'];
+	$store_id=0;
+	if(isset($_SESSION['store_id'])) $store_id=$_SESSION['store_id'];
 
 	if (!isset($pid)){
 	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length)
@@ -175,7 +174,7 @@ if(isset($_SESSION['store_id'])) $store_id=$_SESSION['store_id'];
 		VALUES('$id','$user_id',NOW(),'$language','$ip','$len','$cid','$pid')";
 	}
 	$mysqli->query($sql);
-	$insert_id=mysql_insert_id();
+	$insert_id=$mysqli->insert_id;
 	$sql="INSERT INTO `source_code_user`(`solution_id`,`source`)VALUES('$insert_id','$source_user')";
 	$mysqli->query($sql);
 
@@ -223,8 +222,9 @@ if(isset($_SESSION['store_id'])) $store_id=$_SESSION['store_id'];
   if (isset($cid))
 	    $statusURI.="&cid=$cid";
 	 
-   if(!$test_run)	
-	header("Location: $statusURI");
+   if(!$test_run){
+   	header("Location: $statusURI");
+   }
    else{
 	?>
 	<script>window.parent.setTimeout("fresh_result('<?php echo $insert_id;?>')",2000);</script>

@@ -67,7 +67,7 @@
     $err_str=$err_str."Email Too Long!\\n";
     $err_cnt++;
   }
-  if(!eregi("^([_a-z0-9-]+)(.[_a-z0-9-]+)*@([a-z0-9-]+)(.[a-z0-9-]+)*(.[a-z]{2,4})$", $email)) {
+  if(!preg_match("^([_a-z0-9-]+)(.[_a-z0-9-]+)*@([a-z0-9-]+)(.[a-z0-9-]+)*(.[a-z]{2,4})$", $email)) {
     $err_str=$err_str."Email Illegal!\\n";
     $err_cnt++;
   }
