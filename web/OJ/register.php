@@ -67,7 +67,7 @@
     $err_str=$err_str."Email Too Long!\\n";
     $err_cnt++;
   }
-  if(!preg_match("^([_a-z0-9-]+)(.[_a-z0-9-]+)*@([a-z0-9-]+)(.[a-z0-9-]+)*(.[a-z]{2,4})$", $email)) {
+  if(!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/", $email)) {
     $err_str=$err_str."Email Illegal!\\n";
     $err_cnt++;
   }
@@ -121,7 +121,7 @@
   require_once("./discuz-api/config.inc.php");
   require_once("./discuz-api/uc_client/client.php");
 
-  echo $_POST['user_id'];
+  //echo $_POST['user_id'];
   //在UCenter注册用户信息
   $uid = uc_user_register($_POST['user_id'], $_POST['password'], $_POST['email']);
   if($uid <= 0) {
