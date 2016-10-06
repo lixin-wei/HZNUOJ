@@ -25,7 +25,7 @@
   $view_title=$user ."@".$OJ_NAME;
   $user_mysql=$mysqli->real_escape_string($user);
 
-  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class FROM `users` WHERE `user_id`='$user_mysql'";
+  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id FROM `users` WHERE `user_id`='$user_mysql'";
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
   if ($row_cnt==0){ 
@@ -39,6 +39,7 @@
   $email=$row->email;
   $nick=$row->nick;
   $real_name = $row->real_name;
+  $stu_id=$row->stu_id;
   $class = $row->class;
             if ($class=="null") $class = "其它";
             if ($class=="cs151") $class = "计算机151";
@@ -63,8 +64,27 @@
   if($result) $user_cnt_divisor = $result->num_rows;
   else $user_cnt_divisor = 1;
   $result->free();
-//  echo $user_cnt_divisor;
+  //  echo $user_cnt_divisor;
 
+  //get ac set and calculate strength
+  $ac_set=array();
+  $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id";
+  $res=$mysqli->query($sql);
+  while($pid=$res->fetch_array()[0]){
+    $set_name=get_problemset($pid);
+    if(!$ac_set[$set_name])$ac_set[$set_name]=array();
+    array_push($ac_set[$set_name], $pid);
+    
+    //calculate strength
+    $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
+    $y_result=$mysqli->query($sql);
+    $y_row = $y_result->fetch_object();
+    $solved = $y_row->solved_user;
+    $submit = $y_row->submit_user;
+    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
+    if ($scores < 10) $scores = 10;
+    $strength += $scores;
+  }
   // count hznuoj solved
   $sql="SELECT count(DISTINCT problem_id) as ac FROM solution WHERE user_id='".$user_mysql."' AND result=4";
   $result=$mysqli->query($sql) or die($mysqli->error);
@@ -90,25 +110,6 @@
   $strength = 0;
   $level = "斗之气一段";
   $color = "#E0E0E0";
-
-  // 对于每道AC的题目，计算其分数，并加至strength
-  $hznu_solved_set = array();
-  for ($j=0; $j<$rows_cnt; $j++) {
-    $row = $result->fetch_object();
-    $prob_id = $row->problem_id;
-    $hznu_solved_set[] = $row->problem_id;
-    $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$prob_id;
-    $y_result = $mysqli->query($sql) or die($mysqli->error);
-    $y_row = $y_result->fetch_object();
-    $solved = $y_row->solved_user;
-    $submit = $y_row->submit_user;
-    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
-    if ($scores < 10) $scores = 10;
-    $strength += $scores;
-    $y_result->free();
-  }
-  $result->free();
-
   /* 查找HZNUOJ未解决的题目编号 start */
   $hznu_unsolved_set = array();
   $sql = "SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND problem_id NOT IN (SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4)";
@@ -272,18 +273,18 @@
 
 
   /* 计算图表相关信息 start */
-  $total_solved = $AC+$CF+$HDU+$PKU+$UVA+$ZJU;
-
+  $total_ac = $AC+$CF+$HDU+$PKU+$UVA+$ZJU;
+  $local_ac=$AC;
   // 计算总解题量的解题分
   $sql = "SELECT MAX(solved+CF+HDU+PKU+ZJU+UVA) FROM users";
   $result = $mysqli->query($sql);
   $row = $result->fetch_array();
   $max_solved = intval($row[0]);
-  $solved_score = round(100.0*$total_solved/$max_solved); // 解题分
+  $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
   $result->free();
 
   // 计算平均难度分
-  $dif_score = round(1.0*$strength/$total_solved); 
+  $dif_score = round(1.0*$strength/$total_ac); 
 
   // 计算活跃度分
   $AC_day = 0; // A过题目的天数

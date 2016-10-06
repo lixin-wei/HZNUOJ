@@ -17,7 +17,7 @@
     var $real_name;
     var $class;
     var $HZNU;
-    var $total_solved;
+    var $total_ac;
     var $solved_score;
     var $avg_dif; // average difficult
     var $dif_score; // 1

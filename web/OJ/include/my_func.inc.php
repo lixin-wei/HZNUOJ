@@ -255,7 +255,8 @@
 
   function get_problemset($pid){
     global $mysqli;
-    $res=$mysqli->query("SELECT problemset FROM problem WHERE problem_id=$pid");
+    $sql="SELECT problemset FROM problem WHERE problem_id=$pid";
+    $res=$mysqli->query($sql);
     return $res->fetch_array()[0];
   }
   function get_order($group_name){
