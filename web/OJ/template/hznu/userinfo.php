@@ -234,7 +234,7 @@ var chart_sub=echarts.init(document.getElementById("chart-sub"));
 option = {
     title : {
         text: "Submissions",
-        subtext: "In HNZUOJ only", 
+        subtext: "In HZNUOJ only", 
     },
     tooltip : {
         trigger: 'item',
