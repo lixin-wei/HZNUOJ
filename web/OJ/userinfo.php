@@ -65,7 +65,9 @@
   else $user_cnt_divisor = 1;
   $result->free();
   //  echo $user_cnt_divisor;
-
+  $strength = 0;
+  $level = "斗之气一段";
+  $color = "#E0E0E0";
   //get ac set and calculate strength
   $ac_set=array();
   $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id";
@@ -107,9 +109,7 @@
   if($result) $rows_cnt = $result->num_rows;
   else $rows_cnt = 0;
 
-  $strength = 0;
-  $level = "斗之气一段";
-  $color = "#E0E0E0";
+
   /* 查找HZNUOJ未解决的题目编号 start */
   $hznu_unsolved_set = array();
   $sql = "SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND problem_id NOT IN (SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4)";
