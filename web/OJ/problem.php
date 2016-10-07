@@ -41,12 +41,12 @@
     $result->free();
   }
   /* 判断当前用户是否已AC本题 end*/
-
-
+  $real_id=0;
   $pr_flag=false;
   $co_flag=false;
   if (isset($_GET['id'])) { // 如果是比赛外的题目
     $id=intval($_GET['id']);
+    $real_id=$id;
     //require("oj-header.php");
     $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
     $set_name = $res->fetch_array()[0];
@@ -89,9 +89,10 @@ sql;
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-
-    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=(
-            SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid)";
+    $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
+    $res=$mysqli->query($sql);
+    $real_id=$res->fetch_array()[0];
+    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
     $res = $mysqli->query($sql);
     $set_name = $res->fetch_array()[0];
 
@@ -118,8 +119,7 @@ sql;
       exit(0);
     }else{
       // started
-      $sql="SELECT * FROM `problem` WHERE `defunct`='N' AND `problem_id`=(
-              SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid)";
+      $sql="SELECT * FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
     }
     // public
     if (!$contest_ok){

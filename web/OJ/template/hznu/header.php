@@ -100,7 +100,7 @@
           
           <!-- Contest部分 start -->
           <li class='am-dropdown' data-am-dropdown>
-            <a href="#" class="am-dropdown-toggle" ><?php echo $MSG_CONTEST ?>&nbsp;<span class="am-icon-caret-down"></span></a>
+            <a href="#" class="am-dropdown-toggle" >Contest&nbsp;<span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content ">
               <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php"){echo "class='am-active'";} ?>><a href="contest.php">Local</a></li>
               <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="recent-contest.php"){echo "class='am-active'";} ?>><a href="recent-contest.php">Remote</a></li>

@@ -185,7 +185,26 @@
     echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
     } 
   ?>
+  <?php
+    $video_submit_time=10;
+    $can_see_video=false;
+    if(isset($_SESSION['user_id'])){
+      $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id' AND result='4'";
+      $res=$mysqli->query($sql);
+      if($res->num_rows) $can_see_video=true;
 
+      $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id'";
+      $res=$mysqli->query($sql);
+      if($res->num_rows>$video_submit_time) $can_see_video=true;
+    }
+  ?>
+  <?php if ($can_see_video): ?>
+    <h2><b><font color='#0000cd'>Solution Video</font></b></h2>
+    <form action="solution_video.php" method="POST">
+      <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+      <button class="am-btn am-btn-success am-btn-lg">Click To See The Video</button>
+    </form>
+  <?php endif ?>
   <!-- 提交等按钮 start -->
   <div class="am-text-center">
     <a href="
