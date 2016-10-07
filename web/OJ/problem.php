@@ -20,8 +20,10 @@
   if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
   /* 获取我的标签 start */
   $my_tag;
-  if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
+  if(isset($_SESSION['user_id'])){
     $uid = $mysqli->real_escape_string($_SESSION['user_id']);
+  }
+  if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
     $id=intval($_GET['id']);
     $sql = "SELECT tag FROM tag WHERE user_id='$uid' AND problem_id='$id'";
     $result = $mysqli->query($sql);
