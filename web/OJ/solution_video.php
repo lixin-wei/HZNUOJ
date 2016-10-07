@@ -30,7 +30,7 @@ if(!$can_see_video){
   <h1 style="padding-top: 20px;">Solution Video Of Problem <?php echo $pid ?></h1><hr>
   <?php if ($can_see_video): ?>
   <div>
-    <video src="/OJ/upload/<?php echo $pid ?>.mp4" width=100% controls=1></video>
+    <video src="/OJ/upload/video/<?php echo $pid ?>.mp4" width=100% controls=1></video>
   </div>
   <?php endif ?>
 </div>

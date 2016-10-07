@@ -200,10 +200,16 @@
   ?>
   <?php if ($can_see_video): ?>
     <h2><b><font color='#0000cd'>Solution Video</font></b></h2>
-    <form action="solution_video.php" method="POST">
-      <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
-      <button class="am-btn am-btn-success am-btn-lg">Click To See The Video</button>
-    </form>
+    <?php
+    ?>
+    <?php if (file_exists("upload/video/{$real_id}.mp4")): ?>
+      <form action="solution_video.php" method="POST">
+        <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+        <button class="am-btn am-btn-success am-btn-lg">Click To See The Video</button>
+      </form>
+    <?php else: ?>
+      <button disabled="1" class="am-btn am-btn-default am-btn-lg">No Solution Video</button>
+    <?php endif ?>
   <?php endif ?>
   <!-- 提交等按钮 start -->
   <div class="am-text-center">
