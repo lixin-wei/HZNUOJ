@@ -26,5 +26,5 @@ Simply clone the repository, then run `judger/install/install.sh`.
 
 Then you need to modify apache settings, change the default server dir to `/var/www/web`.
 
-At last, `sudo chown www-data -R /var/www`
+At last, `sudo chown www-data -R /var/www`.
 
