@@ -100,6 +100,22 @@
               if ($i != 0) echo "<a href=problem.php?id=".$i."> ".$i." </a>&nbsp;";
             }
             echo "<br /><br />";
+
+            //soluton video START
+            $sql="SELECT DISTINCT video_id FROM solution_video_watch_log WHERE user_id='$user'";
+            $res=$mysqli->query($sql);
+            $solution_video_set=array();
+            while($id=$res->fetch_array()[0]){
+              array_push($solution_video_set,$id);
+            }
+            if(count($solution_video_set)){
+              echo "<div><b>Solution Video Watched:</b></div>";
+              foreach ($solution_video_set as $id) {
+                echo "<a href=problem.php?id=$id> $id </a>";
+              }
+              echo "<br /><br />";
+            }
+            //soluton video END
             if(count($hznu_recommend_set)){
               echo "<div><b>Recommended:</b></div>";
               foreach($hznu_recommend_set as $i) {
