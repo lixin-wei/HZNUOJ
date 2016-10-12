@@ -101,7 +101,7 @@
             }
             echo "<br /><br />";
 
-            //soluton video START
+            //solution video START
             $sql="SELECT DISTINCT video_id FROM solution_video_watch_log WHERE user_id='$user'";
             $res=$mysqli->query($sql);
             $solution_video_set=array();
@@ -115,7 +115,7 @@
               }
               echo "<br /><br />";
             }
-            //soluton video END
+            //solution video END
             if(count($hznu_recommend_set)){
               echo "<div><b>Recommended:</b></div>";
               foreach($hznu_recommend_set as $i) {

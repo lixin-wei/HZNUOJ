@@ -84,8 +84,14 @@
     //echo $sql_1;
     $mysqli->query($sql_1) or die($mysqli->error);
   }*/
-  
-  echo "<script>window.location.href=\"contest_list.php\";</script>";
+  $sql="DELETE FROM contest_excluded_user WHERE contest_id=$cid";
+  $mysqli->query($sql);
+  $ex_users=explode("\n",trim($_POST['ex_ulist']));
+  foreach ($ex_users as $uid) {
+    $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,'$uid')";
+    $mysqli->query($sql);
+  }
+  //echo "<script>window.location.href=\"contest_list.php\";</script>";
   exit();
   /* 更新部分 end */
 
@@ -126,8 +132,12 @@
     $ulist=$ulist.$row[0];
     if ($i>1) $ulist=$ulist."\n";
   }
-  
-  
+  $ex_ulist="";
+  $sql="SELECT user_id FROM contest_excluded_user WHERE contest_id=$cid";
+  $res=$mysqli->query($sql);
+  while($uid=$res->fetch_array()[0]){
+    $ex_ulist.=($uid."\n");
+  }
 }
 ?>
 
@@ -190,6 +200,7 @@
   <br>
   <p align=left>Description:<br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea>
   Users:<textarea name="ulist" rows="20" cols="20"><?php if (isset($ulist)) { echo $ulist; } ?></textarea>
+  Ranking Excluded Users:<textarea name="ex_ulist" rows="20" cols="20"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
 </form>
 <?php require_once("admin-footer.php");?>

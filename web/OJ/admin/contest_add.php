@@ -80,6 +80,15 @@
     //echo $sql_1;
     $mysqli->query($sql_1) or die($mysqli->error);
   }
+
+
+  $ex_users=explode("\n",trim($_POST['ex_ulist']));
+  foreach ($ex_users as $uid) {
+    $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,$uid)";
+    $mysqli->query($sql);
+  }
+
+  
   echo "<script>window.location.href=\"contest_list.php\";</script>";
 }
 else{
@@ -189,6 +198,7 @@ $lang_count=count($language_ext);
 
 
   Users:<textarea name="ulist" rows="20" cols="20"></textarea>
+  Ranking Excluded Users:<textarea name="ex_ulist" rows="20" cols="20"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
   <br />
   *可以将学生学号从Excel整列复制过来，然后要求他们用学号做UserID注册,就能进入Private的比赛作为作业和测验。
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
