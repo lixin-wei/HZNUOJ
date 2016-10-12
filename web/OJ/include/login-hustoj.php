@@ -27,7 +27,7 @@
         $result->free();
       }
       if ($canLogin) {
-        $sql="INSERT INTO `loginlog` VALUES('$user_id','$pass2','".$_SERVER['REMOTE_ADDR']."',NOW())";
+        $sql="INSERT INTO `loginlog` (user_id,password,ip,`time`)VALUES('$user_id','$pass2','".$_SERVER['REMOTE_ADDR']."',NOW())";
         @$mysqli->query($sql) or die($mysqli->error);
         $sql="SELECT `user_id`,`password` FROM `users` WHERE `user_id`='".$user_id."'";
         $result=$mysqli->query($sql);

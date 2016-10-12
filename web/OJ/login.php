@@ -28,7 +28,6 @@
   }
   $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$mysqli->real_escape_string($user_id)."'";
   $result=$mysqli->query($sql);
-
   // 比对用户名和密码
   $login=check_login($user_id,$password, $cid);
   if ($login == -1) {
