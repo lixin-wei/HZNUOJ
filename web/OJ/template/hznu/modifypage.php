@@ -12,19 +12,14 @@
 <?php $title="Modify Info";?>
 <?php require_once("header.php") ?>
 <div class="am-container">
-  <legend align="center" style="margin-top:40px;">Modify Page</legend>
+  <h1 style="margin-top:40px; margin-bottom: 0px;">Modify Page</h1>
+  <hr>
   <form class="am-form am-form-horizontal" action="modify.php" method="post">
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">User ID:</label>
       <div class="am-u-sm-8">
         <label class="am-form-label"><?php echo $_SESSION['user_id']?></label>
         <?php require_once('./include/set_post_key.php');?>
-      </div>
-    </div>
-    <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
-      <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->stu_id)?>" name="stu_id">
       </div>
     </div>
     <div class="am-form-group">
@@ -58,7 +53,13 @@
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->school)?>" name="school">
       </div>
-    </div> 
+    </div>
+    <div class="am-form-group">
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
+      <div class="am-u-sm-8">
+        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->stu_id)?>" name="stu_id">
+      </div>
+    </div>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
       <div class="am-u-sm-8">
@@ -78,7 +79,7 @@
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->real_name)?>" name="real_name">
       </div>
-    </div>    
+    </div>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;Email:
