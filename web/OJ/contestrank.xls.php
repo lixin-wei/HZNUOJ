@@ -5,7 +5,7 @@
    * @2016.03.26
   **/
 ?>
-
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" /> 
 <?php
   // ini_set("display_errors","On");
   ob_start();
