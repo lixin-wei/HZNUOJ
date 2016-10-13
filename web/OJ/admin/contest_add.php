@@ -137,9 +137,9 @@ else if(isset($_POST['problem2contest'])){
 }  
   include_once("kindeditor.php") ;
 ?>
-  
+  <title>Add a Contest</title>
+  <h1>Add a Contest</h1><hr>
   <form method=POST >
-  <p align=center><font size=4 color=#333399>Add a Contest</font></p>
   <p align=left>Title:<input class=input-xxlarge  type=text name=title size=71 value="<?php echo isset($title)?$title:""?>"></p>
   <p align=left>Start Time:<br>&nbsp;&nbsp;&nbsp;
   Year:<input  class=input-mini type=text name=syear value=<?php echo date('Y')?> size=4 >

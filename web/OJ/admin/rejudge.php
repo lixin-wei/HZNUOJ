@@ -37,7 +37,8 @@ if (!HAS_PRI("rejudge")) {
 
 }
 ?>
-<b>Rejudge</b>
+	<title>Rejudge</title>
+	<h1>Rejudge</h1><hr/>
 	<ol>
 	<li>Problem
 	<form action='rejudge.php' method=post>

@@ -95,7 +95,8 @@
 
   }
 ?>
-
+<title>Change User ID</title>
+<h1>Change User ID</h1><hr>
 <form method='post' action='change_user_id.php'>
   Change user ID : <input type='text' name='origin'>
   to : <input type='text' name='dest'>

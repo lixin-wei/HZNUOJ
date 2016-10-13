@@ -32,6 +32,7 @@
 ?>
 <div class="container" style="width: 800px;">
   <?php include_once("kindeditor.php"); ?>
+    <title>Add New problem</title>
     <h1>Add New problem</h1>
     <hr/>
     <form class="form-horizontal" method=POST action='problem_add.php' id="problem_form">

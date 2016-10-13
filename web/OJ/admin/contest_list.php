@@ -15,8 +15,8 @@
     echo "Permission denied!";
     exit(1);
   }
-  echo "<title>Problem List</title>";
-  echo "<center><h2>Contest List</h2></center>";
+  echo "<title>Contest List</title>";
+  echo "<h1>Contest List</h1><hr>";
   require_once("../include/set_get_key.php");
   $sql="SELECT max(`contest_id`) as upid, min(`contest_id`) as btid  FROM `contest`";
   $page_cnt=50;

@@ -85,7 +85,8 @@
   } 
   if($show_form){
 ?>
-<b>Change ProblemID</b>
+<title>Change ProblemID</title>
+<h1>Change ProblemID</h1><hr>
   <ol>
   <li>Problem
   <form action='problem_changeid.php' method=post>

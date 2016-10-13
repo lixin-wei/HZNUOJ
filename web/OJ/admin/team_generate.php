@@ -70,8 +70,8 @@
     }
   }
 ?>
-<b>TeamGenerator:</b><br />
-
+  <title>TeamGenerator</title>
+  <h1>TeamGenerator</h1><hr>
   <font size='2px' color='red'>
     使用指南：<br />
     <li>1. School和Users为选填项，其余必填，其中队伍前缀名（Prefix）不能超过30个字符。若填入Users表示指定账号的nick</li>

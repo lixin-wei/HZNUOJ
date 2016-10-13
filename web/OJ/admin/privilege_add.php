@@ -29,6 +29,7 @@
     else echo "No such user!";
   }
 ?>
+<title>Add Privilege For User</title>
 <h1>Add Privilege For User</h1><hr/>
 <form method=post>
   <?php require("../include/set_post_key.php");?>
