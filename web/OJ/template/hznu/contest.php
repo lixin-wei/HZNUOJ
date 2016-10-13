@@ -11,10 +11,25 @@
 
 <?php $title="Contest";?>
 <?php include "template/hznu/contest_header.php"; ?>
+<style type="text/css" media="screen">
+ .well{
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #555;
+    background-color: #f8f8f8;
+    border: 1px solid #dedede;
+    border-radius: 0;
+ }
+</style>
 <div class="am-container">
   <hr / style="margin-top:30px;">
   <h3>Contest<?php echo $view_cid?> - <?php echo $view_title ?></h3>
-  <pre><?php echo $view_description?></pre>
+  <div class="well"><?php echo $view_description?></div>
   <h3 class='am-text-center'>
     <?php // 判断Start Time有没过去，以此确认字体颜色
       if ($view_start_time < date('Y-m-d H:i:s')) {
