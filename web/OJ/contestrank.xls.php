@@ -162,13 +162,15 @@ $user_cnt=0;
 $user_name='';
 $U=array();
 if (!$user_limit) {
-  $sql="SELECT 
+  $sql=<<<SQL
+  SELECT 
     users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.stu_id,users.class 
       FROM 
         (select * from solution where solution.contest_id='$cid' and num>=0) solution 
       left join users 
       on users.user_id=solution.user_id 
-    ORDER BY users.user_id,in_date";
+    ORDER BY users.user_id,in_date
+SQL;
     $result = $mysqli->query($sql);
     while ($row=$result->fetch_object()){
       $n_user=$row->user_id;
@@ -187,13 +189,17 @@ if (!$user_limit) {
     }
       $result->free();
 }
-  $sql="SELECT 
+else
+{
+  $sql=<<<SQL
+  SELECT 
     team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class 
       FROM 
         (select * from solution where solution.contest_id='$cid' and num>=0) solution 
       left join team 
       on team.user_id=solution.user_id 
-    ORDER BY team.user_id,in_date";
+    ORDER BY team.user_id,in_date
+SQL;
   $result=$mysqli->query($sql);
   while ($row=$result->fetch_object()){
     $n_user=$row->user_id;
@@ -208,6 +214,8 @@ if (!$user_limit) {
     $U[$user_cnt]->class = strtoupper($row->class);
   }
   $result->free();
+  
+}
 
 
 $result->free();
