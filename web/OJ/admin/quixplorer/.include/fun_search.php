@@ -47,7 +47,7 @@ function find_item($dir,$pat,&$list,$recur) {	// find items
 		if(!get_show_item($dir, $new_item)) continue;
 		
 		// match?
-		if(@preg_match($pat,$new_item)) $list[]=array($dir,$new_item);
+		if(@preg_match("/".$pat."/",$new_item)) $list[]=array($dir,$new_item);
 		
 		// search sub-directories
 		if(get_is_dir($dir, $new_item) && $recur) {

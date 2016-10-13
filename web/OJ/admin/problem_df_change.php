@@ -11,7 +11,6 @@
   require_once("../include/check_get_key.php");
   require_once("../include/my_func.inc.php");
   if (!HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
-  echo "string";
     require_once("error.php");
     exit(1);
   }

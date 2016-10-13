@@ -56,7 +56,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
         <?php
-          echo "<li><a href='index.php'>See OJ</a></li>";
+          echo "<li><a href='/OJ/' target='view_window'>See OJ</a></li>";
           $html_li="";
           if($can_see_problem){
             $html_li .= "<li><a href='problem_add_page.php'>Add Problem</a></li>";

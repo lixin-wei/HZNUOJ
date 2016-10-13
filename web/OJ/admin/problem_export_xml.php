@@ -151,7 +151,7 @@ function image_base64_encode($img_url){
 		return false;
 }
 function getImages($content){
-    preg_match_all("<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>",$content,$images);
+    preg_match_all("/<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>/",$content,$images);
     return $images;
 }
 function fixcdata($content){

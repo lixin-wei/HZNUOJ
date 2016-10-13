@@ -9,7 +9,6 @@
 <?php
 
   require_once("../include/db_info.inc.php");
-  echo "string";
   if (!HAS_PRI("inner_function")) {
     echo "Permission denied!";
     exit(1);

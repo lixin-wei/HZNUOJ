@@ -217,6 +217,9 @@ $(window).resize(function(){
         $("i#news-load-icon-"+news_id).hide(100);
         //console.log($(this).attr("id"));
       },
+      complete: function(){
+        console.log("ajax complete!");
+      },
       error: function(xmlrqst,info){
         console.log(info);
       }
