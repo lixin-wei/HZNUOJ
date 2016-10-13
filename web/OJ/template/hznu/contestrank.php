@@ -125,7 +125,7 @@
           echo "<td><span class=''>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
-          if(!$is_excluded[$uuid]) {
+          if(!isset($is_excluded[$uuid])) {
             echo $rank++;//名次变量
           }
           else 
@@ -135,7 +135,9 @@
           if($uuid==$_GET['user_id']) echo "<td>";
           else echo"<td>";
           echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
-          echo "<td><a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
+          echo "<td>";
+          if(isset($is_excluded[$uuid])) echo "<span>*</span>";
+          echo "<a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
           echo "<td><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
           echo "<td>".sec2str($U[$i]->time);
           for ($j=0;$j<$pid_cnt;$j++){

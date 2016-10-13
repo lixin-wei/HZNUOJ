@@ -157,7 +157,6 @@
       ORDER BY
         pnum
 SQL;
-
     $result=$mysqli->query($sql);
     $view_problemset=Array();
       

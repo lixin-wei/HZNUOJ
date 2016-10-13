@@ -84,7 +84,8 @@
 
   $ex_users=explode("\n",trim($_POST['ex_ulist']));
   foreach ($ex_users as $uid) {
-    $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,$uid)";
+    $uid=trim($uid);
+    $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,'$uid')";
     $mysqli->query($sql);
   }
 

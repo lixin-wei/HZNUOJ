@@ -88,10 +88,11 @@
   $mysqli->query($sql);
   $ex_users=explode("\n",trim($_POST['ex_ulist']));
   foreach ($ex_users as $uid) {
+    $uid=trim($uid);
     $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,'$uid')";
     $mysqli->query($sql);
   }
-  //echo "<script>window.location.href=\"contest_list.php\";</script>";
+  echo "<script>window.location.href=\"contest_list.php\";</script>";
   exit();
   /* 更新部分 end */
 
