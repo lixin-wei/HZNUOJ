@@ -229,14 +229,14 @@ for ($i=0;$i<$user_cnt;$i++){
   $uuid=$U[$i]->user_id;
         
   $usolved=$U[$i]->solved;
-  echo "<td>".$uuid."&nbsp";
+  echo "<td>".$uuid."&zwnj;";
   if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
     $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
   }
-  echo "<td>".$U[$i]->real_name."";
-  echo "<td>".$U[$i]->stu_id."";
-  echo "<td>".$U[$i]->class."";
-  echo "<td>".$U[$i]->nick."";
+  echo "<td>".$U[$i]->real_name."&zwnj;";
+  echo "<td>".$U[$i]->stu_id."&zwnj;";
+  echo "<td>".$U[$i]->class."&zwnj;";
+  echo "<td>".$U[$i]->nick."&zwnj;";
   echo "<td>$usolved";
   echo "<td>".$U[$i]->time."";
   
