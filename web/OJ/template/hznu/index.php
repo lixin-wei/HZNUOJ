@@ -207,18 +207,16 @@ $(window).resize(function(){
 
     //begin load
     $("i#news-load-icon-"+news_id).show(0);
-    $.ajax({
+    $.when($.ajax({
       type: "GET",
       url: "get_news.php",
       data: {
         id: news_id,
       },
       context: this,
-      async: false,
       success: function(data){
         $(this).find("div.am-panel-bd").html(data);
         has_load[news_id]=true;
-        $("i#news-load-icon-"+news_id).hide(0);
         //console.log($(this).attr("id"));
       },
       complete: function(){
@@ -227,6 +225,8 @@ $(window).resize(function(){
       error: function(xmlrqst,info){
         console.log(info);
       }
+    })).done(function(){
+      $("i#news-load-icon-"+news_id).hide(0);
     });
 
   }).on('close.collapse.amui', function() {
