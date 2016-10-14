@@ -206,7 +206,7 @@ $(window).resize(function(){
     if(has_load[news_id])return;
 
     //begin load
-    $("i#news-load-icon-"+news_id).show(100);
+    $("i#news-load-icon-"+news_id).show(0);
     $.ajax({
       type: "GET",
       url: "get_news.php",
@@ -214,10 +214,11 @@ $(window).resize(function(){
         id: news_id,
       },
       context: this,
+      async: false,
       success: function(data){
         $(this).find("div.am-panel-bd").html(data);
         has_load[news_id]=true;
-        $("i#news-load-icon-"+news_id).hide(100);
+        $("i#news-load-icon-"+news_id).hide(0);
         //console.log($(this).attr("id"));
       },
       complete: function(){
