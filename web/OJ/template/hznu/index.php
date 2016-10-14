@@ -144,6 +144,9 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
 $(document).ready(function(){
     // 指定图表的配置项和数据
     var option = {
+        grid: {
+            x: 65,
+        },
         color: ['#3398DB','#5EB95E'],
         title: {
             text: 'Submissions In Recent Days',
