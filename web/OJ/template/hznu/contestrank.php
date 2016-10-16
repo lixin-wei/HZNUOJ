@@ -318,7 +318,7 @@
   $(document).ready(function(){
     change_max_width();
   });
-  $(window).change(function(){
+  $(window).resize(function(){
     change_max_width();
   });
 </script>
