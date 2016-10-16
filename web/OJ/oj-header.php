@@ -2,11 +2,11 @@
 		require_once("./include/db_info.inc.php");
       $now=strftime("%Y-%m-%d %H:%M",time());
 		$sql="SELECT count(*) FROM `contest` WHERE `end_time`>'$now' AND `defunct`='N'";
-		$result=mysql_query($sql);
-		$row=mysql_fetch_row($result);
+		$result=$mysqli->query($sql);
+		$row=$result->fetch_row();
 		if (intval($row[0])==0) $retmsg=$MSG_CONTEST;
 		else $retmsg=$row[0]."<span class=red>&nbsp;$MSG_CONTEST</span>";
-		mysql_free_result($result);
+		$result->free();
 		return $retmsg;
 	}
 	

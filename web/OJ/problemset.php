@@ -40,9 +40,9 @@
   if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
     $uid = $_SESSION['user_id'];
     $sql = "SELECT tag FROM users WHERE user_id='$uid'";
-    $result = mysql_query($sql);
-    $row_h = mysql_fetch_array($result);
-    mysql_free_result($result);
+    $result = $mysqli->query($sql);
+    $row_h = $result->fetch_array();
+    $result->free();
     if ($row_h['tag'] == "N") $show_tag = false;
   } else if (isset($_SESSION['tag'])) {
     if ($_SESSION['tag'] == "N") $show_tag = false;
@@ -58,8 +58,8 @@
   $sub_arr=Array();
   if (isset($_SESSION['user_id'])) {
     $sql="SELECT `problem_id` FROM `solution` WHERE `user_id`='".$_SESSION['user_id']."'"." group by `problem_id`";
-    $result=@mysql_query($sql) or die(mysql_error());
-    while ($row=mysql_fetch_array($result))
+    $result=@$mysqli->query($sql) or die($mysqli->error);
+    while ($row=$result->fetch_array())
       $sub_arr[$row[0]]=true;
   }
   /* 获取当前用户提交过的题目 end */
@@ -69,8 +69,8 @@
   $acc_arr=Array();
   if (isset($_SESSION['user_id'])) {
     $sql="SELECT `problem_id` FROM `solution` WHERE `user_id`='".$_SESSION['user_id']."'"." AND `result`=4"." group by `problem_id`";
-    $result=@mysql_query($sql) or die(mysql_error());
-    while ($row=mysql_fetch_array($result))
+    $result=@$mysqli->query($sql) or die($mysqli->error);
+    while ($row=$result->fetch_array())
       $acc_arr[$row[0]]=true;
   }
   /* 获取当前用户已AC的题目 end */
@@ -78,18 +78,18 @@
 
   /* 获取sql语句中的筛选部分 start */
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
-    $search=mysql_real_escape_string($_GET['search']);
+    $search=$mysqli->real_escape_string($_GET['search']);
       $filter_sql="title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%'"; 
   } else {
       $filter_sql="1";
   }
 
   /* 获取sql语句中的筛选部分 end */
-  $res_set = mysql_query("SELECT set_name FROM problemset");
+  $res_set = $mysqli->query("SELECT set_name FROM problemset");
   $first = true;
   $sql = "";
   $cnt = 0;
-  while($set_name=mysql_fetch_array($res_set)[0]){
+  while($set_name=$res_set->fetch_array()[0]){
     if($OJ=='all' || $OJ==$set_name){
       if(HAS_PRI("see_hidden_".$set_name."_problem")){
         $t_sql=" FROM `problem` WHERE $filter_sql AND problemset='$set_name'";
@@ -118,8 +118,8 @@
 sql;
       }
       //count the number of problem START
-      $res = mysql_query("SELECT COUNT('problem_id')".$t_sql);
-      $cnt += mysql_fetch_array($res)[0];
+      $res = $mysqli->query("SELECT COUNT('problem_id')".$t_sql);
+      $cnt += $res->fetch_array()[0];
       //count the number of problem END
 
       $t_sql = "SELECT `problem_id`,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3 ".$t_sql;
@@ -140,7 +140,7 @@ sql;
 
 
   //echo "<pre>".htmlentities($sql)."</pre>";
-  $result=mysql_query($sql) or die(mysql_error());
+  $result=$mysqli->query($sql) or die($mysqli->error);
 
 
 
@@ -152,7 +152,7 @@ sql;
   /* 计算页数cnt end */
 
   /* 把结果放入表格 start */
-  while ($row=mysql_fetch_object($result)) {
+  while ($row=$result->fetch_object()) {
     $view_problemset[$i]=Array();
 
     // 获取problem ID
@@ -181,7 +181,7 @@ sql;
     $view_problemset[$i][7]="<td >".$row->score."</td>";
     $i++;
   }
-  mysql_free_result($result);
+  $result->free();
   /* 查询并把结果放入表格 end */
 
   require("template/".$OJ_TEMPLATE."/problemset.php");

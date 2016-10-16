@@ -18,7 +18,7 @@
   require_once('../include/db_info.inc.php');
 
   $sql = "DELETE FROM contest_problem WHERE contest_id='0'";
-  mysql_query($sql);
+  $mysqli->query($sql);
 
 
 ?>

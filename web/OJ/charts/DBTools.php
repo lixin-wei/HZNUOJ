@@ -11,12 +11,8 @@
 
 
 <?php
-
+  require_once "../include/db_info.inc.php";
   // echo "Connect Start!<br/>";
-  $conn = mysql_connect("192.168.160.133", "root", "hznujudge") or die("数据库连接失败");
-  mysql_select_db("jol", $conn);
-  mysql_query("SET NAMES 'utf8'");
-
   $classArr = array("cs151","cs152","cs153","cs154","se151","se152","se153","iot151","iot152"); // 班级数组
   $contestArr = array(1032,1033,1034,1035,1037,1038); // 要算入的contest id
 
@@ -128,10 +124,10 @@
     $sql = "SELECT MAX(solved+CF+HDU+PKU+UVA+ZJU) AS max FROM users WHERE class='$classArr[0]'";
     for ($i=1; $i<count($classArr); ++$i)
       $sql .= "OR class='$classArr[$i]'";
-    $result = mysql_query($sql);
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql);
+    $row = $result->fetch_array();
     $max_total_solved = $row['max'];
-    mysql_free_result($result);
+    $result->free();
   }
 
   function calSol($stu, $row) { // 计算该用户的解题数
@@ -162,35 +158,35 @@
       
       // 计算每周的解题量
       $sql = "SELECT COUNT(DISTINCT problem_id) AS sum FROM solution WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>=$start_time AND UNIX_TIMESTAMP(in_date)<$end_time";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_array($result);
+      $result = $mysqli->query($sql);
+      $row = $result->fetch_array();
       $stu->solved_weekly[$i] = $row['sum'];
       $solved_week = $row['sum']; // 本周的解题量，方便接下来SQL语句中使用
-      mysql_free_result($result);
+      $result->free();
 
       // 更新数据至缓存
       $sql = "SELECT * FROM users_cache_array WHERE user_id='$user_id' AND type='solved' AND week='$i'";
-      $result = mysql_query($sql);
-      $result_num = mysql_num_rows($result);
-      mysql_free_result($result);
+      $result = $mysqli->query($sql);
+      $result_num = $result->num_rows;
+      $result->free();
       if ($result_num) { // 存在则更新
         $sql = "UPDATE users_cache_array SET value_int='$solved_week' WHERE user_id='$user_id' AND type='solved' AND week='$i'";
-        mysql_query($sql);
+        $mysqli->query($sql);
       } else { // 否则插入
         $sql = "INSERT INTO users_cache_array(user_id, type, week, value_int) VALUES ('$user_id', 'solved', '$i', '$solved_week')";
-        mysql_query($sql);
+        $mysqli->query($sql);
       }
 
       // 计算每周排名
       $sql = "SELECT COUNT(*) AS rank FROM users_cache_array WHERE type='solved' AND week='$i' AND value_int>'$solved_week'";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_array($result);
+      $result = $mysqli->query($sql);
+      $row = $result->fetch_array();
       $stu->solved_rank_weekly[$i] = $row['rank']+1;
 
       if ($i == $ithWeek) { // 计算本周分数
         $sql = "SELECT MAX(value_int) AS max FROM users_cache_array WHERE type='solved' AND week='$i'";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_array($result);
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_array();
         $stu->solved_score_week = solAlg($stu->solved_weekly[$i], $row['max']);
       }
     }
@@ -233,14 +229,14 @@
                   WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'
                 ) AS s
                 ON problem.problem_id=s.pid";
-      $result = mysql_query($sql);
-      $num_rows += mysql_num_rows($result);
-      while ($row = mysql_fetch_array($result)) {
+      $result = $mysqli->query($sql);
+      $num_rows += $result->num_rows;
+      while ($row = $result->fetch_array()) {
         $total_score += $row['score'];
       }
       if ($num_rows) $stu->dif_weekly[$i] = round(1.0*$total_score/$num_rows, 3);
       else $stu->dif_weekly[$i] = 0;
-      mysql_free_result($result);
+      $result->free();
 
       if ($i == $ithWeek) { // 计算本周分数
         $stu->dif_score_week = difAlg($stu->dif_weekly[$i], $stu->solved_weekly[$i]);
@@ -263,9 +259,9 @@
     $sql = "SELECT SUM(time), SUM(memory), COUNT(problem_id), COUNT(DISTINCT problem_id)
         FROM solution 
         WHERE result=4 AND user_id='$user_id' AND problem_id<='$prob_end' AND problem_id>='$prob_start'";
-    $result = mysql_query($sql, $conn);
-    $row = mysql_fetch_array($result);
-    mysql_free_result($result);
+    $result = $mysqli->query($sql, $conn);
+    $row = $result->fetch_array();
+    $result->free();
     
     $AC_sum = $row['COUNT(problem_id)'];
     $prob_sum = $row['COUNT(DISTINCT problem_id)'];
@@ -308,9 +304,9 @@
       $start_time = $week_start+($i-1)*$week_sec;
       $end_time = $week_start+$i*$week_sec;
       $sql = "SELECT * FROM solution WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'";
-      $result = mysql_query($sql);
-      $num_rows += mysql_num_rows($result);
-      while ($row = mysql_fetch_array($result)) {
+      $result = $mysqli->query($sql);
+      $num_rows += $result->num_rows;
+      while ($row = $result->fetch_array()) {
         $total_time += $row['time'];
         $total_mem += $row['memory'];
       }
@@ -321,7 +317,7 @@
         $stu->time_weekly[$i] = 0;
         $stu->mem_weekly[$i] = 0;
       }
-      mysql_free_result($result);
+      $result->free();
 
       // 计算每周时空复杂度得分（周算法与总算法不相同，周算法进行了简化）
       if ($i == $ithWeek) {
@@ -343,10 +339,10 @@
     $sql = "SELECT MAX(AC_day) AS max FROM users_cache WHERE class='$classArr[0]'";
     for ($i=1; $i<count($classArr); ++$i)
       $sql .= "OR class='$classArr[$i]'";
-    $result = mysql_query($sql);
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql);
+    $row = $result->fetch_array();
     $max_insist_day = $row['max'];
-    mysql_free_result($result);
+    $result->free();
   }
 
   function calIns($stu) {
@@ -359,12 +355,12 @@
 
     // 计算有AC的天数
     $sql = "SELECT * FROM solution WHERE user_id='$user_id' ORDER BY in_date";
-    $result = mysql_query($sql, $conn);
+    $result = $mysqli->query($sql, $conn);
     $last_AC_time = 0; // 上一次AC的时间
     $last_sub_time = 0; // 上一次提交的时间
     $offset = strtotime("2012-01-01"); // 设置一个参考时间，若距离此时间的天数相等，则为同一天，否则不是同一天
     $day_sec = 60*60*24; // 一天的秒数
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = $result->fetch_array()) {
       if (floor((strtotime($row['in_date'])-$offset)/$day_sec) != floor(($last_sub_time-$offset)/$day_sec)) { // 和上次提交不是同一天
         $sub_day++;
       }
@@ -376,19 +372,19 @@
       }
       $last_sub_time = strtotime($row['in_date']);
     }
-    mysql_free_result($result);
+    $result->free();
 
     // 更新数据
     $sql = "SELECT * FROM users_cache WHERE user_id='$user_id'";
-    $result = mysql_query($sql);
-    $result_num = mysql_num_rows($result);
-    mysql_free_result($result);
+    $result = $mysqli->query($sql);
+    $result_num = $result->num_rows;
+    $result->free();
     if ($result_num) { // 如果表中已存在该user的信息，直接更新
       $sql = "UPDATE users_cache SET class='$stu->class', AC_day=$AC_day, sub_day=$sub_day WHERE user_id='$user_id'";
-      mysql_query($sql);
+      $mysqli->query($sql);
     } else { // 否则插入
       $sql = "INSERT INTO users_cache(user_id, class, AC_day, sub_day) VALUES ('$user_id', '$stu->class', $AC_day, $sub_day)";
-      mysql_query($sql);
+      $mysqli->query($sql);
     }
 
     $stu->insist_day = $AC_day;
@@ -414,37 +410,37 @@
 
       // 计算每周的坚持天数
       $sql = "SELECT * FROM solution WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time' ORDER BY in_date";
-      $result = mysql_query($sql);
+      $result = $mysqli->query($sql);
       $last_AC_time = 0; // 上一次AC的时间
       $AC_day = 0;
       $offset = strtotime("2012-01-01"); // 设置一个参考时间，若距离此时间的天数相等，则为同一天，否则不是同一天
       $day_sec = 86400; // 一天的秒数
-      while ($row = mysql_fetch_array($result)) {     
+      while ($row = $result->fetch_array()) {     
         if (floor((strtotime($row['in_date'])-$offset)/$day_sec) != floor(($last_AC_time-$offset)/$day_sec)) { // 两者不在同一天
           $AC_day++;
         }
         $last_AC_time = strtotime($row['in_date']);
       }
       $stu->insist_day_weekly[$i] = $AC_day;
-      mysql_free_result($result);
+      $result->free();
 
       // 更新坚持天数
       $sql = "SELECT * FROM users_cache_array WHERE user_id='$user_id' AND type='insist' AND week='$i'";
-      $result = mysql_query($sql);
-      $result_num = mysql_num_rows($result);
-      mysql_free_result($result);
+      $result = $mysqli->query($sql);
+      $result_num = $result->num_rows;
+      $result->free();
       if ($result_num) {
         $sql = "UPDATE users_cache_array SET value_int='$AC_day' WHERE user_id='$user_id' AND type='insist' AND week='$i'";
-        mysql_query($sql);
+        $mysqli->query($sql);
       } else {
         $sql = "INSERT INTO users_cache_array(user_id, type, week, value_int) VALUES ('$user_id', 'insist', '$i', '$AC_day')";
-        mysql_query($sql);
+        $mysqli->query($sql);
       }
 
       if ($i == $ithWeek) {
         $sql = "SELECT MAX(value_int) AS max FROM users_cache_array WHERE type='insist' AND week='$i'";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_array($result);
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_array();
         $stu->insist_score_week = insAlg($stu->insist_day_weekly[$i] ,$row['max']);
       }
     }
@@ -466,11 +462,11 @@
     for ($i=1; $i<count($classArr); ++$i)
       $sql .= "OR class='$classArr[$i]'";
 
-    $result = mysql_query($sql);
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql);
+    $row = $result->fetch_array();
     $max_act_value = $row['max'];
     $min_act_value = $row['min'];
-    mysql_free_result($result);
+    $result->free();
   }
 
   function calAct($stu) {
@@ -485,27 +481,27 @@
     $row_num = 0;
     for ($i=0; $i<count($contestArr); ++$i) {
       $sql = "SELECT * FROM solution WHERE contest_id=$contestArr[$i] AND result=4 AND user_id='$user_id'";
-      $result = mysql_query($sql);
-      $row_num += mysql_num_rows($result);
-      while ($row = mysql_fetch_array($result)) {
+      $result = $mysqli->query($sql);
+      $row_num += $result->num_rows;
+      while ($row = $result->fetch_array()) {
         $activity += strtotime($row['in_date']);
       }
-      mysql_free_result($result);
+      $result->free();
     }
     if ($row_num) $activity = 1.0 * $activity / $row_num;
     else $activity = strtotime("now");
 
     // 更新activity
     $sql = "SELECT * FROM users_cache WHERE user_id='$user_id'";
-    $result = mysql_query($sql);
-    $result_num = mysql_num_rows($result);
-    mysql_free_result($result);
+    $result = $mysqli->query($sql);
+    $result_num = $result->num_rows;
+    $result->free();
     if ($result_num) { // 若存在，则更新
       $sql = "UPDATE users_cache SET class='$stu->class', activity=$activity WHERE user_id='$user_id'";
-      mysql_query($sql);
+      $mysqli->query($sql);
     } else { // 若不存在，则插入
       $sql = "INSERT INTO users_cache(user_id, class, activity) VALUES ('$user_id', '$stu->class', $activity)";
-      mysql_query($sql);
+      $mysqli->query($sql);
     }
 
     // 计算分数
@@ -538,12 +534,12 @@
       $row_num = 0;
       for ($j=0; $j<count($contestArr); ++$j) {
         $sql = "SELECT * FROM solution WHERE user_id='$user_id' AND contest_id='$contestArr[$j]' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'";
-        $result = mysql_query($sql);
-        $row_num += mysql_num_rows($result);
-        while ($row = mysql_fetch_array($result)) {
+        $result = $mysqli->query($sql);
+        $row_num += $result->num_rows;
+        while ($row = $result->fetch_array()) {
           $activity += strtotime($row['in_date']);
         }
-        mysql_free_result($result);
+        $result->free();
       }
       if ($row_num) $activity = 1.0 * $activity / $row_num;
       else $activity = strtotime("now");
@@ -551,28 +547,28 @@
 
       // 更新该周的积极性
       $sql = "SELECT * FROM users_cache_array WHERE user_id='$user_id' AND type='activity' AND week='$i'";
-      $result = mysql_query($sql);
-      $result_num = mysql_num_rows($result);
-      mysql_free_result($result);
+      $result = $mysqli->query($sql);
+      $result_num = $result->num_rows;
+      $result->free();
       if ($result_num) { // 若存在，则更新
         $sql = "UPDATE users_cache_array SET value_int='$activity' WHERE user_id='$user_id' AND type='activity' AND week='$i'";
-        mysql_query($sql);
+        $mysqli->query($sql);
       } else { // 若不存在，则插入
         $sql = "INSERT INTO users_cache_array(user_id, type, week, value_int) VALUES ('$user_id', 'activity', '$i', '$activity')";
-        mysql_query($sql);
+        $mysqli->query($sql);
       }
 
       // 计算积极性排名
       $sql = "SELECT COUNT(*) AS rank FROM users_cache_array WHERE type='activity' AND week='$i' AND value_int<'$activity'";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_array($result);
+      $result = $mysqli->query($sql);
+      $row = $result->fetch_array();
       $stu->act_rank_weekly[$i] = $row['rank']+1;
 
       // 计算本周分数
       if ($i == $ithWeek) {
         $sql = "SELECT MAX(value_int) AS max, MIN(value_int) AS min FROM users_cache_array WHERE type='activity' AND week='$i'";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_array($result);
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_array();
         $stu->act_score_week = actAlg($activity, $row['max'], $row['min']);
       }
     }
@@ -596,15 +592,15 @@
                 WHERE result=4 AND user_id='$user_id'
               ) AS s 
               ON sim.s_id=s.solution_id";
-    $result = mysql_query($sql, $conn);
+    $result = $mysqli->query($sql, $conn);
     $copy_sum = 0; // sim和
-    $AC_sum = mysql_num_rows($result); // AC数
+    $AC_sum = $result->num_rows; // AC数
 
     // 逐个查看每个提交是否为抄袭
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = $result->fetch_array()) {
       $copy_sum += $row['sim'];
     }
-    mysql_free_result($result);
+    $result->free();
 
     $stu->idp_score = copyAlg($AC_sum, $copy_sum, $stu->HZNU);
 
@@ -635,10 +631,10 @@
                   WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'
                 ) AS s
                 ON sim.s_id=s.solution_id";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_array($result);
+      $result = $mysqli->query($sql);
+      $row = $result->fetch_array();
       $stu->copy1_weekly[$i] = $row['sum'];
-      mysql_free_result($result);
+      $result->free();
 
       // 计算抄袭他人的数量
       $sql = "SELECT COUNT(*) AS sum 
@@ -649,10 +645,10 @@
                   WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'
                 ) AS s
                 ON sim.sim_s_id=s.solution_id";
-      $result = mysql_query($sql);
-      $row = mysql_fetch_array($result);
+      $result = $mysqli->query($sql);
+      $row = $result->fetch_array();
       $stu->copy2_weekly[$i] = $row['sum'];
-      mysql_free_result($result);
+      $result->free();
 
       // 计算每周的抄袭分数
       if ($i == $ithWeek) {
@@ -664,13 +660,13 @@
                     WHERE user_id='$user_id' AND result=4 AND UNIX_TIMESTAMP(in_date)>='$start_time' AND UNIX_TIMESTAMP(in_date)<'$end_time'
                   ) AS s
                   ON sim.s_id=s.solution_id";
-        $result = mysql_query($sql);
+        $result = $mysqli->query($sql);
         $copy_sum = 0; // sim和
-        $AC_sum = mysql_num_rows($result); // AC数
-        while ($row = mysql_fetch_array($result)) {     
+        $AC_sum = $result->num_rows; // AC数
+        while ($row = $result->fetch_array()) {     
           $copy_sum += $row['sim'];
         }
-        mysql_free_result($result);
+        $result->free();
 
         $stu->idp_score_week = copyAlg($AC_sum, $copy_sum, $stu->solved_weekly[$i]); // 抄袭分数
       }

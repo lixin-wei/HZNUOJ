@@ -45,11 +45,11 @@ class ucclient_db {
 
 		if($this->version() > '4.1') {
 			if($dbcharset) {
-				mysql_query("SET character_set_connection=".$dbcharset.", character_set_results=".$dbcharset.", character_set_client=binary", $this->link);
+				$mysqli->query("SET character_set_connection=".$dbcharset.", character_set_results=".$dbcharset.", character_set_client=binary", $this->link);
 			}
 
 			if($this->version() > '5.0.1') {
-				mysql_query("SET sql_mode=''", $this->link);
+				$mysqli->query("SET sql_mode=''", $this->link);
 			}
 		}
 
@@ -87,7 +87,7 @@ class ucclient_db {
 	}
 
 	function query($sql, $type = '', $cachetime = FALSE) {
-		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ? 'mysql_unbuffered_query' : 'mysql_query';
+		$func = $type == 'UNBUFFERED' && @function_exists('mysql_unbuffered_query') ? 'mysql_unbuffered_query' : '$mysqli->query';
 		if(!($query = $func($sql, $this->link)) && $type != 'SILENT') {
 			$this->halt('MySQL Query Error', $sql);
 		}
@@ -101,7 +101,7 @@ class ucclient_db {
 	}
 
 	function error() {
-		return (($this->link) ? mysql_error($this->link) : mysql_error());
+		return (($this->link) ? mysql_error($this->link) : $mysqli->error);
 	}
 
 	function errno() {
@@ -114,7 +114,7 @@ class ucclient_db {
 	}
 
 	function num_rows($query) {
-		$query = mysql_num_rows($query);
+		$query = $query->num_rows;
 		return $query;
 	}
 
@@ -123,7 +123,7 @@ class ucclient_db {
 	}
 
 	function free_result($query) {
-		return mysql_free_result($query);
+		return $query->free();
 	}
 
 	function insert_id() {
@@ -131,7 +131,7 @@ class ucclient_db {
 	}
 
 	function fetch_row($query) {
-		$query = mysql_fetch_row($query);
+		$query = $query->fetch_row();
 		return $query;
 	}
 
@@ -144,7 +144,7 @@ class ucclient_db {
 	}
 
 	function escape_string($str) {
-		return mysql_escape_string($str);
+		return $mysqli->real_escape_string($str);
 	}
 
 	function close() {
@@ -152,7 +152,7 @@ class ucclient_db {
 	}
 
 	function halt($message = '', $sql = '') {
-		$error = mysql_error();
+		$error = $mysqli->error;
 		$errorno = mysql_errno();
 		if($errorno == 2006 && $this->goneaway-- > 0) {
 			$this->connect($this->dbhost, $this->dbuser, $this->dbpw, $this->dbname, $this->dbcharset, $this->pconnect, $this->tablepre, $this->time);

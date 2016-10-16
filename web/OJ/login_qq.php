@@ -70,8 +70,8 @@
      $school = "xx"; 
      
      $sql = "SELECT `user_id` FROM `users` where `user_id`=".$user_id;
-     $res = mysql_query($sql);
-     $row_num = mysql_num_rows($res);
+     $res = $mysqli->query($sql);
+     $row_num = $res->num_rows;
      echo('row_num'.$row_num.'<br>');
      if ($row_num == 0)
      {
@@ -79,7 +79,7 @@
          ."`user_id`,`email`,`ip`,`accesstime`,`password`,`reg_time`,`nick`,`school`)"
          ."VALUES('".$user_id."','".$email."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$school."')";
          // reg it
-         mysql_query($sql);
+         $mysqli->query($sql);
      }
 	 //login it
 	 $_SESSION['user_id']=$uname;

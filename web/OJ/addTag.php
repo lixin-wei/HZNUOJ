@@ -27,39 +27,39 @@
 
     // 如果用户还没AC本题，则弹出警告并退出
     $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$pid' AND result='4'";
-    $result = mysql_query($sql);
-    if (mysql_num_rows($result) == 0) {
+    $result = $mysqli->query($sql);
+    if ($result->num_rows == 0) {
       echo "<script>alert('You should solve this problem first!');history.go(-1);</script>";
-      mysql_free_result($result);
+      $result->free();
       exit(0);
     }
 
 
     $sql = "SELECT tag FROM tag WHERE user_id='$uid' AND problem_id='$pid'";
-    $result = mysql_query($sql);
-    if (mysql_num_rows($result)) {
+    $result = $mysqli->query($sql);
+    if ($result->num_rows) {
       $sql = "UPDATE tag SET tag='$tag' WHERE user_id='$uid' AND problem_id='$pid'";
-      mysql_query($sql);
+      $mysqli->query($sql);
     } else {
       $sql = "INSERT INTO tag(problem_id, tag, user_id) VALUES ('$pid', '$tag', '$uid')";
-      mysql_query($sql);
+      $mysqli->query($sql);
     }
-    mysql_free_result($result);
+    $result->free();
 
     $sql = "SELECT tag, COUNT(tag) AS sum FROM (SELECT tag FROM tag WHERE problem_id='$pid') AS t GROUP BY tag ORDER BY sum DESC LIMIT 3";
-    $result = mysql_query($sql);
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql);
+    $row = $result->fetch_array();
     $tag1 = $row['tag'];
-    $row = mysql_fetch_array($result);
+    $row = $result->fetch_array();
     $tag2 = $row['tag'];
-    $row = mysql_fetch_array($result);
+    $row = $result->fetch_array();
     $tag3 = $row['tag'];
-    mysql_free_result($result);
+    $result->free();
     $sql = "UPDATE problem SET tag1='$tag1', tag2='$tag2', tag3='$tag3' WHERE problem_id='$pid'";
-    mysql_query($sql);
+    $mysqli->query($sql);
     $sql = "SELECT tag, COUNT(tag) AS sum FROM (SELECT tag FROM tag WHERE problem_id='$pid') AS t GROUP BY tag ORDER BY sum DESC LIMIT 3";
-    $result = mysql_query($sql);
-    while($row=mysql_fetch_assoc($result)){
+    $result = $mysqli->query($sql);
+    while($row=$result->fetch_array()){
       print_r($row);
     }
   }

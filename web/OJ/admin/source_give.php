@@ -6,19 +6,20 @@ if (!HAS_PRI("inner_function")) {
 ?>
 <?php if(isset($_POST['do'])){
   require_once("../include/check_post_key.php");
-  $from=mysql_real_escape_string($_POST['from']);
-  $to=mysql_real_escape_string($_POST['to']);
+  $from=$mysqli->real_escape_string($_POST['from']);
+  $to=$mysqli->real_escape_string($_POST['to']);
   $start=intval($_POST['start']);
   $end=intval($_POST['end']);
   $sql="update `solution` set `user_id`='$to' where `user_id`='$from' and problem_id>=$start and problem_id<=$end and result=4";
   echo $sql;
-  mysql_query($sql);
-  echo mysql_affected_rows()." source file given!";
+  $mysqli->query($sql);
+  echo $mysqli->affected_rows." source file given!";
   
 }
 ?>
+<title>Give Source</title>
+<h1>Give Source</h1><hr>
 <form action='source_give.php' method=post>
-  <b>Give source:</b><br />
   From:<input type=text size=10 name="from" value="zhblue"><br />
   To:<input type=text size=10 name="to" value="standard"><br />
   start pid:<input type=text size=10 name="start"><br />

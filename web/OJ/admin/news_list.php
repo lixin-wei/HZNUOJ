@@ -16,11 +16,11 @@
   echo "<title>News List</title>";
   echo "<h1>News List</h1><hr/>";
   $sql="SELECT `news_id`,`user_id`,`title`,`time`,`defunct` FROM `news` order by defunct, `importance` desc";
-  $result=mysql_query($sql) or die(mysql_error());
+  $result=$mysqli->query($sql) or die($mysqli->error);
   echo "<center><table class='table table-condensed table-striped table-hover'>";
 
   echo "<tr><th>PID<th>Title<th>Date<th>Status<th>Edit<th>Delete</tr>";
-  for (;$row=mysql_fetch_object($result);) {
+  for (;$row=$result->fetch_object();) {
     echo "<tr>";
     echo "<td>".$row->news_id;
     //echo "<input type=checkbox name='pid[]' value='$row->problem_id'>";

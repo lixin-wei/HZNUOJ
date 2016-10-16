@@ -1,23 +1,31 @@
 
 <?php
 require_once("admin-header.php");
-if(!HAS_PRI("edit_privilege_distribution")){
-  require_once("error.php");
-  exit(0);
-}
+// if(!HAS_PRI("edit_privilege_distribution")){
+//   require_once("error.php");
+//   exit(0);
+// }
+$can_edit=HAS_PRI("edit_privilege_distribution");
+
 if($_POST['data']){
-  $data=$_POST['data'];
-  $sql="";
-  foreach ($data as $group_name => $arr) {
-    foreach ($arr as $key => $value) {
-      $sql = "UPDATE privilege_distribution SET $key='$value' WHERE group_name='$group_name';";
-      mysql_query($sql);
+  if($can_edit){
+    $data=$_POST['data'];
+    $sql="";
+    foreach ($data as $group_name => $arr) {
+      foreach ($arr as $key => $value) {
+        $sql = "UPDATE privilege_distribution SET $key='$value' WHERE group_name='$group_name';";
+        $mysqli->query($sql);
+      }
     }
+    // echo "<pre>";
+    // echo $sql;
+    // echo "</pre>";
   }
-  // echo "<pre>";
-  // echo $sql;
-  // echo "</pre>";
-  
+  else
+  {
+    require_once("error.php");
+    exit(0);
+  }
 }
 ?>
 <title>Privilege Distribution</title>
@@ -31,29 +39,32 @@ if($_POST['data']){
       <ul id='pri_tag' class="nav nav-pills nav-stacked" role="tablist">
         <?php
         $html="";
-        $res=mysql_query("SELECT group_name FROM privilege_groups ORDER BY group_order");
-        while($group_name=mysql_fetch_array($res)[0]){
+        $res=$mysqli->query("SELECT group_name FROM privilege_groups ORDER BY group_order");
+        while($group_name=$res->fetch_array()[0]){
           $html .= "<li role='presentation'><a href='#$group_name' role='tab' data-toggle='pill'>$group_name</a></li>";
         }
         echo $html;
         ?>
       </ul>
       <hr/>
-      <center><button type="submit" class="btn btn-default">Submit</button></center>
+      <?php if ($can_edit): ?>
+        <center><button type="submit" class="btn btn-default">Submit</button></center>
+      <?php endif ?>
     </div><!--col-2-->
     <div class="col-sm-3">
       <!-- Tab panes -->
       <div class="tab-content">
         <?php
         $html="";
-        $res=mysql_query("SELECT * FROM privilege_distribution");
-        while($row=mysql_fetch_assoc($res)){
+        $res=$mysqli->query("SELECT * FROM privilege_distribution");
+        while($row=$res->fetch_assoc()){
           $html .= "<div role='tabpanel' class='tab-pane' id='{$row['group_name']}'>";
           foreach ($row as $key => $value) if($key!="group_name"){
             $html .= "<div class='checkbox'><label>";
             $html .= "<input type='hidden' name='data[{$row['group_name']}][$key]' value=0>";
             $html .= "<input type='checkbox' name='data[{$row['group_name']}][$key]' value='1'";
             if($value)$html .= " checked ";
+            if(!$can_edit) $html.="disabled";
             $html .= ">";
             $html .= $key;
             $html .= "</label></div>";

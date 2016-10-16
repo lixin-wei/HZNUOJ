@@ -17,7 +17,7 @@
     var $real_name;
     var $class;
     var $HZNU;
-    var $total_solved;
+    var $total_ac;
     var $solved_score;
     var $avg_dif; // average difficult
     var $dif_score; // 1
@@ -62,7 +62,7 @@
     for ($i=1; $i<count($classArr); ++$i)
       $sql .= "OR class='$classArr[$i]'";
     $sql .= "ORDER BY class, user_id";
-    $result = mysql_query($sql, $conn);
+    $result = $mysqli->query($sql, $conn);
     
     // 计算学生信息
     $stu = array();
@@ -70,7 +70,7 @@
     calMaxIns();
     calExtAct();
 
-    for ($i=0; $row=mysql_fetch_array($result); ++$i) {
+    for ($i=0; $row=$result->fetch_array(); ++$i) {
       
       $stu[$i] = new Student();
 

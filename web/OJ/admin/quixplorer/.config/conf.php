@@ -77,7 +77,7 @@ require_once("../../include/db_info.inc.php");
 		"da"  => "Velkommen til denne download server");
 
 	// The title which is displayed in the browser
-	$GLOBALS["site_name"] = "hustoj";
+	$GLOBALS["site_name"] = "HZNUOJ";
 
 /* NOTE:
 	Users can be defined by using the Admin-section,

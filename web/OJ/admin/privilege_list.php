@@ -17,7 +17,12 @@
   // }
   echo "<title>Privilege List</title>"; 
   echo "<h1>Privilege List</h1><hr/>";
-  $sql=<<<sql
+  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$mysqli->real_escape_string($_SESSION['user_id'])."'";
+  $user_group=$mysqli->query($sql)->fetch_array()[0];
+  $user_order=get_order($user_group);
+  // echo "<pre>user_group:$user_group</pre>";
+  // echo "<pre>user_order:$user_order</pre>";
+  $sql=<<<SQL
     SELECT
       a.*,
       b.group_order
@@ -29,18 +34,12 @@
       a.rightstr=b.group_name
     ORDER BY
       b.group_order
-sql;
-  
-  $user_group=mysql_fetch_array(mysql_query("SELECT `rightstr` FROM `privilege` WHERE `user_id`='".mysql_real_escape_string($_SESSION['user_id'])."'"))[0];
-  $user_order=get_order($user_group);
-  // echo "<pre>user_group:$user_group</pre>";
-  // echo "<pre>user_order:$user_order</pre>";
-
-  $result=mysql_query($sql) or die(mysql_error());
+SQL;
+  $result=$mysqli->query($sql) or die($mysqli->error);
   echo "<center><table class='table table-condensed table-striped table-hover'>";
   echo "<thead><tr><th>user<th>right<th>defunct</tr></thead>";
   $can_delete=false;
-  for (;$row=mysql_fetch_object($result);){
+  for (;$row=$result->fetch_object();){
     echo "<tr>";
     echo "<td>".$row->user_id;
     echo "<td>".$row->rightstr;

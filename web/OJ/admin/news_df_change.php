@@ -17,14 +17,14 @@
 <?php 
   $id=intval($_GET['id']);
   $sql="SELECT `defunct` FROM `news` WHERE `news_id`=$id";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_row($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_row();
   $defunct=$row[0];
   echo $defunct;
-  mysql_free_result($result);
+  $result->free();
   if ($defunct=='Y') $sql="update `news` set `defunct`='N' where `news_id`=$id";
   else $sql="update `news` set `defunct`='Y' where `news_id`=$id";
   echo $sql;
-  mysql_query($sql) or die(mysql_error());
+  $mysqli->query($sql) or die($mysqli->error);
 ?>
 <script language='javascript'>history.go(-1);</script>

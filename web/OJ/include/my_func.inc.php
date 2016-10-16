@@ -64,28 +64,30 @@
 
   function is_running($cid){
     require_once("./include/db_info.inc.php");
+    global $mysqli;
      $now=strftime("%Y-%m-%d %H:%M",time());
     $sql="SELECT count(*) FROM `contest` WHERE `contest_id`='$cid' AND `end_time`>'$now'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_array($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_array();
     $cnt=intval($row[0]);
-    mysql_free_result($result);
+    $result->free();
     return $cnt>0;
   }
 
   function check_ac($cid,$pid){
     require_once("./include/db_info.inc.php");
+    global $mysqli;
     $sql="SELECT count(*) FROM `solution` WHERE `contest_id`='$cid' AND `num`='$pid' AND `result`='4' AND `user_id`='".$_SESSION['user_id']."'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_array($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_array();
     $ac=intval($row[0]);
-    mysql_free_result($result);
+    $result->free();
     if ($ac>0) return "<font color=green>Y</font>";
     $sql="SELECT count(*) FROM `solution` WHERE `contest_id`='$cid' AND `num`='$pid' AND `user_id`='".$_SESSION['user_id']."'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_array($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_array();
     $sub=intval($row[0]);
-    mysql_free_result($result);
+    $result->free();
     if ($sub>0) return "<font color=red>N</font>";
     else return "";
   }
@@ -148,41 +150,41 @@
   function canSeeSource($sid) {
 
     global $OJ_AUTO_SHARE;
-
+    global $mysqli;
 
     /* 获取solution信息 start */
     $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_object($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_object();
     $pid = $row->problem_id;
     $cid = $row->contest_id;
-    mysql_free_result($result);
+    $result->free();
     /* 获取solution信息 end */
 
 
     $irc = false; // in running contest
     $idc = false; // in defunct TA contest
     $sql = "SELECT DISTINCT(contest_id) AS cid FROM contest_problem WHERE problem_id='$pid'";
-    $result = mysql_query($sql);
-    while ($row_cid = mysql_fetch_object($result)) {
+    $result = $mysqli->query($sql);
+    while ($row_cid = $result->fetch_object()) {
       if (is_running($row_cid->cid)) {
         $irc = true;
         $sql = "SELECT defunct_TA FROM contest WHERE contest_id='$row_cid->cid'";
-        $result_tmp = mysql_query($sql);
-        $row_tmp = mysql_fetch_array($result);
+        $result_tmp = $mysqli->query($sql);
+        $row_tmp = $result->fetch_array();
         $idc = $row_tmp->defunct_TA=="Y"?1:0; 
-        mysql_free_result($result_tmp);
+        $result->free();
       }
     }
-    mysql_free_result($result);
+    $result->free();
 
 
     /* 判断是否有查看权限 start */
     if (isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE && isset($_SESSION['user_id'])){ // 已经AC该题目，可查看该题代码
       $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id=$pid AND user_id='".$_SESSION['user_id']."'";
-      $rrs = mysql_query($sql);
-      $ok = !$irc && (mysql_num_rows($rrs)>0) ;
-      mysql_free_result($rrs);
+      $rrs = $mysqli->query($sql);
+      $ok = !$irc && ($rrs->num_rows>0) ;
+      $rrs->free();
       if ($ok) return true;
     }
     
@@ -193,11 +195,11 @@
       }
       else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
         $sql = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
-        $result = mysql_query($sql);
-        $row = mysql_fetch_object($result);
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_object();
         $open_source = $row->open_source=="Y"?1:0; // 默认值为0
         $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
-        mysql_free_result($result);
+        $result->free();
         return  ( (!is_running(intval($cid))  && $open_source) || // 比赛已经结束了且开放源代码查看
                    HAS_PRI("see_source_in_contest")
                 );
@@ -214,16 +216,16 @@
   function can_see_res_info($sid) {
 
     global $OJ_SHOW_DIFF;
-
+    global $mysqli;
 
     /* 获取solution信息 start */
     $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_object($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_object();
     $pid = $row->problem_id;
     $cid = $row->contest_id;
     $type = $row->result;
-    mysql_free_result($result);
+    $result->free();
     /* 获取solution信息 end */
 
     /* 判断是否有查看权限 start */
@@ -252,15 +254,18 @@
   }
 
   function get_problemset($pid){
-    $res=mysql_query("SELECT problemset FROM problem WHERE problem_id=$pid");
-    return mysql_fetch_array($res)[0];
+    global $mysqli;
+    $sql="SELECT problemset FROM problem WHERE problem_id=$pid";
+    $res=$mysqli->query($sql);
+    return $res->fetch_array()[0];
   }
   function get_order($group_name){
+    global $mysqli;
     $sql="SELECT group_order FROM privilege_groups WHERE group_name='$group_name'";
     //echo "<pre>sql:$sql</pre>";
-    $res=mysql_query($sql);
-    if(mysql_num_rows($res)){
-      $ans=(mysql_fetch_array($res)[0]);
+    $res=$mysqli->query($sql);
+    if($res->num_rows){
+      $ans=($res->fetch_array()[0]);
     }
     else{
       $ans=99999;
@@ -268,7 +273,9 @@
     return $ans;
   }
   function get_group($uid){
+    global $mysqli;
     if($uid=="")$uid=$_SESSION['user_id'];
-    return (mysql_fetch_array(mysql_query("SELECT rightstr FROM privilege WHERE user_id='$uid'"))[0]);
+    $sql="SELECT rightstr FROM privilege WHERE user_id='$uid'";
+    return ($mysqli->query($sql)->fetch_array()[0]);
   }
 ?>

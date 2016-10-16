@@ -108,18 +108,18 @@
   </style>
 <?php
   $sql="SELECT * FROM faq_codes";
-  $result=mysql_query($sql);
+  $result=$mysqli->query($sql);
   echo "<div class='am-tabs' data-am-tabs='{noSwipe: 1}' id='doc-tab-demo-2'>";
     echo " <ul class='am-tabs-nav am-nav am-nav-tabs'>";
-      while($row=mysql_fetch_assoc($result)){
+      while($row=$result->fetch_array()){
         if($row['language']=="c")
           echo "<li class='am-active'><a href='javascript: void(0)'>".$row['language_show']."</a></li>";
         else echo "<li><a href='javascript: void(0)'>".$row['language_show']."</a></li>";
       }
     echo "</ul>";
-    $result=mysql_query($sql);
+    $result=$mysqli->query($sql);
     echo "<div class='am-tabs-bd'>";
-      while($row=mysql_fetch_assoc($result)){
+      while($row=$result->fetch_array()){
         if($row['language']=="c") echo "<div class='am-tab-panel am-active'>";
         else echo "<div class='am-tab-panel'>";
           echo "<pre class='code-bk-tsp'><code class='code-bk-tsp'>";

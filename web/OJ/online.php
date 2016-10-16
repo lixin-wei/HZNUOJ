@@ -24,17 +24,17 @@ if (HAS_PRI("see_hidden_user_info")){
 		if(isset($_GET['search'])){
 
 			$sql="SELECT * FROM `loginlog`";
-			$search=trim(mysql_real_escape_string($_GET['search']));
+			$search=trim($mysqli->real_escape_string($_GET['search']));
 			if ($search!='')
 				$sql=$sql." WHERE ip like '%$search%' ";
 			 else
 				$sql=$sql." where user_id<>'".$_SESSION['user_id']."' ";
 			$sql=$sql."  order by `time` desc LIMIT 0,50";
 
-		$result=mysql_query($sql) or die(mysql_error());
+		$result=$mysqli->query($sql) or die($mysqli->error);
 		$i=0;
 	
-		for (;$row=mysql_fetch_row($result);){
+		for (;$row=$result->fetch_row();){
 				
 				$view_online[$i][0]= "<a href='userinfo.php?user=".$row[0]."'>".$row[0]."</a>";
 				$view_online[$i][1]=$row[1];
@@ -44,7 +44,7 @@ if (HAS_PRI("see_hidden_user_info")){
 				$i++;
 		}
 	
-		mysql_free_result($result);
+		$result->free();
 		}
 
 }

@@ -9,17 +9,17 @@ if(isset($_POST['manual'])){
         $result=intval($_POST['result']);
         if($result>=0){
           $sql="UPDATE solution SET result=$result WHERE solution_id=$sid LIMIT 1";
-          mysql_query($sql);
+          $mysqli->query($sql);
         }
         if(isset($_POST['explain'])){
              $sql="DELETE FROM runtimeinfo WHERE solution_id=$sid ";
-             mysql_query($sql);
-             $reinfo=mysql_real_escape_string($_POST['explain']);
+             $mysqli->query($sql);
+             $reinfo=$mysqli->real_escape_string($_POST['explain']);
              if (get_magic_quotes_gpc ()) {
                  $reinfo= stripslashes ( $reinfo);
              }
              $sql="INSERT INTO runtimeinfo VALUES($sid,'$reinfo')";
-             mysql_query($sql);
+             $mysqli->query($sql);
         }
         echo "<script>history.go(-1);</script>";
 }
@@ -33,14 +33,14 @@ if(isset($_POST['update_solution'])){
 	$sim=intval($_POST['sim']);
 	$simid=intval($_POST['simid']);
 	$pass_rate=floatval($_POST['pass_rate']);
-        $judger=mysql_real_escape_string($_SESSION['user_id']);
+        $judger=$mysqli->real_escape_string($_SESSION['user_id']);
 	$sql="UPDATE solution SET result=$result,time=$time,memory=$memory,judgetime=NOW(),pass_rate=$pass_rate,judger='$judger' WHERE solution_id=$sid LIMIT 1";
 	echo $sql;
-	mysql_query($sql);
+	$mysqli->query($sql);
 	
     if ($sim) {
 		$sql="insert into sim(s_id,sim_s_id,sim) values($sid,$simid,$sim) on duplicate key update  sim_s_id=$simid,sim=$sim";
-		mysql_query($sql);
+		$mysqli->query($sql);
 	}
 	
 }else if(isset($_POST['checkout'])){
@@ -48,94 +48,94 @@ if(isset($_POST['update_solution'])){
 	$sid=intval($_POST['sid']);
 	$result=intval($_POST['result']);
 	$sql="UPDATE solution SET result=$result,time=0,memory=0,judgetime=NOW() WHERE solution_id=$sid and (result<2 or (result<4 and NOW()-judgetime>60)) LIMIT 1";
-	mysql_query($sql);
-	if(mysql_affected_rows()>0)
+	$mysqli->query($sql);
+	if($mysqli->affected_rows>0)
 		echo "1";
 	else
 		echo "0";
 }else if(isset($_POST['getpending'])){
 	$max_running=intval($_POST['max_running']);
-	$oj_lang_set=mysql_real_escape_string($_POST['oj_lang_set']);
+	$oj_lang_set=$mysqli->real_escape_string($_POST['oj_lang_set']);
 	$sql="SELECT solution_id FROM solution WHERE language in ($oj_lang_set) and (result<2 or (result<4 and NOW()-judgetime>60)) ORDER BY result ASC,solution_id ASC limit $max_running";
-	$result=mysql_query($sql);
-	while ($row=mysql_fetch_object($result)){
+	$result=$mysqli->query($sql);
+	while ($row=$result->fetch_object()){
 		echo $row->solution_id."\n";
 	}
-	mysql_free_result($result);
+	$result->free();
 	
 }else if(isset($_POST['getsolutioninfo'])){
 	
 	$sid=intval($_POST['sid']);
 	$sql="select problem_id, user_id, language from solution WHERE solution_id=$sid ";
-	$result=mysql_query($sql);
-	if ($row=mysql_fetch_object($result)){
+	$result=$mysqli->query($sql);
+	if ($row=$result->fetch_object()){
 		echo $row->problem_id."\n";
 		echo $row->user_id."\n";
 		echo $row->language."\n";
 		
 	}
-	mysql_free_result($result);
+	$result->free();
 	
 }else if(isset($_POST['getsolution'])){
 	
 	$sid=intval($_POST['sid']);
 	$sql="SELECT source FROM source_code WHERE solution_id=$sid ";
-	$result=mysql_query($sql);
-	if ($row=mysql_fetch_object($result)){
+	$result=$mysqli->query($sql);
+	if ($row=$result->fetch_object()){
 		echo $row->source."\n";
 	}
-	mysql_free_result($result);
+	$result->free();
 	
 }else if(isset($_POST['getcustominput'])){
 	
 	$sid=intval($_POST['sid']);
 	$sql="SELECT input_text FROM custominput WHERE solution_id=$sid ";
-	$result=mysql_query($sql);
-	if ($row=mysql_fetch_object($result)){
+	$result=$mysqli->query($sql);
+	if ($row=$result->fetch_object()){
 		echo $row->input_text."\n";
 	}
-	mysql_free_result($result);
+	$result->free();
 	
 }else if(isset($_POST['getprobleminfo'])){
 	
 	$pid=intval($_POST['pid']);
 	$sql="SELECT time_limit,memory_limit,spj FROM problem where problem_id=$pid ";
-	$result=mysql_query($sql);
-	if ($row=mysql_fetch_object($result)){
+	$result=$mysqli->query($sql);
+	if ($row=$result->fetch_object()){
 		echo $row->time_limit."\n";
 		echo $row->memory_limit."\n";
 		echo $row->spj."\n";
 		
 	}
-	mysql_free_result($result);
+	$result->free();
 	
 }else if(isset($_POST['addceinfo'])){
 	
 	$sid=intval($_POST['sid']);
 	$sql="DELETE FROM compileinfo WHERE solution_id=$sid ";
-	mysql_query($sql);
-	$ceinfo=mysql_real_escape_string($_POST['ceinfo']);
+	$mysqli->query($sql);
+	$ceinfo=$mysqli->real_escape_string($_POST['ceinfo']);
 	$sql="INSERT INTO compileinfo VALUES($sid,'$ceinfo')";
-	mysql_query($sql);
+	$mysqli->query($sql);
 	
 }else if(isset($_POST['addreinfo'])){
 	
 	$sid=intval($_POST['sid']);
 	$sql="DELETE FROM runtimeinfo WHERE solution_id=$sid ";
-	mysql_query($sql);
-	$reinfo=mysql_real_escape_string($_POST['reinfo']);
+	$mysqli->query($sql);
+	$reinfo=$mysqli->real_escape_string($_POST['reinfo']);
 	$sql="INSERT INTO runtimeinfo VALUES($sid,'$reinfo')";
-	mysql_query($sql);
+	$mysqli->query($sql);
 	
 }else if(isset($_POST['updateuser'])){
 	
-  	$user_id=mysql_real_escape_string($_POST['user_id']);
+  	$user_id=$mysqli->real_escape_string($_POST['user_id']);
 	$sql="UPDATE `users` SET `solved`=(SELECT count(DISTINCT `problem_id`) FROM `solution` WHERE `user_id`='$user_id' AND `result`=4) WHERE `user_id`='$user_id'";
-	mysql_query($sql);
+	$mysqli->query($sql);
   //  echo $sql;
 	
 	$sql="UPDATE `users` SET `submit`=(SELECT count(*) FROM `solution` WHERE `user_id`='$user_id') WHERE `user_id`='$user_id'";
-	mysql_query($sql);
+	$mysqli->query($sql);
   //	echo $sql;
 	
 }else if(isset($_POST['updateproblem'])){
@@ -143,11 +143,11 @@ if(isset($_POST['update_solution'])){
 	$pid=intval($_POST['pid']);
 	$sql="UPDATE `problem` SET `accepted`=(SELECT count(1) FROM `solution` WHERE `problem_id`=$pid AND `result`=4) WHERE `problem_id`=$pid";
 	//echo $sql;
-	mysql_query($sql);
+	$mysqli->query($sql);
 	
 	$sql="UPDATE `problem` SET `submit`=(SELECT count(1) FROM `solution` WHERE `problem_id`=$pid) WHERE `problem_id`=$pid";
 	//echo $sql;
-	mysql_query($sql);
+	$mysqli->query($sql);
 	
 	
 }else if(isset($_POST['checklogin'])){

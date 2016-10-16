@@ -11,7 +11,6 @@
   require_once("../include/check_get_key.php");
   require_once("../include/my_func.inc.php");
   if (!HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
-  echo "string";
     require_once("error.php");
     exit(1);
   }
@@ -19,14 +18,14 @@
 <?php $id=intval($_GET['id']);
 
 $sql="SELECT `defunct` FROM `problem` WHERE `problem_id`=$id";
-$result=mysql_query($sql);
-$row=mysql_fetch_row($result);
+$result=$mysqli->query($sql);
+$row=$result->fetch_row();
 $defunct=$row[0];
 echo $defunct;
-mysql_free_result($result);
+$result->free();
 if ($defunct=='Y') $sql="update `problem` set `defunct`='N' where `problem_id`=$id";
 else $sql="update `problem` set `defunct`='Y' where `problem_id`=$id";
-mysql_query($sql) or die(mysql_error());
+$mysqli->query($sql) or die($mysqli->error);
 ?>
 <script language=javascript>
 	history.go(-1);

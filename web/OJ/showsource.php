@@ -25,8 +25,8 @@
   /* 获取solution信息 start */
   $sid=strval(intval($_GET['id']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
   $slanguage=$row->language;
   $sresult=$row->result;
   $stime=$row->time;
@@ -35,7 +35,7 @@
   $pid = $row->problem_id;
   $cid = $row->contest_id;
   $num = $row->num;
-  mysql_free_result($result);
+  $result->free();
   /* 获取solution信息 end */
 
   $ok = canSeeSource($sid);
@@ -43,8 +43,8 @@
   $view_source="No source code available!";
   
   $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`=".$sid;
-  $result=mysql_query($sql);
-  $row=mysql_fetch_object($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
   if($row) $view_source=$row->source;
 
   /////////////////////////Template

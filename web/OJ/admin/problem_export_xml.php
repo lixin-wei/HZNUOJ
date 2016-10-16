@@ -100,26 +100,26 @@ function getSolution($pid,$lang){
         }
 	if (!$con)
     {
-      //  die('Could not connect: ' . mysql_error());
+      //  die('Could not connect: ' . $mysqli->error);
     }
-	mysql_query("set names utf8",$con);
+	$mysqli->query("set names utf8",$con);
 	mysql_set_charset("utf8",$con);
 	mysql_select_db($DB_NAME,$con);
 	$sql = "select `solution_id`,`language` from solution where problem_id=$pid and result=4 and language=$lang limit 1";
 //	echo $sql;
-	$result = mysql_query($sql,$con ) ;
+	$result = $mysqli->query($sql,$con ) ;
 	if($result&&$row = mysql_fetch_row ( $result) ){
 		$solution_id=$row[0];
 		$ret->language=$language_name[$row[1]];
 		
-		mysql_free_result($result);
+		$result->free();
 		$sql = "select source from source_code where solution_id=$solution_id";
-		$result = mysql_query ( $sql ) or die ( mysql_error () );
+		$result = $mysqli->query ( $sql ) or die ( $mysqli->error );
 		if($row = mysql_fetch_object ( $result) ){
 			$ret->source_code=$row->source;
 			
 		}
-		mysql_free_result($result);
+		$result->free();
 	}
     mysql_close($con);
 	return $ret;
@@ -151,7 +151,7 @@ function image_base64_encode($img_url){
 		return false;
 }
 function getImages($content){
-    preg_match_all("<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>",$content,$images);
+    preg_match_all("/<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>/",$content,$images);
     return $images;
 }
 function fixcdata($content){
@@ -187,14 +187,14 @@ if (! isset ( $_SESSION ['administrator'] )) {
 if (isset($_POST ['do'])||isset($_GET['cid'])) {
    if(isset($_POST ['in'])&&strlen($_POST ['in'])>0){
 	require_once("../include/check_post_key.php");
-   	$in=mysql_real_escape_string ( $_POST ['in'] );
+   	$in=mysqli_real_escape_string ( $_POST ['in'] );
    	$sql = "select * from problem where problem_id in($in)";
    	  $filename="-$in";
    }else if (isset($_GET['cid'])){
 	  require_once("../include/check_get_key.php");
 	  $cid=intval( $_GET['cid'] );
       $sql= "select title from contest where contest_id='$cid'";
-      $result = mysql_query ( $sql ) or die ( mysql_error () );
+      $result = $mysqli->query ( $sql ) or die ( $mysqli->error );
       $row = mysql_fetch_object ( $result );
       $filename='-'.$row->title;
       mysql_free_result ( $result );
@@ -210,7 +210,7 @@ if (isset($_POST ['do'])||isset($_GET['cid'])) {
 
 	
 	//echo $sql;
-	$result = mysql_query ( $sql ) or die ( mysql_error () );
+	$result = $mysqli->query ( $sql ) or die ( $mysqli->error );
 	
 	if (isset($_POST ['submit'])&&$_POST ['submit'] == "Export")
 		header ( 'Content-Type:   text/xml' );

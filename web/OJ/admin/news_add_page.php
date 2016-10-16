@@ -11,7 +11,8 @@
     include_once("kindeditor.php") ;
   ?>
     <form method=POST action='news_add.php'>
-      <p align=left>Post a News</p>
+      <title>Post a News</title>
+      <h1>Post a News</h1><hr/>
       <p align=left>Title:<input type=text name=title size=71></p>
       <p align='left'>Importance:
         <select name='importance' style='width:70px'>

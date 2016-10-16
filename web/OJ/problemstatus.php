@@ -28,43 +28,43 @@ $view_problem=array();
 
 // total submit
 $sql="SELECT count(*) FROM solution WHERE problem_id='$id'";
-$result=mysql_query($sql) or die(mysql_error());
-$row=mysql_fetch_array($result);
+$result=$mysqli->query($sql) or die($mysqli->error);
+$row=$result->fetch_array();
 $view_problem[0][0]=$MSG_SUBMIT;
 $view_problem[0][1]=$row[0];
 $total=intval($row[0]);
-mysql_free_result($result);
+$result->free();
 
 // total users
 $sql="SELECT count(DISTINCT user_id) FROM solution WHERE problem_id='$id'";
-$result=mysql_query($sql);
-$row=mysql_fetch_array($result);
+$result=$mysqli->query($sql);
+$row=$result->fetch_array();
 
 $view_problem[1][0]="$MSG_USER($MSG_SUBMIT)";
 $view_problem[1][1]=$row[0];
-mysql_free_result($result);
+$result->free();
 
 // ac users
 $sql="SELECT count(DISTINCT user_id) FROM solution WHERE problem_id='$id' AND result='4'";
-$result=mysql_query($sql);
-$row=mysql_fetch_array($result);
+$result=$mysqli->query($sql);
+$row=$result->fetch_array();
 $acuser=intval($row[0]);
 
 $view_problem[2][0]="$MSG_USER($MSG_SOVLED)";
 $view_problem[2][1]=$row[0];
-mysql_free_result($result);
+$result->free();
 
 //for ($i=4;$i<12;$i++){
   $i=3;
   $sql="SELECT result,count(1) FROM solution WHERE problem_id='$id' AND result>=4 group by result order by result";
-  $result=mysql_query($sql);
-  while($row=mysql_fetch_array($result)){
+  $result=$mysqli->query($sql);
+  while($row=$result->fetch_array()){
     
     $view_problem[$i][0] =$jresult[$row[0]];
     $view_problem[$i][1] ="<a href=status.php?problem_id=$id&jresult=".$row[0]." >".$row[1]."</a>";
     $i++;
   }
-  mysql_free_result($result);
+  $result->free();
   
 //}
 
@@ -85,17 +85,17 @@ if ($start+$sz>$acuser) $sz=$acuser-$start;
 $now=strftime("%Y-%m-%d %H:%M",time());
 $sql="SELECT 1 FROM `contest_problem` WHERE `problem_id`=$id AND `contest_id` IN (
   SELECT `contest_id` FROM `contest` WHERE `start_time`<'$now' AND `end_time`>'$now')";
-$rrs=mysql_query($sql);
-$flag=!(mysql_num_rows($rrs)>0);
+$rrs=$mysqli->query($sql);
+$flag=!($rrs->num_rows>0);
   
 // check whether the problem is ACed by user
 $AC=false;
 if (isset($OJ_AUTO_SHARE)&&$OJ_AUTO_SHARE&&isset($_SESSION['user_id'])){
   $sql="SELECT 1 FROM solution where 
       result=4 and problem_id=$id and user_id='".$_SESSION['user_id']."'";
-  $rrs=mysql_query($sql);
-  $AC=(intval(mysql_num_rows($rrs))>0);
-  mysql_free_result($rrs);
+  $rrs=$mysqli->query($sql);
+  $AC=(intval($rrs->num_rows)>0);
+  $rrs->free();
 }
 
 $sql=" select * from
@@ -122,12 +122,12 @@ on b.score=c.score and b.user_id=c.user_id
 order by c.score,in_date
 LIMIT  $start, $sz";
 
-$result=mysql_query($sql);
+$result=$mysqli->query($sql);
 
 
 $view_solution=array();
 $j=0;
-for ($i=$start+1;$row=mysql_fetch_object($result);$i++){
+for ($i=$start+1;$row=$result->fetch_object();$i++){
   $sscore=strval($row->score);
   $s_time=intval(substr($sscore,1,8));
   $s_memory=intval(substr($sscore,9,6));
@@ -157,11 +157,11 @@ for ($i=$start+1;$row=mysql_fetch_object($result);$i++){
   $j++;
 }
 
-mysql_free_result($result);
+$result->free();
 $view_recommand=Array();
 if(isset($_SESSION['user_id'])&&isset($_GET['id'])){
   $id=intval($_GET['id']);
-  $user_id=mysql_real_escape_string($_SESSION['user_id']);
+  $user_id=$mysqli->real_escape_string($_SESSION['user_id']);
   $sql="select problem_id,count(1) people from  (
                                 SELECT * FROM solution ORDER BY solution_id DESC LIMIT 10000 )solution
                                  where
@@ -170,13 +170,13 @@ if(isset($_SESSION['user_id'])&&isset($_GET['id'])){
                                 and problem_id not in (select distinct problem_id from solution where user_id='$user_id' )
                                 group by `problem_id` order by people desc limit 12";
 
-  $result=mysql_query($sql);
+  $result=$mysqli->query($sql);
   $i=0;
-  while($row=mysql_fetch_object($result)){
+  while($row=$result->fetch_object()){
     $view_recommand[$i][0]=$row->problem_id;
     $i++;
   }
-  mysql_free_result($result);
+  $result->free();
 }
 
 /////////////////////////Template

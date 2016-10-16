@@ -185,7 +185,28 @@
     echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
     } 
   ?>
-
+  <?php
+    $can_see_video=false; 
+    if(isset($_SESSION['user_id'])){
+      $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id'";
+      $res=$mysqli->query($sql);
+      if($res->num_rows>$VIDEO_SUBMIT_TIME) $can_see_video=true;
+    }
+  ?>
+  <?php if ($can_see_video || HAS_PRI("watch_solution_video")): ?>
+    <h2><b><font color='#0000cd'>Solution Video</font></b></h2>
+    <?php if (file_exists("upload/video/".md5($real_id)."pfb.mp4")): ?>
+      <form action="solution_video.php" method="POST">
+        <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+        <button class="am-btn am-btn-success am-btn-lg">Click To Watch The Video</button>
+      </form>
+    <?php else: ?>
+      <button disabled="1" class="am-btn am-btn-default am-btn-lg">No Solution Video</button>
+    <?php endif ?>
+    <div style="display: block; color: grey; padding-bottom: 20px;">
+      *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
+    </div>
+  <?php endif ?>
   <!-- 提交等按钮 start -->
   <div class="am-text-center">
     <a href="

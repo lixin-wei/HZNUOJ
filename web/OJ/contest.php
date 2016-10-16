@@ -71,8 +71,8 @@
     
     // check contest valid
     $sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' ";
-    $result=mysql_query($sql);
-    $rows_cnt=mysql_num_rows($result);
+    $result=$mysqli->query($sql);
+    $rows_cnt=$result->num_rows;
     $contest_ok=true;
     $password=""; 
     if(isset($_POST['password'])) $password=$_POST['password'];
@@ -80,10 +80,10 @@
       $password = stripslashes ($password);
     }
     if ($rows_cnt==0){
-      mysql_free_result($result);
+      $result->free();
       $view_title= "比赛已经关闭!";
     } else {
-      $row=mysql_fetch_object($result);
+      $row=$result->fetch_object();
       $view_private=$row->private;
       if($password!=""&&$password==$row->password) $_SESSION['c'.$cid]=true;
       if ($row->private && !isset($_SESSION['c'.$cid])) $contest_ok=false;
@@ -111,20 +111,57 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql="select * from (SELECT `problem`.`title` as `title`,`problem`.`problem_id` as `pid`,source as source, author as author, contest_problem.num as pnum
-            FROM `contest_problem`,`problem`
-            WHERE `contest_problem`.`problem_id`=`problem`.`problem_id` 
-            AND `contest_problem`.`contest_id`=$cid ORDER BY `contest_problem`.`num` 
-                ) problem
-                left join (select problem_id pid1,count(1) accepted from solution where result=4 and contest_id=$cid group by pid1) p1 on problem.pid=p1.pid1
-                left join (select problem_id pid2,count(1) submit from solution where contest_id=$cid  group by pid2) p2 on problem.pid=p2.pid2
-    order by pnum";//AND `problem`.`defunct`='N'
-
-    $result=mysql_query($sql);
+    $sql=<<<SQL
+      SELECT
+        *
+      FROM
+        (
+          SELECT
+            `problem`.`title` AS `title`,
+            `problem`.`problem_id` AS `pid`,
+            source AS source,
+            author AS author,
+            num AS pnum
+          FROM
+            `contest_problem`,
+            `problem`
+          WHERE
+            `contest_problem`.`problem_id` = `problem`.`problem_id`
+          AND `contest_problem`.`contest_id` = $cid
+          ORDER BY
+            `contest_problem`.`num`
+        ) problem
+      LEFT JOIN (
+        SELECT
+          problem_id pid1,
+          Count(DISTINCT user_id) accepted
+        FROM
+          solution
+        WHERE
+          result = 4
+        AND contest_id = $cid
+        GROUP BY
+          pid1
+      ) p1 ON problem.pid = p1.pid1
+      LEFT JOIN (
+        SELECT
+          problem_id pid2,
+          Count(1) submit
+        FROM
+          solution
+        WHERE
+          contest_id = $cid
+        GROUP BY
+          pid2
+      ) p2 ON problem.pid = p2.pid2
+      ORDER BY
+        pnum
+SQL;
+    $result=$mysqli->query($sql);
     $view_problemset=Array();
       
     $cnt=0;
-    while ($row=mysql_fetch_object($result)){
+    while ($row=$result->fetch_object()){
       $view_problemset[$cnt][0]="";
       if (isset($_SESSION['user_id'])) 
         $view_problemset[$cnt][0]=check_ac($cid,$cnt);
@@ -143,18 +180,18 @@
       $view_problemset[$cnt][5]=$row->submit ;
       $cnt++;
     }
-    mysql_free_result($result);
+    $result->free();
   } else {
     $keyword="";
     if(isset($_POST['keyword'])){
-        $keyword=mysql_real_escape_string($_POST['keyword']);
+        $keyword=$mysqli->real_escape_string($_POST['keyword']);
     }
     $sql="SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC limit 1000";
    // $sql="select * from contest left join (select * from privilege where rightstr like 'm%') p on concat('m',contest_id)=rightstr where contest.defunct='N' and contest.title like '%$keyword%'  order by contest_id desc limit 1000;";
-    $result=mysql_query($sql);
+    $result=$mysqli->query($sql);
     $view_contest=Array();
     $i=0;
-    while ($row=mysql_fetch_object($result)){
+    while ($row=$result->fetch_object()){
       $view_contest[$i][0]= $row->contest_id;
       $view_contest[$i][1]= "<a href='contest.php?cid=$row->contest_id'>$row->title</a>";
       $start_time=strtotime($row->start_time);
@@ -178,7 +215,7 @@
         $view_contest[$i][6]=$row->user_id;
         $i++;
       }
-      mysql_free_result($result);
+      $result->free();
     }
 
 

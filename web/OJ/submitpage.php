@@ -41,14 +41,14 @@
       $sql_tmp = "SELECT problem_id FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
                       SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
                                       SELECT `contest_id` FROM `contest` WHERE `end_time`>NOW()))";
-      $result_tmp = mysql_query($sql_tmp);
+      $result_tmp = $mysqli->query($sql_tmp);
       //echo $result_tmp;
-      if (mysql_num_rows($result_tmp) != 1) {
+      if ($result_tmp->num_rows != 1) {
         $view_errors = "<font style='color:red;text-decoration:underline;'>Problem not available!</font>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
       }
-      mysql_free_result($result_tmp);
+      $result_tmp->free();
     }
     /* 判断该用户是否有查看该题目权限 end */
 
@@ -63,10 +63,10 @@
 
     /* 获取该场比赛是否对用户有限制 start */
     $sql_tmp = "SELECT user_limit FROM contest WHERE contest_id='$cid'";
-    $result_tmp = mysql_query($sql_tmp);
-    $row_tmp = mysql_fetch_object($result_tmp);
+    $result_tmp = $mysqli->query($sql_tmp);
+    $row_tmp = $result_tmp->fetch_object();
     $user_limit = $row_tmp->user_limit=="Y"?1:0;
-    mysql_free_result($result_tmp);
+    $result_tmp->free();
     /* 获取该场比赛是否对用户有限制 end */
 
     /* 判断是否有错误 start */
@@ -101,11 +101,11 @@
   $ok = canSeeSource($sid);
   if ($ok==true){
     $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`='".$sid."'";
-    $result=mysql_query($sql);
-    $row=mysql_fetch_object($result);
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_object();
     if($row)
       $view_src=$row->source;
-    mysql_free_result($result);
+    $result->free();
   }
   
  }
@@ -114,12 +114,12 @@ $view_sample_input="1 2";
 $view_sample_output="3";
  if(isset($sample_sql)){
    //echo $sample_sql;
-  $result=mysql_query($sample_sql);
-  $row=mysql_fetch_array($result);
+  $result=$mysqli->query($sample_sql);
+  $row=$result->fetch_array();
   $view_sample_input=$row[0];
   $view_sample_output=$row[1];
   $problem_id=$row[2];
-  mysql_free_result($result);
+  $result->free();
   
   
  }

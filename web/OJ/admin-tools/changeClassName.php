@@ -19,8 +19,8 @@
   require_once('../include/db_info.inc.php');
 
   $sql = "SELECT user_id, class FROM users";
-  $result = mysql_query($sql);
-  while ($row = mysql_fetch_array($result)) {
+  $result = $mysqli->query($sql);
+  while ($row = $result->fetch_array()) {
     $class = $row['class'];
     $uid = $row['user_id'];
     if (substr($class, 0, 2) == "se") {
@@ -31,9 +31,9 @@
       $class = "物联网".substr($class, 3);
     }
     $sql_tmp = "UPDATE users SET class='$class' WHERE user_id='$uid'";
-    mysql_query($sql_tmp);
+    $mysqli->query($sql_tmp);
   }
-  mysql_free_result($result);
+  $result->free();
 
   echo "update successfully!";
 

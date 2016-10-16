@@ -79,7 +79,7 @@
   if(strlen($test_output))mkdata($pid,"test.out",$test_output,$OJ_DATA);
 
   // $sql="insert into `privilege` (`user_id`,`rightstr`)  values('".$_SESSION['user_id']."','p$pid')";
-  // mysql_query($sql);
+  // $mysqli->query($sql);
   $_SESSION["p$pid"]=true;
   
   echo "<a href=quixplorer/index.php?action=list&dir=$pid&order=name&srt=yes>Add More Test Data</a>";

@@ -5,7 +5,7 @@
    * @2016.03.26
   **/
 ?>
-
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" /> 
 <?php
   // ini_set("display_errors","On");
   ob_start();
@@ -119,11 +119,11 @@
   $cid=intval($_GET['cid']);
   // require_once("contest-header.php");
   $sql="SELECT `start_time`,`title`, user_limit FROM `contest` WHERE `contest_id`='$cid'";
-  $result=mysql_query($sql) or die(mysql_error());
-  $rows_cnt=mysql_num_rows($result);
+  $result=$mysqli->query($sql) or die($mysqli->error);
+  $rows_cnt=$result->num_rows;
   $start_time=0;
   if ($rows_cnt>0) {
-    $row=mysql_fetch_array($result);
+    $row=$result->fetch_array();
     $start_time=strtotime($row[0]);
     $title=$row[1];
     $user_limit = $row['user_limit']=="Y"?1:0;
@@ -132,7 +132,7 @@
     }
     header ( "content-disposition:   attachment;   filename=contest".$cid."_".$title.".xls" );
   }
-  mysql_free_result($result);
+  $result->free();
   if ($start_time==0){
     echo "No Such Contest";
     //require_once("oj-footer.php");
@@ -146,8 +146,8 @@
   }
 
   $sql="SELECT count(1) FROM `contest_problem` WHERE `contest_id`='$cid'";
-  $result=mysql_query($sql);
-  $row=mysql_fetch_array($result);
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_array();
   $pid_cnt=intval($row[0]);
   if($pid_cnt==1) {
     $mark_base=100;
@@ -156,21 +156,23 @@
     $mark_per_problem=(100-$mark_base)/($pid_cnt-1);
   }
   $mark_per_punish=$mark_per_problem/5;
-  mysql_free_result($result);
+  $result->free();
 
 $user_cnt=0;
 $user_name='';
 $U=array();
 if (!$user_limit) {
-  $sql="SELECT 
+  $sql=<<<SQL
+  SELECT 
     users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.stu_id,users.class 
       FROM 
         (select * from solution where solution.contest_id='$cid' and num>=0) solution 
       left join users 
       on users.user_id=solution.user_id 
-    ORDER BY users.user_id,in_date";
-    $result = mysql_query($sql);
-    while ($row=mysql_fetch_object($result)){
+    ORDER BY users.user_id,in_date
+SQL;
+    $result = $mysqli->query($sql);
+    while ($row=$result->fetch_object()){
       $n_user=$row->user_id;
       if (strcmp($user_name,$n_user)){
         $user_cnt++;
@@ -185,17 +187,21 @@ if (!$user_limit) {
       $U[$user_cnt]->stu_id = $row->stu_id;
       $U[$user_cnt]->class = strtoupper($row->class);
     }
-      mysql_free_result($result);
+      $result->free();
 }
-  $sql="SELECT 
+else
+{
+  $sql=<<<SQL
+  SELECT 
     team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class 
       FROM 
         (select * from solution where solution.contest_id='$cid' and num>=0) solution 
       left join team 
       on team.user_id=solution.user_id 
-    ORDER BY team.user_id,in_date";
-  $result=mysql_query($sql);
-  while ($row=mysql_fetch_object($result)){
+    ORDER BY team.user_id,in_date
+SQL;
+  $result=$mysqli->query($sql);
+  while ($row=$result->fetch_object()){
     $n_user=$row->user_id;
     if (strcmp($user_name,$n_user)){
       $user_cnt++;
@@ -207,10 +213,12 @@ if (!$user_limit) {
     $U[$user_cnt]->Add($row->num,strtotime($row->in_date)-$start_time,intval($row->result),$mark_base,$mark_per_problem,$mark_per_punish);
     $U[$user_cnt]->class = strtoupper($row->class);
   }
-  mysql_free_result($result);
+  $result->free();
+  
+}
 
 
-mysql_free_result($result);
+$result->free();
 usort($U,"s_cmp");
 $rank=1;
 //echo "<style> td{font-size:14} </style>";
@@ -229,14 +237,14 @@ for ($i=0;$i<$user_cnt;$i++){
   $uuid=$U[$i]->user_id;
         
   $usolved=$U[$i]->solved;
-  echo "<td>".$uuid."&nbsp";
+  echo "<td>".$uuid."&zwnj;";
   if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
     $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
   }
-  echo "<td>".$U[$i]->real_name."";
-  echo "<td>".$U[$i]->stu_id."";
-  echo "<td>".$U[$i]->class."";
-  echo "<td>".$U[$i]->nick."";
+  echo "<td>".$U[$i]->real_name."&zwnj;";
+  echo "<td>".$U[$i]->stu_id."&zwnj;";
+  echo "<td>".$U[$i]->class."&zwnj;";
+  echo "<td>".$U[$i]->nick."&zwnj;";
   echo "<td>$usolved";
   echo "<td>".$U[$i]->time."";
   

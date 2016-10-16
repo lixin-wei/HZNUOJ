@@ -25,8 +25,8 @@
   }
   $can_see_problem=false;
   $can_see_all_problems=true;
-  $res=mysql_query("SELECT * FROM problemset");
-  while($row=mysql_fetch_array($res)){
+  $res=$mysqli->query("SELECT * FROM problemset");
+  while($row=$res->fetch_array()){
     if(HAS_PRI("edit_".$row['set_name']."_problem")){
       $can_see_problem=true;
     }
@@ -56,7 +56,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
         <?php
-          echo "<li><a href='index.php'>See OJ</a></li>";
+          echo "<li><a href='/OJ/' target='view_window'>See OJ</a></li>";
           $html_li="";
           if($can_see_problem){
             $html_li .= "<li><a href='problem_add_page.php'>Add Problem</a></li>";
@@ -133,9 +133,7 @@ sss;
           if(HAS_PRI("edit_privilege_group")){
             $html_li .= "<li><a href='privilege_add.php'>Add Privilege</a></li>";
           }
-          if(HAS_PRI("edit_privilege_distribution")){
-            $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
-          }
+          $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">

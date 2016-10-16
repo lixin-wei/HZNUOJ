@@ -53,8 +53,8 @@
           <select data-am-selected class='select-problemset' type='text'>
             <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> >All</option>
             <?php
-            $res = mysql_query("SELECT set_name,set_name_show FROM problemset");
-            while($row = mysql_fetch_array($res)){
+            $res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
+            while($row = $res->fetch_array()){
               echo "<option value='$row[0]' ";
               if($_GET['OJ']==$row[0]) echo "selected";
               echo ">$row[1]</option>";
@@ -179,12 +179,13 @@
 
 <!--random choose js START-->
 <?php
-  $cnt_problem=mysql_fetch_array(mysql_query("SELECT COUNT(problem_id) FROM problem WHERE defunct='N'"))[0];
+  $sql="SELECT COUNT(problem_id) FROM problem WHERE defunct='N'";
+  $cnt_problem=$mysqli->query($sql)->fetch_array()[0];
   //echo "<pre>$cnt_problem</pre>";
   $sql="SELECT problem_id FROM problem WHERE defunct='N' LIMIT ".rand(0,$cnt_problem-1).",1";
-  $res=mysql_query($sql);
+  $res=$mysqli->query($sql);
   //echo "<pre>$sql</pre>";
-  $id=mysql_fetch_array($res)[0];
+  $id=$res->fetch_array()[0];
   //echo "<pre>$id</pre>";
 ?>
 <script type="text/javascript">

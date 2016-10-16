@@ -12,8 +12,8 @@
 <?php
   $first=true;
   $html_select="";
-  $res=mysql_query("SELECT * FROM problemset");
-  while($row=mysql_fetch_array($res)){
+  $res=$mysqli->query("SELECT * FROM problemset");
+  while($row=$res->fetch_array()){
     if(HAS_PRI("edit_".$row['set_name']."_problem")){
       $html_select .= "<option value=".$row['set_name'];
       if($first){
@@ -32,6 +32,7 @@
 ?>
 <div class="container" style="width: 800px;">
   <?php include_once("kindeditor.php"); ?>
+    <title>Add New problem</title>
     <h1>Add New problem</h1>
     <hr/>
     <form class="form-horizontal" method=POST action='problem_add.php' id="problem_form">
@@ -139,10 +140,10 @@
           <select class="form-control" type=text name=contest_id>
           <?php 
             $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
-            $result=mysql_query($sql);
+            $result=$mysqli->query($sql);
             echo "<option value=''>none</option>";
-            if (mysql_num_rows($result)!=0) {
-              while ($row=mysql_fetch_object($result)) 
+            if ($result->num_rows!=0) {
+              while ($row=$result->fetch_object()) 
                 echo "<option value='$row->contest_id'>$row->contest_id $row->title</option>";
             }
           ?>

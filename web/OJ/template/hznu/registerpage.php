@@ -15,8 +15,7 @@
 ?>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
-    <br>
-      <h3>Register Page</h3>
+    <h1 style="margin-top:40px; margin-bottom: 0px;">Register Page</h1>
     <hr>
     <form class="am-form am-form-horizontal" action="register.php" method="post" data-am-validator>
     <div class="am-form-group">

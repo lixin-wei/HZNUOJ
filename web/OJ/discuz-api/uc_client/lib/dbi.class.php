@@ -137,7 +137,7 @@ class ucclient_db {
 	}
 
 	function escape_string($str) {
-		return $this->link->escape_string($str);
+		return $this->link->real_escape_string($str);
 	}
 
 	function close() {

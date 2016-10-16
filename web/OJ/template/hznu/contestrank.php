@@ -96,7 +96,14 @@
   <!-- 工具栏 end --> 
 
   <br />
-
+  <?php
+  $sql="SELECT user_id FROM contest_excluded_user WHERE contest_id=$cid";
+  $res=$mysqli->query($sql);
+  $is_excluded=array();
+  while($uid=$res->fetch_array()[0]){
+    $is_excluded[$uid]=true;
+  }
+  ?>
   <!-- 排名表格 start -->
   <table class="am-table am-table-bordered am-table-striped" style='font-size:14px;' id="rank">
     <thead align="center">
@@ -118,7 +125,7 @@
           echo "<td><span class=''>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
-          if($nick[0]!="*") {
+          if(!isset($is_excluded[$uuid])) {
             echo $rank++;//名次变量
           }
           else 
@@ -128,7 +135,9 @@
           if($uuid==$_GET['user_id']) echo "<td>";
           else echo"<td>";
           echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
-          echo "<td><a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
+          echo "<td>";
+          if(isset($is_excluded[$uuid])) echo "<span>*</span>";
+          echo "<a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
           echo "<td><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
           echo "<td>".sec2str($U[$i]->time);
           for ($j=0;$j<$pid_cnt;$j++){

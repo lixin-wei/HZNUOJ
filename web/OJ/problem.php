@@ -20,36 +20,38 @@
   if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
   /* 获取我的标签 start */
   $my_tag;
+  if(isset($_SESSION['user_id'])){
+    $uid = $mysqli->real_escape_string($_SESSION['user_id']);
+  }
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
-    $uid = mysql_escape_string($_SESSION['user_id']);
     $id=intval($_GET['id']);
     $sql = "SELECT tag FROM tag WHERE user_id='$uid' AND problem_id='$id'";
-    $result = mysql_query($sql);
-    $row = mysql_fetch_array($result);
+    $result = $mysqli->query($sql);
+    $row = $result->fetch_array();
     $my_tag = $row['tag'];
-    mysql_free_result($result);
+    $result->free();
   }
   /* 获取我的标签 end */
   /* 判断当前用户是否已AC本题 start*/
   $is_solved = false;
   if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
-    $uid = mysql_escape_string($_SESSION['user_id']);
+    $uid = $mysqli->real_escape_string($_SESSION['user_id']);
     $id=intval($_GET['id']);
     $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$id' AND result='4'";
-    $result = mysql_query($sql);
-    if (mysql_num_rows($result)) $is_solved = true;
-    mysql_free_result($result);
+    $result = $mysqli->query($sql);
+    if ($result->num_rows) $is_solved = true;
+    $result->free();
   }
   /* 判断当前用户是否已AC本题 end*/
-
-
+  $real_id=0;
   $pr_flag=false;
   $co_flag=false;
   if (isset($_GET['id'])) { // 如果是比赛外的题目
     $id=intval($_GET['id']);
+    $real_id=$id;
     //require("oj-header.php");
-    $res = mysql_query("SELECT problemset from problem WHERE problem_id=$id");
-    $set_name = mysql_fetch_array($res)[0];
+    $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
+    $set_name = $res->fetch_array()[0];
     $now=strftime("%Y-%m-%d %H:%M",time());
     if (HAS_PRI("see_hidden_".$set_name."_problem")){
       $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
@@ -89,19 +91,20 @@ sql;
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-
-    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=(
-            SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid)";
-    $res = mysql_query($sql);
-    $set_name = mysql_fetch_array($res)[0];
+    $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
+    $res=$mysqli->query($sql);
+    $real_id=$res->fetch_array()[0];
+    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
+    $res = $mysqli->query($sql);
+    $set_name = $res->fetch_array()[0];
 
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid AND `start_time`<='$now'";
     else
       $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid";
-    $result=mysql_query($sql);
-    $rows_cnt=mysql_num_rows($result);
-    $row=mysql_fetch_row($result);
+    $result=$mysqli->query($sql);
+    $rows_cnt=$result->num_rows;
+    $row=$result->fetch_row();
     
     $contest_ok=true;
     if ($row[1] && !isset($_SESSION['c'.$cid])) $contest_ok=false;
@@ -110,7 +113,7 @@ sql;
 
     $ok_cnt=$rows_cnt==1;              
     $langmask=$row[0];
-    mysql_free_result($result);
+    $result->free();
     if ($ok_cnt!=1){
       // not started
       $view_errors=  "No such Contest!";
@@ -118,8 +121,7 @@ sql;
       exit(0);
     }else{
       // started
-      $sql="SELECT * FROM `problem` WHERE `defunct`='N' AND `problem_id`=(
-              SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid)";
+      $sql="SELECT * FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
     }
     // public
     if (!$contest_ok){
@@ -136,19 +138,19 @@ sql;
     exit(0);
   }
 
-  $result=mysql_query($sql) or die(mysql_error());
-  if (mysql_num_rows($result)!=1){
+  $result=$mysqli->query($sql) or die($mysqli->error);
+  if ($result->num_rows!=1){
     $view_errors="";
     if(isset($_GET['id'])){
       $id=intval($_GET['id']);
-      mysql_free_result($result);
+      $result->free();
       $sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id and defunct='N'  ORDER BY `num`";
       //echo $sql;
-      $result=mysql_query($sql);
-      if($i=mysql_num_rows($result)){
+      $result=$mysqli->query($sql);
+      if($i=$result->num_rows){
          $view_errors.= "This problem is in Contest(s) below:<br>";
          for (;$i>0;$i--){
-           $row=mysql_fetch_row($result);
+           $row=$result->fetch_row();
            $view_errors.= "<a href=problem.php?cid=$row[0]&pid=$row[2]>Contest $row[0]:$row[1]</a><br>";
          }
       }else{
@@ -162,20 +164,20 @@ sql;
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }else{
-    $row=mysql_fetch_object($result);
+    $row=$result->fetch_object();
     $view_title= $row->title;
   }
-  mysql_free_result($result);
+  $result->free();
 
 
   /* 获取标签 start */
   $tag = array();
   $sql = "SELECT tag, COUNT(tag) AS sum FROM (SELECT tag FROM tag WHERE problem_id='$id') AS t GROUP BY tag ORDER BY sum DESC LIMIT 10";
-  $result = mysql_query($sql);
-  for ($i=0; $tag_row=mysql_fetch_array($result); ++$i) {
+  $result = $mysqli->query($sql);
+  for ($i=0; $tag_row=$result->fetch_array(); ++$i) {
     $tag[$i] = $tag_row['tag'];
   }
-  mysql_free_result($result);
+  $result->free();
   /* 获取标签 end */
 
 
