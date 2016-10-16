@@ -109,9 +109,13 @@
     .rankcell{
       white-space: normal;
       overflow: hidden;
-      padding: 1px !important;
+      padding-top: 1px !important;
+      padding-bottom: 1px !important;
+      padding-left: 4px;
+      padding-right: 4px;
       vertical-align: middle !important;
       line-height: 1.4 !important;
+      border-left: 1px solid #ddd;
     }
     .pcell{
       white-space: normal;
@@ -166,7 +170,7 @@
         $rank=1;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr align=center>";
-          echo "<td class='rankcell'><span class=''>";
+          echo "<td class='rankcell' style='border-left:0;'><span class=''>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
           if(!isset($is_excluded[$uuid])) {
