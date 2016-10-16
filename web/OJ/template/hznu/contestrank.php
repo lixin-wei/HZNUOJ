@@ -50,7 +50,7 @@
   if ($_GET['scroll']) $showStyle = "margin-top:40px;height:1000px;overflow-y:scroll;overflow-x:scroll;";
   else $showStyle = "margin-top:40px;";
 ?>
-
+<div id='container' class="am-container">
 <div style=<?php echo $showStyle?> class='am-g' id='show'>
   <h3 align="center">Contest RankList  -- <?php echo $title?></h3>
   <hr />
@@ -105,16 +105,60 @@
   }
   ?>
   <!-- 排名表格 start -->
-  <table class="am-table am-table-bordered am-table-striped" style='font-size:14px;' id="rank">
-    <thead align="center">
-      <td width="70px">Rank</td>
-      <td>User</td>
-      <td style="min-width: 150px">Nick</td>
-      <td>Solved</td>
-      <td>Penalty</td>
+  <style type="text/css" media="screen">
+    .rankcell{
+      white-space: normal;
+      overflow: hidden;
+      padding: 1px !important;
+      vertical-align: middle !important;
+      line-height: 1.4 !important;
+    }
+    .pcell{
+      white-space: normal;
+      overflow: hidden;
+      padding: 1px !important;
+      vertical-align: middle !important;
+      line-height: 1.4 !important;
+      border-left: 1px solid #ddd;
+    }
+    .nick{
+      /*max-width: 900px;*/
+      min-width: 120px;
+      height: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      padding: 0px;
+      padding-top: 5px;
+      vertical-align: middle !important;
+      line-height: 1.4 !important;
+    }
+    .pcell-ac{
+      background: #aefeae;
+    }
+    .pcell-fb{
+      color: white;
+      background: #3db03d;
+    }
+    .pcell-wa{
+      background: #ff6b6b;
+    }
+    .wa-times{
+      font-size: 11px;
+    }
+    .ac-time{
+      font-size: 12px;
+    }
+  </style>
+  <table class="am-table" style='font-size:13px;' id="rank_table">
+    <thead align="center" style="height: 30px;">
+      <td style="width: 1%;" id="rank">Rank</td>
+      <td style="width: 1%;" id="user">User</td>
+      <td style="width: 90%;" id="nick">Nick</td>
+      <td style="width: 1%;" id="solved">Solved</td>
+      <td style="width: 1%;" id="penalty">Penalty</td>
       <?php
         for ($i=0;$i<$pid_cnt;$i++)
-          echo "<td><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
+          echo "<td id='p-cell-$i' style='min-width: 40px;'><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
       ?>
     </thead>
     <tbody>
@@ -122,7 +166,7 @@
         $rank=1;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr align=center>";
-          echo "<td><span class=''>";
+          echo "<td class='rankcell'><span class=''>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
           if(!isset($is_excluded[$uuid])) {
@@ -130,40 +174,43 @@
           }
           else 
             echo "*";
-          echo "</span></td>"; 
+          echo "</span></td>";
+
           $usolved=$U[$i]->solved;
-          if($uuid==$_GET['user_id']) echo "<td>";
-          else echo"<td>";
+          echo "<td class='rankcell'>";
           echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
-          echo "<td>";
+
+
+          echo "<td class='rankcell'><div class='nick'>";
           if(isset($is_excluded[$uuid])) echo "<span>*</span>";
           echo "<a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
-          echo "<td><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
-          echo "<td>".sec2str($U[$i]->time);
+          echo "</div></td>";
+
+          echo "<td class='rankcell'><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
+
+
+          echo "<td class='rankcell'>".floor($U[$i]->time/60);
           for ($j=0;$j<$pid_cnt;$j++){
-            //$bg_color="eeeeee";
-            $color = "";
+            $cell_class="pcell ";
             if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
-              $bg_color="am-success";
               if($uuid==$first_blood[$j]){
-                $bg_color="am-primary";
-              }               
+                $cell_class.="pcell-fb";
+              }
+              else{
+                $cell_class.="pcell-ac";
+              }
             }else if(isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
-              if ($U[$i]->p_wa_num[$j] < 5) $bg_color="am-danger";
-              else if ($U[$i]->p_wa_num[$j] < 10) $color = "#FF8888";
-              else if ($U[$i]->p_wa_num[$j] < 15) $color = "#FF6666";
-              else if ($U[$i]->p_wa_num[$j] < 20) $color = "#FF3333";
-              else $color = "#FF0000";
+              $cell_class.="pcell-wa";
             }
-            if ($color != "") echo "<td style='background:$color; '>";
-            else echo "<td class=$bg_color>";
+            echo "<td class='$cell_class'>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
-                echo sec2str($U[$i]->p_ac_sec[$j]);
+                echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
               if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
-                echo "(-".$U[$i]->p_wa_num[$j].")";
+                echo "<span class='wa-times'>(-".$U[$i]->p_wa_num[$j].")</span>";
+              else
+                echo "-";
             }
-            $bg_color="";
             echo "</td>";
           }
           echo "</tr>";
@@ -172,6 +219,7 @@
     </tbody>
   </table>
   <!-- 排名表格 start -->
+</div>
 </div>
 <script>
   function getTotal(rows){
@@ -193,7 +241,7 @@
 
   // 设置奖牌
   function metal(){
-    var tb=window.document.getElementById('rank');
+    var tb=window.document.getElementById('rank_table');
     var rows=tb.rows;
     var goldRate = <?php echo $GOLD_RATE; ?>;
     var silverRate = <?php echo $SILVER_RATE; ?>;
@@ -250,3 +298,23 @@
   metal();
 </script>
 <?php include "footer.php" ?>
+
+
+<!-- auto set nick-cell's max-width -->
+<script>
+  function change_max_width(){
+    var p_cnt=<?php echo $pid_cnt ?>;
+    var p_width=$("#p-cell-0").outerWidth();
+    var c_width=$("#container").outerWidth();
+    var else_width=$("#rank").outerWidth()+$("#user").outerWidth()+$("#solved").outerWidth()+$("#penalty").outerWidth();
+    var left=c_width-p_cnt*p_width-else_width;
+    left-=20;
+    $(".nick").css({'width':left});
+  }
+  $(document).ready(function(){
+    change_max_width();
+  });
+  $(window).change(function(){
+    change_max_width();
+  });
+</script>
