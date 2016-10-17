@@ -55,7 +55,7 @@
     <!-- 用户查找 end -->
 
     <!-- 排序模块 start -->
-    <div class='am-u-md-6 am-text-right am-text-middle'>
+<!--     <div class='am-u-md-6 am-text-right am-text-middle'>
       <b>For All:&nbsp</b>
       <a href=ranklist.php?order_by=s>Level</a>&nbsp&nbsp&nbsp&nbsp
       <b>For HZNU:</b>&nbsp
@@ -64,7 +64,7 @@
       <a href=ranklist.php?scope=w>Week</a>&nbsp&nbsp
       <a href=ranklist.php?scope=m>Month</a>&nbsp&nbsp
       <a href=ranklist.php?scope=y>Year</a>&nbsp&nbsp
-    </div>
+    </div> -->
     <!-- 排序模块 end -->
   </div>
 

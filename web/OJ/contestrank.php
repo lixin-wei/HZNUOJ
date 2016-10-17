@@ -136,17 +136,19 @@
     $result = $mysqli->query($sql) or die($mysqli->error);
     while ($row=$result->fetch_object()) $classSet[] = $row->class;
     $result->free();
-  } 
-  $sql = "SELECT
-            DISTINCT(class)
-          FROM
-            (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
-            RIGHT JOIN (SELECT * FROM team WHERE contest_id='$cid') team
-            on team.user_id=solution.user_id
-          ORDER BY class";    
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  while ($row=$result->fetch_object()) $classSet[] = $row->class;
-  $result->free();
+  }
+  else{
+    $sql = "SELECT
+              DISTINCT(class)
+            FROM
+              (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
+              RIGHT JOIN (SELECT * FROM team WHERE contest_id='$cid') team
+              on team.user_id=solution.user_id
+            ORDER BY class";    
+    $result = $mysqli->query($sql) or die($mysqli->error);
+    while ($row=$result->fetch_object()) $classSet[] = $row->class;
+    $result->free();
+  }
   /* 获取班级列表 end */
 
 
@@ -167,14 +169,14 @@ $sql="SELECT
   $cls = $_GET['class']; // class
   if ($cls == "") {
     if (!$user_limit)
-      $sql_u = "SELECT 
+      $sql_u = "SELECT
                   users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class
                 FROM
                   (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                   INNER join users
                   on users.user_id=solution.user_id
                 ORDER BY users.user_id,in_date";
-    $sql = "SELECT 
+    else $sql = "SELECT 
               team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
             FROM
               (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
@@ -191,7 +193,7 @@ $sql="SELECT
                   on users.user_id=solution.user_id
                 WHERE users.class='null' or users.class is null
                 ORDER BY users.user_id,in_date";
-    $sql = "SELECT
+    else $sql = "SELECT
               team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
             FROM
               (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
@@ -209,7 +211,7 @@ $sql="SELECT
                   on users.user_id=solution.user_id
                 WHERE users.class='$cls'
                 ORDER BY users.user_id,in_date";
-      $sql = "SELECT
+      else $sql = "SELECT
                 team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
               FROM
                 (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
@@ -297,7 +299,7 @@ $sql="SELECT
   ////firstblood
   $first_blood=array();
   for($i=0;$i<$pid_cnt;$i++){
-     $sql="select user_id from solution where contest_id=$cid and result=4 and num=$i order by in_date limit 1";
+     $sql="SELECT user_id from solution where contest_id=$cid and result=4 and num=$i order by in_date limit 1";
      $result=$mysqli->query($sql);
      $row_cnt=$result->num_rows;
      $row=$result->fetch_array();
