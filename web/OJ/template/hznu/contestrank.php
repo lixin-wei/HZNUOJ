@@ -59,10 +59,10 @@
   <div class='am-text-center'>
     <?php 
       if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank.xls.php?cid=".$cid."'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;&nbsp;&nbsp;";
-      if (!$_GET['scroll'])
-        echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
-      else 
-        echo "[ <a href='contestrank.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
+      // if (!$_GET['scroll'])
+      //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
+      // else 
+      //   echo "[ <a href='contestrank.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
     ?>
     [ Choose Class
       <select id="class">
