@@ -23,7 +23,7 @@
       require_once("error.php");
       exit(1);
     }
-    $sql="INSERT INTO `privilege` VALUES('$user_id','$rightstr','N')";
+    $sql="INSERT INTO `privilege` (user_id,rightstr) VALUES('$user_id','$rightstr')";
     $mysqli->query($sql);
     if ($mysqli->affected_rows==1) echo "$user_id $rightstr added!";
     else echo "No such user!";
