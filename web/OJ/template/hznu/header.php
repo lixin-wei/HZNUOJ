@@ -108,9 +108,19 @@
           </li>
           <!-- Contest部分 end -->
 
-          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="faqs.php">F.A.Qs</a></li>
-          <li><a href="../bbs/" target='_blank'>BBS</a></li>
-          <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
+          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="faqs.php">F.A.Q</a></li>
+
+          <!-- Others Begin -->
+          <li class="am-dropdown" data-am-dropdown>
+            <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
+            <ul class="am-dropdown-content">
+              <li><a href="../bbs/" target='_blank'>BBS</a></li>
+              <li><a href="c_course.php" title="">C Course</a></li>
+              <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
+            </ul>
+          </li>
+          <!-- Others End -->
+
           <!-- <li><a href="tools.php">Tools</a></li> -->
         </ul>
 
