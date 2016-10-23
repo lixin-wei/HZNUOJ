@@ -106,8 +106,15 @@
     }
     if (!$contest_ok){
       $view_errors = "<font style='color:red;text-decoration:underline;'>$MSG_PRIVATE_WARNING</font><br>";
-      $view_errors .= "Click <a href=contestrank.php?cid=$cid>HERE</a> to watch contest rank, or input password to enter it.</h2>";
-      $view_errors .= "<form method=post action='contest.php?cid=$cid' class='am-text-center'>$MSG_CONTEST $MSG_PASSWORD:<input class=input-mini type=password name=password><input class=btn type=submit></form>";
+      $view_errors .= "Click <a href=contestrank.php?cid=$cid>HERE</a> to watch contest rank, or input password to enter it.";
+      $view_errors .= "<form method=post action='contest.php?cid=$cid' class='am-form-inline am-text-center'>";
+      $view_errors .= "<div class='am-form-group'>";
+      $view_errors .= "<input class='am-form-field' type='password' name='password' placeholder='input contest password'>";
+      $view_errors .= "</div>";
+      $view_errors .= "<div class='am-form-group'>";
+      $view_errors .= "<button class='am-btn am-btn-default' type=submit>submit</button>";
+      $view_errors .= "</div>";
+      $view_errors .= "</form>";
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }

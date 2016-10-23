@@ -47,6 +47,10 @@
       $pid=intval($_GET['pid']);
 ?>
 <header class="am-topbar-inverse am-topbar-fixed-top">
+  <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-primary am-show-sm-only" data-am-collapse="{target: '#collapse-head'}">
+    <span class="am-sr-only">导航切换</span>
+    <span class="am-icon-bars"></span>
+  </button>
   <div class="am-container">
     <div class="am-collapse am-topbar-collapse" id="collapse-head">
       <ul class="am-nav am-nav-pills am-topbar-nav">
