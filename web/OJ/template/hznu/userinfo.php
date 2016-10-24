@@ -1,4 +1,4 @@
-<?php
+\<?php
   /**
    * This file is created
    * by yybird
@@ -291,6 +291,10 @@ option = {
 chart_sub.setOption(option);
 
 $(window).resize(function(){
+  chart.resize();
+  chart_sub.resize();
+});
+$(window).ready(function(){
   chart.resize();
   chart_sub.resize();
 });
