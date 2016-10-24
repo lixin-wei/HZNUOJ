@@ -195,6 +195,9 @@ $(document).ready(function(){
 $(window).resize(function(){
   submission_chart.resize();
 });
+$(window).ready(function(){
+  submission_chart.resize();
+});
 </script>
 
 <script type="text/javascript">
