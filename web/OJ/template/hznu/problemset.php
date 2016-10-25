@@ -12,6 +12,30 @@
 <?php 
   $title="ProblemSet";
   require_once("header.php");
+  $args=Array();
+
+  //default args
+  if($OJ!="all")$args['OJ']=$OJ;
+  if(isset($sort_method)) $args['sort_method']=$sort_method;
+  if(isset($_GET['search'])) $args['search']=$_GET['search'];
+  if(isset($page)) $args['page']=$page;
+  function generate_url($data){
+    // echo "<pre>";
+    // var_dump($data);
+    // echo "</pre>";
+    global $args;
+    $link="problemset.php?";
+    foreach ($args as $key => $value) {
+      if(isset($data["$key"])){
+        $value=$data["$key"];
+        $link.="&$key=$value";
+      }
+      else if($value){
+        $link.="&$key=$value";
+      }
+    }
+    return $link;
+  }
 ?>
 <hr/>
 <!-- 题目查找 start -->
@@ -36,8 +60,8 @@
       <div class="am-u-sm-9">
         <div class="am-form-group am-form-icon">
           <i class="am-icon-binoculars"></i>
-          <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search" value="<?php echo $search ?>">
-          <input type="hidden" name="OJ" value="<?php echo $OJ ?>">
+          <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search" value="<?php echo $args['search'] ?>">
+          <input type="hidden" name="OJ" value="<?php echo $args['OJ'] ?>">
         </div>
       </div>
       <button type="submit" class="am-u-sm-3 am-btn am-btn-secondary ">Search</button>
@@ -77,27 +101,20 @@
 <!-- 页标签 start -->
 <div class="am-container">
   <ul class="am-pagination am-text-center">
-    <?php 
-    $arg_search="";
-    if(isset($_GET['search'])){
-      $arg_search="&search=$search";
-    }
-    ?>
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo max($page-1, 1) ; echo $arg_search; ?> ">&laquo; Prev</a></li>
+    <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
+    <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
     <?php 
       //分页
       for ($i=1;$i<=$view_total_page;$i++){
-        $link="problemset.php?";
-        if($OJ!="all")$link.="&OJ=$OJ";
-        if($i!=1)$link.="&page=$i";
-        $link.=$arg_search;
+        $link=generate_url(Array("page"=>"$i"));
         if($page==$i)
           echo "<li class='am-active'><a href='$link'>{$i}</a></li>";
         else
           echo "<li><a href='$link'>{$i}</a></li>";
       }
     ?>
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo min($page+1,intval($view_total_page)); echo $arg_search; ?>">Next &raquo;</a></li>
+    <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
+    <li><a href="<?php echo $link ?>">Next &raquo;</a></li>
   </ul>
 </div>
 <!-- 页标签 end -->
@@ -125,7 +142,25 @@
         <th class='am-text-center' style='width:10%;'>Author</th>
         <th class='am-text-center' style='width:25%;'>Source</th>
         <th class='am-text-center' style='width:8%;'>AC/Sub</th>
-        <th class='am-text-center' style='width:8%;'>Score</th>
+        <?php
+        switch ($args['sort_method']) {
+          case 'SCORE_DESC':
+            $score_icon="am-icon-sort-amount-desc";
+            break;
+          case 'SCORE_ASCE':
+            $score_icon="am-icon-sort-amount-asc";
+            break;
+          default:
+            $score_icon="am-icon-sort";
+            break;
+        }
+        ?>
+        <style type="text/css" media="screen">
+          #score:hover{
+            cursor: pointer;
+          }
+        </style>
+        <th id="score" class='am-text-center' style='width:8%;'>Score <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
     </thead>
     <tbody>
@@ -146,20 +181,20 @@
 <!-- 页标签 start -->
 <div class="am-container">
   <ul class="am-pagination am-text-center">
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo max($page-1, 1) ?>">&laquo; Prev</a></li>
+    <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
+    <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
     <?php 
       //分页
       for ($i=1;$i<=$view_total_page;$i++){
-        $link="problemset.php?";
-        if($OJ!="all")$link.="&OJ=$OJ";
-        if($i!=1)$link.="&page=$i";
+        $link=generate_url(Array("page"=>"$i"));
         if($page==$i)
           echo "<li class='am-active'><a href='$link'>{$i}</a></li>";
         else
           echo "<li><a href='$link'>{$i}</a></li>";
       }
     ?>
-    <li><a href="problemset.php?<?php if($OJ!='all')echo "OJ=".$OJ; ?>&page=<?php echo min($page+1,intval($view_total_page)) ?>">Next &raquo;</a></li>
+    <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
+    <li><a href="<?php echo $link ?>">Next &raquo;</a></li>
   </ul>
 </div>
 <!-- 页标签 end -->
@@ -194,3 +229,17 @@
   });
 </script>
 <!--random choose js END-->
+
+<!-- sort by socre BEGIN -->
+
+<script>
+  $("#score").click(function(){
+    <?php
+    if($args['sort_method']=='SCORE_DESC') $args['sort_method']='SCORE_ASCE';
+    else $args['sort_method']='SCORE_DESC';
+    ?>
+    var link="<?php echo generate_url(Array("page"=>"1")) ?>";
+    window.location.href=link;
+  });
+</script>
+<!-- sort by socre END -->

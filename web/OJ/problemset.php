@@ -18,8 +18,11 @@
 
   //get all problemsets END
   /* 获取OJ start */
-  if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
+  if (isset($_GET['OJ']) && $_GET['OJ']!="") $OJ = $_GET['OJ'];
   else $OJ = "all";
+  if(isset($_GET['sort_method'])){
+    $sort_method=$_GET['sort_method'];
+  }
   /* 获取OJ end */
 
 
@@ -79,7 +82,7 @@
   /* 获取sql语句中的筛选部分 start */
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
     $search=$mysqli->real_escape_string($_GET['search']);
-      $filter_sql="title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%'"; 
+      $filter_sql="(title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%')"; 
   } else {
       $filter_sql="1";
   }
@@ -96,7 +99,7 @@
       }
       else{
         $now=strftime("%Y-%m-%d %H:%M",time());
-        $t_sql=<<<sql
+        $t_sql=<<<SQL
         FROM 
           problem
         WHERE 
@@ -115,7 +118,7 @@
               contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
               AND contest_problem.contest_id=contest.contest_id
           )
-sql;
+SQL;
       }
       //count the number of problem START
       $res = $mysqli->query("SELECT COUNT('problem_id')".$t_sql);
@@ -130,12 +133,23 @@ sql;
 
     }
   }
-  $sql.=" ORDER BY `problem_id`";
+  switch ($sort_method) {
+    case "SCORE_DESC":
+      $sort_cmd=" ORDER BY `score` DESC, accepted";
+      break;
+    case "SCORE_ASCE":
+      $sort_cmd=" ORDER BY `score`, accepted DESC";
+      break;
+    default:
+      $sort_cmd=" ORDER BY `problem_id`";
+      break;
+  }
+  $sql.=$sort_cmd;
   $st=($page-1)*$page_cnt;
   $sql.=" LIMIT $st,$page_cnt";
 
   if($first) $sql="";
-  //echo "sql:".$sql."\n";
+  // echo "<pre>sql:".$sql."</pre>";
   /* 获取数据库查询语句 end */
 
 
