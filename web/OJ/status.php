@@ -216,7 +216,7 @@
     $flag = true;// flag is whether uesr can see memory, time and language info.
     if (isset($_GET['cid'])) {
       $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||// himself
-                (!is_running(intval($cid)) && $open_source) || // 比赛已经结束了且开放源代码查看
+                (!is_running(intval($cid))) || // 比赛已经结束了
                 is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
                 !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")// if he can see souce code , he can see these info in passing
               ); 
@@ -304,6 +304,10 @@
 ?>
 <!-- ranklist ajax query mod START -->
 <?php if (isset($_GET['ranklist_ajax_query'])): ?>
+  <?php
+  if($rows_cnt==0)
+    exit(0);
+  ?>
   <table class="am-table am-table-hover">
     <thead>
       <tr>

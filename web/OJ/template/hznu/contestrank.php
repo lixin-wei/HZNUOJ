@@ -125,7 +125,7 @@
       line-height: 1.4 !important;
       border-left: 1px solid #ddd;
     }
-    .pcell:hover{
+    .has-num:hover{
       cursor: pointer;
     }
     .nick{
@@ -184,7 +184,7 @@
           echo "</span></td>";
 
           $usolved=$U[$i]->solved;
-          echo "<td class='rankcell'>";
+        echo "<td class='rankcell'>";
           echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
 
 
@@ -210,7 +210,12 @@
               $cell_class.="pcell-wa";
             }
             $probelm_lable=chr(ord('A')+$j);
-            echo "<td class='$cell_class' id='pcell-$uuid-$probelm_lable' data-am-modal=\"{target: '#modal-submission', width:1000}\">";
+            $data_toggle="";
+            if($U[$i]->p_wa_num[$j]>0 || isset($U[$i]->p_ac_sec[$j])){
+              $cell_class.=" has-num";
+              $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
+            }
+            echo "<td class='$cell_class' id='pcell-$uuid-$probelm_lable' $data_toggle>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
