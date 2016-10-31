@@ -150,7 +150,11 @@
     //$sql=$sql.$order_str." LIMIT 20";
   }
 
-  $sql=$sql.$order_str." LIMIT 20";
+  $sql=$sql.$order_str;
+  //if is rankist query, show all submissions
+  if(!isset($_GET['ranklist_ajax_query'])){
+    $sql.=" LIMIT 20";
+  }
   //echo $sql;
 
   if($OJ_MEMCACHE){
