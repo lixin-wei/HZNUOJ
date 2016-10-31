@@ -215,7 +215,7 @@
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
-            echo "<td class='$cell_class' id='pcell-$uuid-$probelm_lable' $data_toggle>";
+            echo "<td class='$cell_class' id='pcell $uuid $probelm_lable' $data_toggle>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
@@ -347,7 +347,7 @@
 <script>
   $("td[id^='pcell']").click(function(){
     var id=$(this).attr("id");
-    var arg=id.split('-');
+    var arg=id.split(' ');
     var uid=arg[1];
     var pid=arg[2];
     var cid=<?php echo $cid; ?>;
