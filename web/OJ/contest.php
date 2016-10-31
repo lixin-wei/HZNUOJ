@@ -173,7 +173,7 @@ SQL;
       if (isset($_SESSION['user_id'])) 
         $view_problemset[$cnt][0]=check_ac($cid,$cnt);
       if ($now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者当前用户是管理员则显示 Problem ID
-        $view_problemset[$cnt][1]= "$row->pid &nbsp ";
+        $view_problemset[$cnt][1]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
       // $view_problemset[$cnt][1] .= "Problem &nbsp;".(chr($cnt+ord('A')));
       if ($cnt < 26) $pid = chr($cnt+ord('A'));
       else {
