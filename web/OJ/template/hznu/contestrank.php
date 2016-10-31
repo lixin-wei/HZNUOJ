@@ -206,12 +206,15 @@
               else{
                 $cell_class.="pcell-ac";
               }
-            }else if(isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
+            }else if(isset($U[$i]->p_wa_num[$j])&&isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
               $cell_class.="pcell-wa";
             }
             $probelm_lable=chr(ord('A')+$j);
             $data_toggle="";
-            if($U[$i]->p_wa_num[$j]>0 || isset($U[$i]->p_ac_sec[$j])){
+            //echo "<pre>";
+            
+            //echo "</pre>";
+            if($U[$i]->p_wa_num[$j]>0 || $U[$i]->p_ac_sec[$j]>0){
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
@@ -224,6 +227,7 @@
               else
                 echo "-";
             }
+            //echo "<br/>".$U[$i]->p_wa_num[$j]."-".$U[$i]->p_ac_sec[$j]."<br/>";
             echo "</td>";
           }
           echo "</tr>";
