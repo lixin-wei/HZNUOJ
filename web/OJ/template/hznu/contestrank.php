@@ -125,6 +125,9 @@
       line-height: 1.4 !important;
       border-left: 1px solid #ddd;
     }
+    .pcell:hover{
+      cursor: pointer;
+    }
     .nick{
       /*max-width: 900px;*/
       min-width: 120px;
@@ -206,7 +209,8 @@
             }else if(isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
               $cell_class.="pcell-wa";
             }
-            echo "<td class='$cell_class'>";
+            $probelm_lable=chr(ord('A')+$j);
+            echo "<td class='$cell_class' id='pcell-$uuid-$probelm_lable' data-am-modal=\"{target: '#modal-submission', width:1000}\">";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
@@ -222,7 +226,18 @@
       ?>
     </tbody>
   </table>
-  <!-- 排名表格 start -->
+  <!-- 排名表格 END -->
+  <div class="am-modal am-modal-no-btn" tabindex="-1" id="modal-submission">
+    <div class="am-modal-dialog">
+      <div class="am-modal-hd">Submissions
+        <a class="am-close am-close-spin" data-am-modal-close>&times;</a>
+      </div>
+      <div class="am-modal-bd" id="modal-submission-bd">
+        <i class="am-icon-spinner am-icon-pulse"></i> Loading...
+      </div>
+    </div>
+  </div>
+
 </div>
 </div>
 <script>
@@ -322,3 +337,39 @@
     change_max_width();
   });
 </script>
+
+<!-- set submission dialog contents START -->
+<script>
+  $("td[id^='pcell']").click(function(){
+    var id=$(this).attr("id");
+    var arg=id.split('-');
+    var uid=arg[1];
+    var pid=arg[2];
+    var cid=<?php echo $cid; ?>;
+    //set loading icon
+    $("#modal-submission-bd").html("<i class='am-icon-spinner am-icon-pulse'></i> Loading...");
+    $.ajax({
+      type: "GET",
+      url: "status.php",
+      data: {
+        ranklist_ajax_query: 1,
+        cid: cid,
+        language: -1,
+        jresult: -1,
+        user_id: uid,
+        problem_id: pid,
+      },
+      context: this,
+      success: function(data){
+        $("#modal-submission-bd").html(data);
+      },
+      complete: function(){
+        console.log("ajax complete!");
+      },
+      error: function(xmlrqst,info){
+        console.log(info);
+      }
+    });
+  });
+</script>
+<!-- set submission dialog contents END -->

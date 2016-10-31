@@ -302,7 +302,40 @@
 
   
 ?>
+<!-- ranklist ajax query mod START -->
+<?php if (isset($_GET['ranklist_ajax_query'])): ?>
+  <table class="am-table am-table-hover">
+    <thead>
+      <tr>
+        <th>Run.ID</th>
+        <th>User</th>
+        <th>Prob.ID</th>
+        <th>Result</th>
+        <th>Memory</th>
+        <th>Time</th>
+        <th>Language</th>
+        <th>Code Length</th>
+        <th>Submit Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+                    foreach($view_status as $row){
+                      echo "<tr>";
+                            foreach($row as $table_cell){
+                                    echo "<td>";
+                                    echo $table_cell;
+                                    echo "</td>";
+                            }
 
+                            echo "</tr>";
+                    }
+      ?>
+    </tbody>
+  </table>
+  <?php exit(0) ?>
+<?php endif ?>
+<!-- ranklist ajax query mod END -->
 <?php
 /////////////////////////Template
 if (isset($_GET['cid']))
