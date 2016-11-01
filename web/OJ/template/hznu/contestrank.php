@@ -130,6 +130,7 @@
     }
     .nick{
       /*max-width: 900px;*/
+      width: 200px;
       min-width: 120px;
       height: 30px;
       white-space: nowrap;
