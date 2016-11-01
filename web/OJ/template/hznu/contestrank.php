@@ -171,13 +171,38 @@
     <tbody>
       <?php
         $rank=1;
+        $num_gold=$user_cnt*$GOLD_RATE;
+        $num_silver=$user_cnt*$SILVER_RATE;
+        $num_bronze=$user_cnt*$BRONZE_RATE;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr align=center>";
-          echo "<td class='rankcell' style='border-left:0;'><span class=''>";
+          $medal_class="";
+          $medal_css="";
+          if($i+1==1){
+            $medal_class="am-badge am-icon-trophy";
+            $medal_css="background-color:#ce0000;";
+          }
+          else if($i+1<=$num_gold){
+            $medal_class="am-badge";
+            $medal_css="background-color:#f8c100;";
+          }
+          else if($i+1<=$num_gold+$num_silver){
+            $medal_class="am-badge";
+            $medal_css="background-color:#a4a4a4;";
+          }
+          else if($i+1<=$num_gold+$num_silver+$num_bronze){
+            $medal_class="am-badge";
+            $medal_css="background-color:#815d18;";
+          }
+          echo "<td class='rankcell' style='border-left:0;'><span class='$medal_class' style='$medal_css'>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
           if(!isset($is_excluded[$uuid])) {
-            echo $rank++;//名次变量
+            if($rank==1){
+              echo " Winner";
+            }
+            else echo $rank;//名次变量
+            $rank++;
           }
           else 
             echo "*";
@@ -249,86 +274,10 @@
 
 </div>
 </div>
-<script>
-  function getTotal(rows){
-    var total=0;
-   // alert(rows.length);
-    for(var i=0;i<rows.length&&total==0;i++){
-      try{
-        //alert(rows[rows.length-i].cells[0].children[0].innerHTML);
-         total=parseInt(rows[rows.length-i].cells[0].children[0].innerHTML);
-          if(isNaN(total)) total=0;
-          //alert(total);
-      }catch(e){
-      
-      }
-    }
-    return total;
-  
-  }
-
-  // 设置奖牌
-  function metal(){
-    var tb=window.document.getElementById('rank_table');
-    var rows=tb.rows;
-    var goldRate = <?php echo $GOLD_RATE; ?>;
-    var silverRate = <?php echo $SILVER_RATE; ?>;
-    var bronzeRate = <?php echo $BRONZE_RATE; ?>;
-    try {
-      var total=getTotal(rows);
-      //alert(total);
-      for(var i=1;i<rows.length;i++){
-        var cell=rows[i].cells[0].children[0];
-        var acc=rows[i].cells[3];
-        var ac=parseInt(acc.innerText);
-        if (isNaN(ac)) ac=parseInt(acc.textContent);
-        if(cell.innerHTML!="*"&&ac>0){
-          var r = parseInt(cell.innerHTML);
-          if(r == 1) { // 冠军
-            cell.innerHTML = "&nbsp;Winner";
-            cell.style.cssText="background-color:#ce0000;";
-            cell.className="am-badge am-icon-trophy";
-          }
-          var tmp = 1; // 只有第一名被占用
-          // if (total*goldRate-1 > 3) { // 金牌数大于3时启动
-          //   if (r == 2) {
-          //     cell.innerHTML = "&nbsp;2nd";
-          //     cell.className="am-btn am-btn-primary am-btn-sm am-icon-angellist";
-          //   }
-          //   if (r == 3) {
-          //     cell.innerHTML = "&nbsp;3rd";
-          //     cell.className="am-btn am-btn-warning am-btn-sm am-icon-angellist";
-          //   }
-          //   tmp = 3; // 前三名都被占用
-          // }
-          if(r>tmp && r<=total*goldRate+1) { // 金牌
-            cell.style.cssText="background-color:#f8c100;";
-            cell.className="am-badge";
-          }
-          if(r>total*goldRate+1 && r<=total*silverRate+1) { // 银牌
-            cell.style.cssText="background-color:#a4a4a4;";
-            cell.className="am-badge";
-          }
-          if(r>total*silverRate+1 && r<=total*bronzeRate+1) { // 铜牌
-            cell.style.cssText="background-color:#815d18;";
-            cell.className="am-badge";
-          }
-          if(r>total*bronzeRate+1 && ac>0) { // 铁牌
-            cell.style.cssText="background-color:transparent;color:black;";
-            cell.className="am-badge";
-          }
-        }
-      }
-    } catch(e) {
-       //alert(e);
-    }
-  }
-  metal();
-</script>
 <?php include "footer.php" ?>
 
 
-<!-- auto set nick-cell's max-width -->
+<!-- auto set nick-cell's max-width START-->
 <script>
   function change_max_width(){
     var p_cnt=<?php echo $pid_cnt ?>;
@@ -346,6 +295,7 @@
     change_max_width();
   });
 </script>
+<!-- auto set nick-cell's max-width END-->
 
 <!-- set submission dialog contents START -->
 <script>

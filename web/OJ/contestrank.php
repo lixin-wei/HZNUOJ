@@ -165,7 +165,6 @@ $sql="SELECT
 */
 
 
-  /* 获取查询的SQL语句 start */
   $cls = $_GET['class']; // class
   if ($cls == "") {
     if (!$user_limit)
@@ -220,7 +219,6 @@ $sql="SELECT
               WHERE team.class='$cls'
               ORDER BY team.user_id,in_date";
   }
-  // echo $sql;
   /* 获取查询的SQL语句 end */
 
   /* 执行查询 start */  
