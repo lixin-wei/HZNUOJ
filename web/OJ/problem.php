@@ -94,14 +94,14 @@ sql;
     $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
     $res=$mysqli->query($sql);
     $real_id=$res->fetch_array()[0];
-    $sql="SELECT problemset FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
+    $sql="SELECT problemset FROM `problem` WHERE `problem_id`=$real_id";
     $res = $mysqli->query($sql);
     $set_name = $res->fetch_array()[0];
 
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
-      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid AND `start_time`<='$now'";
+      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `contest_id`=$cid AND `start_time`<='$now'";
     else
-      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `defunct`='N' AND `contest_id`=$cid";
+      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `contest_id`=$cid";
     $result=$mysqli->query($sql);
     $rows_cnt=$result->num_rows;
     $row=$result->fetch_row();
@@ -116,12 +116,12 @@ sql;
     $result->free();
     if ($ok_cnt!=1){
       // not started
-      $view_errors=  "No such Contest!";
+      $view_errors=  "No such contest or the contest not started!";
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }else{
       // started
-      $sql="SELECT * FROM `problem` WHERE `defunct`='N' AND `problem_id`=$real_id";
+      $sql="SELECT * FROM `problem` WHERE `problem_id`=$real_id";
     }
     // public
     if (!$contest_ok){
@@ -144,7 +144,7 @@ sql;
     if(isset($_GET['id'])){
       $id=intval($_GET['id']);
       $result->free();
-      $sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id and defunct='N'  ORDER BY `num`";
+      $sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id ORDER BY `num`";
       //echo $sql;
       $result=$mysqli->query($sql);
       if($i=$result->num_rows){
