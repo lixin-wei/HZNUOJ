@@ -63,8 +63,8 @@
     }
     //echo $sql_1;
     $mysqli->query($sql_1) or die($mysqli->error);
-    $sql="update `problem` set defunct='N' where `problem_id` in ($plist)";
-    $mysqli->query($sql) or die($mysqli->error);
+    // $sql="update `problem` set defunct='N' where `problem_id` in ($plist)";
+    // $mysqli->query($sql) or die($mysqli->error);
   }
   $sql="DELETE FROM `privilege` WHERE `rightstr`='c$cid'";
   $mysqli->query($sql);
