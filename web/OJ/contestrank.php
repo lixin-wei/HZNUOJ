@@ -93,8 +93,8 @@
     exit(0);
   }
   if ($start_time>time()){
-    $view_errors= "Contest Not Started!";
-    require("template/".$OJ_TEMPLATE."/error.php");
+    require_once "template/hznu/contest_header.php";
+    require("template/".$OJ_TEMPLATE."/footer.php");
     exit(0);
   }
   if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
