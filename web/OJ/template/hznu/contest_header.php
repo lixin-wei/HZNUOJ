@@ -71,7 +71,7 @@ if(isset($_GET['cid'])){
       }
     </style>
   </head>
-<body>
+<body style="padding-top: 51px;">
 <?php 
     if(isset($_GET['cid']))
       $cid=intval($_GET['cid']);
