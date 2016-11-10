@@ -99,8 +99,8 @@
       $view_end_time=$row->end_time;
 
       if (!HAS_PRI("edit_contest") && $now<$start_time){
-        $view_errors = "<font style='color:red;text-decoration:underline;'>The contest hasn't start yet!</font>";
-        require("template/".$OJ_TEMPLATE."/error.php");
+        require_once "template/hznu/contest_header.php";
+        require("template/".$OJ_TEMPLATE."/footer.php");
         exit(0);
       }
     }

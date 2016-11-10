@@ -8,7 +8,39 @@
    * @2016.05.26
   **/
 ?>
+<?php
+if(isset($_GET['cid'])){
+  $warnning_percent=90;
 
+  $sql="SELECT UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time) FROM contest WHERE contest_id='{$_GET['cid']}'";
+  $res=$mysqli->query($sql);
+  $contest_time=$res->fetch_array();
+  $contest_len=$contest_time[1]-$contest_time[0];
+  $now=time();
+  $bar_percent=0;
+  $is_started=false;
+  if($now>=$contest_time[0])$is_started=true;
+  $dur=$now-$contest_time[0];
+  if($dur>=$contest_len)$dur=$contest_len;
+  $bar_percent=$dur/$contest_len*100;
+
+
+
+  $bar_color="am-progress-bar-success";
+  if($bar_percent==100)$bar_color="am-progress-bar-secondary";
+  else if($bar_percent>=$warnning_percent)$bar_color="am-progress-bar-danger";
+
+  if(!$is_started){
+    $bar_percent=100;
+    $bar_color="am-progress-bar-secondary";
+  }
+
+  $sql="SELECT title FROM contest WHERE contest_id='{$_GET['cid']}'";
+  $res=$mysqli->query($sql);
+  $contest_title=$res->fetch_array()[0];
+  $title=$contest_title;
+}
+?>
 <!doctype html>
 <html>
   <head lang="en">
@@ -113,3 +145,49 @@ BOT;
     </div>
   </div>
 </header>
+<style type="text/css" media="screen">
+  .text-bold{
+    font-weight: bold;
+  }
+</style>
+<hr/>
+<div class="am-container" style="margin-top: 20px;">
+  <div class="am-g" style="padding-bottom: 7px;">
+    <div class="am-u-sm-3">
+      <span class="text-bold">Start: </span>
+      <span><?php echo date("M, d, o h:i:s",$contest_time[0]) ?></span>
+    </div>
+    <div class="am-u-sm-6 am-text-center">
+      <span class="text-bold" style="font-size: large;"><?php echo $contest_title ?></span>
+    </div>
+    <div class="am-u-sm-3 am-text-right">
+      <span class="text-bold">End: </span>
+      <span><?php echo date("M, d, o h:i:s",$contest_time[1]) ?></span>
+    </div>
+  </div>
+
+  <div class="am-progress am-progress-striped am-active" id="contest-bar" style="margin-bottom: 0;">
+    <div class="am-progress-bar <?php echo $bar_color ?>" style="width: <?php echo $bar_percent ?>%" id="contest-bar-progress">
+      <?php if (!$is_started): ?>
+        Contest hasn't started now!
+      <?php endif ?>
+    </div>
+  </div>
+
+  <?php if ($is_started): ?>
+  <div class="am-g">
+    <div class="am-u-sm-6">
+      <span class="text-bold">Time elapsed: </span>
+      <span id="time_elapsed"></span>
+    </div>
+    <div class="am-u-sm-6 am-text-right">
+      <span class="text-bold">Time remaining: </span>
+      <span id="time_remaining"></span>
+    </div>
+  </div>
+  <?php endif ?>
+
+</div>
+<?php if ($is_started): ?>
+<hr/>
+<?php endif ?>

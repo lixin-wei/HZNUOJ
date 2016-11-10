@@ -47,13 +47,11 @@
 <!-- 滚屏js代码 end -->
 
 <?php // 根据当前是否需要滚屏给予show不同的style
-  if ($_GET['scroll']) $showStyle = "margin-top:40px;height:1000px;overflow-y:scroll;overflow-x:scroll;";
-  else $showStyle = "margin-top:40px;";
+  if ($_GET['scroll']) $showStyle = "margin-top:10px;height:1000px;overflow-y:scroll;overflow-x:scroll;";
+  else $showStyle = "margin-top:10px;";
 ?>
 <div id='container' class="am-container">
 <div style=<?php echo $showStyle?> class='am-g' id='show'>
-  <h3 align="center">Contest RankList  -- <?php echo $title?></h3>
-  <hr />
 
   <!-- 工具栏 start -->
   <div class='am-text-center'>

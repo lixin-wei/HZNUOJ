@@ -57,7 +57,7 @@
       $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
     }
     else 
-      $sql=<<<sql
+      $sql=<<<SQL
         SELECT 
           * 
         FROM 
@@ -77,7 +77,7 @@
               contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
               AND contest_problem.contest_id=contest.contest_id
           )
-sql;
+SQL;
     $pr_flag=true;
 
   } else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目

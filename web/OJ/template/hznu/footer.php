@@ -71,6 +71,53 @@
 </script>
 <!-- 动态显示时间 end -->
 
+<?php if (isset($_GET['cid']) && $is_started): ?>
+<!-- contest time bar BEGIN -->
+<script>
+  var contest_len=<?php echo $contest_len ?>;
+  var now=<?php echo $now ?>;
+  var begin_time=<?php echo $contest_time[0] ?>;
+  var warnning_percent=<?php echo $warnning_percent ?>;
+  function time_format(time_stamp){
+    var h=Math.floor(time_stamp/(60*60));
+    time_stamp-=h*60*60;
+    var m=Math.floor(time_stamp/60);
+    time_stamp-=m*60;
+    var s=time_stamp;
+    return h+":"+m+":"+s;
+  }
+  function tick(){
+    var dur=now-begin_time;
+    if(dur>=contest_len){
+      dur=contest_len;
+    }
+    var left=contest_len-dur;
+    var bar_percent=0;
+    bar_percent=dur/contest_len*100;
+    if(bar_percent>=warnning_percent){
+      $("#contest-bar-progress").attr("class","am-progress-bar am-progress-bar-danger");
+      $("#contest-bar-progress").html("Contest is nearly the end!");
+    }
+    if(bar_percent==100){
+      $("#contest-bar").removeClass("am-active");
+      $("#contest-bar-progress").attr("class","am-progress-bar am-progress-bar-secondary");
+      $("#contest-bar-progress").html("Contest has ended!");
+    }
+    // console.log(dur);
+    // console.log(contest_len);
+    // console.log(bar_percent);
+    $("#contest-bar-progress").css({
+        "width" : bar_percent+"%",
+    });
+    $("#time_elapsed").html(time_format(dur));
+    $("#time_remaining").html(time_format(left));
+    now++;
+  }
+  tick();
+  setInterval(tick,1000);
+</script>
+<!-- contest time bar END -->
+<?php endif ?>
 
 </body>
 </html>
