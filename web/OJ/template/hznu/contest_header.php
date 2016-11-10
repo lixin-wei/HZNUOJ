@@ -188,6 +188,3 @@ BOT;
   <?php endif ?>
 
 </div>
-<?php if ($is_started): ?>
-<hr/>
-<?php endif ?>
