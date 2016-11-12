@@ -75,7 +75,7 @@
     </button>
     <div class="am-container" >
       <h1 class="am-topbar-brand">
-        <a href="index.php">HZNUOJ</a>
+        <a href="../index.php">HZNUOJ</a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
