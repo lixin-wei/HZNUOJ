@@ -40,7 +40,7 @@ require_once "header.php";
 <p style="padding-left: 30px;">本次比赛主要面向国服院的大一新生，以及其他学院的全体学生。</p>
 <p style="padding-left: 30px;">已经在省级及以上的程序设计竞赛中获过奖的同学、以及已经在往届杭州师范大学程序设计竞赛中获过一等奖及以上的同学，将被谢绝参与本次比赛。</p>
 <h1>赛程安排</h1>
-<p style="padding-left: 30px;">2016年11月30日（星期三）下午24：00前报名参赛；</p>
+<p style="padding-left: 30px;">2016年11月30日（星期三）下午24：00报名截止。</p>
 <p style="padding-left: 30px;">2016年12月10日（星期六）上午9：00-11：00进行机房布置与试机准备，下午12：00-17：00于恕园16-302举行杭州师范大学第十届大学生程序设计竞赛现场赛。</p>
 <p style="padding-left: 30px;">2016年12月10日晚上19：00进行滚榜、公布最终榜单、举行颁奖仪式暨赛后总结。</p>
 <h1>比赛规则</h1>
@@ -49,12 +49,12 @@ require_once "header.php";
 <li>参赛队员不可携带任何可用于计算机处理的软件或数据（不允许携带任何私人U盘，电脑等）。</li>
 <li>参赛队员不能携带任何类型通讯工具，包括手机，传呼机等。</li>
 <li>赛场保证绝对安静整洁，若有大声喧哗，不服从工作人员管理，干扰他人比赛者，都将剥夺其比赛资格。</li>
-<li>赛场严禁参赛人员间交头接耳，杜绝代码雷同，团伙作弊等现象。一经发现将取消其比赛资格，并根据相关文件给于对应处罚。</li>
+<li>赛场严禁参赛人员间交头接耳，杜绝代码雷同，团伙作弊等现象。一经发现将取消其比赛资格，并根据相关文件给予对应处罚。</li>
 </ol>
 <h1>赛制</h1>
 <p style="padding-left: 30px;">本次比赛采用ACM/ICPC赛制。</p>
 <p style="padding-left: 30px;">比赛平台：HZNUOJ（acm.hznu.edu.cn），可以注册个号早点熟悉下。</p>
-<p style="padding-left: 30px;">题目数：8~11题（未定），难度较高。</p>
+<p style="padding-left: 30px;">题目数：10题（2题水题、4题作业题难度、2题基础数据结构、2题省级竞赛难度）。</p>
 <p style="padding-left: 30px;">可用程序语言：C、C++、Bash、C#、Lua、Pascal、Perl、Python2、Ruby。</p>
 <p style="padding-left: 30px;">但我们不保证题目用C/C++以外语言的可解性。</p>
 <p style="padding-left: 30px;"><strong>详细评分机制：</strong></p>
