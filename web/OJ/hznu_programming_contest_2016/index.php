@@ -59,7 +59,11 @@ require_once "header.php";
 <p style="padding-left: 30px;">但我们不保证题目用C/C++以外语言的可解性。</p>
 <p style="padding-left: 30px;"><strong>详细评分机制：</strong></p>
 <p style="padding-left: 60px;">试题解答将在HZNUOJ上直接提交，并且每一次运行会被评判正确或错误，评判结果可由参赛者自主查询。HZNUOJ同时设有代码检查机制，若代码一模一样，则视为作弊，将做严肃处理。</p>
-<p style="padding-left: 60px;">个人解答数居中等及中等以上的参赛者将会根据相应解答数进行排名，解答数在中等数量以下的队伍会确认解答数但不进行排名。在判定获奖环节时，如果多位参赛者解题数相同，则根据总用时加上罚时进行排名。总用时与罚时总和较小者名次靠前。总用时与惩罚时间由每道解答正确的试题的用时加上惩罚时间而成。每道试题用时从比赛开始到该试题解答被判定通过为止，每一次错误提交将被加罚20分钟，未正确解答的试题不记时。</p>
+<p style="padding-left: 60px;">参赛者将会根据相应解答数与解题速度进行综合进行排名。排名时解题数优先，解题数相同时按罚时排名。</p>
+<p style="padding-left: 60px;"><strong>罚时计算规则：</strong></p>
+<p style="padding-left: 90px;">每题耗时：成功通过题目的那一刻距离比赛开始的时间。</p>
+<p style="padding-left: 90px;">总罚时：所有通过了的题的（耗时+错误次数*20min）的和。</p>
+<p style="padding-left: 90px;">排名时，解题数优先，题数相同时按罚时排序。</p>
 <p style="padding-left: 60px;">比赛最后一个小时将进行封榜，所有提交结果以未知的灰色表示，仅提交者本人能看到结果，最终榜单会在滚榜阶段公布。</p>
 <p style="padding-left: 30px;"><strong>滚榜机制介绍：</strong></p>
 <p style="padding-left: 60px;">滚榜是ACM/ICPC系列比赛中一个十分具有特色的机制。</p>
