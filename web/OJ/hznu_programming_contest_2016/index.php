@@ -28,17 +28,23 @@ require_once "header.php";
 <h1>特别提醒</h1>
 <p style="padding-left: 30px;">请务必使用chrome或者Firefox浏览器浏览本页面，以免由于兼容性引发不必要的错误。包括但不限于页面排版错乱、注册失败等。</p>
 <p style="padding-left: 30px;">所有的比赛相关信息都会在本页面第一时间公布与更新，请随时留意。</p>
+<p style="padding-left: 30px;">如有任何问题，邮箱咨询：wlx65005@163.com</p>
 <h1>报名方式</h1>
 <p style="padding-left: 30px;">比赛采取网上报名。</p>
-<p style="padding-left: 30px;">报名页面正在制作中，预计11月14日开放。</p>
+<p style="padding-left: 30px;">注册已开放。</p>
 <p style="padding-left: 30px;">请点击上方导航栏中的&ldquo;注册与报名&rdquo;一栏，前往报名页面进行报名。</p>
 <p style="padding-left: 30px;">报名必填的信息有：学院、班级、学号、姓名，你在报名时可以选择匿名，这样你的信息将不会被显示在已报名列表里。</p>
 <p style="padding-left: 30px;">报名成功后，可点击咨询按钮咨询自己是否已经报名。</p>
-<p style="padding-left: 30px;">报名成功即不可撤销，请谨慎考虑。</p>
+<p style="padding-left: 30px;">报名成功后自己不可撤销与修改，请仔细填写报名信息。</p>
 <p style="padding-left: 30px;">请不要重复报名，以免造成信息错乱，影响你的报名。</p>
+<p style="padding-left: 30px;">若不小心填错了报名信息，请发邮件申请修改。</p>
 <h1>参赛对象</h1>
 <p style="padding-left: 30px;">本次比赛主要面向国服院的大一新生，以及其他学院的全体学生。</p>
 <p style="padding-left: 30px;">已经在省级及以上的程序设计竞赛中获过奖的同学、以及已经在往届杭州师范大学程序设计竞赛中获过一等奖及以上的同学，将被谢绝参与本次比赛。</p>
+<h1>主办方</h1>
+<p style="padding-left: 30px;">杭州国际服务工程学院</p>
+<p style="padding-left: 30px;">杭州师范大学ACM竞赛实验室</p>
+<p style="padding-left: 30px;">计算机科技协会</p>
 <h1>赛程安排</h1>
 <p style="padding-left: 30px;">2016年11月30日（星期三）下午24：00报名截止。</p>
 <p style="padding-left: 30px;">2016年12月10日（星期六）上午9：00-11：00进行机房布置与试机准备，下午12：00-17：00于恕园16-302举行杭州师范大学第十届大学生程序设计竞赛现场赛。</p>
@@ -66,15 +72,16 @@ require_once "header.php";
 <p style="padding-left: 90px;">排名时，解题数优先，题数相同时按罚时排序。</p>
 <p style="padding-left: 60px;">比赛最后一个小时将进行封榜，所有提交结果以未知的灰色表示，仅提交者本人能看到结果，最终榜单会在滚榜阶段公布。</p>
 <p style="padding-left: 30px;"><strong>滚榜机制介绍：</strong></p>
-<p style="padding-left: 60px;">滚榜是ACM/ICPC系列比赛中一个十分具有特色的机制。</p>
-<p style="padding-left: 60px;">在正规ACM/ICPC系列比赛中，比赛最后一个小时的提交结果是隐藏的，只有选手本人能看到，在榜单上会显示成代表未知的灰色，以增加比赛紧张气氛。</p>
-<p style="padding-left: 60px;">然后在颁奖会上，将从榜单最后一名开始，一个个揭晓灰色的未知提交，一旦揭晓的结果为通过，这个人的排名就会上升，否则这个人的排名确定，开始揭晓下一个人，以此类推。这样一来，可以从后往前一个个确定最终排名，一旦名次达到获奖名次内，可以直接进行颁奖。整个过程惊险刺激，是整个比赛的亮点所在。</p>
+<p style="padding-left: 30px;">滚榜是ACM/ICPC系列比赛中一个十分具有特色的机制。</p>
+<p style="padding-left: 30px;">在正规ACM/ICPC系列比赛中，比赛最后一个小时的提交结果是隐藏的，只有选手本人能看到，在榜单上会显示成代表未知的灰色，以增加比赛紧张气氛。</p>
+<p style="padding-left: 30px;">然后在颁奖会上，将从榜单最后一名开始，一个个揭晓灰色的未知提交，一旦揭晓的结果为通过，这个人的排名就会上升，否则这个人的排名确定，开始揭晓下一个人，以此类推。这样一来，可以从后往前一个个确定最终排名，一旦名次达到获奖名次内，可以直接进行颁奖。整个过程惊险刺激，是整个比赛的亮点所在。</p>
 <h1>奖项设置（暂定）</h1>
 <p style="padding-left: 30px;">一等奖：5%</p>
 <p style="padding-left: 30px;">二等奖：15%</p>
 <p style="padding-left: 30px;">三等奖：30%</p>
 <p style="padding-left: 30px;">最佳女生奖：排名最高的女生</p>
 <p style="padding-left: 30px;">顽强拼搏奖：全场比赛最后一个通过题目的人。</p>
+<p style="padding-left: 30px;">同时，在比赛中取的优异成绩的同学将会获得直接进入校ACM/ICPC竞赛集训队的机会，参加接下来的浙江省程序设计竞赛与全国大学生程序设计天梯赛。（名额待定）</p>
 <h1>比赛环境</h1>
 <p style="padding-left: 30px;"><strong>测评环境：</strong></p>
 <div style="padding-left: 60px;">

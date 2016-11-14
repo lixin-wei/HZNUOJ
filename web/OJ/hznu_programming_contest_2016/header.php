@@ -133,11 +133,11 @@ echo <<<BOT
               <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">Login <span class="am-icon-caret-down"></span></a>
                   <ul class="am-dropdown-content">
-                    <li><a href="loginpage.php"><span class="am-icon-user"></span> Login</a></li>
-                    <li><a href="registerpage.php"><span class="am-icon-pencil"></span> Register</a></li>
+                    <li><a href="../loginpage.php"><span class="am-icon-user"></span> Login</a></li>
+                    <li><a href="../registerpage.php"><span class="am-icon-pencil"></span> Register</a></li>
 BOT;
-                  if ($show_tag) echo "<li><a href='changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
-                  else echo "<li><a href='changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
+                  if ($show_tag) echo "<li><a href='../changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
+                  else echo "<li><a href='../changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
 echo <<<BOT
                   </ul>
               </li>
