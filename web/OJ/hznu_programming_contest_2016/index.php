@@ -32,10 +32,6 @@ $content=$res->fetch_array()[0];
 echo $content;
 ?>
 </div>
-<p style="padding-left: 30px;"><strong>比赛环境：</strong></p>
-<p style="padding-left: 60px;">OS: &nbsp;windows7</p>
-<p style="padding-left: 60px;">IDE: VS2010</p>
-</div>
 
 
 
