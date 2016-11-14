@@ -49,7 +49,7 @@ require_once "header.php";
 				</thead>
 				<tbody>
 				<?php
-				$sql="SELECT institute, stu_id, class, name, register_time, anonymous FROM contest_hznu_2016";
+				$sql="SELECT institute, stu_id, class, name, register_time, anonymous FROM contest_hznu_2016 ORDER BY register_time DESC";
 				$res=$mysqli->query($sql);
 				while($row=$res->fetch_array()){
 					echo "<tr>";
