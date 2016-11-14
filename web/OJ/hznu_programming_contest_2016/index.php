@@ -35,6 +35,7 @@ require_once "header.php";
 <p style="padding-left: 30px;">请点击上方导航栏中的&ldquo;注册与报名&rdquo;一栏，前往报名页面进行报名。</p>
 <p style="padding-left: 30px;">报名必填的信息有：学院、班级、学号、姓名，你在报名时可以选择匿名，这样你的信息将不会被显示在已报名列表里。</p>
 <p style="padding-left: 30px;">报名成功后，可点击咨询按钮咨询自己是否已经报名。</p>
+<p style="padding-left: 30px;">请不要乱填信息，将定期清理无意义的报名记录。</p>
 <p style="padding-left: 30px;">报名成功后自己不可撤销与修改，请仔细填写报名信息。</p>
 <p style="padding-left: 30px;">请不要重复报名，以免造成信息错乱，影响你的报名。</p>
 <p style="padding-left: 30px;">若不小心填错了报名信息，请发邮件申请修改。</p>
