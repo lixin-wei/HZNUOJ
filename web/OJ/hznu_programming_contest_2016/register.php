@@ -15,8 +15,8 @@ require_once "header.php";
 	<div class="am-g" style="margin-top: 60px; width: 70%;">
 		<div class="am-u-sm-12">
 			<ul class="am-nav am-nav-pills am-nav-justify">
-				<li><a href="index.php">通知与注意事项</a></li>
-				<li class="am-active"><a href="register.php">注册与报名</a></li>
+				<li><a href="index.php">通知公告</a></li>
+				<li class="am-active"><a href="register.php">注册报名</a></li>
 			</ul>
 		</div>
 	</div>
