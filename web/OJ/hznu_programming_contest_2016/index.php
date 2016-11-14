@@ -45,7 +45,7 @@ require_once "header.php";
 <h1>主办方</h1>
 <p style="padding-left: 30px;">杭州国际服务工程学院</p>
 <p style="padding-left: 30px;">杭州师范大学ACM竞赛实验室</p>
-<p style="padding-left: 30px;">计算机科技协会</p>
+<p style="padding-left: 30px;">杭州师范大学计算机科技协会</p>
 <h1>赛程安排</h1>
 <p style="padding-left: 30px;">2016年11月30日（星期三）下午24：00报名截止。</p>
 <p style="padding-left: 30px;">2016年12月10日（星期六）上午9：00-11：00进行机房布置与试机准备，下午12：00-17：00于恕园16-302举行杭州师范大学第十届大学生程序设计竞赛现场赛。</p>
