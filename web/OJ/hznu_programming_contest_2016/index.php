@@ -27,7 +27,7 @@ require_once "header.php";
 <div class="am-container" style="padding-top: 20px;">
 <h1>特别提醒</h1>
 <p style="padding-left: 30px;">请务必使用chrome或者Firefox浏览器浏览本页面，以免由于兼容性引发不必要的错误。包括但不限于页面排版错乱、注册失败等。</p>
-<p style="padding-left: 30px;">所有的比赛相关信息都会在本页面第一时间公布与更新，请随时留意。</p>
+<p style="padding-left: 30px; color: red;">本次比赛不进行任何人工通知，所有的信息都会在本页面第一时间更新，请随时留意！</p>
 <p style="padding-left: 30px;">如有任何问题，邮箱咨询：wlx65005@163.com</p>
 <h1>报名方式</h1>
 <p style="padding-left: 30px;">比赛采取网上报名。</p>
