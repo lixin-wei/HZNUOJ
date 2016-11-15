@@ -77,7 +77,7 @@
     //require_once("contest-header.php");
   } else {
     //require_once("oj-header.php");
-    $sql="SELECT * FROM `solution` WHERE contest_id is null ";
+    $sql="SELECT * FROM `solution`";
   }
   $start_first=true;
   $order_str=" ORDER BY `solution_id` DESC ";
@@ -204,9 +204,10 @@
       if(isset($cid)){
         $view_status[$i][2].= $PID[$row['num']];
       }else{
-        $view_status[$i][2].= $row['problem_id'];
+        $view_status[$i][2].= $row['contest_id']."-".$PID[$row['num']]."</a>";
+        $view_status[$i][2].= "("."<a href='problem.php?id=".$row['problem_id']."'>".$row['problem_id']."</a>".")";
       }
-      $view_status[$i][2].="</div></a>";
+      $view_status[$i][2].="</a></div>";
     } else{
       $view_status[$i][2]= "<div class=center><a href='problem.php?id=".$row['problem_id']."'>".$row['problem_id']."</a></div>";
     }
