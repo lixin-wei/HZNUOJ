@@ -77,7 +77,7 @@
     //require_once("contest-header.php");
   } else {
     //require_once("oj-header.php");
-    $sql="SELECT * FROM `solution`";
+    $sql="SELECT * FROM `solution` WHERE 1 ";
   }
   $start_first=true;
   $order_str=" ORDER BY `solution_id` DESC ";
@@ -137,7 +137,7 @@
 
   if($OJ_SIM){
     $old=$sql;
-    $sql="select * from ($sql order by solution_id desc limit 1000) solution left join `sim` on solution.solution_id=sim.s_id WHERE 1 ";
+    $sql="SELECT * from ($sql order by solution_id desc limit 1000) solution left join `sim` on solution.solution_id=sim.s_id WHERE 1 ";
     if(isset($_GET['showsim'])&&intval($_GET['showsim'])>0){
             $showsim=intval($_GET['showsim']);
             $sql="select * from ($old ) solution 
