@@ -7,8 +7,9 @@ $stu_id=$mysqli->real_escape_string($_POST['stu_id']);
 $class=$mysqli->real_escape_string($_POST['class']);
 $name=$mysqli->real_escape_string($_POST['name']);
 $anonymous=$_POST['anonymous'];
+$phone=$mysqli->real_escape_string($_POST['phone']);
 
-$sql="INSERT INTO contest_hznu_2016 (institute, stu_id, class, name, register_time, anonymous) VALUES ('$institute', '$stu_id', '$class', '$name', NOW(), $anonymous)";
+$sql="INSERT INTO contest_hznu_2016 (institute, stu_id, class, name, register_time, anonymous, phone) VALUES ('$institute', '$stu_id', '$class', '$name', NOW(), $anonymous, '$phone')";
 //echo "$sql";
 if($mysqli->query($sql)){
 	echo "注册成功!";

@@ -22,7 +22,7 @@
   .bg{
     background-image: url(template/hznu/ojINDEX.jpg);
     background-repeat: no-repeat;
-    background-position: top;
+    background-position: center 0px;
   }
   #slider {
     height: 300px;
@@ -32,6 +32,11 @@
   }
 </style>
 <div class="am-container" style="margin-top:0px;">
+  <div class="am-g" style="position: absolute;">
+    <div class="am-u-md-12">
+      <img src="image/OJ_contest_2016_landspace.jpg" alt="">
+    </div>
+  </div>
   <div class="am-g ill" style="height: 380px;"></div>
   <div class="am-g ill" style="height: 20px;">
     <center><div class="link" style="cursor: pointer; height: 20px; width: 100px;"></div></center>
@@ -55,7 +60,7 @@
                     else if ($news_importance[$i] == 2) echo "<div class='am-panel am-panel-secondary'>";
                     else if ($news_importance[$i] == 1) echo "<div class='am-panel am-panel-success'>";
                     else echo "<div class='am-panel am-panel-default'>";
-echo <<<sss
+echo <<<HTML
                       <div class="am-panel-hd" class="am-panel-title" data-am-collapse="{target: '#news-$nid'}">
                         $news_title[$i]
                       </div>
@@ -64,7 +69,7 @@ echo <<<sss
                         </div>
                       </div>    
                     </div>  
-sss;
+HTML;
                   }
                 }
               ?>    

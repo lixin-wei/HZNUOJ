@@ -103,6 +103,10 @@ require_once "header.php";
 					<label for="name">姓名</label>
 					<input type="text" class="" id="name" name="name" placeholder="请输入姓名" required minlength="2">
 				</div>
+				<div class="am-form-group">
+					<label for="phone">手机号码 (此项不会公布在已报名列表中)</label>
+					<input type="text" class="" id="phone" name="phone" placeholder="请输入手机号码" required minlength="11" maxlength="11">
+				</div>
 				<div class="am-checkbox">
 					<input type="checkbox" name="anonymous" id="anonymous" value="yes"> 匿名
 				</div>
@@ -148,6 +152,7 @@ require_once "header.php";
 						class: $("#class").val(),
 						name: $("#name").val(),
 						anonymous: $("#anonymous").is(":checked"),
+						phone: $("#phone").val(),
 					},
 					context: this,
 					success: function(data){
