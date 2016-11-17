@@ -32,11 +32,11 @@
   }
 </style>
 <div class="am-container" style="margin-top:0px;">
-  <div class="am-g" style="position: absolute;">
+<!--   <div class="am-g" style="position: absolute;">
     <div class="am-u-md-12">
       <img src="image/OJ_contest_2016_landspace.jpg" alt="">
     </div>
-  </div>
+  </div> -->
   <div class="am-g ill" style="height: 380px;"></div>
   <div class="am-g ill" style="height: 20px;">
     <center><div class="link" style="cursor: pointer; height: 20px; width: 100px;"></div></center>
