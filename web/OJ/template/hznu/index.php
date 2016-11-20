@@ -32,11 +32,6 @@
   }
 </style>
 <div class="am-container" style="margin-top:0px;">
-<!--   <div class="am-g" style="position: absolute;">
-    <div class="am-u-md-12">
-      <img src="image/OJ_contest_2016_landspace.jpg" alt="">
-    </div>
-  </div> -->
   <div class="am-g ill" style="height: 380px;"></div>
   <div class="am-g ill" style="height: 20px;">
     <center><div class="link" style="cursor: pointer; height: 20px; width: 100px;"></div></center>
@@ -80,7 +75,23 @@ HTML;
     </div>
     <!-- 公告模块 end -->
 
-    
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="index_ad_modal">
+      <div class="am-modal-dialog">
+        <div class="am-modal-hd">News
+          <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+        </div>
+        <div class="am-modal-bd">
+          <a href="hznu_programming_contest_2016" title="">
+            <img class="am-img-responsive" src="image/OJ_contest_2016_landspace.jpg" alt="">
+          </a>
+          <div class="am-form-group">
+            <label class="am-checkbox-inline">
+              <input type="checkbox" value="option1" id="index_ad_do_not_show"> Do not show anymore
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
     <!--Submission Statics START-->
     <div class="am-u-md-4">
       <?php
@@ -241,3 +252,17 @@ $(window).ready(function(){
     console.log('折叠菜单关闭鸟！');
   });
 </script>
+<!-- modal auto jump START -->
+<script src="AmazeUI/js/jquery.session.js"></script>
+<script>
+  var $objIndexAd=$("#index_ad_modal");
+  if($.session.get("index_ad_do_not_show")!="1"){
+    $objIndexAd.modal();
+  }
+  $objIndexAd.on("close.modal.amui", function(){
+    if($("#index_ad_do_not_show").is(":checked")){
+      $.session.set("index_ad_do_not_show","1");
+    }
+  });
+</script>
+<!-- modal auto jump END -->
