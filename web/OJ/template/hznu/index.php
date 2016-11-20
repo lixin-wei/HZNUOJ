@@ -248,7 +248,7 @@ $(window).ready(function(){
       </a>
       <div class="am-form-group">
         <label class="am-checkbox-inline">
-          <input type="checkbox" value="option1" id="index_ad_do_not_show"> Do not show anymore
+          <input type="checkbox" value="option1" id="index_ad_do_not_show"> 不再显示
         </label>
       </div>
     </div>
