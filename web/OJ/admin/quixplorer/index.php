@@ -39,16 +39,12 @@ Comment:
   Have Fun...
 ------------------------------------------------------------------------------*/
 require_once("../../include/db_info.inc.php");
-
+require_once "../../include/my_func.inc.php";
 $dir=$GLOBALS["dir"];
-
-if(HAS_PRI("edit_hznu_problem") && $dir<500000);
-else if(HAS_PRI("edit_c_problem") && $dir>=500000);
-else {
+if(!HAS_PRI("edit_".get_problemset($_GET['dir'])."_problem")){
   echo "Permission denied!";
   exit(1);
 }
-
 //------------------------------------------------------------------------------
 umask(002); // Added to make created files/dirs group writable
 //------------------------------------------------------------------------------
