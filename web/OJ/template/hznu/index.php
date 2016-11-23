@@ -244,7 +244,7 @@ $(window).ready(function(){
     </div>
     <div class="am-modal-bd">
       <a href="hznu_programming_contest_2016" title="">
-        <img class="am-img-responsive" src="image/OJ_contest_2016_landspace.jpg" alt="">
+        <img class="am-img-responsive" src="image/OJ_contest_2016_landspace.jpg?version=2" alt="">
       </a>
       <div class="am-form-group">
         <label class="am-checkbox-inline">
