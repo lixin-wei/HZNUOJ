@@ -43,7 +43,19 @@
 
 
 <div class="am-container">
-  <h1 style="text-align:center;margin-top:40px;"><?php echo $row->title?></h1>
+  <h1 style="text-align:center;margin-top:40px;"><?php echo $row->title?>
+  <!-- is contest problem -->
+  <?php 
+    $now=time();
+  ?>
+  <?php if (isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
+    <span class="am-badge am-badge-primary am-text-lg">
+      <a href="problem.php?id=<?php echo $real_id ?>" style="color: white;">
+        <?php echo $real_id ?>
+      </a>
+    </span>
+  <?php endif ?>
+  </h1>
   <?php
     if ($show_tag && !isset($_GET['cid'])) { 
   ?> 
