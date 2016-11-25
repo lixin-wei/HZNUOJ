@@ -37,7 +37,6 @@ if ($res&&$res->num_rows<1&&!((isset($cid)&&$cid<=0) || (isset($id)&&$id<=0))){
 $res->free();
 
 
-
 $test_run=false;
 if (isset($_POST['id'])) {
 	$id=intval($_POST['id']);
@@ -108,19 +107,22 @@ if(get_magic_quotes_gpc()){
 	$input_text=stripslashes($input_text);
 
 }
-$input_text=preg_replace ( "(\r\n)", "\n", $input_text );
+
+$input_text=preg_replace ( "/(\r\n)/", "\n", $input_text );
 $source=$mysqli->real_escape_string($source);
 $input_text=$mysqli->real_escape_string($input_text);
 $source_user=$source;
 if($test_run) $id=-$id;
+
 //use append Main code
 $prepend_file="$OJ_DATA/$id/prepend.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($prepend_file)){
      $source=$mysqli->real_escape_string(file_get_contents($prepend_file)."\n").$source;
 }
+
 $append_file="$OJ_DATA/$id/append.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($append_file)){
-     $source.=$mysqli->cubrid_real_escape_string("\n".file_get_contents($append_file));
+    $source.=$mysqli->real_escape_string("\n".file_get_contents($append_file));
 }
 //end of append 
 
