@@ -21,7 +21,7 @@
   require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
   global $mysqli;
   if (!HAS_PRI('enter_admin_page')) {
-    echo "<h1><a href='../loginpage.php'>Premission Denied! Please Log in!</a></h1>";
+    echo "<h1><a href='/OJ/loginpage.php'>Premission Denied! Please Log in!</a></h1>";
     exit(0);
   }
   $can_see_problem=false;
@@ -51,7 +51,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class='navbar-brand' href='index.php'>DASHBOARD</a>
+        <a class='navbar-brand' href='/OJ/admin/index.php'>DASHBOARD</a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
