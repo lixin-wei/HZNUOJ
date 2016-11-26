@@ -5,7 +5,6 @@
    * @2016.06.28
   **/
 ?>
-
 <?php
 
   function pwGen($password,$md5ed=False) 
