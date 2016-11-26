@@ -37,8 +37,8 @@ Comment:
 	
 	Have Fun...
 ------------------------------------------------------------------------------*/
-require_once("./.include/permissions.php");
-require_once("./.include/login.php");
+require_once "./.include/permissions.php";
+require_once "./.include/login.php";
 
 //------------------------------------------------------------------------------
 // HELPER FUNCTIONS (USED BY MAIN FUNCTION 'list_dir', SEE BOTTOM)
@@ -168,8 +168,7 @@ function print_table($dir, $list)
 		if (permissions_grant($dir, $item, "read"))
 			echo"<A HREF=\"" . $link . "\">";
 		//else echo "<A>";
-		echo "<IMG border=\"0\" width=\"16\" height=\"16\" ";
-		echo "align=\"ABSMIDDLE\" src=\"_img/".get_mime_type($dir, $item, "img")."\" ALT=\"\">&nbsp;";
+		echo "<span class='".get_mime_type($dir, $item, "img")."'>&nbsp;";
 		$s_item=$item;	if(strlen($s_item)>50) $s_item=substr($s_item,0,47)."...";
 		echo htmlspecialchars($s_item);
 		if (permissions_grant($dir, $item, "read"))
@@ -226,41 +225,40 @@ function list_dir($dir)
 	make_tables($dir, $dir_list, $file_list, $tot_file_size, $num_items);
 	
 	$s_dir=$dir;		if(strlen($s_dir)>50) $s_dir="...".substr($s_dir,-47);
-	show_header("<a href='javascript:history.go(-1);'><font color=#0a0a0a>Go Back to Problem List</font></a><br>".$GLOBALS["messages"]["actdir"].": /".get_rel_item("",$s_dir));
+	show_header("Test Data of Problem".": ".get_rel_item("",$s_dir));
 	
 	// Javascript functions:
 	include "./.include/javascript.php";
 	
 	// Sorting of items
-	$_img = "&nbsp;<IMG width=\"10\" height=\"10\" border=\"0\" align=\"ABSMIDDLE\" src=\"_img/";
+	$_img = "&nbsp;<span class=\"";
 	if($GLOBALS["srt"]=="yes") {
-		$_srt = "no";	$_img .= "_arrowup.gif\" ALT=\"^\">";
+		$_srt = "no";	$_img .= "glyphicon glyphicon-chevron-up\"></span>";
 	} else {
-		$_srt = "yes";	$_img .= "_arrowdown.gif\" ALT=\"v\">";
+		$_srt = "yes";	$_img .= "glyphicon glyphicon-chevron-down\"></span>";
 	}
 	
 	// Toolbar
-	echo "<BR><TABLE width=\"95%\"><TR><TD><TABLE><TR>\n";
+	echo "<BR>";
 	
 	// PARENT DIR
-	echo "<TD><A HREF=\"".make_link("list",$dir_up,NULL)."\">";
-	echo "<IMG border=\"0\" width=\"16\" height=\"16\" align=\"ABSMIDDLE\" src=\"_img/_up.gif\" ";
-	echo "ALT=\"".$GLOBALS["messages"]["uplink"]."\" TITLE=\"".$GLOBALS["messages"]["uplink"]."\"></A></TD>\n";
+	echo "<A style='margin:2px' HREF=\"".make_link("list",$dir_up,NULL)."\" title=\"".$GLOBALS["messages"]["uplink"]."\">";
+	echo "<span class='glyphicon glyphicon-arrow-up'></span>";
+	echo "</A>";
 	// HOME DIR
-	echo "<TD><A HREF=\"".make_link("list",NULL,NULL)."\">";
-	echo "<IMG border=\"0\" width=\"16\" height=\"16\" align=\"ABSMIDDLE\" src=\"_img/_home.gif\" ";
-	echo "ALT=\"".$GLOBALS["messages"]["homelink"]."\" TITLE=\"".$GLOBALS["messages"]["homelink"]."\"></A></TD>\n";
+	echo "<A style='margin:2px' HREF=\"".make_link("list",NULL,NULL)."\" title=\"".$GLOBALS["messages"]["homelink"]."\">";
+	echo "<span class='glyphicon glyphicon-home'></span>";
+	echo "</A>";
 	// RELOAD
-	echo "<TD><A HREF=\"javascript:location.reload();\"><IMG border=\"0\" width=\"16\" height=\"16\" ";
-	echo "align=\"ABSMIDDLE\" src=\"_img/_refresh.gif\" ALT=\"".$GLOBALS["messages"]["reloadlink"];
-	echo "\" TITLE=\"".$GLOBALS["messages"]["reloadlink"]."\"></A></TD>\n";
+	echo "<A style='margin:2px' HREF=\"javascript:location.reload();\" title=\"".$GLOBALS["messages"]["reloadlink"]."\">";
+	echo "<span class='glyphicon glyphicon-refresh'></span>";
+	echo "</A>";
 	// SEARCH
-	echo "<TD><A HREF=\"".make_link("search",$dir,NULL)."\">";
-	echo "<IMG border=\"0\" width=\"16\" height=\"16\" align=\"ABSMIDDLE\" src=\"_img/_search.gif\" ";
-	echo "ALT=\"".$GLOBALS["messages"]["searchlink"]."\" TITLE=\"".$GLOBALS["messages"]["searchlink"];
-	echo "\"></A></TD>\n";
+	echo "<A style='margin:2px' HREF=\"".make_link("search",$dir,NULL)."\" title=\"".$GLOBALS["messages"]["searchlink"]."\">";
+	echo "<span class='glyphicon glyphicon-search'></span>";
+	echo "</A>";
 	
-	echo "<TD>::</TD>";
+	echo "::";
 
 	// print the edit buttons
 	_print_edit_buttons($dir);
@@ -282,12 +280,12 @@ function list_dir($dir)
 	// Create File / Dir
 	if (permissions_grant($dir, NULL, "create"))
 	{
-		echo "<TD align=\"right\"><TABLE><FORM action=\"".make_link("mkitem",$dir,NULL)."\" method=\"post\">\n<TR><TD>";
-		echo "<SELECT name=\"mktype\"><option value=\"file\">".$GLOBALS["mimes"]["file"]."</option>";
+		echo "<FORM class='form-inline' style='float:right;' action=\"".make_link("mkitem",$dir,NULL)."\" method=\"post\">\n";
+		echo "<SELECT class='selectpicker' data-width='100' name=\"mktype\"><option value=\"file\">".$GLOBALS["mimes"]["file"]."</option>";
 		echo "<option value=\"dir\">".$GLOBALS["mimes"]["dir"]."</option></SELECT>\n";
-		echo "<INPUT name=\"mkname\" type=\"text\" size=\"15\">";
-		echo "<INPUT type=\"submit\" value=\"".$GLOBALS["messages"]["btncreate"];
-		echo "\"></TD></TR></FORM></TABLE></TD>\n";
+		echo "<INPUT class='form-control' name=\"mkname\" type=\"text\" size=\"15\">";
+		echo "<INPUT class='btn btn-default' type=\"submit\" value=\"".$GLOBALS["messages"]["btncreate"];
+		echo "\"></FORM>\n";
 	}
 	
 	echo "</TR></TABLE>\n";
@@ -296,11 +294,11 @@ function list_dir($dir)
 	
 	
 	// Begin Table + Form for checkboxes
-	echo"<TABLE WIDTH=\"95%\"><FORM name=\"selform\" method=\"POST\" action=\"".make_link("post",$dir,NULL)."\">\n";
+	echo"<TABLE WIDTH=\"95%\" class='table table-hover' style='white-space: nowrap;word-wrap: break-word;'><FORM name=\"selform\" method=\"POST\" action=\"".make_link("post",$dir,NULL)."\">\n";
 	echo "<INPUT type=\"hidden\" name=\"do_action\"><INPUT type=\"hidden\" name=\"first\" value=\"y\">\n";
 	
 	// Table Header
-	echo "<TR><TD colspan=\"7\"><HR></TD></TR><TR><TD WIDTH=\"2%\" class=\"header\">\n";
+	echo "<TR><TD WIDTH=\"2%\" class=\"header\">\n";
 	echo "<INPUT TYPE=\"checkbox\" name=\"toggleAllC\" onclick=\"javascript:ToggleAll(this);\"></TD>\n";
 	echo "<TD WIDTH=\"44%\" class=\"header\"><B>\n";
 	if($GLOBALS["order"]=="name") $new_srt = $_srt;	else $new_srt = "yes";
@@ -320,13 +318,12 @@ function list_dir($dir)
 	if($GLOBALS["order"]=="mod") echo $_img;
 	echo "</A></B></TD><TD WIDTH=\"8%\" class=\"header\"><B>".$GLOBALS["messages"]["permheader"]."</B>\n";
 	echo "</TD><TD WIDTH=\"6%\" class=\"header\"><B>".$GLOBALS["messages"]["actionheader"]."</B></TD></TR>\n";
-	echo "<TR><TD colspan=\"7\"><HR></TD></TR>\n";
 		
 	// make & print Table using lists
 	print_table($dir, make_list($dir_list, $file_list));
 
 	// print number of items & total filesize
-	echo "<TR><TD colspan=\"7\"><HR></TD></TR><TR>\n<TD class=\"header\"></TD>";
+	echo "<TR>\n<TD class=\"header\"></TD>";
 	echo "<TD class=\"header\">".$num_items." ".$GLOBALS["messages"]["miscitems"]." (";
 	if(function_exists("disk_free_space")) {
 		$free=parse_file_size(disk_free_space(get_abs_dir($dir)));
@@ -337,7 +334,7 @@ function list_dir($dir)
 	echo $GLOBALS["messages"]["miscfree"].": ".$free.")</TD>\n";
 	echo "<TD class=\"header\">".parse_file_size($tot_file_size)."</TD>\n";
 	for($i=0;$i<4;++$i) echo"<TD class=\"header\"></TD>";
-	echo "</TR>\n<TR><TD colspan=\"7\"><HR></TD></TR></FORM></TABLE>\n";
+	echo "</TR>\n</FORM></TABLE>\n";
 	
 ?><script language="JavaScript1.2" type="text/javascript">
 <!--
@@ -378,50 +375,49 @@ function _print_link ($function, $allow, $dir, $item)
 	// the list of all available button and the coresponding data
 	$functions = array(
 			"copy" => array("jfunction" => "javascript:Copy();",
-					"image" => "_img/_copy.gif",
+					"icon" => "glyphicon glyphicon-file",
 					"imagedisabled" => "_img/_copy_.gif",
 					"message" => $GLOBALS["messages"]["copylink"]),
 			"move" => array("jfunction" => "javascript:Move();",
-					"image" => "_img/_move.gif",
+					"icon" => "glyphicon glyphicon-move",
 					"imagedisabled" => "_img/_move_.gif",
 					"message" => $GLOBALS["messages"]["movelink"]),
 			"delete" => array("jfunction" => "javascript:Delete();",
-					"image" => "_img/_delete.gif",
+					"icon" => "glyphicon glyphicon-trash",
 					"imagedisabled" => "_img/_delete_.gif",
 					"message" => $GLOBALS["messages"]["dellink"]),
 			"upload" => array("jfunction" => make_link("upload", $dir, NULL),
-					"image" => "_img/_upload.gif",
+					"icon" => "glyphicon glyphicon-upload",
 					"imagedisabled" => "_img/_upload_.gif",
 					"message" => $GLOBALS["messages"]["uploadlink"]),
 			"archive" => array("jfunction" => "javascript:Archive();",
-					"image" => "_img/_archive.gif",
+					"icon" => "glyphicon glyphicon-book",
 					"message" => $GLOBALS["messages"]["comprlink"]),
 			"admin" => array("jfunction" => make_link("admin", $dir, NULL),
-					"image" => "_img/_admin.gif",
+					"icon" => "glyphicon glyphicon-cog",
 					"message" => $GLOBALS["messages"]["adminlink"]),
 			"logout" => array("jfunction" => make_link("logout", NULL, NULL),
-					"image" => "_img/_logout.gif",
+					"icon" => "glyphicon glyphicon-log-out",
 					"imagedisabled" => "_img/_logout_.gif",
 					"message" => $GLOBALS["messages"]["logoutlink"]),
 			"edit" => array("jfunction" => make_link("edit", $dir, $item),
-					"image" => "_img/_edit.gif",
+					"icon" => "glyphicon glyphicon-edit",
 					"imagedisabled" => "_img/_edit_.gif",
 					"message" => $GLOBALS["messages"]["editlink"]),
 			"download" => array("jfunction" => make_link("download", $dir, $item),
-					"image" => "_img/_download.gif",
+					"icon" => "glyphicon glyphicon-download",
 					"imagedisabled" => "_img/_download_.gif",
 					"message" => $GLOBALS["messages"]["downlink"]),
 			);
 	
 	// determine the functio nof this button and it's data
 	$values = $functions[$function];	
-
 	// make an active link if the access is allowed
 	if ($allow)
 	{
-		echo "<TD><A HREF=\"" . $values["jfunction"] . "\"><IMG border=\"0\" width=\"16\" height=\"16\" ";
-		echo "align=\"ABSMIDDLE\" src=\"" . $values["image"] . "\" ALT=\"" . $values["message"];
-		echo "\" TITLE=\"" . $values["message"] . "\"></A></TD>\n";
+		echo "<A style='margin:2px;' HREF=\"" . $values["jfunction"] . "\" title='".$values["message"]."'>";
+		echo "<span class='".$values['icon']."'></span>";
+		echo "</A>";
 		return;
 	}
 
@@ -429,10 +425,8 @@ function _print_link ($function, $allow, $dir, $item)
 		return;
 
 	// make an inactive link if the access is forbidden
-	echo "<TD><IMG border=\"0\" width=\"16\" height=\"16\" align=\"ABSMIDDLE\" ";
-	echo "src=\"" . $values["imagedisabled"] . "\" ALT=\"" . $values["message"] . "\" TITLE=\"";
-	echo $values["message"] . "\"></TD>\n";
-
+		echo "<span class='".$values['icon']."'></span>";
+		echo "\n";
 }
 
 ?>

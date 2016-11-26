@@ -39,11 +39,13 @@ Comment:
 ------------------------------------------------------------------------------*/
 //------------------------------------------------------------------------------
 function show_footer() {			// footer for html-page
-	echo"\n<HR><SMALL><A class=\"title\" href=\"http://quixplorer.sourceforge.net\" target=\"_blank\">";
-	echo "QuiXplorer ".$GLOBALS["version"]."</A> - ";
-	echo "<A href=\"http://quix.tk\" target=\"_blank\">the QuiX project</A></SMALL>";
-	show_login();
-	echo "</center></BODY>\n</HTML>";
+     require_once $_SERVER['DOCUMENT_ROOT']."/OJ/admin/admin-footer.php";
+     echo <<<HTML
+          <footer style="text-align: center;">
+               <hr/>
+               Modified from quixplorer.
+          </footer>
+HTML;
 }
 //------------------------------------------------------------------------------
 /**

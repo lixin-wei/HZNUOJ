@@ -53,13 +53,13 @@
 ?>
 <?php include("kindeditor.php"); ?>
 
-<form method=POST action='news_edit.php'>
+<form class="form-inline" method=POST action='news_edit.php'>
   <h1>Edit a Contest</h1><hr/>
   <input type=hidden name='news_id' value=<?php echo $news_id?>>
-  <p align=left>Title:<input type=text name=title size=71 value='<?php echo $title?>'></p>
+  <p align=left>Title:<input class="form-control" type=text name=title size=71 value='<?php echo $title?>'></p>
   <p align='left'>
     Importance:
-    <select name='importance' style='width:70px'>
+    <select class="selectpicker" name='importance' style='width:70px'>
       <option value='10' <?php if ($importance==10) echo "selected" ?> >Top</option>
       <option value='3' <?php if ($importance==3) echo "selected" ?> >3</option>
       <option value='2' <?php if ($importance==2) echo "selected" ?> >2</option>

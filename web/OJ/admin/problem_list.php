@@ -58,7 +58,7 @@
   <h1>Problem List</h1>
   <hr/>
   <form action=problem_list.php>
-    <select class='input-mini' onchange="location.href='problem_list.php?OJ=<?php echo $_GET['OJ']?>&page='+this.value;">
+    <select class='selectpicker' onchange="location.href='problem_list.php?OJ=<?php echo $_GET['OJ']?>&page='+this.value;">
     <?php
       for ($i=1;$i<=$view_total_page;$i++){
         if ($i>1) echo '&nbsp;';
@@ -69,7 +69,7 @@
       }
     ?>
     </select>
-    <select class='input-mini' onchange="location.href='problem_list.php?OJ='+this.value;">
+    <select class='selectpicker' onchange="location.href='problem_list.php?OJ='+this.value;">
       
     <?php
       echo "<option value='' selected>All</option>";

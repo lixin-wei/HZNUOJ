@@ -43,8 +43,8 @@
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
 
-<form action=contest_list.php class=center>
-  <input name=keyword><input type=submit value="<?php echo $MSG_SEARCH?>" >
+<form class="form-inline" action=contest_list.php class=center>
+  <input class="form-control" name=keyword><input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH?>" >
 </form>
 
 

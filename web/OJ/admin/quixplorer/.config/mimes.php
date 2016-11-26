@@ -14,9 +14,9 @@ $GLOBALS["images_ext"]="\.png$|\.bmp$|\.jpg$|\.jpeg$|\.gif$";
 // mime types: (description,image,extension)
 $GLOBALS["super_mimes"]=array(
 	// dir, exe, file
-	"dir"	=> array($GLOBALS["mimes"]["dir"],"dir.gif"),
-	"exe"	=> array($GLOBALS["mimes"]["exe"],"exe.gif","\.exe$|\.com$|\.bin$"),
-	"file"	=> array($GLOBALS["mimes"]["file"],"file.gif")
+	"dir"	=> array($GLOBALS["mimes"]["dir"],"glyphicon glyphicon-folder-open"),
+	"exe"	=> array($GLOBALS["mimes"]["exe"],"glyphicon glyphicon-cog","\.exe$|\.com$|\.bin$"),
+	"file"	=> array($GLOBALS["mimes"]["file"],"glyphicon glyphicon-file")
 );
 $GLOBALS["used_mime_types"]=array(
 	// text

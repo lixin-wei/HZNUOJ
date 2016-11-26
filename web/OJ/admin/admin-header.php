@@ -12,13 +12,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-
+  <link href="//cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 
 
 <?php 
-  require_once("../include/db_info.inc.php");
+  require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
+  global $mysqli;
   if (!HAS_PRI('enter_admin_page')) {
     echo "<h1><a href='../loginpage.php'>Premission Denied! Please Log in!</a></h1>";
     exit(0);
@@ -59,8 +60,8 @@
           echo "<li><a href='/OJ/' target='view_window'>See OJ</a></li>";
           $html_li="";
           if($can_see_problem){
-            $html_li .= "<li><a href='problem_add_page.php'>Add Problem</a></li>";
-            $html_li .= "<li><a href='problem_list.php'>Problem List</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_add_page.php'>Add Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_list.php'>Problem List</a></li>";
           }
           if($html_li!=""){
             echo<<<sss
@@ -73,16 +74,16 @@
 sss;
           }
 
-          if(HAS_PRI("rejudge")) echo "<li><a href='rejudge.php'>Rejudge</a></li>";
+          if(HAS_PRI("rejudge")) echo "<li><a href='/OJ/admin/rejudge.php'>Rejudge</a></li>";
           //*************slide相关功能暂时被弃用
-          //if(HAS_PRI("'AddSlide' ")) echo "<li><a href='slide_add_page.php'>'AddSlide' </a></li>";
-          //if(HAS_PRI("'slideList' ")) echo "<li><a href='slide_list.php'>'slideList' </a></li>";
+          //if(HAS_PRI("'AddSlide' ")) echo "<li><a href='/OJ/admin/slide_add_page.php'>'AddSlide' </a></li>";
+          //if(HAS_PRI("'slideList' ")) echo "<li><a href='/OJ/admin/slide_list.php'>'slideList' </a></li>";
           //*************
 
           $html_li="";
           if(HAS_PRI("edit_news")){
-            $html_li .= "<li><a href='news_add_page.php'>Add News</a></li>";
-            $html_li .= "<li><a href='news_list.php'>News List</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/news_add_page.php'>Add News</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/news_list.php'>News List</a></li>";
           }
           if($html_li!=""){
             echo<<<sss
@@ -97,11 +98,11 @@ sss;
 
           $html_li="";
           if(HAS_PRI("edit_contest")){
-            $html_li .= "<li><a href='contest_add.php'>Add Contest</a></li>";
-            $html_li .= "<li><a href='contest_list.php'>Contest List</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/contest_add.php'>Add Contest</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/contest_list.php'>Contest List</a></li>";
           }
           if(HAS_PRI("generate_team"))
-            $html_li .= "<li><a href='team_generate.php'>Team Generator</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/team_generate.php'>Team Generator</a></li>";
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
@@ -115,8 +116,8 @@ sss;
 
           $html_li="";
           if(HAS_PRI("edit_user_profile")){
-            $html_li .= "<li><a href='change_user_id.php'>Change User ID</a></li>";
-            $html_li .= "<li><a href='changepass.php'>Change PassWD</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/change_user_id.php'>Change User ID</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/changepass.php'>Change PassWD</a></li>";
           }
           if($html_li!=""){
             echo<<<sss
@@ -129,11 +130,11 @@ sss;
 sss;
           }
           $html_li="";
-          $html_li .= "<li><a href='privilege_list.php'>Privilege List</a></li>";
+          $html_li .= "<li><a href='/OJ/admin/privilege_list.php'>Privilege List</a></li>";
           if(HAS_PRI("edit_privilege_group")){
-            $html_li .= "<li><a href='privilege_add.php'>Add Privilege</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/privilege_add.php'>Add Privilege</a></li>";
           }
-          $html_li .= "<li><a href='privilege_distribution.php'>Privilege Distribution</a></li>";
+          $html_li .= "<li><a href='/OJ/admin/privilege_distribution.php'>Privilege Distribution</a></li>";
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
@@ -147,12 +148,12 @@ sss;
 
           $html_li="";
           if(HAS_PRI("inner_function")){
-            $html_li .= "<li><a href='source_give.php'>Give Source</a></li>";
-            $html_li .= "<li><a href='contestrank-solutions.php?cid=1000'>Export Source</a></li>";
-            $html_li .= "<li><a href='problem_export.php'>Export Problem</a></li>";
-            $html_li .= "<li><a href='problem_import.php'>Import Problem</a></li>";
-            $html_li .= "<li><a href='problem_copy.php' title='Create your own data'>CopyProblem</a></li>";
-            $html_li .= "<li><a href='problem_changeid.php' title='Danger,Use it on your own risk'>ReOrderProblem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/source_give.php'>Give Source</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/contestrank-solutions.php?cid=1000'>Export Source</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_export.php'>Export Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_import.php'>Import Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_copy.php' title='Create your own data'>CopyProblem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_changeid.php' title='Danger,Use it on your own risk'>ReOrderProblem</a></li>";
           }
           if($html_li!=""){
             echo<<<sss

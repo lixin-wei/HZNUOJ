@@ -97,10 +97,10 @@
 ?>
 <title>Change User ID</title>
 <h1>Change User ID</h1><hr>
-<form method='post' action='change_user_id.php'>
-  Change user ID : <input type='text' name='origin'>
-  to : <input type='text' name='dest'>
-  <input type='submit' value='Submit'>
+<form class="form-inline" method='post' action='change_user_id.php'>
+  Change user ID : <input class="form-control" type='text' name='origin'>
+  to : <input class="form-control" type='text' name='dest'>
+  <input class="btn btn-default" type='submit' value='Submit'>
 </form>
 <?php 
   require_once("admin-footer.php")

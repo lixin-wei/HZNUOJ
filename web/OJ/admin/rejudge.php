@@ -41,20 +41,20 @@ if (!HAS_PRI("rejudge")) {
 	<h1>Rejudge</h1><hr/>
 	<ol>
 	<li>Problem
-	<form action='rejudge.php' method=post>
-		<input type=input name='rjpid'>	<input type='hidden' name='do' value='do'>
+	<form class="form-inline" action='rejudge.php' method=post>
+		<input class="form-control" type=input name='rjpid'>	<input type='hidden' name='do' value='do'>
 		<button type=submit class="btn btn-default">Submit</button>
 		<?php require_once("../include/set_post_key.php");?>
 	</form>
 	<li>Solution
-	<form action='rejudge.php' method=post>
-		<input type=input name='rjsid'>	<input type='hidden' name='do' value='do'>
+	<form class="form-inline" action='rejudge.php' method=post>
+		<input class="form-control" type=input name='rjsid'>	<input type='hidden' name='do' value='do'>
 		<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
 		<button type=submit class="btn btn-default">Submit</button>
 	</form>
 	<li>Contest
-	<form action='rejudge.php' method=post>
-		<input type=input name='rjcid'>	<input type='hidden' name='do' value='do'>
+	<form class="form-inline" action='rejudge.php' method=post>
+		<input class="form-control" type=input name='rjcid'>	<input type='hidden' name='do' value='do'>
 		<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
 		<button type=submit class="btn btn-default">Submit</button>
 	</form>

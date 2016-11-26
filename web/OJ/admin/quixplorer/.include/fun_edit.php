@@ -109,10 +109,10 @@ function edit_file($dir, $item)
 	
 	echo "</TEXTAREA><BR>\n<TABLE><TR><TD>Wordwrap: (IE only)</TD><TD><INPUT type=\"checkbox\" name=\"wrap\" ";
 	echo "onClick=\"javascript:chwrap();\" value=\"1\"></TD></TR></TABLE><BR>\n";
-	echo "<TABLE><TR><TD><INPUT type=\"text\" name=\"fname\" value=\"".$item."\"></TD>";
-	echo "<TD><input type=\"submit\" value=\"".$GLOBALS["messages"]["btnsave"];
-	echo "\"></TD>\n<TD><input type=\"reset\" value=\"".$GLOBALS["messages"]["btnreset"]."\"></TD>\n<TD>";
-	echo "<input type=\"button\" value=\"".$GLOBALS["messages"]["btnclose"]."\" onClick=\"javascript:location='";
+	echo "<TABLE><TR><TD><INPUT class='form-control' type=\"text\" name=\"fname\" value=\"".$item."\"></TD>";
+	echo "<TD><input class='btn btn-default' type=\"submit\" value=\"".$GLOBALS["messages"]["btnsave"];
+	echo "\"></TD>\n<TD><input class='btn btn-default' type=\"reset\" value=\"".$GLOBALS["messages"]["btnreset"]."\"></TD>\n<TD>";
+	echo "<input class='btn btn-default' type=\"button\" value=\"".$GLOBALS["messages"]["btnclose"]."\" onClick=\"javascript:location='";
 	echo make_link("list",$dir,NULL)."';\"></TD></TR></FORM></TABLE><BR>\n";
 ?><script language="JavaScript1.2" type="text/javascript">
 <!--

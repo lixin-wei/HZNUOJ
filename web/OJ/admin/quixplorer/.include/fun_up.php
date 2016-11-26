@@ -108,16 +108,15 @@ function upload_items($dir)
 	show_header($GLOBALS["messages"]["actupload"]);
 	
 	// List
-	echo "<BR><FORM enctype=\"multipart/form-data\" action=\"".make_link("upload",$dir,NULL);
+	echo "<BR><FORM style='max-width:500px;' enctype=\"multipart/form-data\" action=\"".make_link("upload",$dir,NULL);
 	echo "\" method=\"post\">\n<INPUT type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"";
-	echo get_max_file_size()."\"><INPUT type=\"hidden\" name=\"confirm\" value=\"true\"><TABLE>\n";
-	for($i=0;$i<10;$i++) {
-		echo "<TR><TD nowrap align=\"center\">";
-		echo "<INPUT name=\"userfile[]\" type=\"file\" size=\"40\"></TD></TR>\n";
-	}
-	echo "</TABLE>\n<BR><TABLE><TR><TD><INPUT type=\"submit\" value=\"".$GLOBALS["messages"]["btnupload"];
-	echo "\"></TD>\n<TD><input type=\"button\" value=\"".$GLOBALS["messages"]["btncancel"];
-	echo "\" onClick=\"javascript:location='".make_link("list",$dir,NULL)."';\">\n</TD></TR></FORM></TABLE><BR>\n";
+	echo get_max_file_size()."\"><INPUT type=\"hidden\" name=\"confirm\" value=\"true\">";
+	echo "<div class='form-group' style='maigin-bottom:5px;'>";
+	echo "<INPUT class='filestyle' data-buttonBefore=\"true\" name=\"userfile[]\" type=\"file\" multiple>";
+	echo "</div>";
+	echo "<INPUT class='btn btn-default' type=\"submit\" value=\"".$GLOBALS["messages"]["btnupload"];
+	echo "\"><input class='btn btn-default' type=\"button\" value=\"".$GLOBALS["messages"]["btncancel"];
+	echo "\" onClick=\"javascript:location='".make_link("list",$dir,NULL)."';\">";
 	
 	return;
 }

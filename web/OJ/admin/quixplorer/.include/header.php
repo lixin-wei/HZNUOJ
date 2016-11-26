@@ -38,23 +38,9 @@ Comment:
 	Have Fun...
 -------------------------------------------------------------------------------*/
 //------------------------------------------------------------------------------
-function show_header($title) {			// header for html-page
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header("Cache-Control: no-cache, must-revalidate");
-	header("Pragma: no-cache");
-	header("Content-Type: text/html; charset=".$GLOBALS["charset"]);
-	
-	//echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"";
-	//echo "\"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
-	echo "<HTML lang=\"".$GLOBALS["language"]."\" dir=\"".$GLOBALS["text_dir"]."\">\n";
-	echo "<HEAD>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$GLOBALS["charset"]."\">\n";
-	echo "<title>" . $GLOBALS["site_name"] . "</title>\n";
-	echo "<LINK href=\"_style/style.css\" rel=\"stylesheet\" type=\"text/css\">\n";
-	echo "</HEAD>\n<BODY><center>\n<table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"5\"><tbody>\n";
-	echo "<tr><td class=\"title\">";
-	if($GLOBALS["require_login"] && isset($GLOBALS['__SESSION']["s_user"])) echo "[".$GLOBALS['__SESSION']["s_user"]."] - ";
-	echo $title."</td></tr></tbody></table>\n\n";
+function show_header($title) {			// header for html-pagex
+	require_once $_SERVER['DOCUMENT_ROOT']."/OJ/admin/admin-header.php";
+	echo "<h1>$title</h1><hr>";
 }
 //------------------------------------------------------------------------------
 ?>

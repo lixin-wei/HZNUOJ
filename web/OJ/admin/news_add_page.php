@@ -10,12 +10,12 @@
   <?php
     include_once("kindeditor.php") ;
   ?>
-    <form method=POST action='news_add.php'>
+    <form class="form-inline" method=POST action='news_add.php'>
       <title>Post a News</title>
       <h1>Post a News</h1><hr/>
-      <p align=left>Title:<input type=text name=title size=71></p>
+      <p align=left>Title:<input class="form-control" type=text name=title size=71></p>
       <p align='left'>Importance:
-        <select name='importance' style='width:70px'>
+        <select class="selectpicker" name='importance' style='width:70px'>
           <option value='10' <?php if ($importance==10) echo "selected" ?> >Top</option>
           <option value='3' <?php if ($importance==3) echo "selected" ?> >3</option>
           <option value='2' <?php if ($importance==2) echo "selected" ?> >2</option>
@@ -25,7 +25,7 @@
       </p>
       <p align=left>Content:<br>
       <textarea class=kindeditor name=content ></textarea></p>
-      <input type=submit value=Submit name=submit>
+      <input class="btn btn-default" type=submit value=Submit name=submit>
       <?php require_once("../include/set_post_key.php");?>
     </form>
 <?php 

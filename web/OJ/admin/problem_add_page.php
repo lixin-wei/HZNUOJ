@@ -51,7 +51,7 @@
       <div class="form-group">
         <label for="" class="col-sm-2 control-label">Problemset</label>
         <div class="col-sm-10">
-          <select class="form-control" name="problemset">
+          <select class="form-control selectpicker" name="problemset">
             <?php echo $html_select; ?>
           </select>
         </div>
@@ -137,7 +137,7 @@
       <div class="form-group">
         <label for="" class="col-sm-2 control-label">contest</label>
         <div class="col-sm-10">
-          <select class="form-control" type=text name=contest_id>
+          <select class="form-control selectpicker" type=text name=contest_id>
           <?php 
             $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `start_time`>NOW() order by `contest_id`";
             $result=$mysqli->query($sql);

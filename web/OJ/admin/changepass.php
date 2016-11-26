@@ -40,12 +40,12 @@ if(isset($_POST['do'])){
 ?>
 <title>Change Password</title>
 <h1>Change Password</h1><hr>
-<form action='changepass.php' method=post>
-	User:<input type=text size=10 name="user_id"><br />
-	Pass:<input type=text size=10 name="passwd"><br />
+<form class="form-inline" action='changepass.php' method=post>
+	User:<input class="form-control" type=text size=10 name="user_id"><br />
+	Pass:<input class="form-control" type=text size=10 name="passwd"><br />
 	<?php require_once("../include/set_post_key.php");?>
 	<input type='hidden' name='do' value='do'>
-	<input type=submit value='Change'>
+	<input class="btn btn-default" type=submit value='Change'>
 </form>
 <?php 
   require_once("admin-footer.php")

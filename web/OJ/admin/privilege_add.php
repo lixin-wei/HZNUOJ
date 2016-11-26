@@ -31,12 +31,12 @@
 ?>
 <title>Add Privilege For User</title>
 <h1>Add Privilege For User</h1><hr/>
-<form method=post>
+<form class="form-inline" method=post>
   <?php require("../include/set_post_key.php");?>
   <b>Add privilege for User:</b><br />
-  User:<input type=text size=10 name="user_id"><br />
-  Privilege:
-  <select name="rightstr">
+  User: <input class="form-control" type=text size=10 name="user_id"><br />
+  Privilege: 
+  <select class="selectpicker" name="rightstr">
     <?php
       $res=$mysqli->query("SELECT * FROM privilege_groups");
       while($row=$res->fetch_array()){
@@ -47,7 +47,7 @@
     ?>
   </select><br />
   <input type='hidden' name='do' value='do'>
-  <input type=submit value='Add'>
+  <input class="btn btn-default" type=submit value='Add'>
 </form>
 
 <!-- <form method=post>

@@ -1,6 +1,6 @@
 <?php
 $title="杭州师范大学程序设计竞赛";
-require_once "header.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 ?>
 
 
@@ -35,4 +35,4 @@ echo $content;
 
 
 
-<?php require_once "../template/hznu/footer.php" ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/footer.php" ?>
