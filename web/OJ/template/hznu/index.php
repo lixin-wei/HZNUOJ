@@ -246,11 +246,6 @@ $(window).ready(function(){
       <a href="hznu_programming_contest_2016" title="">
         <img class="am-img-responsive" src="image/OJ_contest_2016_landspace.jpg?version=3" alt="">
       </a>
-      <div class="am-form-group">
-        <label class="am-checkbox-inline">
-          <input type="checkbox" value="option1" id="index_ad_do_not_show"> 不再显示(仅当前页有效)
-        </label>
-      </div>
     </div>
   </div>
 </div>
@@ -259,11 +254,7 @@ $(window).ready(function(){
   var $objIndexAd=$("#index_ad_modal");
   if($.session.get("index_ad_do_not_show")!="1"){
     $objIndexAd.modal();
+    $.session.set("index_ad_do_not_show","1");
   }
-  $objIndexAd.on("close.modal.amui", function(){
-    if($("#index_ad_do_not_show").is(":checked")){
-      $.session.set("index_ad_do_not_show","1");
-    }
-  });
 </script>
 <!-- modal auto jump END -->
