@@ -115,7 +115,7 @@
             <ul class="am-dropdown-content">
               <li><a href="/OJ/../bbs/" target='_blank'>BBS</a></li>
               <li><a href="/OJ/c_course.php" title="">C Course</a></li>
-              <li><a href="/OJ/<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
+              <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
             </ul>
           </li>
           <!-- Others End -->
