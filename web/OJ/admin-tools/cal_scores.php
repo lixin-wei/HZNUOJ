@@ -5,7 +5,7 @@
    * @2016.04.26
   **/
 ?>
-
+<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/>
 <?php
   //ini_set("display_errors","On");
   require_once('../include/db_info.inc.php');
@@ -15,12 +15,15 @@
   $time_list=array("2015-11-15 21:30:00","2015-12-06 17:00:00","2015-12-27 20:45:00","2016-01-12 21:30:00");
   //echo $sql;
   $ress=$mysqli->query($sql);
-  echo "用户名\t班级\t姓名\t学号";
+  echo "<table class='am-table am-table-bordered am-table-striped' style='word-break:keep-all;'>";
+  echo "<tr>";
+  echo "<th>用户名</th><th>班级</th><th>姓名</th><th>学号</th>";
   foreach ($time_list as $time) {
-    echo "\t题数\t题量(0.4)-$time\t难度(0.2)-$time\t活跃(0.2)-$time\t独立(0.2)-$time\t总分-$time";
+    echo "<th>题数</th><th>题量(0.4)-$time</th><th>难度(0.2)-$time</th><th>活跃(0.2)-$time</th><th>独立(0.2)-$time</th><th>总分-$time</th>";
   }
-  echo "\n";
+  echo "</tr>";
   while($row=$ress->fetch_array()){
+    echo "<tr>";
     $user=$row['user_id'];
     $first=1;
     foreach ($time_list as $time) {
@@ -46,10 +49,6 @@
       if($result) $user_cnt_divisor = $result->num_rows;
       else $user_cnt_divisor = 1;
       $result->free();
-      //  echo $user_cnt_divisor;
-      $strength = 0;
-      $level = "斗之气一段";
-      $color = "#E0E0E0";
       //get ac set and calculate strength
       $ac_set=array();
       $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 AND in_date<='$time' ORDER BY problem_id";
@@ -58,16 +57,6 @@
         $set_name=get_problemset($pid);
         if(!$ac_set[$set_name])$ac_set[$set_name]=array();
         array_push($ac_set[$set_name], $pid);
-        
-        //calculate strength
-        $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
-        $y_result=$mysqli->query($sql);
-        $y_row = $y_result->fetch_object();
-        $solved = $y_row->solved_user;
-        $submit = $y_row->submit_user;
-        $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
-        if ($scores < 10) $scores = 10;
-        $strength += $scores;
       }
       // count hznuoj solved
       $sql="SELECT count(DISTINCT problem_id) as ac FROM solution WHERE user_id='".$user_mysql."' AND result=4  AND in_date<='$time' ";
@@ -90,13 +79,6 @@
       // 获取该用户AC的题目数量，存入rows_cnt
       if($result) $rows_cnt = $result->num_rows;
       else $rows_cnt = 0;
-
-      // 获取排名
-      $sql="SELECT count(*) as `Rank` FROM `users` WHERE strength>".round($strength,2);
-      $result=$mysqli->query($sql);
-      $row=$result->fetch_array();
-      $Rank=intval($row[0])+1;
-
 
       /* 计算图表相关信息 start */
       $total_ac = $AC+$CF+$HDU+$PKU+$UVA+$ZJU;
@@ -134,13 +116,14 @@
         $last_sub_time = strtotime($row['in_date']);
       }
       $result->free();
+      $sql="UPDATE users_cache SET AC_day=$AC_day WHERE user_id='$user'";
+      $mysqli->query($sql);
       // 查找最大活跃度
       $sql = "SELECT MAX(AC_day) AS max FROM users_cache";
       $result = $mysqli->query($sql);
       $row = $result->fetch_array();
       if ($row['max']) $act_score = round(100.0*$AC_day/$row['max']);
       else $act_score = 0;
-
       // 计算抄袭分
       // 获取该用户所有AC的提交
       $sql = "SELECT sim 
@@ -167,13 +150,13 @@
       /* 计算图表相关信息 end */
       if($first){
         $first=0;
-        echo $user."\t".$class."\t".$real_name."\t".$stu_id;
+        echo "<td>".$user."</td><td>".$class."</td><td>".$real_name."</td><td>".$stu_id."</td>";
       }
-      echo "\t".$total_ac."\t".$solved_score."\t".$dif_score."\t".$act_score."\t".$idp_score."\t".$avg_score;
+      echo "<td>".$total_ac."</td><td>".$solved_score."</td><td>".$dif_score."</td><td>".$act_score."</td><td>".$idp_score."</td><td>".$avg_score."</td>";
     }
-    echo "\n";
+    echo "</tr>";
   }
   // check user
-
+  echo "</table>";
 ?>
 
