@@ -17,7 +17,7 @@
   $ress=$mysqli->query($sql);
   echo "用户名\t班级\t姓名\t学号";
   foreach ($time_list as $time) {
-    echo "\t题量(0.4)-$time\t难度(0.2)-$time\t活跃(0.2)-$time\t独立(0.2)-$time\t总分-$time";
+    echo "\t题数\t题量(0.4)-$time\t难度(0.2)-$time\t活跃(0.2)-$time\t独立(0.2)-$time\t总分-$time";
   }
   echo "\n";
   while($row=$ress->fetch_array()){
@@ -169,7 +169,7 @@
         $first=0;
         echo $user."\t".$class."\t".$real_name."\t".$stu_id;
       }
-      echo "\t".$solved_score."\t".$dif_score."\t".$act_score."\t".$idp_score."\t".$avg_score;
+      echo "\t".$total_ac."\t".$solved_score."\t".$dif_score."\t".$act_score."\t".$idp_score."\t".$avg_score;
     }
     echo "\n";
   }

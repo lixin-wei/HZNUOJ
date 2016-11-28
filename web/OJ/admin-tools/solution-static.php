@@ -6,6 +6,8 @@ require_once "../include/db_info.inc.php";
 
 
 <div id="chart" style="width: 100%; height: 800px;"></div>
+<div id="user_chart" style="width: 100%; height: 800px;"></div>
+<div id="sol_tot_chart" style="width: 100%; height: 800px;"></div>
 
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script>
@@ -105,4 +107,104 @@ $(document).ready(function(){
 $(window).resize(function(){
   submission_chart.resize();
 });
+</script>
+<?php
+$data="[";
+for($t=1406488901 ; $t<=1479919869 ; $t+=60*60*24){
+    $sql="SELECT count(1) FROM users WHERE UNIX_TIMESTAMP(reg_time) <= $t";
+    $res=$mysqli->query($sql);
+    $cnt=$res->fetch_array()[0];
+    $date=time("Y/m/d",$t);
+    $data.="{"."name:'$date',value:[$t,$cnt]"."},";
+}
+$data.="]";
+?>
+<script>
+var user_chart = echarts.init(document.getElementById('user_chart'));
+option = {
+    title: {
+        text: '动态数据 + 时间坐标轴'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+            params = params[0];
+            var date = new Date(params.name);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        },
+        axisPointer: {
+            animation: false
+        }
+    },
+    xAxis: {
+        type: 'time',
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',  
+        splitLine: {
+            show: false
+        }
+    },
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: <?php echo $data ?>
+    }]
+};
+user_chart.setOption(option);
+</script>
+<?php
+$data="[";
+for($t=1406488901 ; $t<=1479919869 ; $t+=60*60*24){
+    $date=date('Y-m-d H:i:s',$t);
+    $sql="SELECT count(1) FROM solution WHERE in_date <= '$date'";
+    $res=$mysqli->query($sql);
+    $cnt=$res->fetch_array()[0];
+    $data.="{"."name:'$date',value:[$t,$cnt]"."},";
+}
+$data.="]";
+?>
+<script>
+var sol_tot_chart = echarts.init(document.getElementById('sol_tot_chart'));
+option = {
+    title: {
+        text: '动态数据 + 时间坐标轴'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+            params = params[0];
+            var date = new Date(params.name);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        },
+        axisPointer: {
+            animation: false
+        }
+    },
+    xAxis: {
+        type: 'time',
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',  
+        splitLine: {
+            show: false
+        }
+    },
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: <?php echo $data ?>
+    }]
+};
+sol_tot_chart.setOption(option);
 </script>
