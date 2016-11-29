@@ -7,7 +7,7 @@
 ?>
 <?php @session_start();
 
-  //ini_set("display_errors","On");
+  ini_set("display_errors","Off");
   require_once($_SERVER['DOCUMENT_ROOT']."/OJ/include/static.php");
 
   //if(date('H')<5||date('H')>21||isset($_GET['dark'])) $OJ_CSS="dark.css";

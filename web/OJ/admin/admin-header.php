@@ -60,7 +60,7 @@
           echo "<li><a href='/OJ/' target='view_window'>See OJ</a></li>";
           $html_li="";
           if($can_see_problem){
-            $html_li .= "<li><a href='/OJ/admin/problem_add_page.php'>Add Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_edit.php?new_problem'>Add Problem</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_list.php'>Problem List</a></li>";
           }
           if($html_li!=""){

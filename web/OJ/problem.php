@@ -180,6 +180,31 @@ SQL;
   $result->free();
   /* 获取标签 end */
 
+  //get try times and determin if he can see the video START
+  $can_see_video=false;
+  $try_times=0;
+  if(isset($_SESSION['user_id'])){
+    $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id'";
+    $res=$mysqli->query($sql);
+    $try_times=$res->num_rows;
+    if($try_times>$VIDEO_SUBMIT_TIME) $can_see_video=true;
+  }
+  //get try times and determin if he can see the video END
+
+  //get the sample input/output START
+  $samples=array();
+  $sql="SELECT input, output, show_after FROM problem_samples WHERE problem_id='$real_id' AND show_after<=$try_times ORDER BY sample_id";
+  $res=$mysqli->query($sql);
+  while($r=$res->fetch_array()){
+    array_push($samples, array(
+      "input" => $r['input'],
+      "output" => $r['output'],
+      "show_after" => $r['show_after'],
+    ));
+  }
+  //get the sample input/output END
+
+
 
 /////////////////////////Template
 require("template/".$OJ_TEMPLATE."/problem.php");

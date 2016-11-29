@@ -33,10 +33,30 @@
 <!-- Sample Input 和 Sample Output 的背景色 start -->
 <style type="text/css">
   .sampledata {
-      background: none repeat scroll 0 0 rgba(0,0,0,.075);
+      /*background: none repeat scroll 0 0 rgba(0,0,0,.075);*/
       font-family: Monospace;
-      font-size: 18px;
       white-space: pre;
+      font-size: 10pt;
+  }
+  .sample-outer {
+    /* border: 1px solid; */
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
+  .sample-bg {
+    background: #f0efef;
+    color: #7e2222;
+    /* border-top: 1px solid; */
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .sample-title {
+    background: white;
+    border: 1px solid #ccc;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 </style>
 <!-- Sample Input 和 Sample Output 的背景色 end -->
@@ -109,16 +129,6 @@
     ?>
     Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
   </div>
-  <?php
-      $sinput=str_replace("<","&lt;",$row->sample_input);
-      $sinput=str_replace(">","&gt;",$sinput);
-      $soutput=str_replace("<","&lt;",$row->sample_output);
-      $soutput=str_replace(">","&gt;",$soutput);
-
-      // 用中文全角空格替换\t，以免在一些浏览器（例如chrome）中出现\t显示不正常的问题
-      $sinput=str_replace("\t"," ",$sinput);
-      $soutput=str_replace("\t"," ",$soutput);
-  ?>
   <br />
 
   <!-- 提交等按钮 start -->
@@ -155,7 +165,7 @@
   </div>
   <!-- 提交等按钮 end -->
 
-  <h2><b><font color='#0000cd'>Description</font></b></h2>
+  <h2>Description</h2>
   <p>
     <?php 
       //编码转义未解决！
@@ -164,49 +174,57 @@
     ?>
   </p>
 
-  <h2><b><font color='#0000cd'>Input</font></b></h2>
+  <h2>Input</h2>
   <p>
     <?php echo sss($row->input);?>
   </p>
 
-  <h2><b><font color='#0000cd'>Output</font></b></h2>
+  <h2>Output</h2>
   <p>
     <?php echo sss($row->output)?>
   </p>
 
-  <h2><b><font color='#0000cd'>Sample Input</font></b></h2>
-  <?php echo "<pre><span class=sampledata>".($sinput)."</span></pre>";?>
+  <h2>Samples</h2>
+  <?php
+  foreach ($samples as $sample) {
+    $text_input=htmlentities($sample['input']);
+    $text_output=htmlentities($sample['output']);
+    if($sample['show_after']){
+      echo <<<HTML
+      <div style='color: grey;'>
+        Show after trying {$sample['show_after']} times:
+      </div>
+HTML;
 
-
-  <h2><b><font color='#0000cd'>Sample Output</font></b></h2>
-  <?php echo "<pre><span class=sampledata>".($soutput)."</span></pre>";?>
-
-  <h2><b><font color='#0000cd'>Hint</font></b></h2>
+    }
+    echo <<<HTML
+    <div class="sample-outer">
+      <div class="sample-title">input:</div>
+      <div class="sample-bg"><span class="sampledata">$text_input</span></div>
+      <div class="sample-title">output:</div>
+      <div class="sample-bg"><span class="sampledata">$text_output</span></div>
+    </div>
+HTML;
+  }
+  ?>
+  <h2>Hint</h2>
   <?php echo "<div>".$row->hint."</div>"; ?>
 
 
-  <h2><b><font color='#0000cd'>Author</font></b></h2>
+  <h2>Author</h2>
   <?php 
     echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
   ?>
   <?php
     if (!isset($_GET['cid'])) { // hide source if the problem is in contest
   ?>
-  <h2><b><font color='#0000cd'>Source</font></b></h2>
+  <h2>Source</h2>
   <?php 
     echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
     } 
   ?>
-  <?php
-    $can_see_video=false; 
-    if(isset($_SESSION['user_id'])){
-      $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id'";
-      $res=$mysqli->query($sql);
-      if($res->num_rows>$VIDEO_SUBMIT_TIME) $can_see_video=true;
-    }
-  ?>
   <?php if ($can_see_video || HAS_PRI("watch_solution_video")): ?>
-    <h2><b><font color='#0000cd'>Solution Video</font></b></h2>
+    <h2>Solution Video</h2>
     <?php if (file_exists("upload/video/".md5($real_id)."pfb.mp4")): ?>
       <form action="solution_video.php" method="POST">
         <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
