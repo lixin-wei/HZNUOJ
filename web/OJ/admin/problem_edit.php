@@ -310,7 +310,7 @@ HTML;
     $sql="DELETE FROM problem_samples WHERE problem_id=$id";
     $mysqli->query($sql);
     if(isset($_POST['add_problem_mod'])){
-      $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj, $OJ_DATA );
+      $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj, $OJ_DATA );
       mkdir($OJ_DATA."/$id");
     }
     if($sample_inputs){

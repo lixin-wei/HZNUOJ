@@ -8,7 +8,7 @@
 
 <?php
 
-  function addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $author, $source, $spj,$OJ_DATA) {
+  function addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj,$OJ_DATA) {
     global $mysqli;
     $title=$mysqli->real_escape_string($title);
     $problemset=$mysqli->real_escape_string($problemset);
@@ -26,9 +26,9 @@
     $source=$mysqli->real_escape_string($source);
   //  $spj=($spj);
     $sql = "INSERT into `problem` (`problemset`,`title`,`time_limit`,`memory_limit`,
-    `description`,`input`,`output`,`sample_input`,`sample_output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
-    VALUES('$problemset','$title','$time_limit','$memory_limit','$description','$input','$output',
-        '$sample_input','$sample_output','$hint','$author','$source','$spj',NOW(),'Y')";
+    `description`,`input`,`output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
+    VALUES('$problemset','$title','$time_limit','$memory_limit','$description','$input',
+    '$output','$hint','$author','$source','$spj',NOW(),'Y')";
     @$mysqli->query ( $sql ) or die ( $mysqli->error );
     $pid = $mysqli->insert_id;
     // echo $sql;
