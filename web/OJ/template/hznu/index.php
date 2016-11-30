@@ -237,7 +237,7 @@ $(window).ready(function(){
   });
 </script>
 <!-- modal auto jump START -->
-<div class="am-modal am-modal-no-btn" tabindex="-1" id="index_ad_modal">
+<!-- <div class="am-modal am-modal-no-btn" tabindex="-1" id="index_ad_modal">
   <div class="am-modal-dialog">
     <div class="am-modal-hd">News
       <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
@@ -248,13 +248,13 @@ $(window).ready(function(){
       </a>
     </div>
   </div>
-</div>
-<script src="AmazeUI/js/jquery.session.js"></script>
+</div> -->
+<!-- <script src="AmazeUI/js/jquery.session.js"></script>
 <script>
   var $objIndexAd=$("#index_ad_modal");
   if($.session.get("index_ad_do_not_show")!="1"){
     $objIndexAd.modal();
     $.session.set("index_ad_do_not_show","1");
   }
-</script>
+</script> -->
 <!-- modal auto jump END -->
