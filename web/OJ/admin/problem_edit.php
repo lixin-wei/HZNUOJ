@@ -319,9 +319,6 @@ HTML;
         $sample_output=preg_replace("/(\r\n)/","\n",$sample_outputs[$key]);
         if($sample_input=="" && $sample_output=="")continue;
 
-        $sample_input=$mysqli->real_escape_string($sample_input);
-        $sample_output=$mysqli->real_escape_string($sample_output);
-
         $fp=fopen($OJ_DATA."/$id/sample".$key.".in","w");
         fputs($fp,$sample_input);
         fclose($fp);
@@ -330,7 +327,9 @@ HTML;
         $fp=fopen($OJ_DATA."/$id/sample".$key.".out","w");
         fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
         fclose($fp);
-
+        
+        $sample_input=$mysqli->real_escape_string($sample_input);
+        $sample_output=$mysqli->real_escape_string($sample_output);
         $sql=<<<SQL
           INSERT INTO problem_samples (
             problem_id,
