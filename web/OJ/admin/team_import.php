@@ -14,9 +14,10 @@ if(isset($_POST['contest_id'])){
 	$class=explode("\n",trim($_POST['class']));
 	$real_name=explode("\n",trim($_POST['real_name']));
 	$nick=explode("\n",trim($_POST['nick']));
+	$seat=explode("\n",trim($_POST['seat']));
 	$cnt=count($user_id);
 	echo "<table class='table'>";
-	echo "<tr><th>user_id</th><th>stu_id</th><th>institute</th><th>class</th><th>real_name</th><th>nick</th><th>password</th></tr>";
+	echo "<tr><th>user_id</th><th>stu_id</th><th>institute</th><th>class</th><th>real_name</th><th></th><th>nick</th><th>password</th></tr>";
 	foreach ($user_id as $key => $value) {
 		$password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
         while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
@@ -29,6 +30,7 @@ if(isset($_POST['contest_id'])){
         $class[$key]=trim($class[$key]);
         $real_name[$key]=trim($real_name[$key]);
         $nick[$key]=trim($nick[$key]);
+        $seat[$key]=trim($seat[$key]);
 		$sql=<<<SQL
 			INSERT INTO team (
 				contest_id,
@@ -38,6 +40,7 @@ if(isset($_POST['contest_id'])){
 				class,
 				real_name,
 				nick,
+				seat,
 				PASSWORD,
 				reg_time
 			)
@@ -50,6 +53,7 @@ if(isset($_POST['contest_id'])){
 				'{$class[$key]}',
 				'{$real_name[$key]}',
 				'{$nick[$key]}',
+				'{$seat[$key]}',
 				'$password',
 				NOW()
 			)
@@ -64,6 +68,7 @@ SQL;
 			<td>{$class[$key]}</td>
 			<td>{$real_name[$key]}</td>
 			<td>{$nick[$key]}</td>
+			<td>{$seat[$key]}</td>
 			<td>$ori_pass</td>
 		</tr>
 HTML;
@@ -80,6 +85,7 @@ HTML;
 	class:<textarea name="class" rows=20></textarea>
 	real_name:<textarea name="real_name" rows=20></textarea>
 	nick:<textarea name="nick" rows=20></textarea><br/>
+	seat:<textarea name="seat" rows=20></textarea>
 	<?php require_once("../include/set_post_key.php");?>
 	contest_id:<input name="contest_id" value="" placeholder="">
 	<button>submit</button>
