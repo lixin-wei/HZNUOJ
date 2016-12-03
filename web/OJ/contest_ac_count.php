@@ -11,7 +11,7 @@ if(isset($_GET['cid'])){
 		FROM
 			solution
 		LEFT JOIN team ON solution.user_id = team.user_id
-		WHERE solution.contest_id=$cid 
+		WHERE solution.contest_id=$cid AND solution.result=4
 		ORDER BY solution.in_date DESC
 SQL;
 	$res=$mysqli->query($sql);
