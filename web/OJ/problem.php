@@ -99,14 +99,15 @@ SQL;
     $set_name = $res->fetch_array()[0];
 
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
-      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `contest_id`=$cid AND `start_time`<='$now'";
+      $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid AND `start_time`<='$now'";
     else
-      $sql="SELECT langmask,private,defunct FROM `contest` WHERE `contest_id`=$cid";
+      $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid";
     $result=$mysqli->query($sql);
     $rows_cnt=$result->num_rows;
-    $row=$result->fetch_row();
+    $row=$result->fetch_array();
     
     $contest_ok=true;
+    if ($row['user_limit']=="Y" && $_SESSION['contest_id']!=$cid) $contest_ok=false;
     if ($row[1] && !isset($_SESSION['c'.$cid])) $contest_ok=false;
     if ($row[2]=='Y') $contest_ok=false;
     if (HAS_PRI("edit_contest")) $contest_ok=true;

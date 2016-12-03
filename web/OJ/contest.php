@@ -84,6 +84,11 @@
       $view_title= "比赛已经关闭!";
     } else {
       $row=$result->fetch_object();
+      if($row->user_limit=="Y" && $_SESSION['contest_id']!=$cid && !HAS_PRI("edit_contest")){
+        $view_errors = "<font style='color:red;text-decoration:underline;'>You are not invited to this contest!</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+      }
       $view_private=$row->private;
       if($password!=""&&$password==$row->password) $_SESSION['c'.$cid]=true;
       if ($row->private && !isset($_SESSION['c'.$cid])) $contest_ok=false;

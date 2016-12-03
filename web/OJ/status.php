@@ -44,7 +44,6 @@
   //echo $OJ_SHOW_DIFF;
   $str2="";
   $lock=false;
-  $lock_time=date("Y-m-d H:i:s",time());
   $sql="SELECT * FROM `solution` WHERE problem_id>0 ";
   if (isset($_GET['cid'])){
     $cid=intval($_GET['cid']);
@@ -62,13 +61,12 @@
       $end_time=strtotime($row->end_time);
       $open_source = $row->open_source=="Y"?1:0; // 默认值为0
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
+      $lock_time=$row->lock_time;
+      $unlock=$row->unlock;
     }
-    $lock_time=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
-    //$lock_time=date("Y-m-d H:i:s",$lock_time);
+    $lock_t=$end_time-$lock_time;
     $time_sql="";
-    //echo $lock.'-'.date("Y-m-d H:i:s",$lock);
-    if(time()>$lock_time&&time()<$end_time){
-      //$lock_time=date("Y-m-d H:i:s",$lock_time);
+    if(time()>$lock_t && !$unlock){
       //echo $time_sql;
        $lock=true;
     }else{
@@ -77,7 +75,7 @@
     //require_once("contest-header.php");
   } else {
     //require_once("oj-header.php");
-    $sql="SELECT * FROM `solution` WHERE 1 ";
+    $sql="SELECT * FROM `solution` WHERE contest_id is null ";
   }
   $start_first=true;
   $order_str=" ORDER BY `solution_id` DESC ";
@@ -230,8 +228,10 @@
 
 
     $view_status[$i][3]="";
-    
-    if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
+    if($lock&&$lock_t<=strtotime($row['in_date'])&&$row['user_id']!=$_SESSION['user_id'] && !HAS_PRI("edit_contest")){
+      $view_status[$i][3] .= "<span class='am-badge am-text-sm'>Unknown</span>";
+    }
+    else if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
       //only user himself and admin can see CE info.
         $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='$MSG_Click_Detail'>".$MSG_Compile_Error."</a>";
     }
@@ -239,22 +239,17 @@
       $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='$MSG_Click_Detail'>".$judge_result[$row['result']]."</a>";
     }
     else {
-      if(!$lock||$lock_time>$row['in_date']||$row['user_id']==$_SESSION['user_id']){
-        if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
-          $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."'>*".$judge_result[$row['result']]."</span>";
-          if(HAS_PRI("see_compare"))
-            $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-badge am-badge-secondary am-text-sm'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
-          else
-            $view_status[$i][3].= "<span class='am-badge am-badge-secondary am-text-sm'>".$row['sim_s_id']."</span>";
-          if(isset($_GET['showsim'])&&isset($row[13]))
-            $view_status[$i][3].= "$row[13]";
-        } else {
-          //echo $row['result']." ".$judge_result[1]."<br>";
-          $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."'>".$judge_result[$row['result']]."</span>";
-          
-        }
+      if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
+        $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."'>*".$judge_result[$row['result']]."</span>";
+        if(HAS_PRI("see_compare"))
+          $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-badge am-badge-secondary am-text-sm'  target=original>".$row['sim_s_id']."(".$row['sim']."%)</a>";
+        else
+          $view_status[$i][3].= "<span class='am-badge am-badge-secondary am-text-sm'>".$row['sim_s_id']."</span>";
+        if(isset($_GET['showsim'])&&isset($row[13]))
+          $view_status[$i][3].= "$row[13]";
       } else {
-        echo "<td>----";
+        //echo $row['result']." ".$judge_result[1]."<br>";
+        $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."'>".$judge_result[$row['result']]."</span>";
       }
     }
     if ($row['result']!=4&&isset($row['pass_rate'])&&$row['pass_rate']>0&&$row['pass_rate']<.98)

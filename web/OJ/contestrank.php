@@ -23,24 +23,37 @@
     var $time=0;
     var $p_wa_num;
     var $p_ac_sec;
+    var $is_unknown;
     var $user_id;
     var $nick;
     var $real_name;
+    var $try_after_lock;
     function TM(){
       $this->solved=0;
       $this->time=0;
+      $this->try_after_lock=array();
       $this->p_wa_num=array(0);
       $this->p_ac_sec=array(0);
+      $this->is_unknown=array(0);
     }
     function Add($pid,$sec,$res){
       if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0) return;
+      if ($res==-1){ //Try times after locking
+        $this->try_after_lock[$pid]++;
+      }
+      if ($res<=3){ //unknown status
+        $this->is_unknown[$pid]=true;
+      }
       if ($res!=4){
-        if(isset($this->p_wa_num[$pid])){
-                $this->p_wa_num[$pid]++;
-        }else{
-                $this->p_wa_num[$pid]=1;
+        if($res!=-1){
+          if(isset($this->p_wa_num[$pid])){
+            $this->p_wa_num[$pid]++;
+          }
+          else{
+            $this->p_wa_num[$pid]=1;
+          }
         }
-      } else {
+      } else { // AC
         $this->p_ac_sec[$pid]=$sec;
         $this->solved++;
         if(!isset($this->p_wa_num[$pid])) $this->p_wa_num[$pid]=0;
@@ -58,7 +71,7 @@
   if (!isset($_GET['cid'])) die("No Such Contest!");
   $cid=intval($_GET['cid']);
 
-  $sql="SELECT `start_time`,`title`,`end_time`,user_limit FROM `contest` WHERE `contest_id`='$cid'";
+  $sql="SELECT `start_time`,`title`,`end_time`,user_limit,lock_time,`unlock`,first_prize,second_prize,third_prize FROM `contest` WHERE `contest_id`='$cid'";
 //$result=$mysqli->query($sql) or die($mysqli->error);
 //$rows_cnt=$result->num_rows;
   if($OJ_MEMCACHE){
@@ -71,7 +84,6 @@
     if($result) $rows_cnt = $result->num_rows;
     else $rows_cnt=0;
   }
-
 
   $start_time=0;
   $end_time=0;
@@ -98,8 +110,11 @@
     exit(0);
   }
   if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
-  $lock=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
-
+  $lock=$end_time-$row['lock_time'];
+  $unlock=$row['unlock'];
+  $first_prize=$row['first_prize'];
+  $second_prize=$row['second_prize'];
+  $third_prize=$row['third_prize'];
 
 
 
@@ -242,26 +257,7 @@ $sql="SELECT
   $U[$user_cnt]=new TM();
   $U[0]->solved=-1;
 
-  // 查询team部分
-  for ($i=0; $i<$rows_cnt; $i++){
-    if($OJ_MEMCACHE) $row=$result[$i];
-    else $row=$result->fetch_array();
 
-    $n_user=$row['user_id'];
-    if (strcmp($user_name,$n_user)){
-      $user_cnt++;
-      $U[$user_cnt]=new TM();
-      $U[$user_cnt]->user_id=$row['user_id'];
-      $U[$user_cnt]->nick=$row['nick'];
-      $U[$user_cnt]->real_name = $row['real_name'];
-      $user_name=$n_user;
-    }
-    if(time()<$end_time&&$lock<strtotime($row['in_date']))
-      $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
-    else
-      $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
-  }
-  $result->free();
 
   // 查询user部分
   if (isset($sql_u)) {
@@ -282,11 +278,34 @@ $sql="SELECT
         $U[$user_cnt]->real_name = $row['real_name'];
         $user_name=$n_user;
       }
-      if(time()<$end_time&&$lock<strtotime($row['in_date']))
-        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,0);
+      if(!$unlock && $lock<strtotime($row['in_date']))
+        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,-1);//Unknown
       else
         $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
     }
+  }
+  else{
+    // 查询team部分
+    //echo "$sql";
+    for ($i=0; $i<$rows_cnt; $i++){
+      if($OJ_MEMCACHE) $row=$result[$i];
+      else $row=$result->fetch_array();
+
+      $n_user=$row['user_id'];
+      if (strcmp($user_name,$n_user)){
+        $user_cnt++;
+        $U[$user_cnt]=new TM();
+        $U[$user_cnt]->user_id=$row['user_id'];
+        $U[$user_cnt]->nick=$row['nick'];
+        $U[$user_cnt]->real_name = $row['real_name'];
+        $user_name=$n_user;
+      }
+      if(!$unlock && $lock<strtotime($row['in_date']))
+        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,-1);//Unknown
+      else
+        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
+    }
+    $result->free();
   }
   /* 获取查询结果 start */
 

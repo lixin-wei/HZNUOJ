@@ -50,7 +50,7 @@
         ($user_name[$i]>='A' && $user_name[$i]<='Z') ||
         ($user_name[$i]>='0' && $user_name[$i]<='9') ||
         $user_name[$i]=='_'||
-        ($i==0 && $user_name[$i]=='*') 
+        $user_name[$i]=='-'
       );
       else return false;
     }

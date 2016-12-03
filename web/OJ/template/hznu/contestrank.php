@@ -113,6 +113,9 @@
     .pcell-wa{
       background: #ff6b6b;
     }
+    .pcell-pd{
+      background: #ccc;
+    }
     .wa-times{
       font-size: 11px;
     }
@@ -135,42 +138,44 @@
     <tbody>
       <?php
         $rank=1;
-        $num_gold=$user_cnt*$GOLD_RATE;
-        $num_silver=$user_cnt*$SILVER_RATE;
-        $num_bronze=$user_cnt*$BRONZE_RATE;
+        $num_gold=$first_prize;
+        $num_silver=$second_prize;
+        $num_bronze=$third_prize;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr align=center>";
           $medal_class="";
           $medal_css="";
-          if($i+1==1){
+          if($rank==1){
             $medal_class="am-badge am-icon-trophy";
             $medal_css="background-color:#ce0000;";
           }
-          else if($i+1<=$num_gold){
+          else if($rank<=$num_gold){
             $medal_class="am-badge";
             $medal_css="background-color:#f8c100;";
           }
-          else if($i+1<=$num_gold+$num_silver){
+          else if($rank<=$num_gold+$num_silver){
             $medal_class="am-badge";
             $medal_css="background-color:#a4a4a4;";
           }
-          else if($i+1<=$num_gold+$num_silver+$num_bronze){
+          else if($rank<=$num_gold+$num_silver+$num_bronze){
             $medal_class="am-badge";
             $medal_css="background-color:#815d18;";
           }
-          echo "<td class='rankcell' style='border-left:0;'><span class='$medal_class' style='$medal_css'>";
+          echo "<td class='rankcell' style='border-left:0;'>";
           $uuid=$U[$i]->user_id;
           $nick=$U[$i]->nick;
           if(!isset($is_excluded[$uuid])) {
+            echo "<span class='$medal_class' style='$medal_css'>";
             if($rank==1){
               echo " Winner";
             }
             else echo $rank;//名次变量
+            echo "</span>";
             $rank++;
           }
           else 
             echo "*";
-          echo "</span></td>";
+          echo "</td>";
 
           $usolved=$U[$i]->solved;
         echo "<td class='rankcell'>";
@@ -188,7 +193,10 @@
           echo "<td class='rankcell'>".floor($U[$i]->time/60);
           for ($j=0;$j<$pid_cnt;$j++){
             $cell_class="pcell ";
-            if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
+            if($U[$i]->is_unknown[$j]){
+              $cell_class.="pcell-pd";
+            }
+            else if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
               if($uuid==$first_blood[$j]){
                 $cell_class.="pcell-fb";
               }
@@ -203,7 +211,7 @@
             //echo "<pre>";
             
             //echo "</pre>";
-            if($U[$i]->p_wa_num[$j]>0 || $U[$i]->p_ac_sec[$j]>0){
+            if($U[$i]->p_wa_num[$j]>0 || $U[$i]->p_ac_sec[$j]>0 || $U[$i]->try_after_lock[$j]>0){
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
@@ -211,8 +219,13 @@
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
-              if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
-                echo "<span class='wa-times'>(-".$U[$i]->p_wa_num[$j].")</span>";
+
+              if ($U[$i]->try_after_lock[$j]){
+                if(!isset($U[$i]->p_wa_num[$j])) $U[$i]->p_wa_num[$j]=0;
+                echo "<span class='wa-times'>(".$U[$i]->p_wa_num[$j]."+".$U[$i]->try_after_lock[$j].")</span>";
+              }
+              else if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
+                echo "<span class='wa-times'>(".$U[$i]->p_wa_num[$j].")</span>";
               else
                 echo "-";
             }
