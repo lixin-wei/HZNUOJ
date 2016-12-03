@@ -11,41 +11,6 @@
 
 <?php include "contest_header.php" ?>
 
-<!-- 滚屏js代码 start -->
-<script type="text/javascript">
-  function startmarquee(lh, speed, delay) {
-    var t;
-    var oHeight = 300; /** div的高度 **/　
-    var p = false;
-    var o = document.getElementById("show");
-    var preTop = 0;
-    o.scrollTop = 0;
-    function start() {
-      t = setInterval(scrolling, speed);
-      o.scrollTop += 1;
-    }
-    function scrolling() {
-      if (o.scrollTop % lh != 0
-          && o.scrollTop % (o.scrollHeight - oHeight - 1) != 0) {
-        preTop = o.scrollTop;
-        o.scrollTop += 1;
-        if (preTop >= o.scrollHeight || preTop == o.scrollTop) {
-          o.scrollTop = 0;
-        }
-      } else {
-        clearInterval(t);
-        setTimeout(start, delay);
-      }
-    }
-    setTimeout(start, delay);
-  }
-  window.onload=function(){
-    /**startmarquee(一次滚动高度,速度,停留时间);**/　　
-    startmarquee(50, 20, 2000);
-  }
-</script>
-<!-- 滚屏js代码 end -->
-
 <?php // 根据当前是否需要滚屏给予show不同的style
   if ($_GET['scroll']) $showStyle = "margin-top:10px;height:1000px;overflow-y:scroll;overflow-x:scroll;";
   else $showStyle = "margin-top:10px;";
