@@ -39,7 +39,14 @@
     $pieces = explode("\n", trim($_POST['ulist']));
     $contest_id = intval($_POST['contest_id']);
     $no = 0;
-    if ($_POST['class1'] == "其它") $class = "其它";
+    if ($_POST['class1'] == "其它"){
+      if($_POST['class2']){
+        $class = $_POST['class2'];
+      }
+      else{
+        $class = "其它";
+      }
+    }
     else $class = $_POST['class1'].$_POST['class2'];
     $sql = "SELECT MAX(NO) AS start FROM team WHERE prefix='$prefix' AND contest_id='$contest_id'";
     $result = $mysqli->query($sql);
@@ -75,7 +82,7 @@
   <font size='2px' color='red'>
     使用指南：<br />
     <li>1. School和Users为选填项，其余必填，其中队伍前缀名（Prefix）不能超过30个字符。若填入Users表示指定账号的nick</li>
-    <li>2. Class一项，方框中填入班级号，例如计算机151班则选中“计算机”，并在方框中填入151。若选择“其它”，则不必填写班级号，此处分班级创建临时账号是为了方便在contestranklist中分班级进行排名</li>
+    <li>2. Class一项，方框中填入班级号，例如计算机151班则选中“计算机”，并在方框中填入151。若选择“其它”，可以自定义班级号，若留空则默认为“其他”，此处分班级创建临时账号是为了方便在contestranklist中分班级进行排名</li>
     <li>3. 若不小心创建了过多的账号，请联系管理员在数据库中进行删除（好像这个功能也只有管理员能用？orz）</li>
   </font>
   <form action='team_generate.php' method=post>
