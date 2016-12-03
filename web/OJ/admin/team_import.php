@@ -17,7 +17,7 @@ if(isset($_POST['contest_id'])){
 	$seat=explode("\n",trim($_POST['seat']));
 	$cnt=count($user_id);
 	echo "<table class='table'>";
-	echo "<tr><th>user_id</th><th>stu_id</th><th>institute</th><th>class</th><th>real_name</th><th>seat</th><th>nick</th><th>password</th></tr>";
+	echo "<tr><th>user_id</th><th>stu_id</th><th>institute</th><th>class</th><th>real_name</th><th>nick</th><th>seat</th><th>password</th></tr>";
 	foreach ($user_id as $key => $value) {
 		$password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
         while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
