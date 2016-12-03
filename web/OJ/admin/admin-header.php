@@ -101,8 +101,11 @@ sss;
             $html_li .= "<li><a href='/OJ/admin/contest_add.php'>Add Contest</a></li>";
             $html_li .= "<li><a href='/OJ/admin/contest_list.php'>Contest List</a></li>";
           }
-          if(HAS_PRI("generate_team"))
+          if(HAS_PRI("generate_team")){
             $html_li .= "<li><a href='/OJ/admin/team_generate.php'>Team Generator</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/team_import.php'>Team Import</a></li>";
+          }
+            
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">

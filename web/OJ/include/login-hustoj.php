@@ -50,7 +50,7 @@
         $_SESSION['contest_id'] = $row['contest_id'];
         $pass = $row['password'];
         $result->free();
-        $sql="INSERT INTO `loginlog` VALUES('$user_id','$pass','".$_SERVER['REMOTE_ADDR']."',NOW())";
+        $sql="INSERT INTO `loginlog`(user_id,password,ip,`time`) VALUES('$user_id','$pass','".$_SERVER['REMOTE_ADDR']."',NOW())";
         @$mysqli->query($sql) or die($mysqli->error);
         return $user_id;
       }

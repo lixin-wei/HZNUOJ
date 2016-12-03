@@ -8,7 +8,6 @@
 
 <?php 
   require("admin-header.php");
-  require_once("../include/db_info.inc.php");
   if (!HAS_PRI("generate_team")) {
     echo "Permission denied!";
     exit(1);
