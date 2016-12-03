@@ -112,6 +112,9 @@
   if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
   $lock=$end_time-$row['lock_time'];
   $unlock=$row['unlock'];
+  if(isset($_GET['unlock']) && HAS_PRI("edit_contest")){
+    $unlock=1;
+  }
   $first_prize=$row['first_prize'];
   $second_prize=$row['second_prize'];
   $third_prize=$row['third_prize'];
