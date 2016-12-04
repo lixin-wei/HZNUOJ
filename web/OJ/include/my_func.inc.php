@@ -150,7 +150,6 @@
 
     global $OJ_AUTO_SHARE;
     global $mysqli;
-
     /* 获取solution信息 start */
     $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
     $result=$mysqli->query($sql);
@@ -176,8 +175,9 @@
       }
     }
     $result->free();
-
-
+    if($row->open_source && time()>strtotime($row->end_time)){
+      return true;
+    }
     /* 判断是否有查看权限 start */
     if (isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE && isset($_SESSION['user_id'])){ // 已经AC该题目，可查看该题代码
       $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id=$pid AND user_id='".$_SESSION['user_id']."'";
