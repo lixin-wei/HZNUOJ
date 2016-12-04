@@ -72,7 +72,7 @@
     /* 判断是否有错误 start */
     $error_flag = false;
     if ($user_limit && !isset($_SESSION['contest_id'])) { // 如果不是队伍账号，则退出
-      $view_errors = "<font style='color:red;text-decoration:underline;'>You should user team account !</font>";
+      $view_errors = "<font style='color:red;text-decoration:underline;'>You should use team account !</font>";
       $error_flag = true;
     }
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) { // 如果是队伍账号但没进入正确的比赛中
