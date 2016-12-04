@@ -286,9 +286,9 @@ HTML;
 <!-- <script src='highlight/highlight.pack.js' type='text/javascript'></script> -->
 <!-- <script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script> -->
 
-<link href="//cdn.bootcss.com/highlight.js/9.7.0/styles/github-gist.min.css" rel="stylesheet">
-<script src="//cdn.bootcss.com/highlight.js/9.7.0/highlight.min.js"></script>
-<script src="//cdn.bootcss.com/highlightjs-line-numbers.js/1.1.0/highlightjs-line-numbers.min.js"></script>
+<link href="/OJ/plugins/highlight/styles/github-gist.css" rel="stylesheet">
+<script src="/OJ/plugins/highlight/highlight.pack.js"></script>
+<script src="/OJ/plugins/highlight/highlightjs-line-numbers.min.js"></script>
 <style type="text/css">
   .hljs-line-numbers {
       text-align: right;

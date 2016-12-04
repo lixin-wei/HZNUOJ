@@ -9,8 +9,8 @@ require_once "../include/db_info.inc.php";
 <div id="user_chart" style="width: 100%; height: 800px;"></div>
 <div id="sol_tot_chart" style="width: 100%; height: 800px;"></div>
 
-<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script>
+<script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script>
+<script src="/OJ/plugins/echarts/echarts/echarts.min.js"></script>
 <?php 
 $sql="SELECT DATE_FORMAT(in_date,'%Y/%m/%d') days, count(*) FROM solution GROUP BY days";
 $res=$mysqli->query($sql);

@@ -5,7 +5,7 @@
    * @2016.04.26
   **/
 ?>
-<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/>
+<link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
 <?php
   //ini_set("display_errors","On");
   require_once('../include/db_info.inc.php');

@@ -11,8 +11,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <!-- 新 Bootstrap 核心 CSS 文件 -->
-  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-  <link href="//cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/OJ/plugins/bootstrap/css/bootstrap.min.css">
+  <link href="/OJ/plugins/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
 

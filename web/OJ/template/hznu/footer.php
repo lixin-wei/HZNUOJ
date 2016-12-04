@@ -25,7 +25,7 @@
 
 <script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script>
 <script src="/OJ/plugins/AmazeUI/js/amazeui.min.js"></script>
-<!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script> -->
+<!-- <script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script> -->
 <!-- <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script> -->
 <!-- <script src="AmazeUI/js/handlebars.min.js"></script> -->
 
