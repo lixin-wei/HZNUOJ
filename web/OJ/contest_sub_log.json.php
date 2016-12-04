@@ -17,20 +17,28 @@ if(isset($_GET['cid'])){
 
 	if($user_limit=="Y"){
 		$sql=<<<SQL
+		SELECT
+			solution.solution_id,
+			solution.user_id,
+			team.nick,
+			solution.num,
+			solution.result,
+			UNIX_TIMESTAMP(solution.in_date) AS in_date
+		FROM
+			solution
+		LEFT JOIN team ON solution.user_id = team.user_id
+		WHERE
+			solution.contest_id = $cid
+		AND team.user_id NOT IN (
 			SELECT
-				solution.solution_id,
-				solution.user_id,
-				team.nick,
-				solution.num,
-				solution.result,
-				UNIX_TIMESTAMP(solution.in_date) AS in_date
+				user_id
 			FROM
-				solution
-			LEFT JOIN team ON solution.user_id = team.user_id
+				contest_excluded_user
 			WHERE
-				solution.contest_id = "$cid"
-			ORDER BY
-				in_date
+				contest_id = $cid
+		)
+		ORDER BY
+			in_date
 SQL;
 	}
 	else{
