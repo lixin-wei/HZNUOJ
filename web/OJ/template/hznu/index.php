@@ -103,8 +103,8 @@ HTML;
     //window.location.href="http://pixiv.net/member.php?id=430651";
   });
 </script>
-<!-- <script type="text/javascript" src="charts/echarts.min.js"></script> -->
-<script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script>
+<script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
+<!-- <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script> -->
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var submission_chart = echarts.init(document.getElementById('submission_chart'));
