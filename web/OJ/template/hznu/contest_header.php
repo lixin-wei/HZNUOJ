@@ -53,8 +53,8 @@ if(isset($_GET['cid'])){
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="alternate icon" type="image/png" href="image/hznuoj.ico">
-   <!--  <link rel="stylesheet" href="AmazeUI/css/amazeui.min.css"/> -->
-    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
+    <!-- <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/> -->
     <style type="text/css">
       .blog-footer {
         padding: 10px 0;
