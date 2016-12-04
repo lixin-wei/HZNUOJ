@@ -174,10 +174,6 @@
         $result->free();
       }
     }
-    $result->free();
-    if($row->open_source && time()>strtotime($row->end_time)){
-      return true;
-    }
     /* 判断是否有查看权限 start */
     if (isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE && isset($_SESSION['user_id'])){ // 已经AC该题目，可查看该题代码
       $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id=$pid AND user_id='".$_SESSION['user_id']."'";
@@ -189,7 +185,7 @@
     
     if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;  // 是本人，可以查看该代码
     else { // 不是本人的情况下
-      if ($irc) { // the problem is in running contest
+      if (is_running(intval($cid))) { // the problem is in running contest
         return HAS_PRI("see_source_in_contest");
       }
       else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
