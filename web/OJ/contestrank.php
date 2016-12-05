@@ -15,6 +15,7 @@
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
 
+
   $view_title= $MSG_CONTEST.$MSG_RANKLIST;
   $title="";
 
@@ -27,6 +28,8 @@
     var $user_id;
     var $nick;
     var $real_name;
+    var $stu_id;
+    var $class;
     var $try_after_lock;
     function TM(){
       $this->solved=0;
@@ -70,6 +73,16 @@
 // contest start time
   if (!isset($_GET['cid'])) die("No Such Contest!");
   $cid=intval($_GET['cid']);
+
+
+  $sql="SELECT user_id FROM contest_excluded_user WHERE contest_id=$cid";
+  $res=$mysqli->query($sql);
+  $is_excluded=array();
+  while($uid=$res->fetch_array()[0]){
+    $is_excluded[$uid]=true;
+  }
+
+
 
   $sql="SELECT `start_time`,`title`,`end_time`,user_limit,lock_time,`unlock`,first_prize,second_prize,third_prize FROM `contest` WHERE `contest_id`='$cid'";
 //$result=$mysqli->query($sql) or die($mysqli->error);
@@ -187,14 +200,14 @@ $sql="SELECT
   if ($cls == "") {
     if (!$user_limit)
       $sql_u = "SELECT
-                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class
+                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class,users.stu_id
                 FROM
                   (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                   INNER join users
                   on users.user_id=solution.user_id
                 ORDER BY users.user_id,in_date";
     else $sql = "SELECT 
-              team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
+              team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class,team.stu_id,team.real_name
             FROM
               (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
               INNER JOIN (SELECT * FROM team WHERE contest_id='$cid') team
@@ -203,7 +216,7 @@ $sql="SELECT
   } else if ($cls == "null") {
     if (!$user_limit)
       $sql_u = "SELECT
-                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class
+                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class,users.stu_id
                 FROM
                   (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                   INNER join users
@@ -211,7 +224,7 @@ $sql="SELECT
                 WHERE users.class='null' or users.class is null
                 ORDER BY users.user_id,in_date";
     else $sql = "SELECT
-              team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
+              team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class,team.stu_id,team.real_name
             FROM
               (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
               INNER JOIN (SELECT * FROM team WHERE contest_id='$cid') team
@@ -221,7 +234,7 @@ $sql="SELECT
   } else {
     if (!$user_limit)
       $sql_u = "SELECT
-                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class
+                  users.user_id,users.nick,solution.result,solution.num,solution.in_date,users.real_name,users.class,users.stu_id
                 FROM
                   (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                   INNER join users
@@ -229,7 +242,7 @@ $sql="SELECT
                 WHERE users.class='$cls'
                 ORDER BY users.user_id,in_date";
       else $sql = "SELECT
-                team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class
+                team.user_id,team.nick,solution.result,solution.num,solution.in_date,team.class,team.stu_id,team.real_name
               FROM
                 (select * from solution where solution.contest_id='$cid' and num>=0 ) solution
                 INNER JOIN (SELECT * FROM team WHERE contest_id='$cid') team
@@ -301,6 +314,8 @@ $sql="SELECT
         $U[$user_cnt]->user_id=$row['user_id'];
         $U[$user_cnt]->nick=$row['nick'];
         $U[$user_cnt]->real_name = $row['real_name'];
+        $U[$user_cnt]->stu_id = $row['stu_id'];
+        $U[$user_cnt]->class = $row['class'];
         $user_name=$n_user;
       }
       if(!$unlock && $lock<strtotime($row['in_date']))
@@ -330,8 +345,76 @@ $sql="SELECT
      }
 
   }
+?>
+<?php if (isset($_GET['download_ranklist']) && HAS_PRI("download_ranklist")): ?>
+<style type="text/css" media="screen">
+  .text{
+    mso-number-format:"\@";
+  }
+  .excel_table{
+    white-space: nowrap;
+    table-layout: fixed;
+  }
+  .pcell{
+    min-width: 150px;
+  }
+</style>
+<?php
+    echo "<meta http-equiv='Content-type' content='text/html;charset=UTF-8' /> ";
+    //header ( "content-type:   application/excel" );
+    header("Content-Disposition: attachment; filename=\"" . $title.".xls" . "\"");
+    header("Content-Type: application/force-download");
+    echo "<center><h3>Contest RankList -- $title</h3></center>";
+    echo "<table border=1 align='center' class='excel_table'><tr><td>Rank<td>User<td>Real Name<td>Student ID<td>Class<td>Nick<td>Solved<td>Penalty";
+    for ($i=0;$i<$pid_cnt;$i++)
+      echo "<td>$PID[$i]";
+    echo "</tr>";
+    // getMark($U,$mark_start,$mark_end,$mark_sigma);
+    $rank=1;
+    for ($i=0;$i<$user_cnt;$i++){
+      if ($i&1) echo "<tr class=oddrow align=center>";
+      else echo "<tr class=evenrow align=center>";
+      echo "<td>";
+      if($is_excluded[$U[$i]->user_id]){
+        echo "*";
+      }
+      else{
+        echo "$rank";
+        $rank++;
+      }
+      $uuid=$U[$i]->user_id;
+            
+      $usolved=$U[$i]->solved;
+      echo "<td style='mso-number-format:\"\\@\"'>".$uuid ;
+      if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
+        $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
+      }
+      echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->real_name;
+      echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
+      echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->class;
+      echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->nick;
+      echo "<td>$usolved";
+      echo "<td>".$U[$i]->time."";
+      
+      //echo $U[$i]->mark>0?intval($U[$i]->mark):0;
+      for ($j=0;$j<$pid_cnt;$j++){
+        echo "<td class='pcell'>";
+        if(isset($U[$i])){
+          if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
+            echo sec2str($U[$i]->p_ac_sec[$j]);
+          if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
+            echo "(-".$U[$i]->p_wa_num[$j].")";
+        }
+      }
+      echo "</tr>";
+    }
+    echo "</table>";
+    header("Connection: close");
+    exit(0);
+?>
+<?php endif ?>
 
-
+<?php
   /////////////////////////Template
   require("template/".$OJ_TEMPLATE."/contestrank.php");
   /////////////////////////Common foot

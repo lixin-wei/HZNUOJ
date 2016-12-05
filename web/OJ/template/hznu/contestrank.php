@@ -21,7 +21,7 @@
   <!-- 工具栏 start -->
   <div class='am-text-center'>
     <?php 
-      if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank.xls.php?cid=".$cid."'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;&nbsp;&nbsp;";
+      if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank.php?cid=".$cid."&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;&nbsp;&nbsp;";
       // if (!$_GET['scroll'])
       //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
       // else 
@@ -59,14 +59,7 @@
   <!-- 工具栏 end --> 
 
   <br />
-  <?php
-  $sql="SELECT user_id FROM contest_excluded_user WHERE contest_id=$cid";
-  $res=$mysqli->query($sql);
-  $is_excluded=array();
-  while($uid=$res->fetch_array()[0]){
-    $is_excluded[$uid]=true;
-  }
-  ?>
+
   <!-- 排名表格 start -->
   <style type="text/css" media="screen">
     .rankcell{
