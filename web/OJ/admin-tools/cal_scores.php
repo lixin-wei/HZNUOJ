@@ -12,7 +12,7 @@
   require_once("../include/const.inc.php");
   require_once("../include/my_func.inc.php");
   $sql="SELECT user_id FROM users WHERE class='软工151' OR class='计算机154' ORDER BY class";
-  $time_list=array("2015-11-15 21:30:00","2015-12-06 17:00:00","2015-12-27 20:45:00","2016-01-12 21:30:00");
+  $time_list=array("2015-12-20","2015-12-13","2015-12-6");
   //echo $sql;
   $ress=$mysqli->query($sql);
   echo "<table class='am-table am-table-bordered am-table-striped' style='word-break:keep-all;'>";
