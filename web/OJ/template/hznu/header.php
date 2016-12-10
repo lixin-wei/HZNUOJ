@@ -78,7 +78,7 @@
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
-          
+
           <!-- ProblemSet部分 start -->
           <li class='am-dropdown' data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >ProblemSet <span class="am-icon-caret-down"></span></a>
@@ -96,7 +96,7 @@
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="status.php"){echo "class='am-active'";} ?>><a href="/OJ/status.php">Status</a></li>
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="ranklist.php"){echo "class='am-active'";} ?>><a href="/OJ/ranklist.php">Ranklist</a></li>
-          
+
           <!-- Contest部分 start -->
           <li class='am-dropdown' data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >Contest&nbsp;<span class="am-icon-caret-down"></span></a>
@@ -108,13 +108,22 @@
           <!-- Contest部分 end -->
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="/OJ/faqs.php">F.A.Q</a></li>
-
+  
+          <!-- Courses Begin -->
+          <li class="am-dropdown" data-am-dropdown>
+            <a href="#" class="am-dropdown-toggle" >Courses&nbsp;<span class="am-icon-caret-down"></span></a>
+            <ul class="am-dropdown-content">
+              <li><a href="/OJ/c_course.php" title="">Programming Fundamentals</a></li>
+            </ul>
+          </li>
+          <!-- Courses End -->
+          
+          
           <!-- Others Begin -->
           <li class="am-dropdown" data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content">
               <li><a href="/OJ/../bbs/" target='_blank'>BBS</a></li>
-              <li><a href="/OJ/c_course.php" title="">C Course</a></li>
               <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
             </ul>
           </li>
@@ -163,7 +172,7 @@ BOT;
           if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
           else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
           echo "<li><a href='/OJ/logout.php'><span class='am-icon-reply'></span> Logout</a></li>";
-          
+
           if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
               <li><a href="/OJ/admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
