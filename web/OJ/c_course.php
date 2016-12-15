@@ -1,5 +1,5 @@
 <?php $title="Programming Fundamentals"; ?>
-<?php require_once "template/hznu/header.php" ?>
+<?php require_once "template/hznu/header.php"; ?>
   <style>
     .box{
       border: 1px solid #eee;
@@ -21,6 +21,9 @@
     }
     .content-block{
       margin-bottom: 50px;
+    }
+    .content-block:last-child{
+      margin-bottom: 15px;
     }
     .content-block-title{
       font-size: large;
@@ -732,24 +735,12 @@ HTML;
                 ?>
             </div>
           </div>
-        </div>
-        <div class="box">
           <div class="content-block">
             <div class="content-block-title">
               题集
             </div>
             <div class="content-block-body">
-                <?php
-                $sql="SELECT problem_id, title FROM problem WHERE problemset=\"c\" ORDER BY problem_id;";
-                $res=$mysqli->query($sql);
-                echo "<table>";
-                while($row=$res->fetch_array()) {
-                    echo "<tr>";
-                    echo "<td><a href='/OJ/problem.php?id={$row[0]}'>{$row[1]}</a></td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-                ?>
+              <a href="/OJ/problemset.php?OJ=c">ProblemSet - C Course</a>
             </div>
           </div>
         </div>
