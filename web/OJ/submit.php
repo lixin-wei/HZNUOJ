@@ -20,10 +20,35 @@ if (isset($_POST['cid'])){
 	if(HAS_PRI("see_hidden_".get_problemset($id)."_problem"))
 		$sql="SELECT `problem_id` from `problem` where `problem_id`='$id'";
 	else
-		$sql="SELECT `problem_id` from `problem` where `problem_id`='$id' and problem_id not in (select distinct problem_id from contest_problem where `contest_id` IN (
-				SELECT `contest_id` FROM `contest` WHERE 
-				(`end_time`>'$now' or private=1)and `defunct`='N'
-				)) AND defunct='N'";
+		$sql=<<<SQL
+      SELECT
+        `problem_id`
+      FROM
+        `problem`
+      WHERE
+        `problem_id` = $id
+      AND problem_id NOT IN (
+        SELECT DISTINCT
+          problem_id
+        FROM
+          contest_problem
+        WHERE
+          `contest_id` IN (
+            SELECT
+              `contest_id`
+            FROM
+              `contest`
+            WHERE
+              (
+                `end_time` > NOW()
+                #OR private = 1
+              )
+            AND `defunct` = 'N'
+          )
+      )
+      AND defunct = 'N'
+SQL;
+
 }
 //echo $sql;
 
