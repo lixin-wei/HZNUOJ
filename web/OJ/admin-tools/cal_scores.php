@@ -30,12 +30,12 @@ if(isset($_POST['classList'])) {
     $timeList=explode("\n",trim($_POST['timeList']));
     $sql="SELECT user_id FROM users WHERE 0 ";
     foreach ($classList as $class) {
-        $class=trim($class);
+        $class=$mysqli->real_escape_string(trim($class));
         $sql.=" OR class='$class'";
     }
     $time_list=array();
     foreach ($timeList as $time) {
-        $time=trim($time);
+        $time=$mysqli->real_escape_string(trim($time));
         array_push($time_list,$time);
     }
     //echo $sql;
