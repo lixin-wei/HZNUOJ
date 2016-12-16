@@ -307,12 +307,12 @@ HTML;
       if(file_exists($path)) $success=unlink($path);
       //echo "<pre>remove $path:$success</pre>";
     }
-    $sql="DELETE FROM problem_samples WHERE problem_id=$id";
-    $mysqli->query($sql);
-    if(isset($_POST['add_problem_mod'])){
-      $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj, $OJ_DATA );
-      mkdir($OJ_DATA."/$id");
-    }
+      if(isset($_POST['add_problem_mod'])){
+          $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj, $OJ_DATA );
+          mkdir($OJ_DATA."/$id");
+      }
+      $sql="DELETE FROM problem_samples WHERE problem_id=$id";
+      $mysqli->query($sql);
     if($sample_inputs){
       foreach ($sample_inputs as $key => $sample_input) {
         $sample_input=preg_replace("/(\r\n)/","\n",$sample_input);
