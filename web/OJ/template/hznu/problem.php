@@ -118,8 +118,8 @@
     <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
   </div>
   <div style="text-align:center;">
-    Submission：<span class="am-badge am-badge-secondary"><?php echo $row->submit?></span>&nbsp;&nbsp;&nbsp;&nbsp;
-    AC：<span class="am-badge am-badge-success"><?php echo $row->accepted?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    Submission：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    AC：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
     <?php
       $score_class = "am-badge-default";
       if ($row->score >= 82) $score_class='am-badge-danger';
