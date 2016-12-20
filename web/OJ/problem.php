@@ -86,6 +86,14 @@ SQL;
     $cid=intval($_GET['cid']);
     $pid=intval($_GET['pid']);
     
+    /*cal submit statics START*/
+    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid";
+    $submit_num=$mysqli->query($sql)->fetch_array()[0];
+    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid AND result=4";
+    $ac_num=$mysqli->query($sql)->fetch_array()[0];
+    /*cal submit statics END*/
+    
+    
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<font style='color:red;text-decoration:underline;'>You can only enter the correspond contest!</font>";
         require("template/".$OJ_TEMPLATE."/error.php");
@@ -131,13 +139,6 @@ SQL;
         exit(0);
     }
     $co_flag=true;
-    
-    /*cal submit statics START*/
-    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid";
-    $submit_num=$mysqli->query($sql)->fetch_array()[0];
-    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid AND result=4";
-    $ac_num=$mysqli->query($sql)->fetch_array()[0];
-    /*cal submit statics END*/
     
 } else { // 否则提示找不到该题
     $view_errors=  "<title>$MSG_NO_SUCH_PROBLEM</title><h2>$MSG_NO_SUCH_PROBLEM</h2>";
