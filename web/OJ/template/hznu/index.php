@@ -155,7 +155,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
             grid: {
                 x: 65
             },
-            color: ['#3398DB','#5EB95E','#F37B49'],
+            color: ['#3398DB','#5EB95E','#5EB95E'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
