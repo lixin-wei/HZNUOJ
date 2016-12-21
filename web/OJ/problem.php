@@ -86,14 +86,6 @@ SQL;
     $cid=intval($_GET['cid']);
     $pid=intval($_GET['pid']);
     
-    /*cal submit statics START*/
-    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid";
-    $submit_num=$mysqli->query($sql)->fetch_array()[0];
-    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid AND result=4";
-    $ac_num=$mysqli->query($sql)->fetch_array()[0];
-    /*cal submit statics END*/
-    
-    
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<font style='color:red;text-decoration:underline;'>You can only enter the correspond contest!</font>";
         require("template/".$OJ_TEMPLATE."/error.php");
@@ -211,7 +203,23 @@ while($r=$res->fetch_array()){
 }
 //get the sample input/output END
 
+/*cal submit statics START*/
+$submit_num=0;
+$ac_num=0;
+if(isset($_GET['cid']) && isset($_GET['pid'])) {
+    $cid=intval($_GET['cid']);
+    $pid=intval($_GET['pid']);
+    $sql="SELECT COUNT(1) FROM solution WHERE contest_id=$cid AND num=$pid";
+    $submit_num=$mysqli->query($sql)->fetch_array()[0];
+    $sql="SELECT COUNT(DISTINCT user_id) FROM solution WHERE contest_id=$cid AND num=$pid AND result=4";
+    $ac_num=$mysqli->query($sql)->fetch_array()[0];
+}
+else if(isset($_GET['id'])) {
+    $submit_num=$row->submit;
+    $ac_num=$row->accepted;
+}
 
+/*cal submit statics END*/
 
 /////////////////////////Template
 require("template/".$OJ_TEMPLATE."/problem.php");
