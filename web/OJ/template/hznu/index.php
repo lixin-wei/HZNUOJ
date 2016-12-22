@@ -153,7 +153,8 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
         // 指定图表的配置项和数据
         var option_submission = {
             grid: {
-                x: 65
+                x: 65,
+                x2: 70
             },
             color: ['#3398DB','#5EB95E','#5EB95E'],
             tooltip: {
