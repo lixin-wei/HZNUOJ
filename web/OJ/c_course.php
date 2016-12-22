@@ -727,8 +727,9 @@
                 $sql="SELECT DISTINCT class FROM users ORDER BY class DESC";
                 $res=$mysqli->query($sql);
                 while($row=$res->fetch_array()) {
+                    $text=htmlentities($row[0]);
                     echo<<<HTML
-                                    <span class="am-badge am-badge-primary">$row[0]</span>
+                                    <span class="am-badge am-badge-primary">$text</span>
 HTML;
                     
                 }
