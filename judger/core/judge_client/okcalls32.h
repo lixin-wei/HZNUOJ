@@ -17,15 +17,15 @@
  * along with HUSTOJ. if not, see <http://www.gnu.org/licenses/>.
  */
 
-int LANG_CV[256] = { 85, 8, SYS_time, SYS_read, SYS_uname, SYS_write, SYS_open,
+int LANG_CV[256] = { 85, 8,140, SYS_time, SYS_read, SYS_uname, SYS_write, SYS_open,
 		SYS_close, SYS_execve, SYS_access, SYS_brk, SYS_munmap, SYS_mprotect,
 		SYS_mmap2, SYS_fstat64, SYS_set_thread_area, 252, 0 };
 
-int LANG_PV[256] = { 140, 91, 175, 195, 13, SYS_open, SYS_set_thread_area,
+int LANG_PV[256] = { 0,9, 59, 97, 13, 16, 89, 140, 91, 175, 195, 13, SYS_open, SYS_set_thread_area,
 		SYS_brk, SYS_read, SYS_uname, SYS_write, SYS_execve, SYS_ioctl,
 		SYS_readlink, SYS_mmap, SYS_rt_sigaction, SYS_getrlimit, 252, 191, 0 };
 
-int LANG_JV[256] = { 102,104,107,108,295, SYS_fcntl64, SYS_getdents64, SYS_ugetrlimit,
+int LANG_JV[256] = { 295, SYS_fcntl64, SYS_getdents64, SYS_ugetrlimit,
 		SYS_rt_sigprocmask, SYS_futex, SYS_read, SYS_mmap2, SYS_stat64,
 		SYS_open, SYS_close, SYS_execve, SYS_access, SYS_brk, SYS_readlink,
 		SYS_munmap, SYS_close, SYS_uname, SYS_clone, SYS_uname, SYS_mprotect,
@@ -115,3 +115,5 @@ int LANG_SV[256] = { 100, 295, SYS_fcntl64, SYS_getdents64, SYS_ugetrlimit,
 		SYS_set_thread_area, SYS_set_tid_address, SYS_set_robust_list,
 		SYS_exit_group, 0 };
 int LANG_LUAV[256]={0,0};
+int LANG_JSV[256]={3,4,5,6,11,13,33,45,54,77,78,91,120,122,125,174,175,191,192,195,197,224,240,243,252,258,311,0};
+
