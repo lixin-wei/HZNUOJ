@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/var/www/html/judger/core/judged/judged.cc
+time.h
+-
+stdio.h
+-
+string.h
+-
+ctype.h
+-
+stdlib.h
+-
+unistd.h
+-
+syslog.h
+-
+errno.h
+-
+fcntl.h
+-
+stdarg.h
+-
+mysql/mysql.h
+-
+sys/wait.h
+-
+sys/stat.h
+-
+signal.h
+-
+sys/resource.h
+-
+
