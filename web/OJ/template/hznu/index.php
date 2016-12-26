@@ -156,7 +156,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
                 x: 65,
                 x2: 70
             },
-            color: ['#3398DB','#5EB95E','#5EB95E'],
+            color: ['#3398DB','#5EB95E'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {

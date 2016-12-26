@@ -1,0 +1,4 @@
+/home/d-star/clion-2016.3.1/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /var/www/html/judger/core/judge_client
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /var/www/html/judger/core/judge_client/cmake-build-debug

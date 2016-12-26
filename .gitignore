@@ -1,4 +1,6 @@
 *~
+*.o
+.idea/
 /web/.idea/
 /web/bbs/
 /web/JudgeOnline/

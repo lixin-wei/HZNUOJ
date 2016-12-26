@@ -1,0 +1,3 @@
+/var/www/html/judger/core/judge_client/cmake-build-debug/CMakeFiles/edit_cache.dir
+/var/www/html/judger/core/judge_client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/var/www/html/judger/core/judge_client/cmake-build-debug/CMakeFiles/judge_client.dir
