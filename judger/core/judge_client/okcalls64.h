@@ -26,7 +26,7 @@ int LANG_PV[256] = {0,1,2,4,9,11,13,16,59,89,97,99,201,231,SYS_open, SYS_set_thr
 		SYS_rt_sigaction, SYS_getrlimit, 252, 191, 158, 231, SYS_close,
 		SYS_exit_group, SYS_munmap, SYS_time, 4, 0 };
 
-int LANG_JV[256] = { 0,2,3,4,5,9,10,11,12,13,14,21,56,59,89,97,104,108,158,202,218,231,273,257,
+int LANG_JV[256] = { 0,2,3,4,5,9,10,11,12,13,14,21,56,59,89,97,102,104,107,108,158,202,218,231,273,257,
 		61, 22, 6, 33, 8, 13, 16, 111, 110, 39, 79, SYS_fcntl,
 		SYS_getdents64, SYS_getrlimit, SYS_rt_sigprocmask, SYS_futex, SYS_read,
 		SYS_mmap, SYS_stat, SYS_open, SYS_close, SYS_execve, SYS_access,
