@@ -720,16 +720,9 @@
                 $sql="SELECT DISTINCT class FROM users ORDER BY class DESC";
                 $res=$mysqli->query($sql);
                 while($row=$res->fetch_array()) {
-<<<<<<< Updated upstream
                     $text=htmlentities($row[0]);
                     echo<<<HTML
                                     <span class="am-badge am-badge-primary">$text</span>
-=======
-                    echo <<<HTML
-  <a href="class_information.php?class={$row[0]}" class="am-badge am-badge-primary">
-    $row[0]
-  </a>        
->>>>>>> Stashed changes
 HTML;
                     
                 }
