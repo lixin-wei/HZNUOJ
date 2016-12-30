@@ -23,7 +23,10 @@
   $page_cnt=100;
   // get problems START
   $res_set = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
-  $problem_sets = $res_set->fetch_all(MYSQLI_BOTH);
+  $problem_sets = array();
+  while($row = $res_set->fetch_array()) {
+    array_push($problem_sets,$row);
+  }
   $set_name_show = array();
   foreach ($problem_sets as $key => $val){
     $set_name_show[$val["set_name"]]=$val['set_name_show'];
