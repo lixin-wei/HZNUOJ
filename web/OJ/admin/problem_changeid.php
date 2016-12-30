@@ -8,7 +8,7 @@
 
 <?php
 require("admin-header.php");
-
+//ini_set("display_errors","On");
 if (!HAS_PRI("inner_function")) {
     echo "Permission denied!";
     exit(1);
@@ -33,8 +33,9 @@ if(isset($_POST['do'])){
             $row=$result->num_rows;
             $result->free();
         }
-        
-        if($row==0&&rename("$OJ_DATA/$from","$OJ_DATA/$to")){
+        echo "$OJ_DATA/$from"."->"."$OJ_DATA/$to</br>";
+        if($row==0){
+            rename("$OJ_DATA/$from","$OJ_DATA/$to");
             $sql="UPDATE `problem` SET `problem_id`=$to WHERE `problem_id`=".$from;
             if(!$mysqli->query($sql)){
                 echo "filed table problem\n";
@@ -76,8 +77,7 @@ if(isset($_POST['do'])){
             
             echo "done!";
         }else{
-            
-            echo "fail...";
+            echo "problem $to already exists!";
         }
         
     }
