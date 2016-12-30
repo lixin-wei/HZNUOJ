@@ -27,6 +27,10 @@
       system("rm -rf $basedir");
         $sql="delete FROM `problem` WHERE `problem_id`=$id";
         $mysqli->query($sql) or die($mysqli->error);
+        $sql="UPDATE solution SET problem_id=NULL WHERE problem_id=$id";
+        $mysqli->query($sql);
+        $sql="DELETE FROM problem_samples WHERE problem_id=$id";
+        $mysqli->query($sql);
         $sql="select max(problem_id) FROM `problem`" ;
         $result=$mysqli->query($sql);
         $row=$result->fetch_row();
