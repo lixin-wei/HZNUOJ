@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/judge_client.dir/judge_client.cc.o  -o judge_client -lmysqlclient 

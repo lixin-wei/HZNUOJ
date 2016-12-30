@@ -1,1 +1,0 @@
-CMake: 3.6.2@/home/d-star/clion-2016.3.1/bin/cmake/bin/cmake
