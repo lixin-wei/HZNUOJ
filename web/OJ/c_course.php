@@ -95,13 +95,13 @@
                 </tr>
                 <tr>
                   <td colspan="2" >
-                    <p>课程类别<a href="#_edn1" name="_ednref1">[i]</a></p>
+                    <p>课程类别</p>
                   </td>
                   <td colspan="5" >
                     <p>大类基础课程</p>
                   </td>
                   <td >
-                    <p>课程性质<a href="#_edn2" name="_ednref2">[ii]</a></p>
+                    <p>课程性质</p>
                   </td>
                   <td colspan="6" >
                     <p>必修</p>
@@ -109,7 +109,7 @@
                 </tr>
                 <tr>
                   <td colspan="2" >
-                    <p>课程类型<a href="#_edn3" name="_ednref3">[iii]</a></p>
+                    <p>课程类型</p>
                   </td>
                   <td colspan="5" >
                     <p>理论课（含实践）</p>
@@ -707,13 +707,6 @@
               </table>
             </div>
           </div>
-          <p>注：①课程学习指导由主讲（指导）教师填写，于开学一周内交学院教务科。该表一式二份，分别由主讲（指导）教师和学院教务科留存。</p>
-          <p>②&ldquo;实验项目与要求&rdquo;含实验类型、实验性质及实验要求。</p>
-          <p>③&ldquo;教学形式&rdquo;为讲授、实验、教学见习等。</p>
-          <p><a href="#_ednref1" name="_edn1">[i]</a> 课程类别：分为通识教育课程、大类基础课程、专业教育课程、副修课程四类</p>
-          <p><a href="#_ednref2" name="_edn2">[ii]</a> 课程性质：分为必修、选修两类</p>
-          <p><a href="#_ednref3" name="_edn3">[iii]</a> 课程类型：分为理论课（不含实践）、理论课（含实践）、实验（践）课三类</p>
-          <p><a href="#_ednref4" name="_edn4">[iv]</a> 教学周：按教学日历填写</p>
         </div>
       </div>
       <div class="am-u-md-4">
@@ -727,9 +720,16 @@
                 $sql="SELECT DISTINCT class FROM users ORDER BY class DESC";
                 $res=$mysqli->query($sql);
                 while($row=$res->fetch_array()) {
+<<<<<<< Updated upstream
                     $text=htmlentities($row[0]);
                     echo<<<HTML
                                     <span class="am-badge am-badge-primary">$text</span>
+=======
+                    echo <<<HTML
+  <a href="class_information.php?class={$row[0]}" class="am-badge am-badge-primary">
+    $row[0]
+  </a>        
+>>>>>>> Stashed changes
 HTML;
                     
                 }
