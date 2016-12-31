@@ -49,8 +49,8 @@
     /* border-top: 1px solid; */
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
+    line-height: 1;
   }
   .sample-title {
     background: white;
