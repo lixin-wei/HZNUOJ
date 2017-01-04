@@ -155,14 +155,14 @@ BOT;
   <div class="am-g" style="padding-bottom: 7px;">
     <div class="am-u-sm-3">
       <span class="text-bold">Start: </span>
-      <span><?php echo date("M, d, o h:i:s",$contest_time[0]) ?></span>
+      <span><?php echo date("M, d, o H:i:s",$contest_time[0]) ?></span>
     </div>
     <div class="am-u-sm-6 am-text-center">
       <span class="text-bold" style="font-size: large;"><?php echo $contest_title ?></span>
     </div>
     <div class="am-u-sm-3 am-text-right">
       <span class="text-bold">End: </span>
-      <span><?php echo date("M, d, o h:i:s",$contest_time[1]) ?></span>
+      <span><?php echo date("M, d, o H:i:s",$contest_time[1]) ?></span>
     </div>
   </div>
 
