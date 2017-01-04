@@ -9,7 +9,10 @@
   **/
 ?>
 <?php 
-  if (is_numeric($cid)) require_once "contest_header.php";
+  if (is_numeric($cid)) {
+      $_GET['cid']=$cid;
+      require_once "contest_header.php";
+  }
   else require_once "header.php";
   require_once("include/const.inc.php")
 ?>
