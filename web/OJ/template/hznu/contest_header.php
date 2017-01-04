@@ -186,5 +186,14 @@ BOT;
     </div>
   </div>
   <?php endif ?>
-
+    <?php if(HAS_PRI("edit_contest")) {
+        echo <<<HTML
+        <div align="center">
+          <span class="am-badge am-badge-success am-text-lg">
+            <a href="/OJ/admin/contest_edit.php?cid={$_GET['cid']}" style="color: white;">Edit</a>
+          </span>
+        </div>
+HTML;
+    }
+    ?>
 </div>

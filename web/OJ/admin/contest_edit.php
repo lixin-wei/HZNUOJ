@@ -41,7 +41,7 @@
       $langmask+=1<<$t;
     } 
     $langmask=((1<<count($language_ext))-1)&(~$langmask);
-    echo $langmask; 
+    //echo $langmask;
 
     $cid=intval($_POST['cid']);
     $sql = "UPDATE `contest` 
@@ -92,11 +92,11 @@
     $sql="INSERT INTO contest_excluded_user (contest_id,user_id) VALUES($cid,'$uid')";
     $mysqli->query($sql);
   }
-  echo "<script>window.location.href=\"contest_list.php\";</script>";
-  exit();
+  echo "<pre>done!</pre>";
   /* 更新部分 end */
 
-}else{
+}
+
   $cid=intval($_GET['cid']);
   $sql="SELECT * FROM `contest` WHERE `contest_id`=$cid";
   $result=$mysqli->query($sql);
@@ -139,12 +139,17 @@
   while($uid=$res->fetch_array()[0]){
     $ex_ulist.=($uid."\n");
   }
-}
 ?>
 
 <form method=POST >
+  <input type=submit value=Submit name=submit>
   <?php require_once("../include/set_post_key.php");?>
-  <p align=center><font size=4 color=#333399>Edit a Contest</font></p>
+  <h1>
+    Edit Contest:
+      <?php
+      echo "<a href='/OJ/contest.php?cid={$_GET['cid']}'>{$_GET['cid']}</a>"
+      ?>
+  </h1>
   <input type=hidden name='cid' value=<?php echo $cid?>>
   <p align=left>Title:<input class=input-xxlarge type=text name=title size=71 value='<?php echo $title?>'></p>
   <p align=left>Start Time:<br>&nbsp;&nbsp;&nbsp;
