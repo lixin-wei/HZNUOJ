@@ -125,7 +125,7 @@
   <ul class="am-pagination">
     <?php echo "<li><a href=status.php?".$str2.">Top</a></li>&nbsp;&nbsp;";
     if (isset($_GET['prevtop']))
-            echo "<li><a href=status.php?".$str2."&top=".$_GET['prevtop'].">&laquo; Previous</a></li>&nbsp;&nbsp;";
+            echo "<li><a href=status.php?".$str2."&top=".intval($_GET['prevtop']).">&laquo; Previous</a></li>&nbsp;&nbsp;";
     else
             echo "<li><a href=status.php?".$str2."&top=".($top+20).">&laquo; Previous</a></li>&nbsp;&nbsp;";
     echo "<li><a href=status.php?".$str2."&top=".$bottom."&prevtop=$top>Next &raquo;</a></li>";

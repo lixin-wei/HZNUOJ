@@ -146,6 +146,7 @@ SQL;
   }
   $sql.=$sort_cmd;
   $st=($page-1)*$page_cnt;
+  if($st<0)$st=0;
   $sql.=" LIMIT $st,$page_cnt";
 
   if($first) $sql="";

@@ -17,7 +17,7 @@
   //default args
   if($OJ!="all")$args['OJ']=$OJ;
   if(isset($sort_method)) $args['sort_method']=$sort_method;
-  if(isset($_GET['search'])) $args['search']=$_GET['search'];
+  if(isset($_GET['search'])) $args['search']=htmlentities($search);
   if(isset($page)) $args['page']=$page;
   function generate_url($data){
     // echo "<pre>";
@@ -34,7 +34,7 @@
         $link.="&$key=$value";
       }
     }
-    return $link;
+    return htmlentities($link);
   }
 ?>
 <hr/>
