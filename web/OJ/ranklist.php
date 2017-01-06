@@ -41,9 +41,10 @@
   }
 
   if (isset($_GET['class'])) {
+    $cls = $mysqli->real_escape_string($_GET['class']);
     if ($_GET['class'] != "all")
-      $filter_sql = " WHERE class='".$_GET['class']."' ";
-    $filter_url .= "&class=".$_GET['class'];
+      $filter_sql = " WHERE class='".$cls."' ";
+    $filter_url .= "&class=".$cls;
   }
 
 

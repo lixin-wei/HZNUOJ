@@ -196,7 +196,7 @@ $sql="SELECT
 */
 
 
-$cls = $_GET['class']; // class
+$cls = $mysqli->real_escape_string($_GET['class']); // class
 if ($cls == "") {
     if (!$user_limit)
         $sql_u = "SELECT

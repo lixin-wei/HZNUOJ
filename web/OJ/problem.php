@@ -81,10 +81,10 @@ SQL;
     $pr_flag=true;
     
 } else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目
-    $sql="SELECT unix_timestamp(end_time) FROM contest WHERE contest_id={$_GET['cid']}";
-    $end_time=$mysqli->query($sql)->fetch_array()[0];
     $cid=intval($_GET['cid']);
     $pid=intval($_GET['pid']);
+    $sql="SELECT unix_timestamp(end_time) FROM contest WHERE contest_id=$cid";
+    $end_time=$mysqli->query($sql)->fetch_array()[0];
     
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<font style='color:red;text-decoration:underline;'>You can only enter the correspond contest!</font>";

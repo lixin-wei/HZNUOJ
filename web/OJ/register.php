@@ -13,14 +13,15 @@
   $err_str="";
   $err_cnt=0;
   $len;
-  $user_id=trim($_POST['user_id']);
-  $len=strlen($user_id);
-  $email=trim($_POST['email']);
-  $school=trim($_POST['school']);
-  $class=trim($_POST['class']);
-  $stu_id=trim($_POST['stu_id']);
-  $real_name=trim($_POST['real_name']);
-  $vcode=trim($_POST['vcode']);
+  $user_id=$mysqli->real_escape_string(trim($_POST['user_id']));
+  
+  $len=$mysqli->real_escape_string(strlen($user_id));
+  $email=$mysqli->real_escape_string(trim($_POST['email']));
+  $school=$mysqli->real_escape_string(trim($_POST['school']));
+  $class=$mysqli->real_escape_string(trim($_POST['class']));
+  $stu_id=$mysqli->real_escape_string(trim($_POST['stu_id']));
+  $real_name=$mysqli->real_escape_string(trim($_POST['real_name']));
+  $vcode=$mysqli->real_escape_string(trim($_POST['vcode']));
   // echo $user_id.$email.$vcode."<br>";
   // echo $_SESSION["vcode"];
   if($OJ_VCODE&&($vcode!= $_SESSION["vcode"]||$vcode==""||$vcode==null)) { // 验证码错误 

@@ -11,8 +11,8 @@
 <?php
 if(isset($_GET['cid'])){
   $warnning_percent=90;
-
-  $sql="SELECT UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time) FROM contest WHERE contest_id='{$_GET['cid']}'";
+  $cid =  $mysqli->real_escape_string($_GET['cid']);
+  $sql="SELECT UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time) FROM contest WHERE contest_id='$cid'";
   $res=$mysqli->query($sql);
   $contest_time=$res->fetch_array();
   $contest_len=$contest_time[1]-$contest_time[0];
@@ -35,7 +35,7 @@ if(isset($_GET['cid'])){
     $bar_color="am-progress-bar-secondary";
   }
 
-  $sql="SELECT title FROM contest WHERE contest_id='{$_GET['cid']}'";
+  $sql="SELECT title FROM contest WHERE contest_id='$cid'";
   $res=$mysqli->query($sql);
   $contest_title=$res->fetch_array()[0];
   $title=$contest_title;
