@@ -1,6 +1,11 @@
 *~
 *.o
 .idea/
+judger/core/judge_client/.idea/
+judger/core/judge_client/judge_client
+judger/core/judged/.idea/
+judger/core/judged/judged
+judger/core/sim/.idea/
 /web/.idea/
 /web/bbs/
 /web/JudgeOnline/
