@@ -91,7 +91,7 @@
   if (isset($_GET['problem_id'])&&$_GET['problem_id']!=""){
     
     if(isset($_GET['cid'])){
-      $problem_id=intval($_GET['problem_id']);
+      $problem_id=$_GET['problem_id'];
       $num=strpos($PID,$problem_id);
       $sql=$sql."AND `num`='".$num."' ";
           $str2=$str2."&problem_id=".$problem_id;
