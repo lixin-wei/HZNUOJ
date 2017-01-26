@@ -1,42 +1,42 @@
 <?php
-  /**
-   * This file is created
-   * by yybird
-   * @2016.03.23
-   * last modified
-   * by yybird
-   * @2016.05.25
-   * by D_Star
-   * @2016.08.xx
-  **/
+/**
+ * This file is created
+ * by yybird
+ * @2016.03.23
+ * last modified
+ * by yybird
+ * @2016.05.25
+ * by D_Star
+ * @2016.08.xx
+ **/
 ?>
 
 
 <?php $title=$view_title;?>
 <?php
-  if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
-  else $OJ = "HZNU";
-  
-  if ($_GET['cid']) require_once("contest_header.php");
-  else require_once("header.php");
-  function sss($str){
+if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
+else $OJ = "HZNU";
+
+if ($_GET['cid']) require_once("contest_header.php");
+else require_once("header.php");
+function sss($str){
     $after = preg_replace( '/<[^<]+?>/' ,'FUCK$0FUCK', $str);
     $after = preg_replace( '/(?<!FUCK)</' ,'&lt;', $after);
     $after = preg_replace( '/FUCK(?=<)/' ,'', $after);
     $after = preg_replace( '/>(?!FUCK)/' ,'&gt;', $after);
     $after = preg_replace( '/(?<=>)FUCK/' ,'', $after);
     return $after;
-  }
+}
 ?>
 
 
 <!-- Sample Input 和 Sample Output 的背景色 start -->
 <style type="text/css">
   .sampledata {
-      /*background: none repeat scroll 0 0 rgba(0,0,0,.075);*/
-      font-family: Monospace;
-      white-space: pre;
-      font-size: 10pt;
+    /*background: none repeat scroll 0 0 rgba(0,0,0,.075);*/
+    font-family: Monospace;
+    white-space: pre;
+    font-size: 10pt;
   }
   .sample-outer {
     /* border: 1px solid; */
@@ -64,38 +64,38 @@
 
 <div class="am-container">
   <h1 style="text-align:center;margin-top:40px;"><?php echo $row->title?>
-  <!-- is contest problem -->
-  <?php 
-    $now=time();
-  ?>
-  <?php if (isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
-    <span class="am-badge am-badge-primary am-text-lg">
+    <!-- is contest problem -->
+      <?php
+      $now=time();
+      ?>
+      <?php if (isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
+        <span class="am-badge am-badge-primary am-text-lg">
       <a href="problem.php?id=<?php echo $real_id ?>" style="color: white;">
         <?php echo $real_id ?>
       </a>
     </span>
-  <?php endif ?>
+      <?php endif ?>
   </h1>
-  <?php
-    if ($show_tag && !isset($_GET['cid'])) { 
-  ?> 
-      <form id='tagForm' class='am-form am-form-inline' style="text-align:center" action=''>
-        <div class="am-form-group">
-  <?php
-          echo "<span><i class='am-icon-tag'></i> Tags: </span>";
-          for ($i=0; $i<count($tag); ++$i) {
+    <?php
+    if ($show_tag && !isset($_GET['cid'])) {
+    ?>
+  <form id='tagForm' class='am-form am-form-inline' style="text-align:center" action=''>
+    <div class="am-form-group">
+        <?php
+        echo "<span><i class='am-icon-tag'></i> Tags: </span>";
+        for ($i=0; $i<count($tag); ++$i) {
             if ($i == 0) echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger'>".$tag[$i]."</span>";
             else if ($i == 1) echo "&nbsp;&nbsp;<span class='am-badge am-badge-warning'>".$tag[$i]."</span>";
             else if ($i == 2) echo "&nbsp;&nbsp;<span class='am-badge am-badge-primary'>".$tag[$i]."</span>";
             else if ($i == 3) echo "&nbsp;&nbsp;<span class='am-badge am-badge-secondary'>".$tag[$i]."</span>";
             else if ($i == 4) echo "&nbsp;&nbsp;<span class='am-badge am-badge-success'>".$tag[$i]."</span>";
             else echo "&nbsp;&nbsp;<span class='am-badge am-badge-default'>".$tag[$i]."</span>";
-          }
-  ?>
-        </div>
-  <?php
+        }
+        ?>
+    </div>
+      <?php
       if ($is_solved) {
-  ?>
+          ?>
         &nbsp;&nbsp;
         <div class='am-form-group'><span> My tag: &nbsp;</span></div>
         <div class='am-form-group'>
@@ -105,181 +105,232 @@
           <button type='button' id='tagSubmit' style='border:none;background-color:transparent;'><i class='am-icon-check' ></i></button>
         </div>
         <input type='hidden' value='<?php echo $id ?>' name='id'></input>
-    <?php
+          <?php
       }
       echo "</form>";
-    }
-    ?>
-
-
-  <div style="text-align:center;">
-    Time Limit:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span> 
-    &nbsp;&nbsp;&nbsp;&nbsp; Memory Limit: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
-    <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
-  </div>
-  <div style="text-align:center;">
-    Submission：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
-    AC：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
-    <?php
-      $score_class = "am-badge-default";
-      if ($row->score >= 82) $score_class='am-badge-danger';
-      else if ($row->score >= 64) $score_class='am-badge-warning';
-      else if ($row->score >= 46) $score_class='am-badge-primary';
-      else if ($row->score >= 28) $score_class='am-badge-secondary';
-    ?>
-    Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
-  </div>
-  <br />
-
-  <!-- 提交等按钮 start -->
-  <div class="am-text-center">
-    <a href="
+      }
+      ?>
+    
+    
+    <div style="text-align:center;">
+      Time Limit:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span>
+      &nbsp;&nbsp;&nbsp;&nbsp; Memory Limit: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
+        <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
+    </div>
+    <div style="text-align:center;">
+      Submission：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      AC：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <?php
+        $score_class = "am-badge-default";
+        if ($row->score >= 82) $score_class='am-badge-danger';
+        else if ($row->score >= 64) $score_class='am-badge-warning';
+        else if ($row->score >= 46) $score_class='am-badge-primary';
+        else if ($row->score >= 28) $score_class='am-badge-secondary';
+        ?>
+      Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
+    </div>
+    <br />
+    
+    <!-- 提交等按钮 start -->
+    <div class="am-text-center">
+      <a href="
     <?php
       if ($pr_flag){
-        echo "submitpage.php?id=$id";
+          echo "submitpage.php?id=$id";
       }else{
-        echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
+          echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
       }
-    ?>
+      ?>
     " style="color:white">
-      <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
-    </a>&nbsp;&nbsp;
-    <?php
-      if (isset($_GET['cid'])) {
-    ?>
-    <a href="problemstatus.php?<?php echo "cid=".$cid."&id=".$row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
-    <?php
-      } else {
-
-    ?>
-    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
-    <?php
-      }
-      if (HAS_PRI("edit_".$set_name."_problem")) {
-    ?>
-        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
-        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
-    <?php
-      }
-    ?>
-  </div>
-  <!-- 提交等按钮 end -->
-
-  <h2>Description</h2>
-  <p>
-    <?php 
-      //编码转义未解决！
-      //$tt=htmlspecialchars($row->description);
-      echo sss($row->description);
-    ?>
-  </p>
-
-  <h2>Input</h2>
-  <p>
-    <?php echo sss($row->input);?>
-  </p>
-
-  <h2>Output</h2>
-  <p>
-    <?php echo sss($row->output)?>
-  </p>
-
-  <h2>Samples</h2>
-  <?php
-  foreach ($samples as $sample) {
-    $text_input=htmlentities($sample['input']);
-    $text_output=htmlentities($sample['output']);
-    if($sample['show_after']){
-      echo <<<HTML
-      <div style='color: grey;'>
-        Show after trying {$sample['show_after']} times:
-      </div>
-HTML;
-
-    }
-    echo <<<HTML
-    <div class="sample-outer">
-      <div class="sample-title">input:</div>
-      <div class="sample-bg"><span class="sampledata">$text_input</span></div>
-      <div class="sample-title">output:</div>
-      <div class="sample-bg"><span class="sampledata">$text_output</span></div>
+        <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
+      </a>&nbsp;&nbsp;
+        <?php
+        if (isset($_GET['cid'])) {
+            ?>
+          <a href="problemstatus.php?<?php echo "cid=".$cid."&id=".$row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
+            <?php
+        } else {
+            
+            ?>
+          <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
+            <?php
+        }
+        if (HAS_PRI("edit_".$set_name."_problem")) {
+            ?>
+          <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
+          <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
+            <?php
+        }
+        ?>
     </div>
+    <!-- 提交等按钮 end -->
+      <?php
+      $str=sss($row->description);
+      if($str) {
+        //编码转义未解决！
+          //$tt=htmlspecialchars($row->description);
+          echo <<<HTML
+          <h2>Description</h2>
+          <p>
+          $str
+          </p>
 HTML;
-  }
-  ?>
-  <h2>Hint</h2>
-  <?php echo "<div>".$row->hint."</div>"; ?>
+      }
+      ?>
+      <?php
+      $str=sss($row->input);
+      if($str) {
+          echo <<<HTML
+          <h2>Input</h2>
+          <p>
+          $str
+          </p>
+HTML;
+      }
+      ?>
+    
+      <?php
+      $str=sss($row->output);
+      if($str) {
+          echo <<<HTML
+          <h2>Output</h2>
+          <p>
+          $str
+          </p>
+HTML;
+      }
+      ?>
 
-
-  <h2>Author</h2>
-  <?php 
-    echo "<div><p><a href='problemset.php?search=$row->author'>".nl2br($row->author)."</a></p></div>"; 
-  ?>
-  <?php
-    if (!isset($_GET['cid'])) { // hide source if the problem is in contest
-  ?>
-  <h2>Source</h2>
-  <?php 
-    echo "<div><p><a href='problemset.php?search=$row->source'>".nl2br($row->source)."</a></p></div>";
-    } 
-  ?>
-  <?php if ($can_see_video || HAS_PRI("watch_solution_video")): ?>
-    <h2>Solution Video</h2>
-    <?php if (file_exists("upload/video/".md5($real_id)."pfb.mp4")): ?>
-      <form action="solution_video.php" method="POST">
-        <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
-        <button class="am-btn am-btn-success am-btn-lg">Click To Watch The Video</button>
-      </form>
-    <?php else: ?>
-      <button disabled="1" class="am-btn am-btn-default am-btn-lg">No Solution Video</button>
-    <?php endif ?>
-    <div style="display: block; color: grey; padding-bottom: 20px;">
-      *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
-    </div>
-  <?php endif ?>
-  <!-- 提交等按钮 start -->
-  <div class="am-text-center">
-    <a href="
+      <?php
+      $html_samples="";
+      foreach ($samples as $sample) {
+          $text_input=htmlentities($sample['input']);
+          $text_output=htmlentities($sample['output']);
+          if($sample['show_after']){
+              $html_samples.= <<<HTML
+                <div style='color: grey;'>
+                  Show after trying {$sample['show_after']} times:
+                </div>
+HTML;
+          }
+          if($text_input || $text_output) {
+              $html_samples.= <<<HTML
+                <div class="sample-outer">
+                  <div class="sample-title">input:</div>
+                  <div class="sample-bg"><span class="sampledata">$text_input</span></div>
+                  <div class="sample-title">output:</div>
+                  <div class="sample-bg"><span class="sampledata">$text_output</span></div>
+                </div>
+HTML;
+          }
+      }
+      $str=sss($html_samples);
+      if($str) {
+          echo <<<HTML
+          <h2>Samples</h2>
+          <p>
+          $str
+          </p>
+HTML;
+      }
+      ?>
+    
+    
+      <?php
+      $str=sss($row->hint);
+      if($str) {
+          echo <<<HTML
+          <h2>Hint</h2>
+          <p>
+          $str
+          </p>
+HTML;
+      }
+      ?>
+    
+      <?php
+      $str=sss($row->author);
+      if($str) {
+          echo <<<HTML
+          <h2>Author</h2>
+            <div><p>
+              <a href='problemset.php?search=$row->author'>$str</a>
+            </p></div>
+HTML;
+      }
+      ?>
+  
+      <?php
+      if (!isset($_GET['cid'])) { // hide source if the problem is in contest
+          $str=sss($row->source);
+          if($str) {
+              echo <<<HTML
+                <h2>Source</h2>
+                <div><p>
+                  <a href='problemset.php?search=$row->source'>$str</a>
+                </p></div>
+HTML;
+          }
+      }
+      ?>
+    
+      <?php if ($can_see_video || HAS_PRI("watch_solution_video")): ?>
+        <h2>Solution Video</h2>
+          <?php if (file_exists("upload/video/".md5($real_id)."pfb.mp4")): ?>
+          <form action="solution_video.php" method="POST">
+            <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+            <button class="am-btn am-btn-success am-btn-lg">Click To Watch The Video</button>
+          </form>
+          <?php else: ?>
+          <button disabled="1" class="am-btn am-btn-default am-btn-lg">No Solution Video</button>
+          <?php endif ?>
+        <div style="display: block; color: grey; padding-bottom: 20px;">
+          *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
+        </div>
+      <?php endif ?>
+    <!-- 提交等按钮 start -->
+    <div class="am-text-center">
+      <a href="
     <?php
       if ($pr_flag){
-        echo "submitpage.php?id=$id";
+          echo "submitpage.php?id=$id";
       }else{
-        echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
+          echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
       }
-    ?>
+      ?>
     " style="color:white">
-      <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
-    </a>&nbsp;&nbsp;
-    <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
-    <?php
-      if (HAS_PRI("edit_".$set_name."_problem")) {
-    ?>
-        <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
-        <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
-    <?php
-      }
-    ?>
-
-  </div>
-  <!-- 提交等按钮 end -->
+        <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
+      </a>&nbsp;&nbsp;
+      <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
+        <?php
+        if (HAS_PRI("edit_".$set_name."_problem")) {
+            ?>
+          <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
+          <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
+            <?php
+        }
+        ?>
+    
+    </div>
+    <!-- 提交等按钮 end -->
 
 </div>
 <?php require_once("footer.php"); ?>
 
 <!-- ajax for adding user's own tag -->
 <script>
-  $("#tagSubmit").click(function(){
-    $.ajax({
-      url: 'addTag.php',
-      type: 'post',
-      data: $("#tagForm").serialize(),
-      async: false,
-      success: function(data,status){
-        //alert(data+"\r\n"+status);
-        window.location.reload();
-      },
+    $("#tagSubmit").click(function(){
+        $.ajax({
+            url: 'addTag.php',
+            type: 'post',
+            data: $("#tagForm").serialize(),
+            async: false,
+            success: function(data,status){
+                //alert(data+"\r\n"+status);
+                window.location.reload();
+            },
+        });
     });
-  });
 </script>
 <!-- highlight.js START-->
 <!-- <link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/> -->
@@ -291,15 +342,15 @@ HTML;
 <script src="/OJ/plugins/highlight/highlightjs-line-numbers.min.js"></script>
 <style type="text/css">
   .hljs-line-numbers {
-      text-align: right;
-      border-right: 1px solid #ccc;
-      color: #999;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+    text-align: right;
+    border-right: 1px solid #ccc;
+    color: #999;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   code{
     background: transparent;
@@ -312,20 +363,20 @@ HTML;
   }
 </style>
 <script>
-  hljs.initHighlightingOnLoad();
-  hljs.initLineNumbersOnLoad();
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
 </script>
 <!-- highlight.js END-->
 <!--auto folding code START-->
 <script type="text/javascript">
-$(document).ready(function(){
-  $("pre code").parent().before("<button class='am-btn am-btn-block am-btn-default am-text-xs'>Toggle Code</button>");
-  $("pre code").parent().hide(0);
+    $(document).ready(function(){
+        $("pre code").parent().before("<button class='am-btn am-btn-block am-btn-default am-text-xs'>Toggle Code</button>");
+        $("pre code").parent().hide(0);
 
 
-  $("button").click(function(){
-    $(this).next().toggle(100);
-  });
-});
+        $("button").click(function(){
+            $(this).next().toggle(100);
+        });
+    });
 </script>
 <!--auto folding code END-->
