@@ -86,11 +86,10 @@ if(isset($_GET['cid'])){
   <div class="am-container">
     <div class="am-collapse am-topbar-collapse" id="collapse-head">
       <ul class="am-nav am-nav-pills am-topbar-nav">
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="index.php"){echo "class='am-active'";} ?>><a href="./">Home</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php"){echo "class='am-active'";} ?>><a href='./contest.php?cid=<?php echo $cid?>'>Problem</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank.php"){echo "class='am-active'";} ?>><a href='./contestrank.php?cid=<?php echo $cid?>'>Ranklist</a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="index.php"){echo "class='am-active'";} ?>><a class="am-icon-chevron-left" href="./"> Back</a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php"){echo "class='am-active'";} ?>><a href='./contest.php?cid=<?php echo $cid?>'>Problems</a></li>
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="status.php"){echo "class='am-active'";} ?>><a href='./status.php?cid=<?php echo $cid?>'>Status</a></li>
-        <li><a href='./contest.php'>Contest</a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank.php"){echo "class='am-active'";} ?>><a href='./contestrank.php?cid=<?php echo $cid?>'>Standings</a></li>
       </ul>
         <!-- 用户部分 start -->
         <?php
