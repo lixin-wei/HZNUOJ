@@ -24,7 +24,7 @@
       <td>
         <form action="status.php" method="get" class="am-form am-form-inline" role="form">
           <div class="am-form-group">
-              <input type="text" class="am-form-field" placeholder="Problem ID" name="problem_id" value="<?php echo intval($problem_id)?>">
+              <input type="text" class="am-form-field" placeholder="Problem ID" name="problem_id" value="<?php echo htmlentities($problem_id)?>">
           </div>
           <div class="am-form-group">
               <input type="text" class="am-form-field" placeholder="User ID" name="user_id" value="<?php echo htmlentities($user_id)?>">

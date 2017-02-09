@@ -254,9 +254,10 @@ if((~$OJ_LANGMASK)&(1<<$language)){
    	header("Location: $statusURI");
    }
    else{
-	?>
-	<script>window.parent.setTimeout("fresh_result('<?php echo $insert_id;?>')",2000);</script>
-	<?php
-	
+     $para = "user_id={$_SESSION['user_id']}";
+     if(isset($cid)) {
+       $para .= "&cid=$cid";
+     }
+     echo "<script>window.location.href='/OJ/status.php?$para'</script>";
    }
 ?>
