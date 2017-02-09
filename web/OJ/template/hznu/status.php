@@ -121,15 +121,15 @@
     </tbody>
   </table>
 </div>
-<div class="am-container am-u-sm-centered am-u-sm-offset-10 am-u-sm-2">
-  <ul class="am-pagination">
-    <?php echo "<li><a href=status.php?".htmlentities($str2).">Top</a></li>&nbsp;&nbsp;";
-    if (isset($_GET['prevtop']))
-            echo "<li><a href=status.php?".htmlentities($str2)."&top=".intval($_GET['prevtop']).">&laquo; Previous</a></li>&nbsp;&nbsp;";
-    else
-            echo "<li><a href=status.php?".htmlentities($str2)."&top=".($top+20).">&laquo; Previous</a></li>&nbsp;&nbsp;";
-    echo "<li><a href=status.php?".htmlentities($str2)."&top=".$bottom."&prevtop=$top>Next &raquo;</a></li>";
-    ?>
-  </ul>
-</div>
+  <div class="am-container am-u-sm-centered am-u-sm-offset-10 am-u-sm-2">
+    <ul class="am-pagination">
+        <?php echo "<li><a href=\"status.php?".htmlentities($str2)."\">Top</a></li>&nbsp;&nbsp;";
+        if (isset($_GET['prevtop']))
+            echo "<li><a href=\"status.php?".htmlentities($str2)."&top=".intval($_GET['prevtop'])."\">&laquo; Previous</a></li>&nbsp;&nbsp;";
+        else
+            echo "<li><a href=\"status.php?".htmlentities($str2)."&top=".($top+20)."\">&laquo; Previous</a></li>&nbsp;&nbsp;";
+        echo "<li><a href=\"status.php?".htmlentities($str2)."&top=".$bottom."&prevtop=$top\">Next &raquo;</a></li>";
+        ?>
+    </ul>
+  </div>
 <?php include "footer.php" ?>
