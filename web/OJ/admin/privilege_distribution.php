@@ -8,6 +8,7 @@ require_once("admin-header.php");
 $can_edit=HAS_PRI("edit_privilege_distribution");
 
 if($_POST['data']){
+  require "../include/check_post_key.php";
   if($can_edit){
     $data=$_POST['data'];
     $sql="";
@@ -32,7 +33,7 @@ if($_POST['data']){
 <h1>Privilege Distribution Edit</h1>
 <hr/>
 <form method="post">
-
+  <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
   <div class="row">
     <div class="col-sm-2">
       <!-- Nav tabs -->
@@ -243,5 +244,5 @@ if($_POST['data']){
 require_once("admin-footer.php");
 ?>
 <script type="text/javascript">
-  $('#pri_tag a:first').tab('show') // Select first tab
+  $('#pri_tag a:first').tab('show'); // Select first tab
 </script>

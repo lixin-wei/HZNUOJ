@@ -33,29 +33,38 @@
       <?php require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/set_post_key.php" ?>
       <div class="am-u-md-10 am-u-md-centered">
         <div class="am-g am-text-center" style="margin-bottom: 20px;">
-          <label for="language">Language: </label>
-          <select id="language" name="language" data-am-selected>
-              <?php
-              $lang_count=count($language_ext);
-        
-              if(isset($_GET['langmask']))
-                  $langmask=$_GET['langmask'];
-              else
-                  $langmask=$OJ_LANGMASK;
-        
-              $lang=(~((int)$langmask))&((1<<($lang_count))-1);
-              if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
-              else $lastlang=0;
-              for($i=0;$i<$lang_count;$i++){
-                  if($lang&(1<<$i))
-                      echo"<option value=$i ".( $lastlang==$i?"selected":"").">
+          <div class="am-u-md-6">
+            <label for="language">Language: </label>
+            <select id="language" name="language" data-am-selected>
+                <?php
+                $lang_count=count($language_ext);
+      
+                if(isset($_GET['langmask']))
+                    $langmask=$_GET['langmask'];
+                else
+                    $langmask=$OJ_LANGMASK;
+      
+                $lang=(~((int)$langmask))&((1<<($lang_count))-1);
+                if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
+                else $lastlang=0;
+                for($i=0;$i<$lang_count;$i++){
+                    if($lang&(1<<$i))
+                        echo"<option value=$i ".( $lastlang==$i?"selected":"").">
                                 ".$language_name[$i]."
                          </option>";
-              }
-              ?>
-          </select>
+                }
+                ?>
+            </select>
+          </div>
+          <div class="m-u-md-6">
+            <label for="language">Theme: </label>
+            <select id="theme" name="theme" data-am-selected>
+              <option value="xcode">Bright</option>
+              <option value="monokai">Dark</option>
+            </select>
+          </div>
         </div>
-        <div id="editor" style="wdith:100%; height: 500px; border: 1px solid #F0F0F0;"></div>
+        <div id="editor" style="wdith:100%; height: 500px; border: 1px solid #F0F0F0;"><?php if(isset($view_src))echo htmlentities($view_src); ?></div>
         <input type="hidden" id="source" name="source">
           <?php
           if(isset($_GET['cid'])) {
@@ -75,6 +84,8 @@
 </div>
 <?php require_once("footer.php") ?>
 <script src="/OJ/plugins/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/OJ/plugins/ace/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
+<script src="/OJ/plugins/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-c_cpp.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-pascal.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-java.js" type="text/javascript" charset="utf-8"></script>
@@ -94,6 +105,7 @@
     var $obj_select_lang = $("#language");
     var lang = $obj_select_lang.val();
     editor.getSession().setMode("ace/mode/"+language_mod[lang]);
+    editor.setTheme("ace/theme/xcode");
     $("#submit_form").submit(function () {
         $("#source").val(editor.getValue());
         return true;
@@ -102,5 +114,9 @@
     $obj_select_lang.change(function () {
         lang = $(this).val();
         editor.getSession().setMode("ace/mode/"+language_mod[lang]);
+    });
+    
+    $("#theme").change(function () {
+        editor.setTheme("ace/theme/"+$(this).val());
     });
 </script>
