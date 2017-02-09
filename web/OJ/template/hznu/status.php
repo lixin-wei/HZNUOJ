@@ -22,9 +22,9 @@
     <tr>
       <td>
         <form action="status.php" method="get" class="am-form am-form-inline" role="form">
-          <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo $problem_id?>"></div>
+          <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo intval($problem_id)?>"></div>
           <div class="am-form-group">
-              <input type="text" class="am-form-field" placeholder=" &nbsp;User ID" name="user_id" value="<?php echo $user_id?>">
+              <input type="text" class="am-form-field" placeholder=" &nbsp;User ID" name="user_id" value="<?php echo htmlentities($user_id)?>">
             <?php if (isset($cid)) echo "<input type='hidden' name='cid' value='$cid'>";?>
           </div>
           Language:&nbsp
@@ -123,12 +123,12 @@
 </div>
 <div class="am-container am-u-sm-centered am-u-sm-offset-10 am-u-sm-2">
   <ul class="am-pagination">
-    <?php echo "<li><a href=status.php?".$str2.">Top</a></li>&nbsp;&nbsp;";
+    <?php echo "<li><a href=status.php?".htmlentities($str2).">Top</a></li>&nbsp;&nbsp;";
     if (isset($_GET['prevtop']))
-            echo "<li><a href=status.php?".$str2."&top=".intval($_GET['prevtop']).">&laquo; Previous</a></li>&nbsp;&nbsp;";
+            echo "<li><a href=status.php?".htmlentities($str2)."&top=".intval($_GET['prevtop']).">&laquo; Previous</a></li>&nbsp;&nbsp;";
     else
-            echo "<li><a href=status.php?".$str2."&top=".($top+20).">&laquo; Previous</a></li>&nbsp;&nbsp;";
-    echo "<li><a href=status.php?".$str2."&top=".$bottom."&prevtop=$top>Next &raquo;</a></li>";
+            echo "<li><a href=status.php?".htmlentities($str2)."&top=".($top+20).">&laquo; Previous</a></li>&nbsp;&nbsp;";
+    echo "<li><a href=status.php?".htmlentities($str2)."&top=".$bottom."&prevtop=$top>Next &raquo;</a></li>";
     ?>
   </ul>
 </div>

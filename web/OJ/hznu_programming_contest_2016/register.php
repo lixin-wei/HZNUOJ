@@ -53,13 +53,13 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 				$res=$mysqli->query($sql);
 				while($row=$res->fetch_array()){
 					echo "<tr>";
-					echo "<td>".$row['institute']."</td>";
+					echo "<td>".htmlentities($row['institute'])."</td>";
 					if($row['anonymous']) echo "<td>****</td>";
-					else echo "<td>".$row['stu_id']."</td>";
-					echo "<td>".$row['class']."</td>";
+					else echo "<td>".htmlentities($row['stu_id'])."</td>";
+					echo "<td>".htmlentities($row['class'])."</td>";
 					if($row['anonymous']) echo "<td>****</td>";
-					else echo "<td>".$row['name']."</td>";
-					echo "<td>".$row['register_time']."</td>";
+					else echo "<td>".htmlentities($row['name'])."</td>";
+					echo "<td>".htmlentities($row['register_time'])."</td>";
 					echo "</tr>";
 				}
 				?>
@@ -70,6 +70,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 	<div id="content-register" style="display: none;">
 		<div class="am-g" style="max-width: 800px;">
 			<form class="am-form" action="contest_register.php" method="post" data-am-validator id="form_register">
+        <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
 				<div class="am-form-group">
 					<label for="institute">学院</label>
 					<select name="institute" id="institute" required>
