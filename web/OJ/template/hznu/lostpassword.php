@@ -1,12 +1,12 @@
 <?php
-  /**
-   * This file is created
-   * by yybird
-   * @2016.05.12
-   * last modified
-   * by yybird
-   * @2016.05.12
-  **/
+/**
+ * This file is created
+ * by yybird
+ * @2016.05.12
+ * last modified
+ * by yybird
+ * @2016.05.12
+ **/
 ?>
 
 <?php $title="Lost Password";?>
@@ -14,20 +14,21 @@
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <br>
-      <h3>Lost Password</h3>
+    <h3>Lost Password</h3>
     <hr>
     <form action="lostpassword.php" method="post" class="am-form am-form-horizontal">
+      <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
       <div class="am-form-group">
         <label for="username" class="am-u-sm-4 am-form-label">User ID: </label>
         <div class="am-u-sm-8">
           <input type="text" name="user_id" id="username" value="" placeholder="Your user ID" style="width:300px;">
-        </div>  
+        </div>
       </div>
       <div class="am-form-group">
         <label class="am-u-sm-4 am-form-label">Email: </label>
         <div class="am-u-sm-8">
           <input type="text" name="email" id="pwd" value="" placeholder="Your Email" style="width:300px;">
-        </div>  
+        </div>
       </div>
       <div class="am-form-group">
         <label for="pwd" class="am-u-sm-4 am-form-label">Verify Code: </label>

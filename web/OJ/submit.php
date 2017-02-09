@@ -5,6 +5,7 @@ if (!isset($_SESSION['user_id'])){
 	require_once("oj-footer.php");
 	exit(0);
 }
+require_once "include/check_post_key.php";
 require_once("include/db_info.inc.php");
 require_once("include/const.inc.php");
 require_once("include/my_func.inc.php");

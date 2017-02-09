@@ -1,2 +1,7 @@
-<?php $_SESSION['postkey']=strtoupper(substr(MD5($_SESSION['user_id'].rand(0,9999999)),0,10));?>
-<input type=hidden name="postkey" value="<?php echo $_SESSION['postkey']?>">
+<?php @session_start();
+
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = MD5(random_bytes(10));
+}
+?>
+<input type=hidden name="csrf_token" value="<?php echo $_SESSION['csrf_token']?>">
