@@ -1,5 +1,7 @@
 <?php
-
+echo "register ended!";
+exit(0);
+require_once "../include/check_post_key.php";
 require_once "../include/db_info.inc.php";
 
 $institute=$mysqli->real_escape_string($_POST['institute']);
