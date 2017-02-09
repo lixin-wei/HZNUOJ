@@ -8,6 +8,7 @@
 
 <?php 
   require_once("./include/db_info.inc.php");
+  require_once "include/check_post_key.php";
   $vcode=trim($_POST['vcode']);
   if($OJ_VCODE&&($vcode!= $_SESSION["vcode"]||$vcode==""||$vcode==null) ){
     echo "<script language='javascript'>\n";

@@ -35,6 +35,7 @@
 <script src="include/jquery-latest.js"></script>
 <div class="am-container">
   <form id=frmSolution action="submit.php" method="post">
+    <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
     <?php
     if (isset($id)) {
       echo "<h3 align='center' style='margin-top:40px; color:red;'>Problem---$id</h3>";
