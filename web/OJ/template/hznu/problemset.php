@@ -27,14 +27,14 @@
     $link="problemset.php?";
     foreach ($args as $key => $value) {
       if(isset($data["$key"])){
-        $value=$data["$key"];
+        $value=htmlentities($data["$key"]);
         $link.="&$key=$value";
       }
       else if($value){
-        $link.="&$key=$value";
+        $link.="&$key=".htmlentities($value);
       }
     }
-    return htmlentities($link);
+    return $link;
   }
 ?>
 <hr/>
