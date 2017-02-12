@@ -32,12 +32,17 @@
   #title-index {
     font-size: 95%;
   }
+  @media screen and (max-width:640px){
+    #content {
+      display: none;
+    }
+  }
 </style>
 <div class="am-container">
   <h1 style="margin-top: 50px;">HZNU Online Judge FAQ</h1>
   <hr>
   <div class="am-g">
-    <div class="am-u-md-3">
+    <div class="am-u-md-3" id="content">
       <div class="box" data-am-sticky="{top:60}">
         <ul id="title-index" class="am-list">
           <h2>Content</h2>
