@@ -103,14 +103,14 @@
   <ul class="am-pagination am-text-center">
     <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
     <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
-    <?php 
+    <?php
       //分页
       for ($i=1;$i<=$view_total_page;$i++){
         $link=generate_url(Array("page"=>"$i"));
         if($page==$i)
-          echo "<li class='am-active'><a href='$link'>{$i}</a></li>";
+          echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
         else
-          echo "<li><a href='$link'>{$i}</a></li>";
+          echo "<li><a href=\"$link\">{$i}</a></li>";
       }
     ?>
     <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
@@ -188,9 +188,9 @@
       for ($i=1;$i<=$view_total_page;$i++){
         $link=generate_url(Array("page"=>"$i"));
         if($page==$i)
-          echo "<li class='am-active'><a href='$link'>{$i}</a></li>";
+          echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
         else
-          echo "<li><a href='$link'>{$i}</a></li>";
+          echo "<li><a href=\"$link\">{$i}</a></li>";
       }
     ?>
     <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
