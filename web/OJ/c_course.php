@@ -710,7 +710,7 @@
         </div>
       </div>
       <div class="am-u-md-4">
-        <div class="box">
+        <div class="box" data-am-sticky="{top:60}">
           <div class="content-block">
             <div class="content-block-title">
               历史班级
