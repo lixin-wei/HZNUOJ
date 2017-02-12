@@ -13,7 +13,13 @@
 <?php include "header.php" ?>
 
 <div class='am-container'>
-  <hr>
+  <div class="am-g" style="margin-top: 20px; margin-bottom: 20px;">
+    <ul class="am-nav am-nav-tabs">
+      <li><a href="/OJ/problemset.php">Problems</a></li>
+      <li><a href="/OJ/status.php">Status</a></li>
+      <li class="am-active"><a href="/OJ/ranklist.php">Standings</a></li>
+    </ul>
+  </div>
   <div class='am-g'>
     <!-- 用户查找 start -->
     <div class='am-u-md-6'>

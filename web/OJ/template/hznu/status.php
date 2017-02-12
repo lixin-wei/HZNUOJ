@@ -11,12 +11,14 @@
 
 <?php $title="Status";?>
 <?php include "header.php" ?>
-<style type="text/css">
-  .pp{
-    margin-top: 30px;
-  }
-</style>
-<div class="am-container pp">
+<div class="am-container">
+  <div class="am-g" style="margin-top: 20px; margin-bottom: 20px;">
+    <ul class="am-nav am-nav-tabs">
+      <li><a href="/OJ/problemset.php">Problems</a></li>
+      <li class="am-active"><a href="/OJ/status.php">Status</a></li>
+      <li><a href="/OJ/ranklist.php">Standings</a></li>
+    </ul>
+  </div>
   <!-- 搜索框 start -->
   <table>
     <tr>

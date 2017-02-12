@@ -80,31 +80,21 @@
         <ul class="am-nav am-nav-pills am-topbar-nav">
 
           <!-- ProblemSet部分 start -->
-          <li class='am-dropdown' data-am-dropdown>
-            <a href="#" class="am-dropdown-toggle" >ProblemSet <span class="am-icon-caret-down"></span></a>
-            <ul class="am-dropdown-content ">
-              <li><a href="/OJ/problemset.php">All</a></li>
-              <?php
-              $___res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
-              while($___row = $___res->fetch_array()){
-                echo "<li><a href='/OJ/problemset.php?OJ=$___row[0]'>$___row[1]</a></li>";
-              }
-              ?>
-            </ul>
-          </li>
+          <li <?php
+          $page_name=basename($_SERVER['SCRIPT_NAME']);
+          if($page_name=="problemset.php" || $page_name=="status.php" || $page_name=="ranklist.php") {
+            echo "class='am-active'";
+          }
+          ?>><a href="/OJ/problemset.php">ProblemSet</a></li>
           <!-- ProblemSet部分 end -->
-
-          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="status.php"){echo "class='am-active'";} ?>><a href="/OJ/status.php">Status</a></li>
-          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="ranklist.php"){echo "class='am-active'";} ?>><a href="/OJ/ranklist.php">Ranklist</a></li>
-
+          
           <!-- Contest部分 start -->
-          <li class='am-dropdown' data-am-dropdown>
-            <a href="#" class="am-dropdown-toggle" >Contest&nbsp;<span class="am-icon-caret-down"></span></a>
-            <ul class="am-dropdown-content ">
-              <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php"){echo "class='am-active'";} ?>><a href="/OJ/contest.php">Local</a></li>
-              <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="recent-contest.php"){echo "class='am-active'";} ?>><a href="/OJ/recent-contest.php">Remote</a></li>
-            </ul>
-          </li>
+          <li <?php
+          $page_name=basename($_SERVER['SCRIPT_NAME']);
+          if($page_name=="contest.php" || $page_name=="recent-contest.php") {
+              echo "class='am-active'";
+          }
+          ?>><a href="/OJ/contest.php">Contest</a></li>
           <!-- Contest部分 end -->
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="/OJ/faqs.php">F.A.Q</a></li>

@@ -13,6 +13,12 @@
 <?php require_once("header.php"); ?>
 
 <div class="am-container">
+  <div class="am-g" style="margin-top: 20px; margin-bottom: 20px;">
+    <ul class="am-nav am-nav-tabs">
+      <li><a href="/OJ/contest.php">Local</a></li>
+      <li class="am-active"><a href="/OJ/recent-contest.php">Remote</a></li>
+    </ul>
+  </div>
   <table class='am-table am-table-hover am-table-striped am-text-center'>
     <thead>
       <tr>

@@ -12,8 +12,13 @@
 <?php $title="ContestSet";?>
 <?php include "header.php" ?>
 
-<div class="am-container tt">
-
+<div class="am-container">
+  <div class="am-g" style="margin-top: 20px; margin-bottom: 20px;">
+    <ul class="am-nav am-nav-tabs">
+      <li class="am-active"><a href="/OJ/contest.php">Local</a></li>
+      <li><a href="/OJ/recent-contest.php">Remote</a></li>
+    </ul>
+  </div>
   <h3 class='am-text-center'>Server Time：<span id='nowdate'></span></h3>
   <hr />
   <table class="am-table">
