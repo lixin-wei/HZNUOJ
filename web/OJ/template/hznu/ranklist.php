@@ -11,9 +11,16 @@
 
 <?php $title="Ranklist";?>
 <?php include "header.php" ?>
-
+<style>
+  .am-form-inline > .am-form-group {
+    margin-left: 15px;
+  }
+  .am-form-inline {
+    margin-bottom: 1.5rem;
+  }
+</style>
 <div class='am-container'>
-  <div class="am-g" style="margin-top: 20px; margin-bottom: 20px;">
+  <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
       <li><a href="/OJ/problemset.php">Problems</a></li>
       <li><a href="/OJ/status.php">Status</a></li>
@@ -50,7 +57,6 @@
           </script>
           <!-- 选择班级后自动跳转页面的js代码 end -->
         </div>
-        &nbsp;&nbsp;&nbsp;
         <div class="am-form-group am-form-icon">
           <i class="am-icon-search"></i>
           <input type="text" class="am-form-field" placeholder=" &nbsp;Input user ID" name="user">
@@ -73,11 +79,11 @@
     </div> -->
     <!-- 排序模块 end -->
   </div>
-
-  <table class="am-table">
-
-    <!-- 表头 start -->
-    <thead>
+  <div class="am-avg-md-1">
+    <table class="am-table">
+      
+      <!-- 表头 start -->
+      <thead>
       <tr>
         <th class='am-text-center'>Rank</th>
         <th class='am-text-center'>User</th>
@@ -92,31 +98,30 @@
         <th class='am-text-center' style='width=100px'>Level</th>
         <th class='am-text-center'>DouQi</th>
       </tr>
-    </thead>
-    <!-- 表头 end -->
-
-    <!-- 列出排名 start -->
-    <tbody>
-      <?php 
-        foreach($view_rank as $row){
+      </thead>
+      <!-- 表头 end -->
+      
+      <!-- 列出排名 start -->
+      <tbody>
+      <?php
+      foreach($view_rank as $row){
           echo "<tr>";
           foreach($row as $table_cell){
-            echo "<td align='center'>";
-            echo $table_cell;
-            echo "</td>";
+              echo "<td align='center'>";
+              echo $table_cell;
+              echo "</td>";
           }
           echo "</tr>";
-        }
+      }
       ?>
-    </tbody>
-    <!-- 列出排名 end -->
-
-  </table>
-</div>
-
+      </tbody>
+      <!-- 列出排名 end -->
+    
+    </table>
+  </div>
 
 <!-- 页标签 start -->
-<div class="am-container">
+<div class="am-avg-md-1">
   <ul class="am-pagination am-text-center">
     <li><a href="ranklist.php?start=<?php echo $start-30<0?0:$start-30; echo '&'.$filter_url; ?>">&laquo; Prev</a></li>
       <?php
