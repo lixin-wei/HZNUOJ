@@ -24,26 +24,26 @@
     <div class='am-u-md-4'>
       <table class="am-table am-table-striped am-table-compact am-text-center">
         <tbody>
-          <tr><td class="first-col">User ID</td><td><?php echo $user?></td></tr>
-          <tr><td class="first-col">Nick Name</td><td><?php echo $nick?></td></tr>
+          <tr><td class="first-col">User ID</td><td><?php echo htmlentities($user)?></td></tr>
+          <tr><td class="first-col">Nick Name</td><td><?php echo htmlentities($nick)?></td></tr>
           <tr><td class="first-col">Rank</td><td><?php echo $Rank?></td></tr>
           <tr><td class="first-col">Douqi</td><td><?php echo round($strength)?></td></tr>
           <tr><td class="first-col">Level</td><td><?php echo $level?></td></tr>
           <tr>
             <td class="first-col">Local AC</td>
-            <td><a href='status.php?user_id=<?php echo $user?>&jresult=4'><?php echo $local_ac?></a></td>
+            <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
           </tr>
           <tr>
             <td class="first-col">Total AC</td>
             <td><?php echo $total_ac?></td>
           </tr>
-          <tr><td class="first-col">School</td><td><?php echo $school?></td></tr>
-          <tr><td class="first-col">Email</td><td><a href="mailto:<?php echo $email; ?>"><?php echo $email?></a></td></tr>
+          <tr><td class="first-col">School</td><td><?php echo htmlentities($school)?></td></tr>
+          <tr><td class="first-col">Email</td><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
           <?php if (HAS_PRI("see_hidden_user_info")): ?>
             <tr><td colspan="2" class="am-danger">----The followings are  admin only----</td></tr>
-            <tr><td class="first-col">Student ID</td><td><?php echo $stu_id?></td></tr>
-            <tr><td class="first-col">Real Name</td><td><?php echo $real_name?></td></tr>
-            <tr><td class="first-col">Class</td><td><?php echo $class?></td></tr>
+            <tr><td class="first-col">Student ID</td><td><?php echo htmlentities($stu_id)?></td></tr>
+            <tr><td class="first-col">Real Name</td><td><?php echo htmlentities($real_name)?></td></tr>
+            <tr><td class="first-col">Class</td><td><?php echo htmlentities($class)?></td></tr>
           <?php endif ?>
         </tbody>
       </table>

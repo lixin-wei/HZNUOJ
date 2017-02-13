@@ -25,7 +25,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Nick Name:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->nick)?>" name="nick">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->nick)?>" name="nick">
       </div>
     </div> 
     <div class="am-form-group">
@@ -51,13 +51,13 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">School:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->school)?>" name="school">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->school)?>" name="school">
       </div>
     </div>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->stu_id)?>" name="stu_id">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->stu_id)?>" name="stu_id">
       </div>
     </div>
     <div class="am-form-group">
@@ -77,7 +77,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Real Name:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->real_name)?>" name="real_name">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name">
       </div>
     </div>
     <div class="am-form-group">
@@ -85,7 +85,7 @@
         <font color='red'><b>*</b></font>&nbsp;Email:
       </label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlspecialchars($row->email)?>" name="email">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email">
       </div>
     </div>
     <div class="am-form-group">

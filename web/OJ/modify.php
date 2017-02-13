@@ -73,9 +73,9 @@
   }
   if (strlen($_POST['npassword'])==0) $password=pwGen($_POST['opassword']);
   else $password=pwGen($_POST['npassword']);
-  $nick=$mysqli->real_escape_string(htmlspecialchars ($nick));
-  $school=$mysqli->real_escape_string(htmlspecialchars ($school));
-  $email=$mysqli->real_escape_string(htmlspecialchars ($email));
+  $nick=$mysqli->real_escape_string($nick);
+  $school=$mysqli->real_escape_string($school);
+  $email=$mysqli->real_escape_string($email);
   echo $class;
   $sql="UPDATE `users` SET"
   ."`password`='".($password)."',"

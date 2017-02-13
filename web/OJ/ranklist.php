@@ -109,7 +109,7 @@ for ( $i=0;$i<$rows_cnt;$i++ ) {
     $total = $row['solved']+$row['ZJU']+$row['HDU']+$row['PKU']+$row['UVA']+$row['CF'];
     $view_rank[$i][0] = "<div class='am-text-center'>".$rank."</div>";
     $view_rank[$i][1] = "<div class='am-text-center'><a href='userinfo.php?user=".$row['user_id']."'>".$row['user_id']."</a>"."</div>";
-    $view_rank[$i][2] = "<div class='am-text-center'>".htmlspecialchars($row['nick'])."</div>";
+    $view_rank[$i][2] = "<div class='am-text-center'>".htmlentities($row['nick'])."</div>";
     $view_rank[$i][3] = "<div class='am-text-center'><a href='status.php?user_id=".$row['user_id']."&jresult=4'>".$row['solved']."</a>"."</div>";
     $view_rank[$i][4] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=ZOJ&res=1&orderBy=run_id'>".$row['ZJU']."</a>"."</div>";
     // $view_rank[$i][4]=  "<div class=center><a href='status.php?user_id=".$row['user_id']."'>".$row['submit']."</a>"."</div>";

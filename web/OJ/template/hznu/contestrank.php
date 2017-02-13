@@ -155,8 +155,8 @@
             $medal_css="background-color:#815d18;";
           }
           echo "<td class='rankcell' style='border-left:0;'>";
-          $uuid=$U[$i]->user_id;
-          $nick=$U[$i]->nick;
+          $uuid=htmlentities($U[$i]->user_id);
+          $nick=htmlentities($U[$i]->nick);
           if(!isset($is_excluded[$uuid])) {
             echo "<span class='$medal_class' style='$medal_css'>";
             if($rank==1){
@@ -172,15 +172,15 @@
 
           $usolved=$U[$i]->solved;
         echo "<td class='rankcell'>";
-          echo "<a name=\"$uuid\" href=userinfo.php?user=$uuid>$uuid</a>";
+          echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$uuid</a>";
 
 
           echo "<td class='rankcell'><div class='nick'>";
           if(isset($is_excluded[$uuid])) echo "<span>*</span>";
-          echo "<a href=userinfo.php?user=$uuid>".$U[$i]->nick."</a>";
+          echo "<a href=\"userinfo.php?user=$uuid\">".$nick."</a>";
           echo "</div></td>";
 
-          echo "<td class='rankcell'><a href=status.php?user_id=$uuid&cid=$cid>$usolved</a>";
+          echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>";
 
 
           echo "<td class='rankcell'>".floor($U[$i]->time/60);
