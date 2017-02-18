@@ -82,7 +82,7 @@
           <!-- ProblemSet部分 start -->
           <li <?php
           $page_name=basename($_SERVER['SCRIPT_NAME']);
-          if($page_name=="problemset.php" || $page_name=="status.php" || $page_name=="ranklist.php") {
+          if($page_name=="problemset.php" || $page_name=="status.php" || $page_name=="ranklist.php" || $page_name=="problem.php") {
             echo "class='am-active'";
           }
           ?>><a href="/OJ/problemset.php">ProblemSet</a></li>

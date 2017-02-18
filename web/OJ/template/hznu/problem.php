@@ -18,7 +18,9 @@ if (isset($_GET['OJ'])) $OJ = $_GET['OJ'];
 else $OJ = "HZNU";
 
 if ($_GET['cid']) require_once("contest_header.php");
-else require_once("header.php");
+else {
+    require_once("header.php");
+}
 function sss($str){
     $after = preg_replace( '/<[^<]+?>/' ,'FUCK$0FUCK', $str);
     $after = preg_replace( '/(?<!FUCK)</' ,'&lt;', $after);
@@ -63,6 +65,19 @@ function sss($str){
 
 
 <div class="am-container">
+  <?php
+  if(!isset($_GET['cid'])) {
+    echo <<<HTML
+  <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
+    <ul class="am-nav am-nav-tabs">
+      <li class="am-active"><a href="/OJ/problemset.php">Problems</a></li>
+      <li><a href="/OJ/status.php">Status</a></li>
+      <li><a href="/OJ/ranklist.php">Standings</a></li>
+    </ul>
+  </div>
+HTML;
+  }
+  ?>
   <h1 style="text-align:center;margin-top:40px;"><?php echo $row->title?>
     <!-- is contest problem -->
       <?php
