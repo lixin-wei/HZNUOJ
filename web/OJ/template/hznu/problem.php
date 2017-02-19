@@ -37,7 +37,7 @@ function sss($str){
   .sampledata {
     /*background: none repeat scroll 0 0 rgba(0,0,0,.075);*/
     font-family: Monospace;
-    white-space: normal;
+    white-space: pre-line;
     font-size: 10pt;
   }
   .sample-outer {
