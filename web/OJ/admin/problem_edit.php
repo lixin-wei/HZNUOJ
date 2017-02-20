@@ -292,9 +292,6 @@ if(isset($_POST['problem_id'])){
     if (strlen($author)>=2 && $author[strlen($author)-2] == ',') $author = substr($author, 0, strlen($author)-2);
     $source=$_POST['source'];
     $spj=$_POST['spj'];
-    echo "Sample data file Updated!<br>";
-    
-    
     //remove original samples
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
     $original_sample_cnt=$mysqli->query($sql)->fetch_array()[0];
@@ -319,14 +316,17 @@ if(isset($_POST['problem_id'])){
             $sample_output=preg_replace("/(\r\n)/","\n",$sample_outputs[$key]);
             if($sample_input=="" && $sample_output=="")continue;
             
-            $fp=fopen($OJ_DATA."/$id/sample".$key.".in","w");
-            fputs($fp,$sample_input);
-            fclose($fp);
-            //echo "<pre>create: ".$OJ_DATA."/$id/sample".$key.".in"."</pre>";
-            
-            $fp=fopen($OJ_DATA."/$id/sample".$key.".out","w");
-            fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
-            fclose($fp);
+            //don't auto generate sample files if is SPJ
+            if(!$spj) {
+                $fp=fopen($OJ_DATA."/$id/sample".$key.".in","w");
+                fputs($fp,$sample_input);
+                fclose($fp);
+                //echo "<pre>create: ".$OJ_DATA."/$id/sample".$key.".in"."</pre>";
+    
+                $fp=fopen($OJ_DATA."/$id/sample".$key.".out","w");
+                fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
+                fclose($fp);
+            }
             
             $sample_input=$mysqli->real_escape_string($sample_input);
             $sample_output=$mysqli->real_escape_string($sample_output);
@@ -345,6 +345,7 @@ SQL;
             $mysqli->query($sql);
         }
     }
+    echo "Sample data file Updated!<br>";
     $title=$mysqli->real_escape_string($title);
     $time_limit=$mysqli->real_escape_string($time_limit);
     $memory_limit=$mysqli->real_escape_string($memory_limit);
