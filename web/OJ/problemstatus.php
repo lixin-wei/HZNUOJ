@@ -66,7 +66,6 @@ $sql .= $filter_sql;
 $sql .= " LIMIT $left_bound, $page_cnt";
 $res = $mysqli->query($sql);
 $data = $res->fetch_all(MYSQLI_ASSOC);
-echo $sql;
 $sql = <<<SQL
     SELECT
       count(1)
