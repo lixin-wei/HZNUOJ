@@ -29,7 +29,7 @@ $page = max(intval($_GET['page']), 0);
 $order_method = "length";
 if(isset($_GET['language'])) $language = intval($_GET['language']);
 if(isset($_GET['result'])) $result = intval($_GET['result']);
-if(isset($_GET['order'])) $length = $_GET['order'];
+if(isset($_GET['order'])) $order_method = $_GET['order'];
 $left_bound = $page*$page_cnt;
 $filter_sql = "";
 $sql = <<<SQL
@@ -66,7 +66,7 @@ $sql .= $filter_sql;
 $sql .= " LIMIT $left_bound, $page_cnt";
 $res = $mysqli->query($sql);
 $data = $res->fetch_all(MYSQLI_ASSOC);
-
+echo $sql;
 $sql = <<<SQL
     SELECT
       count(1)
