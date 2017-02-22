@@ -41,7 +41,7 @@
           </div>
           <div class="am-form-group">
             <label for="language">Language:</label>
-            <select class="am-round" id="language" name="language" data-am-selected="{btnWidth: '100px'}">
+            <select class="am-round" id="language" name="language" data-am-selected="{btnWidth: 100, maxHeight: 400}">
                 <?php
                 if (isset($_GET['language'])) $language=$_GET['language'];
                 else $language=-1;

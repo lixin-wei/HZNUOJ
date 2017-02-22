@@ -36,6 +36,11 @@
   $cid = $row->contest_id;
   $num = $row->num;
   $result->free();
+  if($cid) {
+      $sql = "SELECT COUNT(1) FROM team WHERE contest_id=$cid AND user_id='$suser_id'";
+      $is_temp_user = $mysqli->query($sql)->fetch_array()[0];
+  }
+
   /* 获取solution信息 end */
 
   $ok = canSeeSource($sid);

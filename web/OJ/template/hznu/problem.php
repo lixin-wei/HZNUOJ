@@ -145,11 +145,10 @@ HTML;
       Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
     </div>
     <br />
-    
     <!-- 提交等按钮 start -->
     <div class="am-text-center">
       <a href="
-    <?php
+      <?php
       if ($pr_flag){
           echo "submitpage.php?id=$id";
       }else{
@@ -158,23 +157,31 @@ HTML;
       ?>
     " style="color:white">
         <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
-      </a>&nbsp;&nbsp;
+      </a>
         <?php
-        if (isset($_GET['cid'])) {
-            ?>
-          <a href="problemstatus.php?<?php echo "cid=".$cid."&id=".$row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
-            <?php
-        } else {
-            
-            ?>
-          <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
-            <?php
+        if(!isset($_GET['cid'])) {
+            echo<<<HTML
+            <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
+              <button type="button" class="am-btn am-btn-sm am-btn-primary ">
+                Status
+              </button>
+            </a>
+HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
-            ?>
-          <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
-          <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
-            <?php
+            echo<<<HTML
+          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+            <button type='button' class='am-btn am-btn-sm am-btn-danger '>
+              Edit
+            </button>
+          </a>
+          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+            <button type='button' class='am-btn am-btn-sm am-btn-warning '>
+              Test Data
+            </button>
+          </a>
+
+HTML;
         }
         ?>
     </div>
@@ -303,10 +310,11 @@ HTML;
           *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
         </div>
       <?php endif ?>
+  
     <!-- 提交等按钮 start -->
     <div class="am-text-center">
       <a href="
-    <?php
+      <?php
       if ($pr_flag){
           echo "submitpage.php?id=$id";
       }else{
@@ -315,17 +323,33 @@ HTML;
       ?>
     " style="color:white">
         <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
-      </a>&nbsp;&nbsp;
-      <a href="problemstatus.php?id=<?php echo $row->problem_id?>" style="color:white"><button type="button" class="am-btn am-btn-sm am-btn-primary ">Status</button></a>&nbsp;&nbsp;
+      </a>
         <?php
+        if(!isset($_GET['cid'])) {
+            echo<<<HTML
+            <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
+              <button type="button" class="am-btn am-btn-sm am-btn-primary ">
+                Status
+              </button>
+            </a>
+HTML;
+        }
         if (HAS_PRI("edit_".$set_name."_problem")) {
-            ?>
-          <a href="admin/problem_edit.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey']?>" style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-danger '>Edit</button></a>&nbsp;&nbsp;
-          <a href='./admin/quixplorer/index.php?action=list&dir=<?php echo $row->problem_id?>&order=name&srt=yes' style='color:white'><button type='button' class='am-btn am-btn-sm am-btn-warning '>Test Data</button></a>
-            <?php
+            echo<<<HTML
+          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+            <button type='button' class='am-btn am-btn-sm am-btn-danger '>
+              Edit
+            </button>
+          </a>
+          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+            <button type='button' class='am-btn am-btn-sm am-btn-warning '>
+              Test Data
+            </button>
+          </a>
+
+HTML;
         }
         ?>
-    
     </div>
     <!-- 提交等按钮 end -->
 

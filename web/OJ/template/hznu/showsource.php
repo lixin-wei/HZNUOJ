@@ -9,14 +9,13 @@
   **/
 ?>
 <?php 
-  if (is_numeric($cid)) {
+  if (is_numeric($cid) && !isset($_GET['normal_mod'])) {
       $_GET['cid']=$cid;
       require_once "contest_header.php";
   }
   else require_once "header.php";
-  require_once("include/const.inc.php")
+  require_once("include/const.inc.php");
 ?>
-
 <div class="am-container">
   <!-- Main component for a primary marketing message or call to action -->
   <div class="jumbotron">
@@ -48,12 +47,20 @@
         echo "Problem_ID: ";
         if (is_numeric($cid)){
           $p_lable=$PID[$num];
-          echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
+          echo "<span class='am-badge am-badge-secondary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
         }
         else echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?id=$pid' style='color: white;'>$pid</a>";
         echo "</span>";
         echo "</div>";
-        echo <<<sss
+        $html_sup = "";
+        $html_link = "";
+        if($is_temp_user) {
+          $html_sup = "<sup title='this is a temporary user in a special contest'><a href=\"/OJ/contest.php?cid=$cid\" style='color: white;'>$cid</a></sup>";
+        }
+        else {
+          $html_link = "href=\"/OJ/userinfo.php?user=$suser_id\"";
+        }
+        echo <<<HTML
           <div class='solution-info'>
             Result: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span>
           </div>
@@ -64,17 +71,29 @@
             Memory: <span class='am-badge am-badge-warning am-text-sm'>$memory</span>
           </div>
           <div class='solution-info'>
-            Author: <span class='am-badge am-badge-secondary am-text-sm'>
-            <a href='userinfo.php?user=$suser_id' style='color: white;'>$suser_id</a>
+            Author: <span class='am-badge am-badge-primary am-text-sm'>
+            <a $html_link style='color: white;'>$suser_id</a>{$html_sup}
             </span>
           </div>
-        </div>
+HTML;
+        if($cid) {
+          echo <<<HTML
+          <div class='solution-info'>
+            In contest: <span class='am-badge am-badge-primary am-text-sm'>
+            <a href="contest.php?cid=$cid" style='color: white;'>$cid</a>
+            </span>
+          </div>
+HTML;
+        }
+        echo <<<HTML
+          </div>
         <hr>
-sss;
-        // ****mail function currently stashed
-        // if($view_user_id!=$_SESSION['user_id'])
-        //   echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
-        $brush=strtolower($language_name[$slanguage]);
+HTML;
+
+          // ****mail function currently stashed
+          // if($view_user_id!=$_SESSION['user_id'])
+          //   echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
+          $brush=strtolower($language_name[$slanguage]);
         if ($brush=='pascal') $brush='delphi';
         if ($brush=='obj-c') $brush='c';
         if ($brush=='freebasic') $brush='vb';
@@ -82,6 +101,7 @@ sss;
         echo "<pre style='background-color: transparent;'><code style='background-color: transparent;'>";
         echo htmlentities(str_replace("\r\n","\n",$view_source),ENT_QUOTES,"utf-8");
         echo "</code></pre>";
+
       } else {
         echo "<div am-text-center><h2>I am sorry, You could not view this code!</h2></div>";
       }

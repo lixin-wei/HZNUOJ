@@ -32,7 +32,7 @@
     <div class='am-u-md-6'>
       <form class="am-form am-form-inline" action='userinfo.php'>
         <div class='am-form-group'>
-          <select data-am-selected="{searchBox: 1}" id='class' style='width:110px'>
+          <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' style='width:110px'>
             <option value='all' <?php if (isset($_GET['class']) && $_GET['class']=="" || !isset($_GET['class'])) echo "selected"; ?>>全部</option>
           <?php
             foreach($classSet as $class) {

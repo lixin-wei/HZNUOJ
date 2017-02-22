@@ -25,7 +25,7 @@
       <th class='am-text-center'>ID</th>
       <th class='am-text-center'>Name</th>
       <th class='am-text-center'>Status</th>
-      <th class='am-text-center'>Private</th>
+      <th class='am-text-center'>Type</th>
       </thead>
       <tbody>
       <?php

@@ -74,7 +74,7 @@ if (isset($_GET['id'])) { // 如果是比赛外的题目
             JOIN
               contest
             ON
-              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
+              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in running contest
               AND contest_problem.contest_id=contest.contest_id
           )
 SQL;

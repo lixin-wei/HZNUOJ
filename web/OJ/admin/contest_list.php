@@ -50,7 +50,7 @@
 
 <?php
   echo "<center><table class='table table-striped table-hover' width=90%>";
-  echo "<tr><th>ContestID<th>Title<th>StartTime<th>EndTime<th>Private<th>Status<th>Edit<th>Copy<th>Export<th>Logs";
+  echo "<tr><th>ContestID<th>Title<th>StartTime<th>EndTime<th>Status<th>Edit<th>Copy<th>Export<th>Logs";
   echo "</tr>";
   for (;$row=$result->fetch_object();){
     echo "<tr>";
@@ -60,7 +60,6 @@
     echo "<td>".$row->end_time;
     $cid=$row->contest_id;
     if(HAS_PRI("edit_contest")) {
-      echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->private=="0"?"<span class=green>Public</span>":"<span class=red>Private<span>")."</a>";
       echo "<td><a href=contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->defunct=="N"?"<span style='color: green;'>Available</span>":"<span style='color: red;'>Reserved</span>")."</a>";
       echo "<td><a href=contest_edit.php?cid=$row->contest_id>Edit</a>";
       echo "<td><a href=contest_add.php?cid=$row->contest_id>Copy</a>";
