@@ -140,6 +140,8 @@ HTML;
         function generate_page_url($page) {
           $url = "/OJ/problemstatus.php?";
           foreach ($_GET as $key => $value) {
+            $key = htmlentities($key);
+            $value = htmlentities($value);
             if($key!='page')
               $url .= "&$key=$value";
           }
