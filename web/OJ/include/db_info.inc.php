@@ -44,7 +44,7 @@ function HAS_PRI($pri_str){  // if has privilege
     return false;
 }
 /*Count the hit time START*/
-if($_SERVER['REQUEST_URI']!='127.0.0.1') {
+if($_SERVER['REMOTE_ADDR']!='127.0.0.1') {
     $user_id="";
     if(isset($_SESSION['user_id'])) $user_id=$_SESSION['user_id'];
     $require_path=$mysqli->real_escape_string($_SERVER['REQUEST_URI']);
