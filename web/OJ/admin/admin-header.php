@@ -122,6 +122,9 @@ sss;
             $html_li .= "<li><a href='/OJ/admin/change_user_id.php'>Change User ID</a></li>";
             $html_li .= "<li><a href='/OJ/admin/changepass.php'>Change PassWD</a></li>";
           }
+          if(HAS_PRI("generate_team")){
+              $html_li .= "<li><a href='/OJ/admin/user_import.php'>User Import</a></li>";
+          }
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
