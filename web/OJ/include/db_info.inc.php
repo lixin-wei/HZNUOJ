@@ -44,12 +44,12 @@ function HAS_PRI($pri_str){  // if has privilege
     return false;
 }
 /*Count the hit time START*/
-if($_SERVER['REMOTE_ADDR']!='127.0.0.1') {
+//if($_SERVER['REMOTE_ADDR']!='127.0.0.1') {
     $user_id="";
     if(isset($_SESSION['user_id'])) $user_id=$_SESSION['user_id'];
     $require_path=$mysqli->real_escape_string($_SERVER['REQUEST_URI']);
     $sql="INSERT INTO hit_log (ip, time, path, user_id) VALUES ('{$_SERVER['REMOTE_ADDR']}', NOW(), '$require_path', '$user_id')";
     $mysqli->query($sql);
-}
+//}
 /*Count the hit time END*/
 ?>
