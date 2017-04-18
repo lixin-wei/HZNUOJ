@@ -118,36 +118,6 @@
   }
   $_SESSION['ac']=Array();
   $_SESSION['sub']=Array();
-
-  // 连接到BBS的数据库
-  require_once("./discuz-api/config.inc.php");
-  require_once("./discuz-api/uc_client/client.php");
-
-  //echo $_POST['user_id'];
-  //在UCenter注册用户信息
-  $uid = uc_user_register($_POST['user_id'], $_POST['password'], $_POST['email']);
-  if($uid <= 0) {
-    if($uid == -1) {
-      echo '用户名不合法';
-    } elseif($uid == -2) {
-      echo '包含要允许注册的词语';
-    } elseif($uid == -3) {
-       echo '用户名已在BBS中存在！';
-    } elseif($uid == -4) {
-      echo 'Email 格式有误';
-    } elseif($uid == -5) {
-      echo 'Email 不允许注册';
-    } elseif($uid == -6) {
-      echo '该 Email 已经被注册';
-    } else {
-      echo '未定义';
-    }
-  } else {
-    //注册成功，设置 Cookie，加密直接用 uc_authcode 函数，用户使用自己的函数
-    setcookie('Example_auth', uc_authcode($uid."\t".$_POST['user_id'], 'ENCODE'));
-    //echo '注册成功<br><a href="'.$_SERVER['PHP_SELF'].'">继续</a>';
-    //regOnOJ();
-  }
 ?>
 
 <script>window.location.href='index.php';</script>
