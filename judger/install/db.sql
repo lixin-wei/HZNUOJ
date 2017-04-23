@@ -1,7 +1,6 @@
 set names utf8; 
 create database jol;
 use jol;
-
 /*
 Navicat MySQL Data Transfer
 
@@ -600,4 +599,8 @@ INSERT INTO `jol`.`privilege_groups` (`group_order`, `group_name`) VALUES ('5', 
 INSERT INTO `jol`.`users` (`user_id`, `stu_id`, `email`, `submit`, `solved`, `defunct`, `ip`, `accesstime`, `volume`, `volume_c`, `language`, `password`, `reg_time`, `real_name`, `nick`, `school`, `class`, `level`, `strength`, `color`, `ZJU`, `HDU`, `PKU`, `UVA`, `CF`, `like`, `dislike`, `tag`) VALUES ('admin', '', 'temp@temp.com', '0', '0', 'N', '127.0.0.1', '2010-10-07 15:01:41', '10', '2', '1', 'ecRO2wW24yXkwG+t7lLe7UV2/ss1MWM3', '2010-10-07 15:01:41', '', 'admin', '', '其它', '大斗师八星', '6145.19', '#0072ff', '2', '1', '1', '0', '0', '0', '0', NULL);
 
 INSERT INTO `jol`.`privilege` ( `user_id`, `rightstr`) VALUES ( 'admin', 'administrator');
+
+INSERT INTO `jol`.`problemset` (`set_name`, `set_name_show`) VALUES ('hznu', 'HZNU');
+INSERT INTO `jol`.`problemset` (`set_name`, `set_name_show`) VALUES ('c', 'C Course');
+INSERT INTO `jol`.`problemset` (`set_name`, `set_name_show`) VALUES ('ds', 'DS Course');
 
