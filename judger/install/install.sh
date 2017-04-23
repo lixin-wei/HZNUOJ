@@ -6,7 +6,7 @@
 #and run this with root
 
 #CENTOS/REDHAT/FEDORA WEBBASE=/var/www/html APACHEUSER=apache 
-WEBBASE=/var/www/
+WEBBASE=/var/www/html
 APACHEUSER=www-data
 DBUSER=root
 DBPASS=root
@@ -14,6 +14,9 @@ DBPASS=root
 #try install tools
 sudo apt-get install make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli mono-mcs subversion
 sudo /etc/init.d/mysql start
+
+#set up database
+mysql -uroot -proot < db.sql
 
 # sudo yum -y update
 # sudo yum -y install php httpd php-mysql mysql-server php-xml php-gd gcc-c++  mysql-devel php-mbstring glibc-static flex
