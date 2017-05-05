@@ -107,17 +107,6 @@
             </ul>
           </li>
           <!-- Courses End -->
-          
-          
-          <!-- Others Begin -->
-          <li class="am-dropdown" data-am-dropdown>
-            <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
-            <ul class="am-dropdown-content">
-              <li><a href="/OJ/../bbs/" target='_blank'>BBS</a></li>
-              <li><a href="<?php echo $VJ_URL; ?>" target='_blank'>vjudge</a></li>
-            </ul>
-          </li>
-          <!-- Others End -->
 
           <!-- <li><a href="/OJ/tools.php">Tools</a></li> -->
         </ul>
