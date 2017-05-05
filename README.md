@@ -28,3 +28,4 @@ Then you need to modify apache settings, change the default server dir to `/var/
 
 At last, `sudo chown www-data -R /var/www`.
 
+[中文版安装步骤](judger/install/README.md)
