@@ -1,31 +1,49 @@
-**HZNUOJ is based on [HUSTOJ](https://github.com/zhblue/hustoj)**
+**HZNUOJ 是基于 [HUSTOJ](https://github.com/zhblue/hustoj) 改造而来的，遵循GPL协议开源**
 
-Site address: [acm.hznu.edu.cn](http://acm.hznu.edu.cn)
+# 优势
 
-# Features
-HZNUOJ deeply modified the web client and add more features.
+* 更华丽的界面
+* 更灵活的权限管理
+* 支持多组样例
+* 有封装好的docker镜像，更简单的部署
 
-1. Brand new UI and more JS effect, use the amazeUI framework.
-2. A more flexible privilege system.
-3. Tag system, help users more easily to find the problem they want.
-4. ...
 
-# Plans
-1. Perfect the tag system, make it more friendly to use.
-    * A more friendly tag-add interface.
-    * Search by tag.
-    * Tag can only use particular words.
-    * ...
-2. Board freeze function.
-3. Board rolling function.
+# 界面截图
 
-# Installation
-Ubuntu 14.04 is recommended, the installer may not work well in the later version.
+## 首页
 
-Simply clone the repository, then run `judger/install/install.sh`.
+![index](images/index.jpg)
 
-Then you need to modify apache settings, change the default server dir to `/var/www/web`.
+## 榜单
 
-At last, `sudo chown www-data -R /var/www`.
+![board](images/board.jpg)
 
-[中文版安装步骤](judger/install/README.md)
+![board2](images/board2.jpg)
+
+## 题目编辑界面
+
+![problem-edit](images/problem-edit.jpg)
+
+多样例支持：
+
+![problem-edit](images/problem-edit2.jpg)
+
+## 权限管理界面
+
+细分的权限分配：
+
+![privilege](images/privilege.jpg)
+
+# 部署指南
+
+## 使用Docker镜像（推荐）
+
+详情参考[Docker部署指南v2.1](wiki/docker-deployment-v2.1.md)
+
+## 使用源码
+
+详情参考[源码部署指南v2.1](wiki/source-deployment-v2.1.md)
+
+# 求赞
+
+最后，如果您觉得HZNUOJ好用，请给我一个Star，这将是对我莫大的帮助与鼓励，十分感谢！
