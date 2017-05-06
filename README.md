@@ -12,15 +12,17 @@
 
 ## 首页
 
+支持提交量和访问量的统计
+
 ![index](images/index.jpg)
 
 ## 榜单
 
-清爽的榜单
+重写过的的榜单
 
 ![board](images/board.jpg)
 
-还能点开查看每题的提交状况
+能点开查看每题的提交状况
 
 ![board2](images/board2.jpg)
 
@@ -28,13 +30,13 @@
 
 ![problem-edit](images/problem-edit.jpg)
 
-多样例支持：
+多样例支持
 
 ![problem-edit](images/problem-edit2.jpg)
 
 ## 权限管理界面
 
-细分的权限分配：
+细分的权限分配
 
 ![privilege](images/privilege.jpg)
 
