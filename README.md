@@ -16,7 +16,11 @@
 
 ## 榜单
 
+清爽的榜单
+
 ![board](images/board.jpg)
+
+还能点开查看每题的提交状况
 
 ![board2](images/board2.jpg)
 
