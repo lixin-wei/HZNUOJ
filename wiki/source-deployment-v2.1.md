@@ -1,5 +1,7 @@
 # HZNUOJ 安装说明 
 
+0. HZNUOJ目前只支持Ubuntu14.04，在更高版本下判题机可能无法正常运行。
+
 1. 下载源码
    `git clone https://github.com/wlx65003/HZNUOJ.git`
    或者直接访问`https://github.com/wlx65003/HZNUOJ` 下载zip包
@@ -11,7 +13,3 @@
 4. 打开`/etc/apache2/sites-available/000-default.conf` ，将`DocumentRoot /var/www/html` 更改为 `DocumentRoot /var/www/web` ，即Apache的站点根目录设置为`/var/www/web` 
 
 5. 重启Apache服务器`sudo service apache2 restart`
-
-   ​
-
-
