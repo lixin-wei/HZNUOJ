@@ -151,7 +151,7 @@ void init_mysql_conf() {
 	db_name[0] = 0;
 	port_number = 3306;
 	max_running = 3;
-	sleep_time = 1;
+	sleep_time = 1000;
 	oj_tot = 1;
 	oj_mod = 0;
 	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");
@@ -224,7 +224,7 @@ int executesql(const char * sql) {
 	if (mysql_real_query(conn, sql, strlen(sql))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(2);
+		usleep(1000);
 		conn = NULL;
 		return 1;
 	} else
@@ -242,7 +242,7 @@ int init_mysql() {
 								port_number, 0, 0)) {
 			if (DEBUG)
 				write_log("%s", mysql_error(conn));
-			usleep(20);
+			usleep(2000);
 			return 1;
 		} else {
 			return 0;
@@ -317,7 +317,7 @@ int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(20);
+		usleep(2000);
 		return 0;
 	}
 	res = mysql_store_result(conn);
