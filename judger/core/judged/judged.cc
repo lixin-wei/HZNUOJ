@@ -224,7 +224,7 @@ int executesql(const char * sql) {
 	if (mysql_real_query(conn, sql, strlen(sql))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		sleep(20);
+		usleep(2);
 		conn = NULL;
 		return 1;
 	} else
@@ -242,7 +242,7 @@ int init_mysql() {
 								port_number, 0, 0)) {
 			if (DEBUG)
 				write_log("%s", mysql_error(conn));
-			sleep(2);
+			usleep(20);
 			return 1;
 		} else {
 			return 0;
@@ -317,7 +317,7 @@ int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		sleep(20);
+		usleep(20);
 		return 0;
 	}
 	res = mysql_store_result(conn);
@@ -531,18 +531,18 @@ int main(int argc, char** argv) {
 //	final_sleep.tv_sec=0;
 //	final_sleep.tv_nsec=500000000;
 	init_mysql_conf();	// set the database info
+	printf("hello~, sleep_time = %d, max_running = %d\n", sleep_time, max_running);
 	signal(SIGQUIT, call_for_exit);
 	signal(SIGKILL, call_for_exit);
 	signal(SIGTERM, call_for_exit);
 	int j = 1;
 	while (1) {			// start to run
 		while (j && (http_judge || !init_mysql())) {
-
 			j = work();
 
 		}
 		if(ONCE) break;
-		sleep(sleep_time);
+		usleep(sleep_time);
 		j = 1;
 	}
 	return 0;
