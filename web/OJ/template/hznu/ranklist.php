@@ -31,6 +31,7 @@
     <!-- 用户查找 start -->
     <div class='am-u-md-6'>
       <form class="am-form am-form-inline" action='userinfo.php'>
+        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class='am-form-group'>
           <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' style='width:110px'>
             <option value='all' <?php if (isset($_GET['class']) && $_GET['class']=="" || !isset($_GET['class'])) echo "selected"; ?>>全部</option>

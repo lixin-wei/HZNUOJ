@@ -52,6 +52,7 @@ function generate_url($data){
     <!-- 通过ProblemID查找 start-->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal" action='problem.php'>
+        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-u-sm-7">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-search"></i>
@@ -66,6 +67,7 @@ function generate_url($data){
     <!-- 通过关键词查找 start -->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal">
+        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-u-sm-9">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>
@@ -80,6 +82,7 @@ function generate_url($data){
     <!-- by problemset -->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal">
+        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-form-group">
           <label class="am-u-sm-4 am-form-label">ProblemSet:</label>
           <div class="am-u-sm-8">

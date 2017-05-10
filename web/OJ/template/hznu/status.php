@@ -34,6 +34,7 @@
     <div class="am-g">
       <div class="am-u-md-12">
         <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
+          <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
           <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo htmlentities($problem_id)?>"></div>
           <div class="am-form-group">
             <input type="text" class="am-form-field" placeholder=" &nbsp;User ID" name="user_id" value="<?php echo htmlentities($user_id)?>">
@@ -93,6 +94,7 @@
           <button type="submit" class="am-btn am-btn-secondary"><span class='am-icon-filter'></span> Filter</button>
         </form>
         <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;;">
+          <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
           <button type="submit" class="am-btn am-btn-default">Reset</button>
         </form>
       </div>
