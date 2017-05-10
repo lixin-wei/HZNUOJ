@@ -75,7 +75,7 @@ if (isset($_GET['cid'])){
     $rows_cnt=$result->num_rows;
     $contest_ok=true;
     $password="";
-    if(isset($_POST['password'])) $password=$_POST['password'];
+    if(isset($_POST['pwd'])) $password=$mysqli->real_escape_string($_POST['pwd']);
     if (get_magic_quotes_gpc ()) {
         $password = stripslashes ($password);
     }
@@ -101,7 +101,7 @@ if (isset($_GET['cid'])){
             $view_errors .= "Click <a href=contestrank.php?cid=$cid>HERE</a> to watch contest rank, or input password to enter it.";
             $view_errors .= "<form method=post action='contest.php?cid=$cid' class='am-form-inline am-text-center'>";
             $view_errors .= "<div class='am-form-group'>";
-            $view_errors .= "<input class='am-form-field' type='password' name='password' placeholder='input contest password'>";
+            $view_errors .= "<input class='am-form-field' type='password' name='pwd' placeholder='input contest password'>";
             $view_errors .= "</div>";
             $view_errors .= "<div class='am-form-group'>";
             $view_errors .= "<button class='am-btn am-btn-default' type=submit>submit</button>";
