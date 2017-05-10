@@ -124,7 +124,6 @@ function generate_url($data){
       <li><a href="<?php echo $link ?>">Next &raquo;</a></li>
     </ul>
   </div>
-</div>
 <!-- 页标签 end -->
   <!-- 罗列题目 start -->
   <style type="text/css">
