@@ -76,6 +76,8 @@ sudo apt-get -y install docker-ce
 
 至此镜像导入就完成了，请跳至运行镜像部分阅读。
 
+----
+
 ### Windows
 
 首先，确保你的系统是 **Windows10专业版** ，必须是专业版，因为docker容器引擎需要用到win10专业版才有的hyper-v虚拟机功能。
