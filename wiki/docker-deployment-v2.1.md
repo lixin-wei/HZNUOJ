@@ -116,7 +116,7 @@ sudo apt-get -y install docker-ce
 
 现在你可以打开浏览器，输入`localhost/OJ`，即可访问系统了。和你同一个内网的人，也可以通过输入地址 `(你的内网IP)/OJ` 访问。
 
-服务器重启等运维相关的操作请参考文末的维护相关文档。
+服务器重启等运维相关的操作请参考文末的HZNUOJ使用手册。
 
 ## WEB端配置
 
@@ -128,4 +128,4 @@ sudo apt-get -y install docker-ce
 
 ----
 
-维护相关的问题请参考[运维文档](maintainer-manual.md)
+使用过程中更多细节的问题请参考[HZNUOJ使用手册](maintainer-manual.md)
