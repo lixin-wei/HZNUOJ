@@ -70,6 +70,10 @@ sudo apt-get -y install docker-ce
 
 #### 导入镜像
 
+在Linux下运行所有docker命令时，请使用root权限操作。
+
+为了方便，可以输入`sudo su`命令，输入密码后回车，这样接下来就能以超级管理员权限运行所有命令。或者你不嫌麻烦的话，可以在所有命令最前面加一个`sudo`，效果是一样的。
+
 然后在命令行里使用`cd`命令进入到你下载来的镜像所放的目录，例如你放在`/home/my-user`，就`cd /home/my-user`
 
 然后运行`docker load -i hznuoj2.1.tar`导入镜像，`hznuoj2.1.tar`是文件名，耐心等待导入完成。
