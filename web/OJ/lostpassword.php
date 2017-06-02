@@ -38,12 +38,12 @@ if (isset($_POST['user_id'])) {
         
         require_once "include/email.class.php";
         //******************** 配置信息 ********************************
-        $smtpserver = "smtp.exmail.qq.com";//SMTP服务器
+        $smtpserver = "";//SMTP服务器
         $smtpserverport = 25;//SMTP服务器端口
-        $smtpusermail = "forgot@hsacm.com";//SMTP服务器的用户邮箱
+        $smtpusermail = "";//SMTP服务器的用户邮箱
         $smtpemailto = $row['email'];//发送给谁
-        $smtpuser = "forgot@hsacm.com";//SMTP服务器的用户帐号
-        $smtppass = "hznuojForgot123";//SMTP服务器的用户密码
+        $smtpuser = "";//SMTP服务器的用户帐号
+        $smtppass = "";//SMTP服务器的用户密码
         $mailtitle = "HZNUOJ系统密码重置激活";//邮件主题
         $mailcontent = "$lost_user_id:\n您好！\n您在HZNUOJ系统选择了找回密码服务,为了验证您的身份,请将下面字串输入口令重置页面以确认身份:".$_SESSION['lost_key']."\n\n这个key也将成为您重置成功后的新密码！\n\n\n杭州师范大学在线评测系统";//邮件内容
         $mailtype = "TXT";//邮件格式（HTML/TXT）,TXT为文本邮件
