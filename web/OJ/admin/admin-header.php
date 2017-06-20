@@ -84,6 +84,7 @@ sss;
           if(HAS_PRI("edit_news")){
             $html_li .= "<li><a href='/OJ/admin/news_add_page.php'>Add News</a></li>";
             $html_li .= "<li><a href='/OJ/admin/news_list.php'>News List</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/edit_faq.php'>Edit Faq</a></li>";
           }
           if($html_li!=""){
             echo<<<sss

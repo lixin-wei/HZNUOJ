@@ -66,31 +66,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/plugins/Parserdown.php";
   </div>
 </div><!--end container-->
 <?php require_once("footer.php");?>
-
-<!-- highlight.js START-->
-<!-- <link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/> -->
-<!-- <script src='highlight/highlight.pack.js' type='text/javascript'></script> -->
-<!-- <script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script> -->
-
-<link href="/OJ/plugins/highlight/styles/github-gist.css" rel="stylesheet">
-<script src="/OJ/plugins/highlight/highlight.pack.js"></script>
-<script src="/OJ/plugins/highlight/highlightjs-line-numbers.min.js"></script>
-<style type="text/css">
-  .hljs-line-numbers {
-      text-align: right;
-      border-right: 1px solid #ccc;
-      color: #999;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-  }
-</style>
 <script>
-  hljs.initHighlightingOnLoad();
-  hljs.initLineNumbersOnLoad();
   
   //auto generate title index
   $ul = $("#title-index");
