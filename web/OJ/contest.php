@@ -117,7 +117,7 @@ if (isset($_GET['cid'])){
         $view_title= $row->title;
         $view_start_time=$row->start_time;
         $view_end_time=$row->end_time;
-        
+        $practice = $row->practice;
         if (!HAS_PRI("edit_contest") && $now<$start_time){
             require_once "template/hznu/contest_header.php";
             require("template/".$OJ_TEMPLATE."/footer.php");
@@ -167,6 +167,26 @@ if (isset($_GET['cid'])){
         GROUP BY
           pid2
       ) p2 ON problem.pid = p2.pid2
+      LEFT JOIN (
+        SELECT
+          problem_id pid3,
+          Count(DISTINCT user_id) total_accepted
+        FROM
+          solution
+        WHERE
+          result = 4
+        GROUP BY
+          pid3
+      ) p3 ON problem.pid = p3.pid3
+      LEFT JOIN (
+        SELECT
+          problem_id pid4,
+          Count(1) total_submit
+        FROM
+          solution
+        GROUP BY
+          pid4
+      ) p4 ON problem.pid = p4.pid4
       ORDER BY
         pnum
 SQL;
@@ -191,10 +211,15 @@ SQL;
         $view_problemset[$cnt][3]=$row->author;
         $view_problemset[$cnt][4]=$row->accepted ;
         $view_problemset[$cnt][5]=$row->submit ;
+        if($practice) {
+            $view_problemset[$cnt][6]=$row->total_accepted ;
+            $view_problemset[$cnt][7]=$row->total_submit ;
+        }
         $cnt++;
     }
     $result->free();
-} else {
+}
+else {
     $keyword="";
     if(isset($_POST['keyword'])){
         $keyword=$mysqli->real_escape_string($_POST['keyword']);
@@ -223,8 +248,9 @@ SQL;
             $view_contest[$i][2].= "<span class=green> $MSG_LeftTime ".formatTimeLength($left)." </span></font>";
         }
         $type = "<span style='color: green;'>Public</span>";
-        if($row->private) $type = "<span style='color: dodgerblue;'>Password<span>";
-        if($row->user_limit=="Y") $type = "<span style='color: red;'>Special<span>";
+        if($row->private) $type = "<span style='color: dodgerblue;'>Password</span>";
+        if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>Special</span>";
+        if($row->practice) $type = "<span style='color: #009688;'>Practice</span>";
         $view_contest[$i][4]= $type;
         $view_contest[$i][6]=$row->user_id;
         $i++;

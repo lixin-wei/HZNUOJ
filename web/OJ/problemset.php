@@ -106,8 +106,7 @@
           defunct='N' 
           AND $filter_sql
           AND problemset='$set_name' 
-          AND problem_id
-          NOT IN ( 
+          AND problem_id NOT IN ( 
             SELECT DISTINCT
               contest_problem.problem_id
             FROM
@@ -115,7 +114,9 @@
             JOIN
               contest
             ON
-              contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in runing contest
+              #problems that are in running contest AND is not practice
+              contest.start_time<='$now' AND contest.end_time>'$now'
+              AND contest.practice = 0
               AND contest_problem.contest_id=contest.contest_id
           )
 SQL;

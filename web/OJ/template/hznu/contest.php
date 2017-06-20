@@ -27,28 +27,26 @@
  }
 </style>
 <div class="am-container" style="margin-top: 20px;">
+  <?php if($view_description):?>
   <h1>Announcement</h1><hr/>
   <div class="well" style="font-size: 1.3rem;"><?php echo $view_description?></div>
-  <style type="text/css">
-    td {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .table-problem {
-      table-layout: fixed;
-    }
-  </style>
+  <?php endif ?>
   <h1>Problems</h1><hr/>
   <div class="well" style="font-size: normal;">
     <table class="am-table am-table-striped table-problem">
       <thead>
+      <tr>
         <th style='width: 3%'></th>
-        <th style='width: 15%'>Problem ID</th>
-        <th style='width: 50%'>Title</th>
-        <th style='width: 15%'>Author</th>
-        <th style='width: 8%'>AC</th>
-        <th style='width: 9%'>Submssion</th>
+        <th>Problem ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th title="in this contest">AC</th>
+        <th title="in this contest">Submission</th>
+        <?php if($practice): ?>
+        <th title="include submissions out of this contest">AC Total</th>
+        <th title="include submissions out of this contest">Sub. Total</th>
+        <?php endif ?>
+      </tr>
       </thead>
       <tbody>
         <?php

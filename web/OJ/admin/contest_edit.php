@@ -22,13 +22,14 @@
     $starttime=intval($_POST['syear'])."-".intval($_POST['smonth'])."-".intval($_POST['sday'])." ".intval($_POST['shour']).":".intval($_POST['sminute']).":00";
     $endtime=intval($_POST['eyear'])."-".intval($_POST['emonth'])."-".intval($_POST['eday'])." ".intval($_POST['ehour']).":".intval($_POST['eminute']).":00";
 
-    $title=$mysqli->real_escape_string($_POST['title']);
+    $title = $mysqli->real_escape_string($_POST['title']);
     $password=$mysqli->real_escape_string($_POST['password']);
     $description=$mysqli->real_escape_string($_POST['description']);
     $private=$mysqli->real_escape_string($_POST['private']);
     $user_limit = $mysqli->real_escape_string($_POST['user_limit']);
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
     $open_source = $mysqli->real_escape_string($_POST['open_source']);
+    $practice = $mysqli->real_escape_string($_POST['practice']);
     if (get_magic_quotes_gpc ()) {
         $title = stripslashes ( $title);
         $password = stripslashes ( $password);
@@ -47,10 +48,11 @@
     $sql = "UPDATE `contest` 
             SET `title`='$title',description='$description',`start_time`='$starttime',`end_time`='$endtime',
                 `private`='$private', user_limit='$user_limit', defunct_TA='$defunct_TA', open_source='$open_source',
-                `langmask`=$langmask  ,password='$password'
+                `practice` = $practice, `langmask`=$langmask  ,password='$password'
             WHERE `contest_id`=$cid";
     //echo $sql;
     $mysqli->query($sql) or die($mysqli->error);
+    
     $sql="DELETE FROM `contest_problem` WHERE `contest_id`=$cid";
     $mysqli->query($sql);
     $plist=trim($_POST['cproblem']);
@@ -72,18 +74,7 @@
       // $mysqli->query($sql) or die($mysqli->error);
   
   }
-  
-/*  $sql="DELETE FROM `privilege` WHERE `rightstr`='c$cid'";
-  $mysqli->query($sql);
-  $pieces = explode("\n", trim($_POST['ulist']));
-  if (count($pieces)>0 && strlen($pieces[0])>0){
-    $sql_1="INSERT INTO `privilege`(`user_id`,`rightstr`) 
-      VALUES ('".trim($pieces[0])."','c$cid')";
-    for ($i=1;$i<count($pieces);$i++)
-      $sql_1=$sql_1.",('".trim($pieces[$i])."','c$cid')";
-    //echo $sql_1;
-    $mysqli->query($sql_1) or die($mysqli->error);
-  }*/
+      
   $sql="DELETE FROM contest_excluded_user WHERE contest_id=$cid";
   $mysqli->query($sql);
   $ex_users=explode("\n",trim($_POST['ex_ulist']));
@@ -112,6 +103,7 @@
   $user_limit = $row['user_limit']=="Y"?'Y':'N';
   $defunct_TA = $row['defunct_TA']=="Y"?'Y':'N';
   $open_souce = $row['open_source']=="Y"?'Y':'N';
+  $practice = $row['practice'];
   $password=$row['password'];
   $langmask=$row['langmask'];
   $description=$row['description'];
@@ -165,7 +157,11 @@
   Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo substr($endtime,8,2)?>>
   Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo substr($endtime,11,2)?>> 
   Minute:<input class=input-mini  type=text name=eminute size=2 value=<?php echo substr($endtime,14,2)?>></p>
-
+  Is Practice:
+  <select name='practice' style='width:50px'>
+    <option value='1' <?php echo $practice==1?'selected=selected':''?>>Y</option>
+    <option value='0' <?php echo $practice==0?'selected=selected':''?>>N</option>
+  </select>
   Public/Private:
     <select name='private' style='width:80px'>
       <option value=0 <?php echo $private=='0'?'selected=selected':''?>>Public</option>

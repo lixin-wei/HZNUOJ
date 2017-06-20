@@ -159,7 +159,7 @@ HTML;
         <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
       </a>
         <?php
-        if(!isset($_GET['cid'])) {
+        if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
@@ -325,7 +325,7 @@ HTML;
         <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
       </a>
         <?php
-        if(!isset($_GET['cid'])) {
+        if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">

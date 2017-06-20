@@ -75,16 +75,21 @@ if (isset($_GET['id'])) { // 如果是比赛外的题目
               contest
             ON
               contest.start_time<='$now' AND contest.end_time>'$now'  #problems that are in running contest
+              AND contest.practice = 0
               AND contest_problem.contest_id=contest.contest_id
           )
 SQL;
     $pr_flag=true;
     
-} else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目
+}
+else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的题目
     $cid=intval($_GET['cid']);
     $pid=intval($_GET['pid']);
+    $is_practice = 0;
     $sql="SELECT unix_timestamp(end_time) FROM contest WHERE contest_id=$cid";
     $end_time=$mysqli->query($sql)->fetch_array()[0];
+    $sql = "SELECT practice FROM contest WHERE contest_id=$cid";
+    $is_practice = $mysqli->query($sql)->fetch_array()[0];
     
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<font style='color:red;text-decoration:underline;'>You can only enter the correspond contest!</font>";
@@ -132,7 +137,8 @@ SQL;
     }
     $co_flag=true;
     
-} else { // 否则提示找不到该题
+}
+else { // 否则提示找不到该题
     $view_errors=  "<title>$MSG_NO_SUCH_PROBLEM</title><h2>$MSG_NO_SUCH_PROBLEM</h2>";
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);

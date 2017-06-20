@@ -27,6 +27,7 @@
     $user_limit = $_POST['user_limit'];
     $defunct_TA = $_POST['defunct_TA'];
     $open_source = $_POST['open_source'];
+    $practice = $mysqli->real_escape_string($_POST['practice']);
 
     if (get_magic_quotes_gpc ()){
       $title = stripslashes ($title);
@@ -46,8 +47,8 @@
       $langmask+=1<<$t;
     } 
     $langmask=((1<<count($language_ext))-1)&(~$langmask);
-    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source)
-          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source')";
+    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice)
+          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice')";
   echo $sql;
   $mysqli->query($sql) or die($mysqli->error);
   $cid=$mysqli->insert_id;
@@ -154,6 +155,11 @@ else if(isset($_POST['problem2contest'])){
   Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo date('d')+(date('H')+4>23?1:0)?>>&nbsp;
   Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo (date('H')+4)%24?>>&nbsp;
   Minute:<input class=input-mini  type=text name=eminute value=00 size=2 ></p>
+  Is Practice:
+  <select name='practice' style='width:50px'>
+    <option value='1'>Y</option>
+    <option value='0' selected>N</option>
+  </select>
   Public:
     <select name=private>
       <option value=0>Public</option>

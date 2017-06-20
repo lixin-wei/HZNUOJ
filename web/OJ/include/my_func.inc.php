@@ -65,14 +65,24 @@ function is_running($cid){
     require_once("./include/db_info.inc.php");
     global $mysqli;
     $now=strftime("%Y-%m-%d %H:%M",time());
-    $sql="SELECT count(*) FROM `contest` WHERE `contest_id`='$cid' AND `end_time`>'$now'";
+    $sql="SELECT count(*) FROM `contest` WHERE `contest_id`='$cid' AND `start_time`<'$now' AND `end_time`>'$now'";
     $result=$mysqli->query($sql);
     $row=$result->fetch_array();
     $cnt=intval($row[0]);
     $result->free();
     return $cnt>0;
 }
-
+function is_running_and_not_practice($cid) {
+    require_once("./include/db_info.inc.php");
+    global $mysqli;
+    $now=strftime("%Y-%m-%d %H:%M",time());
+    $sql="SELECT count(*) FROM `contest` WHERE `contest_id`='$cid' AND `start_time`<'$now' AND `end_time`>'$now' AND practice = 0";
+    $result=$mysqli->query($sql);
+    $row=$result->fetch_array();
+    $cnt=intval($row[0]);
+    $result->free();
+    return $cnt>0;
+}
 function check_ac($cid,$pid){
     require_once("./include/db_info.inc.php");
     global $mysqli;
@@ -161,16 +171,14 @@ function canSeeSource($sid) {
     
     
     $irc = false; // in running contest
-    $idc = false; // in defunct TA contest
     $sql = "SELECT DISTINCT(contest_id) AS cid FROM contest_problem WHERE problem_id='$pid'";
     $result = $mysqli->query($sql);
     while ($row_cid = $result->fetch_object()) {
-        if (is_running($row_cid->cid)) {
+        if (is_running_and_not_practice($row_cid->cid)) {
             $irc = true;
             $sql = "SELECT defunct_TA FROM contest WHERE contest_id='$row_cid->cid'";
             $result_tmp = $mysqli->query($sql);
             $row_tmp = $result->fetch_array();
-            $idc = $row_tmp->defunct_TA=="Y"?1:0;
             $result->free();
         }
     }
@@ -228,6 +236,7 @@ function can_see_problem($pid) {
           problem_id='$pid'
           AND now()>=start_time
           AND now()<=end_time
+          AND contest.practice = 0
         ORDER BY problem_id
 SQL;
     $is_in_running_contest = $mysqli->query($sql)->num_rows;
