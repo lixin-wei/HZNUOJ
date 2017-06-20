@@ -19,7 +19,6 @@
   static  $OJ_NAME="HZNUOJ";
   static  $OJ_ADMIN="root@localhost";
   static  $OJ_DATA = "/home/judge/data";
-  static  $OJ_BBS="discuss3"; //"bbs" for phpBB3 bridge or "discuss" for mini-forum
   static  $OJ_ONLINE=false;
   static  $OJ_LANG="en";
   static  $OJ_SIM=true;
@@ -34,7 +33,6 @@
   static  $OJ_MEMCACHE=false;
   static  $OJ_MEMSERVER="127.0.0.1";
   static  $OJ_MEMPORT=11211;
-  static  $SAE_STORAGE_ROOT="http://hustoj-web.stor.sinaapp.com/";
   static  $OJ_TEMPLATE="hznu";
   if(isset($_GET['tp'])) $OJ_TEMPLATE=$_GET['tp'];
   static  $OJ_LOGIN_MOD="hustoj";
@@ -43,24 +41,18 @@
   static  $OJ_TEST_RUN = true;
   static $OJ_OPENID_PWD = '8a367fe87b1e406ea8e94d7d508dcf01';
 
-  /* weibo config here */
-  static  $OJ_WEIBO_AUTH=false;
-  static  $OJ_WEIBO_AKEY='1124518951';
-  static  $OJ_WEIBO_ASEC='df709a1253ef8878548920718085e84b';
-  static  $OJ_WEIBO_CBURL='http://192.168.0.108/OJ/login_weibo.php';
-
-  /* qq config here */
-  static  $OJ_QQ_AUTH=false;
-  static  $OJ_QQ_AKEY='1124518951';
-  static  $OJ_QQ_ASEC='df709a1253ef8878548920718085e84b';
-  static  $OJ_QQ_CBURL='192.168.0.108';
 
   static $ICON_PATH = "image/hznuoj.ico";
-  static $VJ_URL = "http://vj.hsacm.com";
   static $GOLD_RATE = 0.10; // 金牌比例
   static $SILVER_RATE = 0.20; // 银牌比例
   static $BRONZE_RATE = 0.30; // 铜牌比例
   static $BORDER = 500000;
   static $LOGIN_DEFUNCT = false;
   static $VIDEO_SUBMIT_TIME=10;// can see video after
+
+  /* Email configuration */
+  static $SMTP_SERVER = "smtp.exmail.qq.com";
+  static $SMTP_SERVER_PORT = 25;
+  static $SMTP_USER = "forgot@hsacm.com";
+  static $SMTP_PASS = "hznuojForgot123";
 ?>
