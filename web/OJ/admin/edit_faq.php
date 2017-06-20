@@ -41,7 +41,7 @@ if (isset($_POST['content'])) {
 }
 ?>
 
-<form class="form-inline" method=POST action='news_edit.php'>
+<form class="form-inline" method=POST action='edit_faq.php'>
     <h1>Edit FAQ(using markdown)</h1><hr/>
     <p align=left>Content:<br>
         <textarea name=content style="width: 100%; height: 500px;"><?php echo htmlentities($content,ENT_QUOTES,"UTF-8")?></textarea>
