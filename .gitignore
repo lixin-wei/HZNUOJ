@@ -1,6 +1,8 @@
 *~
 *.o
+*.exe
 .idea/
+forum/
 judger/core/judge_client/.idea/
 judger/core/judge_client/judge_client
 judger/core/judged/.idea/
