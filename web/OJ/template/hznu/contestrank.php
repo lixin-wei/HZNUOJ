@@ -208,7 +208,7 @@
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
-            echo "<td class='$cell_class' id='pcell $uuid $probelm_lable' $data_toggle>";
+            echo "<td class='$cell_class' id='pcell $uuid $j' $data_toggle>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
@@ -286,7 +286,7 @@
         language: -1,
         jresult: -1,
         user_id: uid,
-        problem_id: pid,
+        problem_id: pid
       },
       context: this,
       success: function(data){
