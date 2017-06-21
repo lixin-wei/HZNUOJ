@@ -46,7 +46,7 @@
         echo "<div class='solution-info'>";
         echo "Problem_ID: ";
         if (is_numeric($cid)){
-          $p_lable=$PID[$num];
+          $p_lable=PID($num);
           echo "<span class='am-badge am-badge-secondary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
         }
         else echo "<span class='am-badge am-badge-primary am-text-sm'><a href='problem.php?id=$pid' style='color: white;'>$pid</a>";
