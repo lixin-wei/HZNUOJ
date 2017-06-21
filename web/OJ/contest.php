@@ -12,6 +12,7 @@ require_once('./include/cache_start.php');
 require_once('./include/db_info.inc.php');
 require_once('./include/my_func.inc.php');
 require_once('./include/setlang.php');
+require_once './include/const.inc.php';
 $view_title= $MSG_CONTEST;
 function formatTimeLength($length) {
     $hour = 0;
@@ -201,12 +202,7 @@ SQL;
         if ($now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者当前用户是管理员则显示 Problem ID
             $view_problemset[$cnt][1]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
         // $view_problemset[$cnt][1] .= "Problem &nbsp;".(chr($cnt+ord('A')));
-        if ($cnt < 26) $pid = chr($cnt+ord('A'));
-        else {
-            $pid = chr(($cnt/26)-1+ord('A'));
-            $pid .= chr($cnt%26+ord('A'));
-        }
-        $view_problemset[$cnt][1] .= "Problem &nbsp;".$pid;
+        $view_problemset[$cnt][1] .= "Problem &nbsp;".PID($cnt);
         $view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
         $view_problemset[$cnt][3]=$row->author;
         $view_problemset[$cnt][4]=$row->accepted ;

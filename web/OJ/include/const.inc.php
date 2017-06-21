@@ -33,5 +33,15 @@
   $judge_color=Array("gray","gray","orange","orange","green","red","red","red","red","red","red","navy ","navy");
   $language_name=Array("C","C++","Pascal","Java","Ruby","Bash","Python2","PHP","Perl","C#","Obj-C","FreeBasic","Schema","Clang","Clang++","Lua","Swift","Other Language");
   $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","swift" );
-  $PID="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  function PID($id) {
+    $id++;
+    $res = "";
+    while($id) {
+      $id --;
+      $res .= chr($id%26+65);
+      $id = floor($id/26);
+    }
+    $res = strrev($res);
+    return $res;
+  }
 ?>

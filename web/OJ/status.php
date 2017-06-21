@@ -200,9 +200,9 @@
     if ($row['contest_id']>0) {
       $view_status[$i][2]= "<div class=center><a href='problem.php?cid=".$row['contest_id']."&pid=".$row['num']."'>";
       if(isset($cid)){
-        $view_status[$i][2].= $PID[$row['num']];
+        $view_status[$i][2].= PID($row['num']);
       }else{
-        $view_status[$i][2].= $row['contest_id']."-".$PID[$row['num']]."</a>";
+        $view_status[$i][2].= $row['contest_id']."-".PID($row['num'])."</a>";
         $view_status[$i][2].= "("."<a href='problem.php?id=".$row['problem_id']."'>".$row['problem_id']."</a>".")";
       }
       $view_status[$i][2].="</a></div>";

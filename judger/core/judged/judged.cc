@@ -242,7 +242,7 @@ int init_mysql() {
 								port_number, 0, 0)) {
 			if (DEBUG)
 				write_log("%s", mysql_error(conn));
-			usleep(2000);
+			usleep(20000);
 			return 1;
 		} else {
 			return 0;

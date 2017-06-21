@@ -125,7 +125,7 @@
       <td style="width: 1%;" id="penalty">Penalty</td>
       <?php
         for ($i=0;$i<$pid_cnt;$i++)
-          echo "<td id='p-cell-$i' style='min-width: 40px;'><a href=problem.php?cid=$cid&pid=$i>$PID[$i]</a></td>";
+          echo "<td id='p-cell-$i' style='min-width: 40px;'><a href=problem.php?cid=$cid&pid=$i>".PID($i)."</a></td>";
       ?>
     </thead>
     <tbody>
