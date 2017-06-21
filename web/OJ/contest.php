@@ -15,47 +15,15 @@ require_once('./include/setlang.php');
 require_once './include/const.inc.php';
 $view_title= $MSG_CONTEST;
 function formatTimeLength($length) {
-    $hour = 0;
-    $minute = 0;
-    $second = 0;
-    $result = '';
-    
-    if ($length >= 60) {
-        $second = $length % 60;
-        if ($second > 0) {
-            $result = $second . '秒';
-        }
-        $length = floor($length / 60);
-        if ($length >= 60) {
-            $minute = $length % 60;
-            if ($minute == 0) {
-                if ($result != '') {
-                    $result = '0分' . $result;
-                }
-            } else {
-                $result = $minute . '分' . $result;
-            }
-            $length = floor($length / 60);
-            if ($length >= 24) {
-                $hour = $length % 24;
-                if ($hour == 0) {
-                    if ($result != '') {
-                        $result = '0小时' . $result;
-                    }
-                } else {
-                    $result = $hour . '小时' . $result;
-                }
-                $length = floor($length / 24);
-                $result = $length . '天' . $result;
-            } else {
-                $result = $length . '小时' . $result;
-            }
-        } else {
-            $result = $length . '分' . $result;
-        }
-    } else {
-        $result = $length . '秒';
-    }
+    $result = "";
+    $day = floor($length/86400); $length%=86400;
+    $hour = floor($length/3600); $length%=3600;
+    $minute = floor($length/60); $length%=60;
+    $second = $length;
+    $result .= $day." Day".($day>1?"s":"")." ";
+    $result .= $hour." Hour".($hour>1?"s":"")." ";
+    $result .= $minute." Minute".($minute>1?"s":"")." ";
+    $result .= $second." Second".($second>1?"s":"")." ";
     return $result;
 }
 
@@ -235,13 +203,13 @@ else {
         $left=$end_time-$now;
         
         if ($now>$end_time) { // past
-            $view_contest[$i][2]= "<font color=red><span class=green>$MSG_Ended@$row->end_time</span></font>";
+            $view_contest[$i][2]= "<span style='color: #9e9e9e;'>$MSG_Ended@$row->end_time</span>";
         } else if ($now<$start_time){ // pending
-            $view_contest[$i][2]= "<font color=green><span class=blue>$MSG_Start@$row->start_time</span>&nbsp;";
-            $view_contest[$i][2].= "<span class=green>$MSG_TotalTime ".formatTimeLength($length)."</span></font>";
+            $view_contest[$i][2]= "<span style='color: #03a9f4;'>$MSG_Start@$row->start_time&nbsp;";
+            $view_contest[$i][2].= "$MSG_TotalTime ".formatTimeLength($length)."</span>";
         } else { // running
-            $view_contest[$i][2]= "<font color=blue><span class=red> $MSG_Running&nbsp;";
-            $view_contest[$i][2].= "<span class=green> $MSG_LeftTime ".formatTimeLength($left)." </span></font>";
+            $view_contest[$i][2]= "<span style='color: #ff5722;'> $MSG_Running&nbsp;";
+            $view_contest[$i][2].= "$MSG_LeftTime ".formatTimeLength($left)." </span>";
         }
         $type = "<span style='color: green;'>Public</span>";
         if($row->private) $type = "<span style='color: dodgerblue;'>Password</span>";
