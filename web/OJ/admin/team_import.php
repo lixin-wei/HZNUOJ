@@ -21,6 +21,10 @@ if(isset($_POST['contest_id'])){
 	foreach ($user_id as $key => $value) {
 		$password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
         while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
+        $password = str_replace("I","X",$password);
+        $password = str_replace("O","Y",$password);
+        $password = str_replace("0","Z",$password);
+        $password = str_replace("1","W",$password);
         $ori_pass=$password;
         $password=pwGen($password);
 

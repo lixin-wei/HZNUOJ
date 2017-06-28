@@ -62,6 +62,10 @@
         $user_id=$prefix.($i<10?('0'.$i):$i);
         $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
         while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
+        str_replace("I","X",$password);
+        str_replace("O","Y",$password);
+        str_replace("0","Z",$password);
+        str_replace("1","W",$password);
         if(isset($pieces[$i-1])) $nick=$pieces[$i-1];
         else $nick="NULL";
         echo "<tr><td>$nick</td><td>$class</td><td>$contest_id</td><td>$user_id</td><td>$password</td></tr>";
