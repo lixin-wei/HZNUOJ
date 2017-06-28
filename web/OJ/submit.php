@@ -22,41 +22,29 @@ if (isset($_POST['cid'])){
 		$sql="SELECT `problem_id` from `problem` where `problem_id`='$id'";
 	else
 		$sql=<<<SQL
-      SELECT
-        `problem_id`
-      FROM
-        `problem`
-      WHERE
-        `problem_id` = $id
-      AND problem_id NOT IN (
-        SELECT DISTINCT
-          problem_id
-        FROM
-          contest_problem
+SELECT problem_id FROM `problem`
+WHERE
+  `problem_id`=$id
+  AND `defunct`='N'
+  AND `problem_id` NOT IN (
+    SELECT `problem_id` FROM `contest_problem`
+    WHERE
+      `contest_id` IN(
+        SELECT `contest_id` FROM `contest`
         WHERE
-          `contest_id` IN (
-            SELECT
-              `contest_id`
-            FROM
-              `contest`
-            WHERE
-              (
-                `end_time` > NOW()
-                #OR private = 1
-              )
-            AND `defunct` = 'N'
-          )
+          `end_time`>NOW()
+          AND start_time <NOW()
+          AND practice = 0
       )
-      AND defunct = 'N'
+  )
 SQL;
 
 }
 //echo $sql;
-
 $res=$mysqli->query($sql);
 if ($res&&$res->num_rows<1&&!((isset($cid)&&$cid<=0) || (isset($id)&&$id<=0))){
 		$res->free();
-		$view_errors=  "No such problem or you don't have the corresponding privilege!<br>";
+		$view_errors=  "<span class='am-text-danger'>Problem Not Available!</span>";
 		require("template/".$OJ_TEMPLATE."/error.php");
 		exit(0);
 }

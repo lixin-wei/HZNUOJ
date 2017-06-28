@@ -38,13 +38,26 @@
     }
     if (!HAS_PRI("see_hidden_".get_problemset($id)."_problem")) { // 不够权限看隐藏题
       //判断是否是开放题
-      $sql_tmp = "SELECT problem_id FROM `problem` WHERE `problem_id`=$id AND `defunct`='N' AND `problem_id` NOT IN (
-                      SELECT `problem_id` FROM `contest_problem` WHERE `contest_id` IN(
-                                      SELECT `contest_id` FROM `contest` WHERE `end_time`>NOW()))";
+      $sql_tmp = "
+SELECT problem_id FROM `problem`
+WHERE
+  `problem_id`=$id
+  AND `defunct`='N'
+  AND `problem_id` NOT IN (
+    SELECT `problem_id` FROM `contest_problem`
+    WHERE
+      `contest_id` IN(
+        SELECT `contest_id` FROM `contest`
+        WHERE
+          `end_time`>NOW()
+          AND start_time <NOW()
+          AND practice = 0
+      )
+  )";
       $result_tmp = $mysqli->query($sql_tmp);
       //echo $result_tmp;
       if ($result_tmp->num_rows != 1) {
-        $view_errors = "<font style='color:red;text-decoration:underline;'>Problem not available!</font>";
+        $view_errors = "<span class='am-text-danger'>Problem not available!</span>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
       }

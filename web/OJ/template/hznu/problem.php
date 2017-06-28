@@ -83,7 +83,7 @@ HTML;
       <?php
       $now=time();
       ?>
-      <?php if (isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
+      <?php if ($is_practice || isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
         <span class="am-badge am-badge-primary am-text-lg">
       <a href="problem.php?id=<?php echo $real_id ?>" style="color: white;">
         <?php echo $real_id ?>

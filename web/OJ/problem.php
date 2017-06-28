@@ -16,6 +16,7 @@ $now=strftime("%Y-%m-%d %H:%M",time());
 if (isset($_GET['cid'])) $ucid="&cid=".intval($_GET['cid']);
 else $ucid="";
 require_once("./include/db_info.inc.php");
+require_once "./include/my_func.inc.php";
 
 if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
 /* 获取我的标签 start */
@@ -90,15 +91,22 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
     $end_time=$mysqli->query($sql)->fetch_array()[0];
     $sql = "SELECT practice FROM contest WHERE contest_id=$cid";
     $is_practice = $mysqli->query($sql)->fetch_array()[0];
-    
+
+
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
-        $view_errors = "<font style='color:red;text-decoration:underline;'>You can only enter the correspond contest!</font>";
+        $view_errors = "<span class='am-text-danger'>You can only enter the correspond contest!</span>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
     }
     $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
     $res=$mysqli->query($sql);
     $real_id=$res->fetch_array()[0];
+    if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
+        $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
+
     $sql="SELECT problemset FROM `problem` WHERE `problem_id`=$real_id";
     $res = $mysqli->query($sql);
     $set_name = $res->fetch_array()[0];
@@ -150,14 +158,24 @@ if ($result->num_rows!=1){
     if(isset($_GET['id'])){
         $id=intval($_GET['id']);
         $result->free();
-        $sql="SELECT  contest.`contest_id` , contest.`title`,contest_problem.num FROM `contest_problem`,`contest` WHERE contest.contest_id=contest_problem.contest_id and `problem_id`=$id ORDER BY `num`";
+        $sql="
+SELECT contest.`contest_id`, contest.`title`, contest_problem.num
+FROM `contest_problem`,`contest`
+WHERE
+  contest.contest_id=contest_problem.contest_id
+  AND `problem_id`=$id
+  AND contest.start_time < NOW()
+  AND contest.end_time > NOW()
+  AND contest.practice = 0
+ORDER BY `num`
+        ";
         //echo $sql;
         $result=$mysqli->query($sql);
         if($i=$result->num_rows){
-            $view_errors.= "This problem is in Contest(s) below:<br>";
+            $view_errors.= "<span class='am-text-danger am-block'>This problem is locked because it's in the following contest(s):</span>";
             for (;$i>0;$i--){
                 $row=$result->fetch_row();
-                $view_errors.= "<a href=problem.php?cid=$row[0]&pid=$row[2]>Contest $row[0]:$row[1]</a><br>";
+                $view_errors.= "<a href=problem.php?cid=$row[0]&pid=$row[2]>Contest $row[0]: $row[1]</a><br>";
             }
         }else{
             $view_title= "<title>$MSG_NO_SUCH_PROBLEM!</title>";

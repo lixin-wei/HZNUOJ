@@ -72,6 +72,21 @@ function is_running($cid){
     $result->free();
     return $cnt>0;
 }
+//not include practice
+function is_in_running_contest($pid) {
+    require_once("./include/db_info.inc.php");
+    global $mysqli;
+    $sql = "
+SELECT 1 FROM contest_problem
+INNER JOIN contest ON
+contest.contest_id = contest_problem.contest_id
+AND contest.start_time < NOW()
+AND contest.end_time > NOW()
+AND contest.practice = 0
+WHERE contest_problem.problem_id = $pid
+";
+    return $mysqli->query($sql)->num_rows;
+}
 function is_running_and_not_practice($cid) {
     require_once("./include/db_info.inc.php");
     global $mysqli;

@@ -98,35 +98,27 @@
         $t_sql=" FROM `problem` WHERE $filter_sql AND problemset='$set_name'";
       }
       else{
-        $now=strftime("%Y-%m-%d %H:%M",time());
         $t_sql=<<<SQL
-        FROM 
-          problem
-        WHERE 
-          defunct='N' 
-          AND $filter_sql
-          AND problemset='$set_name' 
-          AND problem_id NOT IN ( 
-            SELECT DISTINCT
-              contest_problem.problem_id
-            FROM
-              contest_problem
-            JOIN
-              contest
-            ON
-              #problems that are in running contest AND is not practice
-              contest.start_time<='$now' AND contest.end_time>'$now'
-              AND contest.practice = 0
-              AND contest_problem.contest_id=contest.contest_id
-          )
+FROM problem
+LEFT JOIN (
+    SELECT problem_id FROM contest_problem
+    INNER JOIN contest ON
+        contest.contest_id = contest_problem.contest_id
+        AND contest.start_time < NOW()
+        AND contest.end_time > NOW()
+        AND contest.practice = 0
+    ) as running_problem
+  ON running_problem.problem_id = problem.problem_id
+  WHERE $filter_sql AND problem.defunct = 'N' AND problemset='$set_name'
+  GROUP BY problem.problem_id
 SQL;
       }
       //count the number of problem START
-      $res = $mysqli->query("SELECT COUNT('problem_id')".$t_sql);
-      $cnt += $res->fetch_array()[0];
+      $res = $mysqli->query("SELECT 1 ".$t_sql);
+      $cnt += $res->num_rows;
       //count the number of problem END
 
-      $t_sql = "SELECT `problem_id`,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3 ".$t_sql;
+      $t_sql = "SELECT problem.problem_id,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3, COUNT(running_problem.problem_id) > 0 AS locked  ".$t_sql;
       if($first) $first = false;
       else $t_sql = " UNION ".$t_sql;
       $sql .= $t_sql;
@@ -151,7 +143,7 @@ SQL;
   $sql.=" LIMIT $st,$page_cnt";
 
   if($first) $sql="";
-  // echo "<pre>sql:".$sql."</pre>";
+  //echo "<pre>sql:".$sql."</pre>";
   /* 获取数据库查询语句 end */
 
 
@@ -183,7 +175,10 @@ SQL;
       $view_problemset[$i][0] = "<td style='width:30px'></td>";
     }
     $view_problemset[$i][1] = "<td>".$p_id."</td>";
-    $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+    if(!$row->locked)
+      $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+    else
+        $view_problemset[$i][2] = "<td style='color: dimgrey;'>"."<span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
     $view_problemset[$i][3] = "<td >";
     if ($show_tag) {
         $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>";

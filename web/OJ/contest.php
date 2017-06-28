@@ -163,15 +163,18 @@ SQL;
     $view_problemset=Array();
     
     $cnt=0;
+    $can_edit_contest = HAS_PRI("edit_contest");
     while ($row=$result->fetch_object()){
         $view_problemset[$cnt][0]="";
         if (isset($_SESSION['user_id']))
             $view_problemset[$cnt][0]=check_ac($cid,$cnt);
-        if ($now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者当前用户是管理员则显示 Problem ID
+        if ($practice || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
             $view_problemset[$cnt][1]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
-        // $view_problemset[$cnt][1] .= "Problem &nbsp;".(chr($cnt+ord('A')));
         $view_problemset[$cnt][1] .= "Problem &nbsp;".PID($cnt);
-        $view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
+        if($practice && is_in_running_contest($row->pid) && !$can_edit_contest)
+            $view_problemset[$cnt][2]= "<span style='color: dimgrey;' title='this problem is locked because they are in running contest.'>$row->title <i class='am-icon-lock'></i></span>";
+        else
+            $view_problemset[$cnt][2]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
         $view_problemset[$cnt][3]=$row->author;
         $view_problemset[$cnt][4]=$row->accepted ;
         $view_problemset[$cnt][5]=$row->submit ;
