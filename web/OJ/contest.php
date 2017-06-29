@@ -87,11 +87,13 @@ if (isset($_GET['cid'])){
         $view_start_time=$row->start_time;
         $view_end_time=$row->end_time;
         $practice = $row->practice;
+        $can_enter_contest = true;
         if (!HAS_PRI("edit_contest") && $now<$start_time){
-            require_once "template/hznu/contest_header.php";
-            require("template/".$OJ_TEMPLATE."/footer.php");
-            exit(0);
+            $can_enter_contest = false;
         }
+    }
+    if($can_enter_contest) {
+        
     }
     $sql=<<<SQL
       SELECT

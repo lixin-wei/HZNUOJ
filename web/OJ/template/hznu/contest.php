@@ -31,6 +31,7 @@
   <h1>Announcement</h1><hr/>
   <div class="well" style="font-size: 1.3rem;"><?php echo $view_description?></div>
   <?php endif ?>
+  <?php if($can_enter_contest):?>
   <h1>Problems</h1><hr/>
   <div class="well" style="font-size: normal;">
     <table class="am-table am-table-striped table-problem">
@@ -64,4 +65,5 @@
     </table>
   </div>
 </div>
+<?php endif?>
 <?php include "footer.php" ?>
