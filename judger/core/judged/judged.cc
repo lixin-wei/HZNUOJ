@@ -224,7 +224,7 @@ int executesql(const char * sql) {
 	if (mysql_real_query(conn, sql, strlen(sql))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(1000);
+		usleep(20000);
 		conn = NULL;
 		return 1;
 	} else
@@ -317,7 +317,7 @@ int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(2000);
+		usleep(20000);
 		return 0;
 	}
 	res = mysql_store_result(conn);
