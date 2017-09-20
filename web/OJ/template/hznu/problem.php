@@ -71,7 +71,7 @@ function sss($str){
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
       <li class="am-active"><a href="/OJ/problemset.php">Problems</a></li>
-      <li><a href="/OJ/status.php">Codes</a></li>
+      <li><a href="/OJ/status.php">Status</a></li>
       <li><a href="/OJ/ranklist.php">Standings</a></li>
     </ul>
   </div>
