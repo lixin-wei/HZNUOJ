@@ -80,6 +80,11 @@
     </div> -->
     <!-- 排序模块 end -->
   </div>
+  <div class="am-g" style="color: grey; text-align: center;">
+    <div>
+      Standings won't update automatically. Please visit your user info page to update your information.
+    </div>
+  </div>
   <div class="am-avg-md-1">
     <table class="am-table">
       
@@ -89,13 +94,7 @@
         <th class='am-text-center'>Rank</th>
         <th class='am-text-center'>User</th>
         <th class='am-text-center'>Nick</th>
-        <th class='am-text-center'>HZNU</th>
-        <th class='am-text-center'>ZJU</th>
-        <th class='am-text-center'>HDU</th>
-        <th class='am-text-center'>PKU</th>
-        <th class='am-text-center'>UVA</th>
-        <th class='am-text-center'>CF</th>
-        <th class='am-text-center'>Total</th>
+        <th class='am-text-center'>Solved</th>
         <th class='am-text-center' style='width=100px'>Level</th>
         <th class='am-text-center'>DouQi</th>
       </tr>

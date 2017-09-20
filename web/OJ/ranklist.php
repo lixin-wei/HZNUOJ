@@ -111,19 +111,6 @@ for ( $i=0;$i<$rows_cnt;$i++ ) {
     $view_rank[$i][1] = "<div class='am-text-center'><a href='userinfo.php?user=".$row['user_id']."'>".$row['user_id']."</a>"."</div>";
     $view_rank[$i][2] = "<div class='am-text-center'>".htmlentities($row['nick'])."</div>";
     $view_rank[$i][3] = "<div class='am-text-center'><a href='status.php?user_id=".$row['user_id']."&jresult=4'>".$row['solved']."</a>"."</div>";
-    $view_rank[$i][4] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=ZOJ&res=1&orderBy=run_id'>".$row['ZJU']."</a>"."</div>";
-    // $view_rank[$i][4]=  "<div class=center><a href='status.php?user_id=".$row['user_id']."'>".$row['submit']."</a>"."</div>";
-    /*
-    if ($row['submit'] == 0)
-      $view_rank[$i][5]= "<div class=center>0.000%</div>";
-    else
-      $view_rank[$i][5]= sprintf ( "<div class=center>%.03lf%%</div>", 100 * $row['solved'] / $row['submit'] );
-		*/
-    $view_rank[$i][5] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=HDU&res=1&orderBy=run_id'>".$row['HDU']."</a>"."</div>";
-    $view_rank[$i][6] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=POJ&res=1&orderBy=run_id'>".$row['PKU']."</a>"."</div>";
-    $view_rank[$i][7] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=UVA&res=1&orderBy=run_id'>".$row['UVA']."</a>"."</div>";
-    $view_rank[$i][8] = "<div class='am-text-center'><a href='{$VJ_URL}/problem/status.action#un=".$row['user_id']."&OJId=CodeForces&res=1&orderBy=run_id'>".$row['CF']."</a>"."</div>";
-    $view_rank[$i][9] = "<div class='am-text-center'>".$total."</div>";
     $view_rank[$i][10]= "<div class='am-text-center' style='width:110px;'><font color='".$row['color']."'>".$row['level']."</font></div>";
     $view_rank[$i][11]= "<div class='am-text-center'>".round($row['strength'])."</div>";
 }

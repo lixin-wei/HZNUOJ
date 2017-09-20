@@ -120,129 +120,6 @@
   $result->free();
   /* 查找HZNUOJ未解决的题目编号 end */
 
-
-
-
-
-  /* VJ计算部分 start */
-  // 连接转入vjudge
-  $mysqli->close();
-  $mysqli = new mysqli($DB_VJHOST,$DB_VJUSER,$DB_VJPASS,"vhoj");
-  if ($mysqli->connect_errno) die('Could not connect to the VJDB, Please contact administrator to fix this problem.' . $mysqli->error);
-  $mysqli->query("set names utf8");
-
-  // get AC number and problem ID from all OJs
-  // ZOJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='ZOJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  $ZJU = $result->num_rows;
-  $zju_solved_set = array();
-  $zju_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$ZJU; $j++) {
-    $row = $result->fetch_object();
-    $zju_solved_set[] = $row->C_ORIGIN_PROB;
-    $zju_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  $result->free();
-
-  // HDOJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='HDU' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  $HDU = $result->num_rows;
-  $hdu_solved_set = array();
-  $hdu_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$HDU; $j++) {
-    $row = $result->fetch_object();
-    $hdu_solved_set[] = $row->C_ORIGIN_PROB;
-    $hdu_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  $result->free();
-
-  // POJ
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='POJ' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  $PKU = $result->num_rows;
-  $pku_solved_set = array();
-  $pku_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$PKU; $j++) {
-    $row = $result->fetch_object();
-    $pku_solved_set[] = $row->C_ORIGIN_PROB;
-    $pku_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  $result->free();  
-
-  // UVA
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='UVA' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  $UVA = $result->num_rows;
-  $uva_solved_set = array();
-  $uva_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$UVA; $j++) {
-    $row = $result->fetch_object();
-    $uva_solved_set[] = $row->C_ORIGIN_PROB;
-    $uva_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  $result->free();  
-
-  // Codeforces
-  $sql = "SELECT DISTINCT C_ORIGIN_PROB, C_PROBLEM_ID FROM t_submission WHERE C_ORIGIN_OJ='CodeForces' AND C_STATUS='Accepted' AND C_USERNAME='".$user_mysql."'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-  $CF = $result->num_rows;
-  $cf_solved_set = array();
-  $cf_vj_id = array(); // 映射vj上的ID
-  for ($j=0; $j<$CF; $j++) {
-    $row = $result->fetch_object();
-    $cf_solved_set[] = $row->C_ORIGIN_PROB;
-    $cf_vj_id[$row->C_ORIGIN_PROB] = $row->C_PROBLEM_ID;
-  }
-  $result->free();  
-
-  // 获取vjudge用户数存入user_cnt_divisor
-  $sql = "SELECT C_USERNAME FROM t_user";
-  $result  = $mysqli->query($sql) or die($mysqli->error);
-  if($result) $user_cnt_divisor = $result->num_rows;
-  else $user_cnt_divisor = 1;
-  $result->free();
-//  echo $user_cnt_divisor;
-
-  // 获取该用户AC的所有题目，存入result
-  $sql = "SELECT DISTINCT C_PROBLEM_ID FROM t_submission WHERE C_USERNAME='".$user_mysql."' AND C_STATUS='Accepted'";
-  $result = $mysqli->query($sql) or die($mysqli->error);
-
-  // 获取该用户AC的题目数量，存入rows_cnt
-  if($result) $rows_cnt = $result->num_rows;
-  else $rows_cnt = 0;
-
-  // 对于每道AC的题目，计算其分数，并加至strength
-  for ($j=0; $j<$rows_cnt; $j++) {
-    // 获取题号
-    $row = $result->fetch_object();
-    $prob_id = $row->C_PROBLEM_ID;
-    // 获取AC人数
-    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS ac_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id." AND C_STATUS='Accepted'";
-    $y_result = $mysqli->query($sql) or die($mysqli->error);
-    $y_row = $y_result->fetch_object();
-    $solved = $y_row->ac_user;
-    // 获取提交人数
-    $sql = "SELECT COUNT(DISTINCT C_USER_ID) AS sub_user FROM t_submission WHERE C_PROBLEM_ID=".$prob_id;
-    $submit = $y_row->sub_user;
-    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
-    if ($scores < 10) $scores = 10;
-    $strength += $scores;
-    $y_result->free();
-  }
-  $result->free();
-  /* VJ计算部分 start */
-
-
-
-
-  // 连接转回hustoj
-  $mysqli->close();
-  $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME);
-  if ($mysqli->connect_errno) die('Could not connect: ' . $mysqli->error);
-  $mysqli->query("set names utf8");
-
   require_once("./include/rank.inc.php");
 
   // 根据数组计算该实力对应的等级和颜色
@@ -259,7 +136,7 @@
   }
   
   // 更新用户信息
-  $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."',ZJU=".$ZJU.",HDU=".$HDU.",PKU=".$PKU.",UVA=".$UVA.",CF=".$CF." WHERE user_id='".$user_mysql."'";
+  $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."' WHERE user_id='".$user_mysql."'";
   $result=$mysqli->query($sql);
 
   // 获取排名
@@ -273,10 +150,10 @@
 
 
   /* 计算图表相关信息 start */
-  $total_ac = $AC+$CF+$HDU+$PKU+$UVA+$ZJU;
+  $total_ac = $AC;
   $local_ac=$AC;
   // 计算总解题量的解题分
-  $sql = "SELECT MAX(solved+CF+HDU+PKU+ZJU+UVA) FROM users";
+  $sql = "SELECT MAX(solved) FROM users";
   $result = $mysqli->query($sql);
   $row = $result->fetch_array();
   $max_solved = intval($row[0]);

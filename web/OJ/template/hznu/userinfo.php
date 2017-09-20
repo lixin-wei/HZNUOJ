@@ -30,12 +30,8 @@
           <tr><td class="first-col">Douqi</td><td><?php echo round($strength)?></td></tr>
           <tr><td class="first-col">Level</td><td><?php echo $level?></td></tr>
           <tr>
-            <td class="first-col">Local AC</td>
-            <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
-          </tr>
-          <tr>
             <td class="first-col">Total AC</td>
-            <td><?php echo $total_ac?></td>
+            <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
           </tr>
           <tr><td class="first-col">School</td><td><?php echo htmlentities($school)?></td></tr>
           <tr><td class="first-col">Email</td><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
@@ -47,9 +43,6 @@
           <?php endif ?>
         </tbody>
       </table>
-      <div class="am-text-center" style="display: block; font-size: 11pt; color: grey;">
-        *Total AC includes problems in HZNUOJ and VJudge(forked).
-      </div>
     </div>
     <!-- 左侧个人信息表格 end -->
      
@@ -249,8 +242,7 @@ chart.setOption(option);
 var chart_sub=echarts.init(document.getElementById("chart-sub"));
 option = {
     title : {
-        text: "Submissions",
-        subtext: "In HZNUOJ only", 
+        text: "Submissions"
     },
     tooltip : {
         trigger: 'item',
