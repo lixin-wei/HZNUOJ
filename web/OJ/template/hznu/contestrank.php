@@ -199,7 +199,7 @@
             }else if(isset($U[$i]->p_wa_num[$j])&&isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
               $cell_class.="pcell-wa";
             }
-            $probelm_lable=chr(ord('A')+$j);
+            $probelm_lable=PID($j);
             $data_toggle="";
             //echo "<pre>";
             
@@ -208,7 +208,7 @@
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
-            echo "<td class='$cell_class' id='pcell $uuid $j' $data_toggle>";
+            echo "<td class='$cell_class' id='pcell $uuid $probelm_lable' $data_toggle>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
                 echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";

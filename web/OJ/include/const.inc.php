@@ -44,4 +44,13 @@
     $res = strrev($res);
     return $res;
   }
+  function get_id_from_label($label) {
+    $len = strlen($label);
+    $res = 0;
+    for($i = 0 ; $i < $len ; ++$i) {
+      $res *= 26;
+      $res += ord($label[$i]) - ord('A') + 1;
+    }
+    return $res-1;
+  }
 ?>
