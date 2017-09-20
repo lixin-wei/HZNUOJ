@@ -155,6 +155,9 @@ else if(isset($_POST['problem2contest'])){
   Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo date('d')+(date('H')+4>23?1:0)?>>&nbsp;
   Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo (date('H')+4)%24?>>&nbsp;
   Minute:<input class=input-mini  type=text name=eminute value=00 size=2 ></p>
+    <div style="color: #ff775a">
+      visit <a href="../faqs.php#p-5" target="_blank">FAQ</a> to know differences between types of contest.
+    </div>
   Is Practice:
   <select name='practice' style='width:50px'>
     <option value='1'>Y</option>
@@ -166,7 +169,7 @@ else if(isset($_POST['problem2contest'])){
       <option value=1>Private</option>
     </select>
   Password:<input type=text name=password value=""><br />
-  Team only:
+  Team only(Special):
     <select name='user_limit' style='width:50px'>
       <option value='Y' ?>Y</option>
       <option value='N' selected='selected'>N</option>

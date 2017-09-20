@@ -157,6 +157,9 @@
   Day:<input class=input-mini  type=text name=eday size=2 value=<?php echo substr($endtime,8,2)?>>
   Hour:<input class=input-mini  type=text name=ehour size=2 value=<?php echo substr($endtime,11,2)?>> 
   Minute:<input class=input-mini  type=text name=eminute size=2 value=<?php echo substr($endtime,14,2)?>></p>
+  <div style="color: #ff775a">
+    visit <a href="../faqs.php#p-5" target="_blank">FAQ</a> to know differences between types of contest.
+  </div>
   Is Practice:
   <select name='practice' style='width:50px'>
     <option value='1' <?php echo $practice==1?'selected=selected':''?>>Y</option>
@@ -168,7 +171,7 @@
       <option value=1 <?php echo $private=='1'?'selected=selected':''?>>Private</option>
     </select>
   Password:<input type=text name=password value="<?php echo htmlentities($password,ENT_QUOTES,'utf-8')?>"><br>
-  Team only:
+  Team only(Special):
     <select name='user_limit' style='width:50px'>
       <option value='Y' <?php echo $user_limit=='Y'?'selected=selected':''?>>Y</option>
       <option value='N' <?php echo $user_limit=='N'?'selected=selected':''?>>N</option>
