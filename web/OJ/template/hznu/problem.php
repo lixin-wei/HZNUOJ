@@ -71,7 +71,7 @@ function sss($str){
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
       <li class="am-active"><a href="/OJ/problemset.php">Problems</a></li>
-      <li><a href="/OJ/status.php">Status</a></li>
+      <li><a href="/OJ/status.php">Codes</a></li>
       <li><a href="/OJ/ranklist.php">Standings</a></li>
     </ul>
   </div>
@@ -163,7 +163,7 @@ HTML;
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
-                Status
+                Codes
               </button>
             </a>
 HTML;
@@ -329,7 +329,7 @@ HTML;
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
-                Status
+                Codes
               </button>
             </a>
 HTML;

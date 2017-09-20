@@ -19,10 +19,13 @@
 <div class="am-container" style="margin-top:40px;">
     <?php
     echo <<<HTML
-      <h1>Problem Status: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
+      <h1>Code archive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
       <hr/>
 HTML;
     ?>
+  <div style="color: grey;">
+    You are able to view all submissions after solving this problem.
+  </div>
   <div style="padding: 15px;">
     <div style="width: 350px; float: left;" class="am-text-center">
       <div class="am-panel am-panel-default" data-am-sticky="{top:60}">
