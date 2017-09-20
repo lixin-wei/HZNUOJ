@@ -84,6 +84,7 @@ SQL;
 HTML;
     }
     echo "</table>";
+	$cnt -= $exist_cnt;
     echo "DONE! $cnt teams imported! $exist_cnt users already exists!";
 }
 
