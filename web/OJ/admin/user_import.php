@@ -23,6 +23,7 @@ if(isset($_POST['user_id'])){
     $cnt=count($user_id);
     echo "<table class='table'>";
     echo "<tr><th>user_id</th><th>stu_id</th><th>school</th><th>class</th><th>real_name</th><th>nick</th><th>email</th><th>password</th></tr>";
+	$exist_cnt = 0;
     foreach ($user_id as $key => $value) {
         //$password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
         //while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
@@ -36,6 +37,12 @@ if(isset($_POST['user_id'])){
         $real_name[$key]=trim($real_name[$key]);
         $nick[$key]=trim($nick[$key]);
         $email[$key]=trim($email[$key]);
+	$sql = "SELECT COUNT(*) FROM users WHERE user_id = '{$user_id[$key]}'";
+	$is_exist = $mysqli->query($sql)->fetch_array()[0];
+	if($is_exist > 0) {
+		$exist_cnt++;
+		continue;
+	}
         $sql=<<<SQL
 			INSERT INTO users (
 				user_id,
@@ -77,7 +84,7 @@ SQL;
 HTML;
     }
     echo "</table>";
-    echo "DONE! $cnt teams imported!";
+    echo "DONE! $cnt teams imported! $exist_cnt users already exists!";
 }
 
 ?>
