@@ -12,7 +12,7 @@
 <?php $title="Login";?>
 <?php include "header.php" ?>
 <div class="am-g">
-  <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+  <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered" style="max-width: 600px;">
     <br>
       <h3>Login Page</h3>
     <hr>
