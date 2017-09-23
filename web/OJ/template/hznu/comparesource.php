@@ -42,6 +42,7 @@
               cmsettings: {
                   readOnly: false,
                   lineWrapping: true,
+                  editor_height: 800
               }
           });
           $.ajax({

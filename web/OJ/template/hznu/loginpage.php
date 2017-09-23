@@ -21,26 +21,26 @@
       <div class="am-form-group">
         <label for="username" class="am-u-sm-4 am-form-label">User ID: </label>
         <div class="am-u-sm-8">
-          <input type="text" name="user_id" id="username" value="" placeholder="Your user ID" style="width:300px;">
+          <input type="text" name="user_id" id="username" value="" placeholder="Your user ID" style="width:100%;">
         </div>  
       </div>
       <div class="am-form-group">
         <label for="pwd" class="am-u-sm-4 am-form-label">Password: </label>
         <div class="am-u-sm-8">
-          <input type="password" name="password" id="pwd" value="" placeholder="Your password" style="width:300px;">
+          <input type="password" name="password" id="pwd" value="" placeholder="Your password" style="width:100%;">
         </div>  
       </div>
       <div class="am-form-group">
         <label for="pwd" class="am-u-sm-4 am-form-label">Contest ID: </label>
         <div class="am-u-sm-8">
-          <input type="text" name="contest_id" id="contest_id" value="" placeholder="Don't input if you are not team account" style="width:300px;">
+          <input type="text" name="contest_id" id="contest_id" value="" placeholder="Don't input if you are not team account" style="width:100%;">
         </div>
       </div>
       <div class="am-from-group">
-        <div class="am-cf am-u-sm-offset-4 am-u-sm-8 am-u-end">
-          <input type="submit" name="submit" value="Login" class="am-btn am-btn-primary am-btn-sm am-fl">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <a href='lostpassword.php'><font color='red'>Lost Password?</font></a>
+        <div class="am-cf am-u-sm-offset-4 am-u-sm-8 am-u-end" style="text-align: center">
+            <div style="display: inline-block;">
+              <input type="submit" name="submit" value="Login" class="am-btn am-btn-primary am-btn-sm am-fl" style="width: 100px;">
+            </div>
         </div>
       </div>
     </form>
