@@ -70,6 +70,11 @@ function s_cmp($A,$B){
     else return $A->time>$B->time;
 }
 
+
+$real_name_mode = false;
+if(isset($_GET['real_name_mode']) && HAS_PRI("see_hidden_user_info")) {
+  $real_name_mode = true;
+}
 // contest start time
 if (!isset($_GET['cid'])) die("No Such Contest!");
 $cid=intval($_GET['cid']);
@@ -291,6 +296,7 @@ if (isset($sql_u)) {
             $U[$user_cnt]=new TM();
             $U[$user_cnt]->user_id=$row['user_id'];
             $U[$user_cnt]->nick=$row['nick'];
+            $U[$user_cnt]->real_name = $row['real_name'];
             $U[$user_cnt]->real_name = $row['real_name'];
             $U[$user_cnt]->stu_id = $row['stu_id'];
             $U[$user_cnt]->class = $row['class'];

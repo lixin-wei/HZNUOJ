@@ -26,6 +26,13 @@
       //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
       // else 
       //   echo "[ <a href='contestrank.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
+    
+      if(HAS_PRI('see_hidden_user_info')) {
+        if ($real_name_mode) {
+            echo "[ <a href='contestrank.php?cid=$cid'>Normal mode</a> ]";
+        }
+        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>Real name mode</a> ]";
+      }
     ?>
     [ Choose Class
       <select id="class">
@@ -119,8 +126,13 @@
   <table class="am-table" style='font-size:13px;' id="rank_table">
     <thead align="center" style="height: 30px;">
       <td style="width: 1%;" id="rank">Rank</td>
-      <td style="width: 1%;" id="user">User</td>
-      <td style="width: 90%;" id="nick">Nick</td>
+      <?php if($real_name_mode):?>
+        <td style="width: 1%;" id="user">User</td>
+        <td style="width: 90%;" id="nick">Nick</td>
+      <?php else: ?>
+        <td style="width: 1%;" id="user">Stu. ID</td>
+        <td style="width: 90%;" id="nick">Name</td>
+      <?php endif?>
       <td style="width: 1%;" id="solved">Solved</td>
       <td style="width: 1%;" id="penalty">Penalty</td>
       <?php
@@ -157,6 +169,15 @@
           echo "<td class='rankcell' style='border-left:0;'>";
           $uuid=htmlentities($U[$i]->user_id);
           $nick=htmlentities($U[$i]->nick);
+          if($real_name_mode) {
+              $col2=htmlentities($U[$i]->stu_id);
+              $col3=htmlentities($U[$i]->class . "-". $U[$i]->real_name);
+          }
+          else {
+              $col2=htmlentities($U[$i]->user_id);
+              $col3=htmlentities($U[$i]->nick);
+          }
+
           if(!isset($is_excluded[$uuid])) {
             echo "<span class='$medal_class' style='$medal_css'>";
             if($rank==1){
@@ -172,12 +193,12 @@
 
           $usolved=$U[$i]->solved;
         echo "<td class='rankcell'>";
-          echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$uuid</a>";
+          echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$col2</a>";
 
 
           echo "<td class='rankcell'><div class='nick'>";
           if(isset($is_excluded[$uuid])) echo "<span>*</span>";
-          echo "<a href=\"userinfo.php?user=$uuid\">".$nick."</a>";
+          echo "<a href=\"userinfo.php?user=$uuid\">".$col3."</a>";
           echo "</div></td>";
 
           echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>";
