@@ -127,11 +127,11 @@
     <thead align="center" style="height: 30px;">
       <td style="width: 1%;" id="rank">Rank</td>
       <?php if($real_name_mode):?>
-        <td style="width: 1%;" id="user">User</td>
-        <td style="width: 90%;" id="nick">Nick</td>
-      <?php else: ?>
         <td style="width: 1%;" id="user">Stu. ID</td>
         <td style="width: 90%;" id="nick">Name</td>
+      <?php else: ?>
+        <td style="width: 1%;" id="user">User</td>
+        <td style="width: 90%;" id="nick">Nick</td>
       <?php endif; ?>
       <td style="width: 1%;" id="solved">Solved</td>
       <td style="width: 1%;" id="penalty">Penalty</td>
