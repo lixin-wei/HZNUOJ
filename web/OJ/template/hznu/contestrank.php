@@ -31,7 +31,7 @@
         if ($real_name_mode) {
             echo "[ <a href='contestrank.php?cid=$cid'>Normal mode</a> ]";
         }
-        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>Real name mode</a> ]";
+        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>Real Name Mode</a> ]";
       }
     ?>
     [ Choose Class
@@ -132,7 +132,7 @@
       <?php else: ?>
         <td style="width: 1%;" id="user">Stu. ID</td>
         <td style="width: 90%;" id="nick">Name</td>
-      <?php endif?>
+      <?php endif; ?>
       <td style="width: 1%;" id="solved">Solved</td>
       <td style="width: 1%;" id="penalty">Penalty</td>
       <?php
