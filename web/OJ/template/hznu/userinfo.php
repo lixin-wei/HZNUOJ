@@ -65,7 +65,6 @@ require_once("header.php");
                   </select>
                 </td>
               </tr>
-              <button>submit</button>
             <?php elseif (HAS_PRI("see_hidden_user_info")): ?>
               <tr><td colspan="2" class="am-danger">----The followings are  admin only----</td></tr>
               <tr><td class="first-col">Student ID</td><td><?php echo htmlentities($stu_id)?></td></tr>
