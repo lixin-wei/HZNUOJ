@@ -56,8 +56,11 @@
       oSelect.onchange=function() { //当选项改变时触发
         var valOption=this.options[this.selectedIndex].value; //获取option的value
         var url = window.location.search;
-        var cid = url.substr(url.indexOf('=')+1,4);
-        var url = window.location.pathname+"?cid="+cid+"&class="+valOption;
+        var cid = <?php echo $cid?>;
+        var real_name_mode = <?php echo $real_name_mode?"true":"false" ?>;
+        var url = window.location.pathname+"?cid="+cid;
+        if(real_name_mode) url += "&real_name_mode";
+        url += "&class="+valOption;
         window.location.href = url;
       }
     </script>
