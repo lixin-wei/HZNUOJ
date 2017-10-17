@@ -14,6 +14,7 @@
   require_once('./include/setlang.php');
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
+  require_once "include/classList.inc.php";
  
   // check user
   $user=$_GET['user'];

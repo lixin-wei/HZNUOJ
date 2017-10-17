@@ -55,32 +55,6 @@
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
-      <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->stu_id)?>" name="stu_id">
-      </div>
-    </div>
-    <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
-      <div class="am-u-sm-8">
-        <select name="class" style="width:340px;">
-        <?php
-          foreach ($classList as $i) {
-        ?>
-            <option value="<?php echo $i; ?>" <?php if ($row->class==$i) echo selected; ?> ><?php echo $i; ?></option>
-        <?php
-          }
-        ?>
-        </select>
-      </div>
-    </div>   
-    <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Real Name:</label>
-      <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name">
-      </div>
-    </div>
-    <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;Email:
       </label>
@@ -88,6 +62,29 @@
         <input type="text" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email">
       </div>
     </div>
+
+    <div class="am-text-center am-u-sm-8 am-u-sm-offset-4" style="margin-bottom: 15px;">
+      <div style="width: 340px; color: grey; ">--The following items are set by admins--</div>
+    </div>
+    <div class="am-form-group">
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
+      <div class="am-u-sm-8">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->stu_id)?>" name="stu_id" disabled>
+      </div>
+    </div>
+    <div class="am-form-group">
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
+      <div class="am-u-sm-8">
+          <input type="text" style="width:340px;" value="<?php echo htmlentities($row->class)?>" name="real_name" disabled>
+      </div>
+    </div>
+    <div class="am-form-group">
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Real Name:</label>
+      <div class="am-u-sm-8">
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name" disabled>
+      </div>
+    </div>
+  
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;Show Tag:
@@ -95,7 +92,7 @@
       <div class="am-u-sm-8" style='padding-top:12px'>
         <input type="checkbox" <?php if ($row->tag == 'Y') echo "checked='checked'" ?> name="tag">
       </div>
-    </div> 
+    </div>
     <div class="am-form-group">
       <div class="am-u-sm-8 am-u-sm-offset-4">
         <input type="submit" value="Modify" name="submit" class="am-btn am-btn-success">
