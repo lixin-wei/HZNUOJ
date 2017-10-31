@@ -12,7 +12,7 @@
 <footer class="blog-footer">
   <hr />
   <a href="https://github.com/wlx65003/HZNUOJ">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
-  It's maintained by <a href="mailto:yybird@hsACM.cn">yybird</a> && <a href="userinfo.php?user=hhhh">hhhh</a> && <a href="mailto:wlx65005@163.com">D_Star</a> now <br />
+  <a href="/OJ/maintainer-list.php">--- Maintainer List ---</a><br>
   ★Server Time: <span id='footerdate'></span><?php //echo date('20y-m-d h:i:s',time()); ?>★
 
   <!-- go to top btn START -->
