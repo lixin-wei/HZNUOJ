@@ -55,7 +55,8 @@ if (isset($_POST['syear'])) { // 如果有POST过来的信息，则获取POST值
     
     $sql="DELETE FROM `contest_problem` WHERE `contest_id`=$cid";
     $mysqli->query($sql);
-    
+    $sql = "UPDATE solution SET num=-1 WHERE contest_id = $cid";
+    $mysqli->query($sql);
     if(count($_POST['problem_list'])) {
         $plist=$_POST['problem_list'];
         $score_list = $_POST['score_list'];
