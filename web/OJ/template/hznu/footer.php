@@ -46,12 +46,30 @@
 </script>
 <!-- go to top btn auto hide END -->
 <!-- 动态显示时间 start -->
+<!-- 动态显示时间 start -->
 <script>
-    var footerdate = document.getElementById('footerdate');
-    footerdate.style['font-family'] = 'monospace';
-    footerdate.innerHTML = new Date().toLocaleString();
-    setInterval(function() {footerdate.innerHTML = new Date().toLocaleString();}, 1000);
+    var diff = new Date("<?php echo date("Y/m/d H:i:s")?>").getTime()-new Date().getTime();
+    //alert(diff);
+    function clock_foot() {
+        var x,h,m,s,n,xingqi,y,mon,d;
+        var x = new Date(new Date().getTime()+diff);
+        y = x.getYear()+1900;
+        if (y>3000) y-=1900;
+        mon = x.getMonth()+1;
+        d = x.getDate();
+        xingqi = x.getDay();
+        h=x.getHours();
+        m=x.getMinutes();
+        s=x.getSeconds();
+
+        n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
+        //alert(n);
+        document.getElementById('footerdate').innerHTML=n;
+        setTimeout("clock_foot()",1000);
+    }
+    clock_foot();
 </script>
+<!-- 动态显示时间 end -->
 <!-- 动态显示时间 end -->
 
 <?php if (isset($_GET['cid']) && $is_started): ?>
