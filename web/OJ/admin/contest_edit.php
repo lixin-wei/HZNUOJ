@@ -225,7 +225,6 @@ while($uid=$res->fetch_array()[0]){
   </select>
   <br>
   <p align=left>Description:<br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea>
-    Users:<textarea name="ulist" rows="20" cols="20"><?php if (isset($ulist)) { echo $ulist; } ?></textarea>
     Ranking Excluded Users:<textarea name="ex_ulist" rows="20" cols="20"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
 </form>
