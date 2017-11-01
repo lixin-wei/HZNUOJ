@@ -37,7 +37,7 @@
                     <td>2015</td>
                 </tr>
                 <tr>
-                    <td>Sex:</td>
+                    <td>Sex</td>
                     <td>Male</td>
                 </tr>
                 <tr>
@@ -77,7 +77,7 @@
                     <td>2014</td>
                 </tr>
                 <tr>
-                    <td>Sex:</td>
+                    <td>Sex</td>
                     <td>Male</td>
                 </tr>
                 <tr>
@@ -115,7 +115,7 @@
                     <td>2012</td>
                 </tr>
                 <tr>
-                    <td>Sex:</td>
+                    <td>Sex</td>
                     <td>Male</td>
                 </tr>
                 <tr>
