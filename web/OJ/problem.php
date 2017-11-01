@@ -98,9 +98,10 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
     }
-    $sql="SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
-    $res=$mysqli->query($sql);
-    $real_id=$res->fetch_array()[0];
+    $sql="SELECT `problem_id`, score FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
+    $res=$mysqli->query($sql)->fetch_array();
+    $real_id=$res[0];
+    $contest_score = $res[1];
     if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
         $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
         require("template/".$OJ_TEMPLATE."/error.php");

@@ -136,6 +136,7 @@
         <td style="width: 1%;" id="user">User</td>
         <td style="width: 90%;" id="nick">Nick</td>
       <?php endif; ?>
+      <td style="width: 1%;" id="solved">Score</td>
       <td style="width: 1%;" id="solved">Solved</td>
       <td style="width: 1%;" id="penalty">Penalty</td>
       <?php
@@ -193,7 +194,7 @@
           else 
             echo "*";
           echo "</td>";
-
+          $uscore = $U[$i]->score;
           $usolved=$U[$i]->solved;
         echo "<td class='rankcell'>";
           echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$col2</a>";
@@ -203,7 +204,7 @@
           if(isset($is_excluded[$uuid])) echo "<span>*</span>";
           echo "<a href=\"userinfo.php?user=$uuid\">".$col3."</a>";
           echo "</div></td>";
-
+            echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$uscore</a>";
           echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>";
 
 

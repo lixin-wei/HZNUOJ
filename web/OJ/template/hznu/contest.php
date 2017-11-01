@@ -38,6 +38,7 @@
       <thead>
       <tr>
         <th style='width: 3%'></th>
+        <th>Score</th>
         <th>Problem ID</th>
         <th>Title</th>
         <th>Author</th>

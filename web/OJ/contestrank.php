@@ -22,6 +22,7 @@ $title="";
 class TM {
     var $solved=0;
     var $time=0;
+    var $score;
     var $p_wa_num;
     var $p_ac_sec;
     var $is_unknown;
@@ -32,6 +33,7 @@ class TM {
     var $class;
     var $try_after_lock;
     function TM(){
+        $this->score = 0;
         $this->solved=0;
         $this->time=0;
         $this->try_after_lock=array();
@@ -40,6 +42,7 @@ class TM {
         $this->is_unknown=array(0);
     }
     function Add($pid,$sec,$res){
+        global $problem_score;
         if (isset($this->p_ac_sec[$pid])&&$this->p_ac_sec[$pid]>0) return;
         if ($res==-1){ //Try times after locking
             $this->try_after_lock[$pid]++;
@@ -59,6 +62,7 @@ class TM {
         } else { // AC
             $this->p_ac_sec[$pid]=$sec;
             $this->solved++;
+            $this->score += $problem_score[$pid];
             if(!isset($this->p_wa_num[$pid])) $this->p_wa_num[$pid]=0;
             $this->time+=$sec+$this->p_wa_num[$pid]*1200;
         }
@@ -66,7 +70,8 @@ class TM {
 }
 
 function s_cmp($A,$B){
-    if ($A->solved!=$B->solved) return $A->solved<$B->solved;
+    if ($A->score!=$B->score) return $A->score<$B->score;
+    else if ($A->solved!=$B->solved) return $A->solved<$B->solved;
     else return $A->time>$B->time;
 }
 
@@ -80,13 +85,30 @@ if (!isset($_GET['cid'])) die("No Such Contest!");
 $cid=intval($_GET['cid']);
 
 
+//get problem score list
+$sql = <<<SQL
+SELECT
+	num, score 
+FROM
+	contest_problem 
+WHERE
+	contest_id = $cid 
+ORDER BY
+	num
+SQL;
+
+$problem_score = array();
+$res = $mysqli->query($sql);
+while($row = $res->fetch_array()) {
+  $problem_score[$row['num']] = intval($row['score']);
+}
+
 $sql="SELECT user_id FROM contest_excluded_user WHERE contest_id=$cid";
 $res=$mysqli->query($sql);
 $is_excluded=array();
 while($uid=$res->fetch_array()[0]){
     $is_excluded[$uid]=true;
 }
-
 
 
 $sql="SELECT `start_time`,`title`,`end_time`,user_limit,lock_time,`unlock`,first_prize,second_prize,third_prize FROM `contest` WHERE `contest_id`='$cid'";
@@ -373,7 +395,7 @@ for($i=0;$i<$pid_cnt;$i++){
     header("Content-Disposition: attachment; filename=\"" . $title.".xls" . "\"");
     header("Content-Type: application/force-download");
     echo "<center><h3>Contest RankList -- $title</h3></center>";
-    echo "<table border=1 align='center' class='excel_table'><tr><td>Rank<td>User<td>Real Name<td>Student ID<td>Class<td>Nick<td>Solved<td>Penalty";
+    echo "<table border=1 align='center' class='excel_table'><tr><td>Rank<td>User<td>Real Name<td>Student ID<td>Class<td>Nick<td>Score<td>Solved<td>Penalty";
     for ($i=0;$i<$pid_cnt;$i++)
         echo "<td>$PID[$i]";
     echo "</tr>";
@@ -391,7 +413,7 @@ for($i=0;$i<$pid_cnt;$i++){
             $rank++;
         }
         $uuid=$U[$i]->user_id;
-        
+        $uscore = $U[$i]->score;
         $usolved=$U[$i]->solved;
         echo "<td style='mso-number-format:\"\\@\"'>".$uuid ;
         if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
@@ -401,6 +423,7 @@ for($i=0;$i<$pid_cnt;$i++){
         echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
         echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->class."</td>";
         echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->nick."</td>";
+        echo "<td>$uscore";
         echo "<td>$usolved";
         echo "<td>".$U[$i]->time."";
         

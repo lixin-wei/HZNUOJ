@@ -202,15 +202,9 @@ $lang_count=count($language_ext);
 
         </select>
   <?php require_once("../include/set_post_key.php");?>
-  <br>Problems:<input class=input-xxlarge type=text size=60 name=cproblem value="<?php echo isset($plist)?$plist:""?>">
-  <br>
+    <div style="color: green;">Problems can be added later in contest-edit page.</div>
   <p align=left>Description:<br><textarea class=kindeditor rows=13 name=description cols=80></textarea>
-
-
-  Users:<textarea name="ulist" rows="20" cols="20"></textarea>
-  Ranking Excluded Users:<textarea name="ex_ulist" rows="20" cols="20"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
-  <br />
-  *可以将学生学号从Excel整列复制过来，然后要求他们用学号做UserID注册,就能进入Private的比赛作为作业和测验。
+    
   <p><input type=submit value=Submit name=submit><input type=reset value=Reset name=reset></p>
   </form>
 <?php }

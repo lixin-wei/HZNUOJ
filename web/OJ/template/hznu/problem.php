@@ -135,6 +135,7 @@ HTML;
     <div style="text-align:center;">
       Submission：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
       AC：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <?php if(!isset($contest_score)):?>
         <?php
         $score_class = "am-badge-default";
         if ($row->score >= 82) $score_class='am-badge-danger';
@@ -142,7 +143,11 @@ HTML;
         else if ($row->score >= 46) $score_class='am-badge-primary';
         else if ($row->score >= 28) $score_class='am-badge-secondary';
         ?>
-      Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
+        Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
+      <?php else:?>
+        Score：<span class='am-badge am-badge-success'><?php echo $contest_score?></span>
+      <?php endif;?>
+      
     </div>
     <br />
     <!-- 提交等按钮 start -->
