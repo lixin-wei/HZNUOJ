@@ -151,7 +151,7 @@ void init_mysql_conf() {
 	db_name[0] = 0;
 	port_number = 3306;
 	max_running = 3;
-	sleep_time = 1000;
+	sleep_time = 1;
 	oj_tot = 1;
 	oj_mod = 0;
 	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");
@@ -212,10 +212,10 @@ void run_client(int runid, int clientid) {
 
 	if (!DEBUG)
 		execl("/usr/bin/judge_client", "/usr/bin/judge_client", runidstr, buf,
-			  oj_home, (char *) NULL);
+				oj_home, (char *) NULL);
 	else
 		execl("/usr/bin/judge_client", "/usr/bin/judge_client", runidstr, buf,
-			  oj_home, "debug", (char *) NULL);
+				oj_home, "debug", (char *) NULL);
 
 	//exit(0);
 }
@@ -224,7 +224,7 @@ int executesql(const char * sql) {
 	if (mysql_real_query(conn, sql, strlen(sql))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(20000);
+		sleep(20);
 		conn = NULL;
 		return 1;
 	} else
@@ -239,10 +239,10 @@ int init_mysql() {
 		mysql_options(conn, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);
 
 		if (!mysql_real_connect(conn, host_name, user_name, password, db_name,
-								port_number, 0, 0)) {
+				port_number, 0, 0)) {
 			if (DEBUG)
 				write_log("%s", mysql_error(conn));
-			usleep(20000);
+			sleep(2);
 			return 1;
 		} else {
 			return 0;
@@ -317,7 +317,7 @@ int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
-		usleep(20000);
+		sleep(20);
 		return 0;
 	}
 	res = mysql_store_result(conn);
@@ -464,7 +464,7 @@ int already_running() {
 	fd = open(lock_file, O_RDWR | O_CREAT, LOCKMODE);
 	if (fd < 0) {
 		syslog(LOG_ERR | LOG_DAEMON, "can't open %s: %s", LOCKFILE,
-			   strerror(errno));
+				strerror(errno));
 		exit(1);
 	}
 	if (lockfile(fd) < 0) {
@@ -473,7 +473,7 @@ int already_running() {
 			return 1;
 		}
 		syslog(LOG_ERR | LOG_DAEMON, "can't lock %s: %s", LOCKFILE,
-			   strerror(errno));
+				strerror(errno));
 		exit(1);
 	}
 	ftruncate(fd, 0);
@@ -523,7 +523,7 @@ int main(int argc, char** argv) {
 		daemon_init();
 	if ( already_running()) {
 		syslog(LOG_ERR | LOG_DAEMON,
-			   "This daemon program is already running!\n");
+				"This daemon program is already running!\n");
 		printf("%s already has one judged on it!\n",oj_home);
 		return 1;
 	}
@@ -531,20 +531,19 @@ int main(int argc, char** argv) {
 //	final_sleep.tv_sec=0;
 //	final_sleep.tv_nsec=500000000;
 	init_mysql_conf();	// set the database info
-	printf("hello~, sleep_time = %d, max_running = %d\n", sleep_time, max_running);
 	signal(SIGQUIT, call_for_exit);
 	signal(SIGKILL, call_for_exit);
 	signal(SIGTERM, call_for_exit);
 	int j = 1;
 	while (1) {			// start to run
 		while (j && (http_judge || !init_mysql())) {
+
 			j = work();
 
 		}
 		if(ONCE) break;
-		usleep(sleep_time);
+		sleep(sleep_time);
 		j = 1;
 	}
 	return 0;
 }
-
