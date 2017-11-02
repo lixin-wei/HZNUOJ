@@ -17,6 +17,7 @@ if (isset($_GET['cid'])) $ucid="&cid=".intval($_GET['cid']);
 else $ucid="";
 require_once("./include/db_info.inc.php");
 require_once "./include/my_func.inc.php";
+require_once "./include/const.inc.php";
 
 if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
 /* 获取我的标签 start */
@@ -53,6 +54,12 @@ if (isset($_GET['id'])) { // 如果是比赛外的题目
     //require("oj-header.php");
     $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
     $set_name = $res->fetch_array()[0];
+    
+    if(isset($_SESSION['user_id'])) {
+        $sql = "SELECT count(*) FROM solution WHERE problem_id=$id AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
+        $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;
+    }
+    
     $now=strftime("%Y-%m-%d %H:%M",time());
     if (HAS_PRI("see_hidden_".$set_name."_problem")){
         $sql="SELECT * FROM `problem` WHERE `problem_id`=$id";
@@ -92,16 +99,29 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
     $sql = "SELECT practice FROM contest WHERE contest_id=$cid";
     $is_practice = $mysqli->query($sql)->fetch_array()[0];
 
-
+    
+    //get problem count
+    $sql = "SELECT COUNT(*) FROM contest_problem WHERE contest_id = $cid";
+    $problem_cnt = $mysqli->query($sql)->fetch_array()[0];
+    
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<span class='am-text-danger'>You can only enter the correspond contest!</span>";
         require("template/".$OJ_TEMPLATE."/error.php");
         exit(0);
     }
+    
+    
     $sql="SELECT `problem_id`, score FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
     $res=$mysqli->query($sql)->fetch_array();
     $real_id=$res[0];
     $contest_score = $res[1];
+    
+    if(isset($_SESSION['user_id'])) {
+        $sql = "SELECT count(*) FROM solution WHERE contest_id=$cid AND num=$pid AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
+        $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;
+    }
+
+    
     if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
         $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
         require("template/".$OJ_TEMPLATE."/error.php");

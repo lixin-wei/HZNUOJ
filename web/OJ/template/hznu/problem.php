@@ -66,6 +66,7 @@ function sss($str){
 
 <div class="am-container">
   <?php
+  //the header of problem page
   if(!isset($_GET['cid'])) {
     echo <<<HTML
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
@@ -77,10 +78,27 @@ function sss($str){
   </div>
 HTML;
   }
+  else {
+    echo "<ul class=\"am-nav am-nav-tabs\" style='margin-top: 30px;'>";
+    for($i = 0 ; $i<$problem_cnt ; ++$i) {
+      $label = PID($i);
+      $class = $i == $pid? "am-active": "";
+      echo <<<HTML
+  <li class="$class"><a href="problem.php?cid=$cid&pid=$i">$label</a></li>
+HTML;
+    }
+    echo "</ul>";
+  }
   ?>
-  <h1 style="text-align:center;margin-top:40px;"><?php echo $row->title?>
+  <h1 style="text-align:center;margin-top:40px;">
+      <?php
+      echo $row->title;
+      ?>
     <!-- is contest problem -->
       <?php
+      if($has_accepted) {
+          echo "<span class='am-badge am-badge-success am-text-lg'><i class='am-icon-check'></i>AC</span>";
+      }
       $now=time();
       ?>
       <?php if ($is_practice || isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
