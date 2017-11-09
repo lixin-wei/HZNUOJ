@@ -36,7 +36,7 @@ int LANG_JV[256] = { 0,2,3,4,5,9,10,11,12,13,14,21,56,59,89,97,104,158,202,218,2
 		SYS_set_tid_address, SYS_set_robust_list, SYS_exit_group, 158, 0 };
 //ruby
 int LANG_RV[256] = { 0,1,2,3,4,5,6,9,10,12,13,14,16,20,21,22,56,59,72,97,98,107,108,131,158,202,218,228,231,273,293,318
-		,96, 340, 4, 126, SYS_access, SYS_arch_prctl, SYS_brk,
+		,96, 340, 4, 126,79, SYS_access, SYS_arch_prctl, SYS_brk,
 		SYS_close, SYS_execve, SYS_exit_group, SYS_fstat, SYS_futex,
 		SYS_getegid, SYS_geteuid, SYS_getgid, SYS_getuid, SYS_getrlimit,
 		SYS_mmap, SYS_mprotect, SYS_munmap, SYS_open, SYS_read,
@@ -111,7 +111,7 @@ int LANG_BASICV[256] = { 0,1,2,3,4,5,9,10,12,13,14,16,21,59,97,158,173,202,218,2
 		SYS_rt_sigprocmask, SYS_set_robust_list, SYS_set_thread_area,
 		SYS_set_tid_address, SYS_stat, SYS_uname, SYS_write, 0 };
 //scheme
-int LANG_SV[256] = { 0,1,2,3,4,5,8,9,10,12,13,14,16,21,56,59,72,97,158,202,204,218,228,229,234,273,293,0,
+int LANG_SV[256] = { 0,1,2,3,4,5,8,9,10,11,12,13,14,16,21,56,59,72,97,158,202,204,218,228,229,234,273,293,0,
 		SYS_fcntl, SYS_getdents64, SYS_getrlimit, SYS_rt_sigprocmask, SYS_futex,
 		SYS_read, SYS_mmap, SYS_stat, SYS_open, SYS_close, SYS_execve,
 		SYS_access, SYS_brk, SYS_readlink, SYS_munmap, SYS_close, SYS_uname,
