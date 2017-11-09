@@ -1683,6 +1683,7 @@ void copy_js_runtime(char * work_dir) {
         execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libm.so.6  %s/lib/x86_64-linux-gnu/", work_dir);
         execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libgcc_s.so.1  %s/lib/x86_64-linux-gnu/", work_dir);
         execute_cmd("/bin/cp /lib64/ld-linux-x86-64.so.2  %s/lib/x86_64-linux-gnu/", work_dir);
+        execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcares* %s/usr/lib/",work_dir);
 
 	execute_cmd("/bin/cp /usr/bin/nodejs %s/", work_dir);
 
