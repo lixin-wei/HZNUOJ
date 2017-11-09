@@ -23,7 +23,7 @@
   static  $OJ_LANG="en";
   static  $OJ_SIM=true;
   static  $OJ_DICT=true;
-  static  $OJ_LANGMASK=1048575; //1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
+  static  $OJ_LANGMASK=979967; //1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
   static  $OJ_EDITE_AREA=true; //true: syntax highlighting is active
   static  $OJ_AUTO_SHARE=true; //true: One can view all AC submit if he/she has ACed it onece.
   static  $OJ_CSS="hoj.css";
