@@ -55,10 +55,12 @@
                 $lang_count=count($language_ext);
                 for($i=0 ; $i<$lang_count ; ++$i) {
                     $j = $language_order[$i];
-                    if ($j==$language)
-                        echo "<option value=$j selected>$language_name[$j]</option>";
-                    else
-                        echo "<option value=$j>$language_name[$j]</option>";
+                    if($OJ_LANGMASK & (1<<$j)) {
+                        if ($j==$language)
+                            echo "<option value=$j selected>$language_name[$j]</option>";
+                        else
+                            echo "<option value=$j>$language_name[$j]</option>";
+                    }
                 }
                 ?>
             </select>
