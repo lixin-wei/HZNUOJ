@@ -75,10 +75,11 @@ WHERE
     $pid=intval($_GET['pid']);
 
     /* 获取该场比赛是否对用户有限制 start */
-    $sql_tmp = "SELECT user_limit FROM contest WHERE contest_id='$cid'";
+    $sql_tmp = "SELECT user_limit,langmask FROM contest WHERE contest_id='$cid'";
     $result_tmp = $mysqli->query($sql_tmp);
     $row_tmp = $result_tmp->fetch_object();
     $user_limit = $row_tmp->user_limit=="Y"?1:0;
+    $contest_langmask = $row_tmp->langmask;
     $result_tmp->free();
     /* 获取该场比赛是否对用户有限制 end */
 

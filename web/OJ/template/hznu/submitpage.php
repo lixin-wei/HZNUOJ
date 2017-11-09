@@ -38,8 +38,8 @@
             <select id="language" name="language" data-am-selected="{searchBox: 1, maxHeight: 400}">
                 <?php
                 $lang_count=count($language_ext);
-                if(isset($_GET['langmask']))
-                    $langmask=$_GET['langmask'];
+                if(isset($contest_langmask))
+                    $langmask=$contest_langmask;
                 else
                     $langmask=$OJ_LANGMASK;
                 $lang=((int)$langmask)&((1<<($lang_count))-1);
