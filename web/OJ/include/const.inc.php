@@ -44,7 +44,7 @@
       "C#(gmcs)",        //9
       "Obj-C(gcc)",      //10
       "FreeBasic(fbc)",  //11
-      "Scheme",          //12
+      "Scheme(guile)",   //12
       "C(clang)",        //13
       "C++(clang++)",    //14
       "Lua(luac)",       //15

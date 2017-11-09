@@ -45,8 +45,7 @@
     $langmask=0;
     foreach($lang as $t) {
       $langmask+=1<<$t;
-    } 
-    $langmask=((1<<count($language_ext))-1)&(~$langmask);
+    }
     $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice)
           VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice')";
   echo $sql;
@@ -185,22 +184,6 @@ else if(isset($_POST['problem2contest'])){
       <option value='N' selected='selected'>N</option>
     </select>
   <br />
-  Language:<select name="lang[]" multiple="multiple"    style="height:220px">
-  <?php
-$lang_count=count($language_ext);
-
- $langmask=$OJ_LANGMASK;
-
- for($i=0;$i<$lang_count;$i++){
-                 echo "<option value=$i selected>
-                        ".$language_name[$i]."
-                 </option>";
-  }
-
-?>
-
-
-        </select>
   <?php require_once("../include/set_post_key.php");?>
     <div style="color: green;">Problems can be added later in contest-edit page.</div>
   <p align=left>Description:<br><textarea class=kindeditor rows=13 name=description cols=80></textarea>

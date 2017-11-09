@@ -42,7 +42,7 @@
           </div>
           <div class="am-form-group">
             <label for="language">Language:</label>
-            <select class="am-round" id="language" name="language" data-am-selected="{btnWidth: 100, maxHeight: 400}">
+            <select class="am-round" id="language" name="language" data-am-selected="{searchBox: 1, maxHeight: 400}">
                 <?php
                 if (isset($_GET['language'])) $language=$_GET['language'];
                 else $language=-1;
@@ -52,13 +52,13 @@
                     echo "<option value='-1' selected>All</option>";
                 else
                     echo "<option value='-1'>All</option>";
-                $i=0;
-                foreach ($language_name as $lang){
-                    if ($i==$language)
-                        echo "<option value=$i selected>$language_name[$i]</option>";
+                $lang_count=count($language_ext);
+                for($i=0 ; $i<$lang_count ; ++$i) {
+                    $j = $language_order[$i];
+                    if ($j==$language)
+                        echo "<option value=$j selected>$language_name[$j]</option>";
                     else
-                        echo "<option value=$i>$language_name[$i]</option>";
-                    $i++;
+                        echo "<option value=$j>$language_name[$j]</option>";
                 }
                 ?>
             </select>

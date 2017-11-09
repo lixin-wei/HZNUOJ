@@ -35,7 +35,7 @@ int LANG_JV[256] = { 0,2,3,4,5,9,10,11,12,13,14,21,56,59,89,97,104,158,202,218,2
 		SYS_getuid, SYS_getgid, SYS_geteuid, SYS_getegid, SYS_set_thread_area,
 		SYS_set_tid_address, SYS_set_robust_list, SYS_exit_group, 158, 0 };
 //ruby
-int LANG_RV[256] = { 0,1,2,3,4,5,9,10,12,13,14,16,21,22,56,59,72,97,98,107,108,131,158,202,218,231,273
+int LANG_RV[256] = { 0,1,2,3,4,5,6,9,10,12,13,14,16,20,21,22,56,59,72,97,98,107,108,131,158,202,218,228,231,273,293,318
 		,96, 340, 4, 126, SYS_access, SYS_arch_prctl, SYS_brk,
 		SYS_close, SYS_execve, SYS_exit_group, SYS_fstat, SYS_futex,
 		SYS_getegid, SYS_geteuid, SYS_getgid, SYS_getuid, SYS_getrlimit,
@@ -62,7 +62,7 @@ int LANG_YV[256] = {0,1,2,3,4,5,6,8,9,10,12,13,14,16,21,59,78,79,89,97,99,102,10
 		SYS_rt_sigprocmask, SYS_set_robust_list, SYS_set_tid_address, SYS_stat,
 		SYS_write, 0 };
 //php
-int LANG_PHV[256] = { 0,1,2,3,4,5,6,8,9,10,11,12,13,14,16,21,59,79,97,158,202,218,231,257,273,
+int LANG_PHV[256] = { 0,1,2,3,4,5,6,8,9,10,11,12,13,14,16,21,28,59,79,97,158,202,218,231,257,273,
 		257, 20, 146, 78, 158, 117, 60, 39, 102, 191, SYS_access,
 		SYS_brk, SYS_clone, SYS_close, SYS_execve, SYS_exit_group, SYS_fcntl,
 		SYS_fstat, SYS_futex, SYS_getcwd, SYS_getdents64, SYS_getrlimit,
@@ -111,7 +111,7 @@ int LANG_BASICV[256] = { 0,1,2,3,4,5,9,10,12,13,14,16,21,59,97,158,173,202,218,2
 		SYS_rt_sigprocmask, SYS_set_robust_list, SYS_set_thread_area,
 		SYS_set_tid_address, SYS_stat, SYS_uname, SYS_write, 0 };
 //scheme
-int LANG_SV[256] = { 1, 23, 100, 61, 22, 6, 33, 8, 13, 16, 111, 110, 39, 79,
+int LANG_SV[256] = { 0,1,2,3,4,5,8,9,10,12,13,14,16,21,56,59,72,97,158,202,204,218,228,229,234,273,293,0,
 		SYS_fcntl, SYS_getdents64, SYS_getrlimit, SYS_rt_sigprocmask, SYS_futex,
 		SYS_read, SYS_mmap, SYS_stat, SYS_open, SYS_close, SYS_execve,
 		SYS_access, SYS_brk, SYS_readlink, SYS_munmap, SYS_close, SYS_uname,
@@ -124,4 +124,4 @@ int LANG_LUAV[256]={0,1,2,3,4,5,9,10,11,12,13,21,59,158,231,292,0};
 //nodejs javascript
 int LANG_JSV[256]={0,1,2,3,4,5,6,9,10,11,12,13,14,16,21,56,59,79,89,96,97,158,186,202,218,228,231,232,233,273,290,291,293,0};
 //go-lang
-int LANG_GOV[256]={0,1,9,11,13,14,56,59,131,158,202,204,228,231,0};
+int LANG_GOV[256]={0,1,9,11,13,14,56,59,131,158,186,202,204,231,0};

@@ -31,44 +31,44 @@
               <?php if (isset($cid)) echo "<input type='hidden' name='cid' value='$cid'>";?>
           </div>
           <div class="am-form-group">
-              <select class="am-round" name="language" data-am-selected="{btnWidth: '100px'}">
-          <?php 
-            if (isset($_GET['language'])) $language=$_GET['language'];
-              else $language=-1;
-            if ($language<0||$language>=count($language_name)) 
+              <select class="am-round" name="language" data-am-selected="{searchBox: 1, maxHeight: 400}">
+          <?php
+          if (isset($_GET['language'])) $language=$_GET['language'];
+          else $language=-1;
+          if ($language<0||$language>=count($language_name))
               $language=-1;
-            if ($language==-1) 
+          if ($language==-1)
               echo "<option value='-1' selected>All</option>";
-            else 
+          else
               echo "<option value='-1'>All</option>";
-            $i=0;
-            foreach ($language_name as $lang){
-                    if ($i==$language)
-                            echo "<option value=$i selected>$language_name[$i]</option>";
-                    else
-                            echo "<option value=$i>$language_name[$i]</option>";
-                    $i++;
-            }
+          $lang_count=count($language_ext);
+          for($i=0 ; $i<$lang_count ; ++$i) {
+              $j = $language_order[$i];
+              if ($j==$language)
+                  echo "<option value=$j selected>$language_name[$j]</option>";
+              else
+                  echo "<option value=$j>$language_name[$j]</option>";
+          }
           ?>
               </select>
               <span class="am-form-caret"></span>
             </div>
             <div class="am-form-group">
               <select class="am-round" name="jresult" data-am-selected="{btnWidth: '100px'}">
-            <?php 
-              if (isset($_GET['jresult'])) 
+            <?php
+              if (isset($_GET['jresult']))
                 $jresult_get=intval($_GET['jresult']);
-              else 
+              else
                 $jresult_get=-1;
-              if ($jresult_get>=12||$jresult_get<0) 
+              if ($jresult_get>=12||$jresult_get<0)
                 $jresult_get=-1;
                    /*if ($jresult_get!=-1){
                       $sql=$sql."AND `result`='".strval($jresult_get)."' ";
                       $str2=$str2."&jresult=".strval($jresult_get);
                    }*/
-              if ($jresult_get==-1) 
+              if ($jresult_get==-1)
                 echo "<option value='-1' selected>All</option>";
-              else 
+              else
                 echo "<option value='-1'>All</option>";
               for ($j=0;$j<12;$j++){
                       $i=($j+4)%12;

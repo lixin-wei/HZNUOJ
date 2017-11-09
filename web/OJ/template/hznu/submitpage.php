@@ -35,7 +35,7 @@
         <div class="am-g am-text-center" style="margin-bottom: 20px;">
           <div class="am-u-md-6">
             <label for="language">Language: </label>
-            <select id="language" name="language" data-am-selected>
+            <select id="language" name="language" data-am-selected="{searchBox: 1, maxHeight: 400}">
                 <?php
                 $lang_count=count($language_ext);
                 if(isset($_GET['langmask']))

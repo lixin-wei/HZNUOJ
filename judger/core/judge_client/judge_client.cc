@@ -1273,6 +1273,10 @@ void _get_solution_info_mysql(int solution_id, int & p_id, char * user_id,
 	row = mysql_fetch_row(res);
 	p_id = atoi(row[0]);
 	strcpy(user_id, row[1]);
+	if(DEBUG) {
+		printf("sql=%s\n",sql);
+		printf("lang_raw_str = %s\n", row[2]);
+	}
 	lang = atoi(row[2]);
 	if(res!=NULL) {
 		mysql_free_result(res);                         // free the memory
@@ -1513,6 +1517,8 @@ void copy_ruby_runtime(char * work_dir) {
         execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
         execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
         execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
+        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
+        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
         execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
 
 }
@@ -1536,7 +1542,10 @@ void copy_guile_runtime(char * work_dir) {
 	execute_cmd("/bin/cp /usr/lib/*/libltdl* %s/usr/lib/", work_dir);
 	execute_cmd("/bin/cp /usr/lib/libltdl* %s/usr/lib/", work_dir);
 	execute_cmd("/bin/cp /usr/bin/guile* %s/", work_dir);
-
+	execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libguile* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgc* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libffi* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libunistring* %s/usr/lib/",work_dir);
 }
 
 void copy_python_runtime(char * work_dir) {
@@ -1577,8 +1586,10 @@ void copy_php_runtime(char * work_dir) {
 	execute_cmd("/bin/cp /usr/lib/*/libkrb5* %s/usr/lib/", work_dir);
 	execute_cmd("/bin/cp /usr/lib/*/libk5crypto* %s/usr/lib/", work_dir);
 	execute_cmd("/bin/cp /usr/lib/libxml2* %s/usr/lib/", work_dir);
-	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libxml2.so* %s/usr/lib/",
-			work_dir);
+	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libxml2.so* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libicuuc.so* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libicudata.so* %s/usr/lib/",work_dir);
+	execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libstdc++.so* %s/usr/lib/",work_dir);
 	execute_cmd("/bin/cp /usr/bin/php* %s/", work_dir);
 	execute_cmd("chmod +rx %s/Main.php", work_dir);
 
@@ -1793,7 +1804,7 @@ void run_solution(int & lang, char * work_dir, int & time_lmt, int & usedtime,
 	case 12: //guile
 		execl("/guile", "/guile", "Main.scm", (char *) NULL);
 		break;
-	case 15: //guile
+	case 15: //lua
 		execl("/lua", "/lua", "Main", (char *) NULL);
 		break;
 	case 16: //Node.js
@@ -2341,6 +2352,10 @@ int main(int argc, char** argv) {
 	if (http_judge)
 		system("/bin/ln -s ../cookie ./");
 	get_solution_info(solution_id, p_id, user_id, lang);
+	
+	if(DEBUG) {
+		printf("lang = %d, lang_name = %s\n", lang, lang_ext[lang]);
+	}
 	//get the limit
 
 	if (p_id == 0) {
@@ -2353,6 +2368,7 @@ int main(int argc, char** argv) {
 	//copy source file
 
 	get_solution(solution_id, work_dir, lang);
+
 
 	//java is lucky
 	if (lang >= 3 && lang != 10 && lang != 13 && lang != 14) {  // Clang Clang++ not VM or Script

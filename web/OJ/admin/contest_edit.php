@@ -41,7 +41,6 @@ if (isset($_POST['syear'])) { // 如果有POST过来的信息，则获取POST值
     foreach($lang as $t){
         $langmask+=1<<$t;
     }
-    $langmask=((1<<count($language_ext))-1)&(~$langmask);
     //echo $langmask;
     
     $cid=intval($_POST['cid']);
@@ -214,12 +213,13 @@ while($uid=$res->fetch_array()[0]){
   <select name="lang[]"  multiple="multiple"    style="height:220px">
       <?php
       $lang_count=count($language_ext);
-      $lang=(~((int)$langmask))&((1<<$lang_count)-1);
+      $lang=$langmask;
       if(isset($_COOKIE['lastlang'])) $lastlang=$_COOKIE['lastlang'];
       else $lastlang=0;
       for($i=0;$i<$lang_count;$i++){
-          echo  "<option value=$i ".( $lang&(1<<$i)?"selected":"").">
-              ".$language_name[$i]."
+        $j = $language_order[$i];
+          echo  "<option value=$j ".( $lang&(1<<$j)?"selected":"").">
+              ".$language_name[$j]."
         </option>";
       }
       ?>

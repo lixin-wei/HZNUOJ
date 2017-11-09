@@ -104,7 +104,7 @@ int LANG_BASICV[256] = {3,4,5,6,11,33,45,54,91,101,122,125,140,174,175,191,192,1
 		SYS_rt_sigprocmask, SYS_set_robust_list, SYS_set_thread_area,
 		SYS_set_tid_address, SYS_stat64, SYS_uname, SYS_write, 0 };
 //scheme
-int LANG_SV[256] = { 100, 295, SYS_fcntl64, SYS_getdents64, SYS_ugetrlimit,
+int LANG_SV[256] = { 100, 295,59, SYS_fcntl64, SYS_getdents64, SYS_ugetrlimit,
 		SYS_rt_sigprocmask, SYS_futex, SYS_read, SYS_mmap2, SYS_stat64,
 		SYS_open, SYS_close, SYS_execve, SYS_access, SYS_brk, SYS_readlink,
 		SYS_munmap, SYS_close, SYS_uname, SYS_clone, SYS_uname, SYS_mprotect,
