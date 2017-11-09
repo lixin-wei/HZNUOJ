@@ -40,6 +40,7 @@ WHERE
 SQL;
 
 }
+
 //echo $sql;
 $res=$mysqli->query($sql);
 if ($res&&$res->num_rows<1&&!((isset($cid)&&$cid<=0) || (isset($id)&&$id<=0))){
@@ -178,7 +179,7 @@ if (0&&$res->num_rows==1){
 }
 
 
-if((~$OJ_LANGMASK)&(1<<$language)){
+if(($OJ_LANGMASK)&(1<<$language)){
 	$store_id=0;
 	if(isset($_SESSION['store_id'])) $store_id=$_SESSION['store_id'];
 
