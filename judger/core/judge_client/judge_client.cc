@@ -928,12 +928,12 @@ int compile(int lang,char * work_dir) {
 			"-lm", "--static", "-std=c++11", "-DONLINE_JUDGE", "-o", "Main", "Main.cc", NULL };
 	const char * CP_P[] =
 			{ "fpc", "Main.pas","-Cs32000000","-Sh", "-O2", "-Co", "-Ct", "-Ci", NULL };
-//      const char * CP_J[] = { "javac", "-J-Xms32m", "-J-Xmx256m","-encoding","UTF-8", "Main.java",NULL };
+     // const char * CP_J[] = { "javac", "-J-Xms32m", "-J-Xmx256m","-encoding","UTF-8", "Main.java",NULL };
 
 	const char * CP_R[] = { "ruby", "-c", "Main.rb", NULL };
 	const char * CP_B[] = { "chmod", "+rx", "Main.sh", NULL };
-	//const char * CP_Y[] = { "python", "-c",
-	//		"import py_compile; py_compile.compile(r'Main.py')", NULL };
+	const char * CP_Y2[] = { "python2", "-m", "py_compile", "Main.py", NULL };
+	const char * CP_Y3[] = { "python3", "-m", "py_compile", "Main.py", NULL };
 	const char * CP_PH[] = { "php", "-l", "Main.php", NULL };
 	const char * CP_PL[] = { "perl", "-c", "Main.pl", NULL };
 	const char * CP_CS[] = { "gmcs", "-warn:0", "Main.cs", NULL };
@@ -989,7 +989,6 @@ int compile(int lang,char * work_dir) {
 		} else {
 			freopen("ce.txt", "w", stdout);
 		}
-
 		if(compile_chroot&&lang != 3 && lang != 9 && lang != 6 && lang != 11){
 			execute_cmd("mkdir -p bin usr lib lib64 etc/alternatives proc tmp dev");
 			execute_cmd("chown judge *");
@@ -1028,9 +1027,12 @@ int compile(int lang,char * work_dir) {
 		case 5:
 			execvp(CP_B[0], (char * const *) CP_B);
 			break;
-		//case 6:
-		//	execvp(CP_Y[0], (char * const *) CP_Y);
-		//	break;
+		case 6:
+			execvp(CP_Y2[0], (char * const *) CP_Y2);
+			break;
+		case 18:
+			execvp(CP_Y3[0], (char * const *) CP_Y3);
+			break;
 		case 7:
 			execvp(CP_PH[0], (char * const *) CP_PH);
 			break;
@@ -2008,7 +2010,6 @@ void watch_solution(pid_t pidApp, char * infile, int & ACflg, int isspj,
 		// check the usage
 
 		wait4(pidApp, &status, 0, &ruse);
-
 //jvm gc ask VM before need,so used kernel page fault times and page size
 		if (lang == 3 || lang == 7 || lang == 16 || lang==9 ||lang==17) {
 			tempmemory = get_page_fault_mem(ruse, pidApp);
@@ -2027,9 +2028,10 @@ void watch_solution(pid_t pidApp, char * infile, int & ACflg, int isspj,
 		}
 		//sig = status >> 8;/*status >> 8 Ã¥Â·Â®Ã¤Â¸ÂÃ¥Â¤Å¡Ã¦ËÂ¯EXITCODE*/
 
-		if (WIFEXITED(status))
+		if (WIFEXITED(status)) {
 			break;
-		if ((lang < 4 || lang == 9) && get_file_size("error.out") && !oi_mode) {
+		}
+		if ((lang < 4 || lang == 9 || lang == 6 || lang == 18) && get_file_size("error.out") && !oi_mode) {
 			ACflg = OJ_RE;
 			//addreinfo(solution_id);
 			ptrace(PTRACE_KILL, pidApp, NULL, NULL);
