@@ -430,21 +430,21 @@ const char * getFileNameFromPath(const char * path) {
 
 void make_diff_out_full(FILE *f1, FILE *f2, int c1, int c2, const char * path) {
 	
-	execute_cmd("echo '========[%s]========='>>diff.out",getFileNameFromPath(path));
-	execute_cmd("echo '------test in top 100 lines------'>>diff.out");
+	execute_cmd("echo '========Failed test [%s]========='>>diff.out",getFileNameFromPath(path));
+	execute_cmd("echo '------Top 100 lines of input------'>>diff.out");
 	execute_cmd("head -100 data.in>>diff.out");
-	execute_cmd("echo '------test out top 100 lines-----'>>diff.out");
+	execute_cmd("echo '------Top 100 lines of standard output-----'>>diff.out");
 	execute_cmd("head -100 '%s'>>diff.out",path);
-	execute_cmd("echo '------user out top 100 lines-----'>>diff.out");
+	execute_cmd("echo '------Top 100 lines of user output-----'>>diff.out");
 	execute_cmd("head -100 user.out>>diff.out");
-	execute_cmd("echo '------diff out 200 lines-----'>>diff.out");
+	execute_cmd("echo '------Diff out 200 lines-----'>>diff.out");
 	execute_cmd("diff '%s' user.out|head -200>>diff.out",path);
 	execute_cmd("echo '=============================='>>diff.out");
 
 }
 void make_diff_out_simple(FILE *f1, FILE *f2, int c1, int c2, const char * path) {
-	execute_cmd("echo '========[%s]========='>>diff.out",getFileNameFromPath(path));
-	execute_cmd("echo '=======diff out 100 lines====='>>diff.out");
+	execute_cmd("echo '========Failed test [%s]========='>>diff.out",getFileNameFromPath(path));
+	execute_cmd("echo '=======Diff out 100 lines====='>>diff.out");
 	execute_cmd("diff '%s' user.out|head -100>>diff.out",path);
 	execute_cmd("echo '=============================='>>diff.out");
 }
@@ -454,7 +454,7 @@ void make_diff_out_simple(FILE *f1, FILE *f2, int c1, int c2, const char * path)
  * http://code.google.com/p/zoj/source/browse/trunk/judge_client/client/text_checker.cc#25
  *
  */
-int compare_zoj(const char *file1, const char *file2) {
+int compare_zoj(const char *file1, const char *file2, const char* infile) {
 	int ret = OJ_AC;
 	int c1, c2;
 	FILE * f1, *f2;
@@ -504,9 +504,9 @@ int compare_zoj(const char *file1, const char *file2) {
 	end: 
 	if (ret == OJ_WA||ret==OJ_PE){
 		if(full_diff)
-			make_diff_out_full(f1, f2, c1, c2, file1);
+			make_diff_out_full(f1, f2, c1, c2, infile);
 		else
-			make_diff_out_simple(f1, f2, c1, c2, file1);
+			make_diff_out_simple(f1, f2, c1, c2, infile);
 	}
 	if (f1)
 		fclose(f1);
@@ -522,10 +522,10 @@ void delnextline(char s[]) {
 		s[--L] = 0;
 }
 
-int compare(const char *file1, const char *file2) {
+int compare(const char *file1, const char *file2, const char* infile) {
 #ifdef ZOJ_COM
 	//compare ported and improved from zoj don't limit file size
-	return compare_zoj(file1, file2);
+	return compare_zoj(file1, file2, infile);
 #endif
 #ifndef ZOJ_COM
 	//the original compare from the first version of hustoj has file size limit
@@ -1947,7 +1947,7 @@ void judge_solution(int & ACflg, int & usedtime, int time_lmt, int isspj,
 				comp_res = OJ_WA;
 			}
 		} else {
-			comp_res = compare(outfile, userfile);
+			comp_res = compare(outfile, userfile, infile);
 		}
 		if (comp_res == OJ_WA) {
 			ACflg = OJ_WA;
