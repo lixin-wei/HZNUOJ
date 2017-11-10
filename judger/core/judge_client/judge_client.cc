@@ -454,7 +454,7 @@ void make_diff_out_simple(FILE *f1, FILE *f2, int c1, int c2, const char * path)
  * http://code.google.com/p/zoj/source/browse/trunk/judge_client/client/text_checker.cc#25
  *
  */
-int compare_zoj(const char *file1, const char *file2, const char* infile) {
+int compare_zoj(const char *file1, const char *file2) {
 	int ret = OJ_AC;
 	int c1, c2;
 	FILE * f1, *f2;
@@ -504,9 +504,9 @@ int compare_zoj(const char *file1, const char *file2, const char* infile) {
 	end: 
 	if (ret == OJ_WA||ret==OJ_PE){
 		if(full_diff)
-			make_diff_out_full(f1, f2, c1, c2, infile);
+			make_diff_out_full(f1, f2, c1, c2, file1);
 		else
-			make_diff_out_simple(f1, f2, c1, c2, infile);
+			make_diff_out_simple(f1, f2, c1, c2, file1);
 	}
 	if (f1)
 		fclose(f1);
@@ -522,10 +522,10 @@ void delnextline(char s[]) {
 		s[--L] = 0;
 }
 
-int compare(const char *file1, const char *file2, const char* infile) {
+int compare(const char *file1, const char *file2) {
 #ifdef ZOJ_COM
 	//compare ported and improved from zoj don't limit file size
-	return compare_zoj(file1, file2, infile);
+	return compare_zoj(file1, file2);
 #endif
 #ifndef ZOJ_COM
 	//the original compare from the first version of hustoj has file size limit
@@ -1947,7 +1947,7 @@ void judge_solution(int & ACflg, int & usedtime, int time_lmt, int isspj,
 				comp_res = OJ_WA;
 			}
 		} else {
-			comp_res = compare(outfile, userfile, infile);
+			comp_res = compare(outfile, userfile);
 		}
 		if (comp_res == OJ_WA) {
 			ACflg = OJ_WA;
