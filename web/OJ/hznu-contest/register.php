@@ -1,27 +1,6 @@
 <?php
-$title="杭州师范大学程序设计竞赛";
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
+require_once "./header.php";
 ?>
-<style type="text/css" media="screen">
-	.big-title{
-		background: url("img/title_bk.png");
-		height: 300px;
-	}
-</style>
-<div class="big-title">
-	<div class="am-g am-text-center" style="padding-top: 75px;">
-		<span style="font-size: 30pt;">第十届杭州师范大学程序设计竞赛</span>
-	</div>
-	<div class="am-g" style="margin-top: 60px; width: 70%;">
-		<div class="am-u-sm-12">
-			<ul class="am-nav am-nav-pills am-nav-justify">
-				<li><a href="index.php">通知公告</a></li>
-				<li class="am-active"><a href="register.php">注册报名</a></li>
-			</ul>
-		</div>
-	</div>
-</div>
-
 <div class="am-container" style="padding-top: 50px;">
 	<div class="am-g" style="margin-bottom: 20px;">
 		<ul class="am-nav am-nav-tabs am-nav-justify">
@@ -32,7 +11,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 	<div id="content-list">
 		<div class="am-g">
 			<?php
-			$sql="SELECT COUNT(name) FROM contest_hznu_2016";
+			$sql="SELECT COUNT(*) FROM hznu_contest_user WHERE year = $year";
 			$res=$mysqli->query($sql);
 			$register_cnt=$res->fetch_array()[0];
 			?>
@@ -49,7 +28,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 				</thead>
 				<tbody>
 				<?php
-				$sql="SELECT institute, stu_id, class, name, register_time, anonymous FROM contest_hznu_2016 ORDER BY register_time DESC";
+				$sql="SELECT institute, stu_id, class, name, register_time, anonymous FROM hznu_contest_user WHERE year = $year ORDER BY register_time DESC";
 				$res=$mysqli->query($sql);
 				while($row=$res->fetch_array()){
 					echo "<tr>";
@@ -111,9 +90,12 @@ require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 				<div class="am-checkbox">
 					<input type="checkbox" name="anonymous" id="anonymous" value="yes"> 匿名
 				</div>
-				<div class="am-text-center" style="margin-top: 20px;" id="register_submit">
+				<div class="am-text-center" style="margin: 20px 0;" id="register_submit">
 					<button type="submit" class="am-btn am-btn-primary" id="submit">确认提交</button>
 					<button type="submit" class="am-btn am-btn-success" id="query">咨询注册结果</button>
+				</div>
+				<div class="am-text-center am-text-secondary">
+					*咨询注册结果供匿名报名者使用，重新填入你注册时的信息，点击咨询注册结果，即可咨询是否注册成功，后台会比对你的学号、学院、班级和姓名，只有全部匹配才会提示注册成功。
 				</div>
 			</form>
 		</div>
