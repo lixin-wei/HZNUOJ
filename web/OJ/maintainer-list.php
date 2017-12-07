@@ -65,6 +65,45 @@
                 </tbody>
             </table>
         </div>
+		<div class="box">
+            <table class="am-table">
+                <tbody>
+                <tr>
+                    <td width="20%">Name</td>
+                    <td>Kaiqing Zhang <span class="am-badge am-badge-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td>School Year</td>
+                    <td>2016</td>
+                </tr>
+                <tr>
+                    <td>Sex</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>Nickname</td>
+                    <td>ZKin</td>
+                </tr>
+                <tr>
+                    <td>E-Mail</td>
+                    <td><a href="mailto:zkqhnfg@gmail.com">zkqhnfg@gmail.com</a></td>
+                </tr>
+                <tr>
+                    <td>Blog</td>
+                    <td>
+                        <a href="https://github.com/ZKingQ">github.com/ZKingQ</a><br>
+                        <a href="http://hangzhoudaxue.cn">hangzhoudaxue.cn</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Motto</td>
+                    <td>
+                        <p>Make the world a better place</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="box">
             <table class="am-table">
                 <tbody>
