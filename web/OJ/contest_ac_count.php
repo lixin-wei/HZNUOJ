@@ -22,10 +22,11 @@ SQL;
 	$cnt=$res->num_rows;
 	echo "<table class='am-table am-table-striped am-table-hover'>";
 	while($row=$res->fetch_object()){
+		$label = PID($row->num);
 		echo <<<HTML
 			<tr>
 				<td>$cnt</td>
-				<td>{$PID[$row->num]}</td>
+				<td>$label</td>
 				<td>$row->nick</td>
 			</tr>
 HTML;
