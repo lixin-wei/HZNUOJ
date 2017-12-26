@@ -168,7 +168,7 @@
                 <tr>
                     <td>Blog</td>
                     <td>
-                        <a href="http://cypyc.com/">cypyc.com</a><br>
+                        <p>none</p>
                     </td>
                 </tr>
                 <tr>
