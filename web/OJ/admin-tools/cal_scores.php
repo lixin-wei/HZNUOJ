@@ -1,26 +1,27 @@
-<?php
-/**
- * This file is modified
- * by yybird
- * @2016.04.26
- **/
-?>
-<link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <form action="" method="post">
+    classList:
+    <textarea name="classList" rows="15">
+    软工151
+    计算机154
+    </textarea>
+    timeList:
+    <textarea name="timeList" rows="15">
+    2015-12-20 00:00:00
+    2015-12-13 00:00:00
+    2015-12-6 00:00:00
+    </textarea>
+      <button>submit</button>
+    </form>
 
-<form action="" method="post">
-classList:
-<textarea name="classList" rows="15">
-软工151
-计算机154
-</textarea>
-timeList:
-<textarea name="timeList" rows="15">
-2015-12-20 00:00:00
-2015-12-13 00:00:00
-2015-12-6 00:00:00
-</textarea>
-  <button>submit</button>
-</form>
 <?php
 if(isset($_POST['classList'])) {
     require_once('../include/db_info.inc.php');
@@ -66,6 +67,7 @@ if(isset($_POST['classList'])) {
             $real_name = $row->real_name;
             $stu_id=$row->stu_id;
             $class = $row->class;
+            $strength = $row->strength;
             $result->free();
             
             // 获取解题数大于10的用户数量存入user_cnt_divisor
@@ -109,7 +111,7 @@ if(isset($_POST['classList'])) {
             $total_ac = $AC+$CF+$HDU+$PKU+$UVA+$ZJU;
             $local_ac=$AC;
             // 计算总解题量的解题分
-            $sql = "SELECT MAX(solved+CF+HDU+PKU+ZJU+UVA) FROM users";
+            $sql = "SELECT MAX(solved) FROM users";
             $result = $mysqli->query($sql);
             $row = $result->fetch_array();
             $max_solved = intval($row[0]);
@@ -177,7 +179,7 @@ if(isset($_POST['classList'])) {
                 $first=0;
                 echo "<td>".$user."</td><td>".$class."</td><td>".$real_name."</td><td>".$stu_id."</td>";
             }
-            echo "<td>".$total_ac."</td><td>".$solved_score."</td><td>".$dif_score."</td><td>".$act_score."</td><td>".$idp_score."</td><td>".$avg_score."</td>";
+            echo "<td>".$total_ac."</td><td>".$solved_score."</td><td>"."$dif_score"."</td><td>".$act_score."</td><td>".$idp_score."</td><td>".$avg_score."</td>";
         }
         echo "</tr>";
     }
@@ -185,4 +187,10 @@ if(isset($_POST['classList'])) {
     echo "</table>";
 }
 ?>
+
+
+</body>
+</html>
+
+<link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
 
