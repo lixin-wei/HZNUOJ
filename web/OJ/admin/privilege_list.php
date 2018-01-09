@@ -41,7 +41,8 @@ SQL;
   $can_delete=false;
   for (;$row=$result->fetch_object();){
     echo "<tr>";
-    echo "<td>".$row->user_id;
+    //echo "<td>".$row->user_id;
+    echo "<td><a href='/OJ/userinfo.php?user=$row->user_id' target='_blank'>$row->user_id</a>";
     echo "<td>".$row->rightstr;
   //  echo "<td>".$row->start_time;
   //  echo "<td>".$row->end_time;

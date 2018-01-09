@@ -2199,6 +2199,7 @@ int get_sim(int solution_id, int lang, int pid, int &sim_s_id) {
 	sprintf(src_pth, "Main.%s", lang_ext[lang]);
 
 	int sim = execute_cmd("/usr/bin/sim.sh %s %d", src_pth, pid);
+	if(DEBUG)printf("sim=%d\n", sim);
 	if (!sim) {
 		execute_cmd("/bin/mkdir ../data/%d/ac/", pid);
 
@@ -2556,6 +2557,7 @@ int main(int argc, char** argv) {
 	}
 	if (ACflg == OJ_AC && PEflg == OJ_PE)
 		ACflg = OJ_PE;
+	if(DEGUB)printf("sim_enable = %d\n", sim_enable);
 	if (sim_enable && ACflg == OJ_AC && (!oi_mode || finalACflg == OJ_AC)
 			) { //bash don't supported
 		sim = get_sim(solution_id, lang, p_id, sim_s_id);
