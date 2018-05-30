@@ -92,7 +92,6 @@
                     <td>Blog</td>
                     <td>
                         <a href="https://github.com/ZKingQ">github.com/ZKingQ</a><br>
-                        <a href="http://hangzhoudaxue.cn">hangzhoudaxue.cn</a>
                     </td>
                 </tr>
                 <tr>
