@@ -48,7 +48,7 @@
   static $BRONZE_RATE = 0.30; // 铜牌比例
   static $BORDER = 500000;
   static $LOGIN_DEFUNCT = false;
-  static $VIDEO_SUBMIT_TIME=10;// can see video after
+  static $VIDEO_SUBMIT_TIME=3;// can see video after
 
   /* Email configuration */
   static $SMTP_SERVER = "smtp.exmail.qq.com";
