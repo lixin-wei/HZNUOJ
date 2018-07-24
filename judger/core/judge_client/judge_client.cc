@@ -2557,7 +2557,7 @@ int main(int argc, char** argv) {
 	}
 	if (ACflg == OJ_AC && PEflg == OJ_PE)
 		ACflg = OJ_PE;
-	if(DEGUB)printf("sim_enable = %d\n", sim_enable);
+	if(DEBUG)printf("sim_enable = %d\n", sim_enable);
 	if (sim_enable && ACflg == OJ_AC && (!oi_mode || finalACflg == OJ_AC)
 			) { //bash don't supported
 		sim = get_sim(solution_id, lang, p_id, sim_s_id);
