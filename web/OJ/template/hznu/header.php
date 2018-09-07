@@ -99,14 +99,20 @@
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="/OJ/faqs.php">F.A.Q</a></li>
   
-          <!-- Courses Begin -->
+          <!-- Others Begin -->
           <li class="am-dropdown" data-am-dropdown>
-            <a href="#" class="am-dropdown-toggle" >Courses&nbsp;<span class="am-icon-caret-down"></span></a>
+            <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content">
-              <li><a href="/OJ/c_course.php" title="">Programming Fundamentals</a></li>
+              <li><a href="/OJ/c_course.php">Programming Fundamentals</a></li>
+            </ul>
+            <ul class="am-dropdown-content">
+              <li><a href="/OJ/donation.php">Donation</a></li>
+            </ul>
+            <ul class="am-dropdown-content">
+              <li><a href="/forum/">Forum</a></li>
             </ul>
           </li>
-          <!-- Courses End -->
+          <!-- Others End -->
 
           <!-- <li><a href="/OJ/tools.php">Tools</a></li> -->
         </ul>
