@@ -357,6 +357,7 @@
                     <p><a href="upload/course_doc/自学内容_程序设计概述.pdf">自学内容_程序设计概述</a></p>
                     <p><a href="upload/course_doc/习题解答1.pdf">习题解答1</a></p>
                     <p><a href="upload/course_doc/PPT-C01.pdf">PPT-C01</a></p>
+                    <p><a href="https://space.bilibili.com/6259531/#/channel/detail?cid=51097">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -381,6 +382,7 @@
                     <p><a href="upload/course_doc/自学内容_C语言程序设计入门.pdf">自学内容_C语言程序设计入门</a></p>
                     <p><a href="upload/course_doc/习题解答2.pdf">习题解答2</a></p>
                     <p><a href="upload/course_doc/PPT-C02.pdf">PPT-C02</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31127977">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -447,6 +449,7 @@
                     <p><a href="upload/course_doc/自学内容_循环结构.pdf">自学内容_循环结构</a></p>
                     <p><a href="upload/course_doc/习题解答3.pdf">习题解答3</a></p>
                     <p><a href="upload/course_doc/PPT-C03.pdf">PPT-C03</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31132112">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -490,6 +493,7 @@
                     <p><a href="upload/course_doc/自学内容_函数.pdf">自学内容_函数</a></p>
                     <p><a href="upload/course_doc/习题解答4.pdf">习题解答4</a></p>
                     <p><a href="upload/course_doc/PPT-C04.pdf">PPT-C04</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31132779">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -533,6 +537,7 @@
                     <p><a href="upload/course_doc/自学内容_指针.pdf">自学内容_指针</a></p>
                     <p><a href="upload/course_doc/习题解答5.pdf">习题解答5</a></p>
                     <p><a href="upload/course_doc/PPT-C05.pdf">PPT-C05</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31132948">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -575,6 +580,7 @@
                     <p><a href="upload/course_doc/自学内容_数组.pdf">自学内容_数组</a></p>
                     <p><a href="upload/course_doc/习题解答6.pdf">习题解答6</a></p>
                     <p><a href="upload/course_doc/PPT-C06.pdf">PPT-C06</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31133040">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -618,6 +624,7 @@
                     <p><a href="upload/course_doc/自学内容_结构.pdf">自学内容_结构</a></p>
                     <p><a href="upload/course_doc/习题解答7.pdf">习题解答7</a></p>
                     <p><a href="upload/course_doc/PPT-C07.pdf">PPT-C07</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31133112">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
@@ -661,6 +668,7 @@
                     <p><a href="upload/course_doc/自学内容_文件.pdf">自学内容_文件</a></p>
                     <p><a href="upload/course_doc/习题解答8.pdf">习题解答8</a></p>
                     <p><a href="upload/course_doc/PPT-C08.pdf">PPT-C08</a></p>
+                    <p><a href="https://www.bilibili.com/video/av31133216">视频地址</a></p>
                   </td>
                 </tr>
                 <tr>
