@@ -82,7 +82,7 @@
         </div>
     </div>
     <div class="am-g">
-        <div class="am-u-md-8">
+        <div class="am-u-md-12">
             <div class="box">
                 <div class="content-block">
                     <div class="content-block-title">
