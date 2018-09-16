@@ -139,13 +139,13 @@
                     <p>授课时间</p>
                   </td>
                   <td colspan="2" >
-                    <p>周四3、4、5节</p>
+                    <p>周二上午1-3，周三上午1-2</p>
                   </td>
                   <td colspan="2" >
                     <p>授课地点</p>
                   </td>
                   <td colspan="2" >
-                    <p>恕园12-305</p>
+                    <p>勤园</p>
                   </td>
                 </tr>
                 <tr>
@@ -164,7 +164,7 @@
                 </tr>
                 <tr>
                   <td colspan="2" >
-                    <p>主讲教师</p>
+                    <p>授课教师</p>
                   </td>
                   <td colspan="3" >
                     <p>单振宇</p>
@@ -175,53 +175,73 @@
                   <td colspan="7" >
                     <p>电话：13666644516</p>
                     <p>e-mail：shanzhenyu@zju.edu.cn</p>
+                    <p>周三下午答疑 地点：勤园13号楼623/404</p>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2" >
-                    <p>实验指导教师</p>
-                  </td>
-                  <td colspan="3" >
-                    <p>单振宇</p>
-                  </td>
-                  <td colspan="2" >
-                    <p>联系方式</p>
-                  </td>
-                  <td colspan="7" >
-                    <p>电话：13666644516</p>
-                    <p>e-mail：shanzhenyu@zju.edu.cn</p>
-                  </td>
+                    <td colspan="2" >
+                        <p>授课教师</p>
+                    </td>
+                    <td colspan="3" >
+                        <p>胡斌 </p>
+                    </td>
+                    <td colspan="2" >
+                        <p>联系方式</p>
+                    </td>
+                    <td colspan="7" >
+                        <p>电话：13857178115</p>
+                        <p>e-mail：bin@hznu.edu.cn</p>
+                        <p>周三下午答疑 地点：勤园11号楼402</p>
+                    </td>
                 </tr>
                 <tr>
-                  <td colspan="2" >
-                    <p>辅导教师</p>
-                  </td>
-                  <td colspan="3" >
-                    <p>单振宇</p>
-                  </td>
-                  <td colspan="2" >
-                    <p>联系方式</p>
-                  </td>
-                  <td colspan="7" >
-                    <p>电话：13666644516</p>
-                    <p>e-mail：shanzhenyu@zju.edu.cn</p>
-                  </td>
+                    <td colspan="2" >
+                        <p>授课教师</p>
+                    </td>
+                    <td colspan="3" >
+                        <p>周炯</p>
+                    </td>
+                    <td colspan="2" >
+                        <p>联系方式</p>
+                    </td>
+                    <td colspan="7" >
+                        <p>电话：13958112405</p>
+                        <p>e-mail：181199085@qq.com</p>
+                        <p>周三下午答疑 地点：勤园13号楼627</p>
+                    </td>
                 </tr>
                 <tr>
-                  <td colspan="2" >
-                    <p>答疑时间</p>
-                  </td>
-                  <td colspan="3" >
-                    <p>周二、周五</p>
-                  </td>
-                  <td colspan="2" >
-                    <p>答疑地点</p>
-                  </td>
-                  <td colspan="7" >
-                    <p>恕园2-514，教师办公室；周二为临时组织答疑</p>
-                  </td>
+                    <td colspan="2" >
+                        <p>授课教师</p>
+                    </td>
+                    <td colspan="3" >
+                        <p>孙军梅</p>
+                    </td>
+                    <td colspan="2" >
+                        <p>联系方式</p>
+                    </td>
+                    <td colspan="7" >
+                        <p>电话：18958190051</p>
+                        <p>e-mail：184036895@qq.com</p>
+                        <p>周三下午答疑 地点：勤园12号楼415</p>
+                    </td>
                 </tr>
-                
+                <tr>
+                    <td colspan="2" >
+                        <p>授课教师</p>
+                    </td>
+                    <td colspan="3" >
+                        <p>陶利民</p>
+                    </td>
+                    <td colspan="2" >
+                        <p>联系方式</p>
+                    </td>
+                    <td colspan="7" >
+                        <p>电话：13750836501</p>
+                        <p>e-mail：tlm5460@163.com</p>
+                        <p>周三下午答疑 地点：勤园11号楼503</p>
+                    </td>
+                </tr>
                 </tbody>
               </table>
             </div>
@@ -721,11 +741,11 @@
         <div class="box" data-am-sticky="{top:60}">
           <div class="content-block">
             <div class="content-block-title">
-              历史班级
+              授课班级
             </div>
             <div class="content-block-body">
                 <?php
-                $sql="SELECT DISTINCT class FROM users ORDER BY class DESC";
+                $sql="SELECT DISTINCT class FROM users WHERE class LIKE '%类18%' ORDER BY class DESC";
                 $res=$mysqli->query($sql);
                 while($row=$res->fetch_array()) {
                     $text=htmlentities($row[0]);
