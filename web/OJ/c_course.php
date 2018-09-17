@@ -747,7 +747,7 @@
             </div>
             <div class="content-block-body">
                 <?php
-                $sql="SELECT DISTINCT class FROM users WHERE class LIKE '软工%' OR class LIKE '计算机%' OR class LIKE'物联网%' ORDER BY class DESC";
+                $sql="SELECT DISTINCT class FROM users WHERE class LIKE '软工%' OR class LIKE '计算机%' OR class LIKE'物联网%' OR class LIKE '信息%' ORDER BY class DESC";
                 $res=$mysqli->query($sql);
                 while($row=$res->fetch_array()) {
                     $text=htmlentities($row[0]);
@@ -757,8 +757,8 @@ HTML;
                     
                 }
                 ?>
-                <span class="am-badge am-badge-primary">信息与服务工程类171-178</span>
-                <span class="am-badge am-badge-primary">信息与服务工程类181-188</span>
+<!--                <span class="am-badge am-badge-primary">信息与服务工程类171-178</span>-->
+<!--                <span class="am-badge am-badge-primary">信息与服务工程类181-188</span>-->
             </div>
           </div>
           <div class="content-block">
