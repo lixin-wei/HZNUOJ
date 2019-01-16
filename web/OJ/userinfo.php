@@ -71,16 +71,18 @@
   $color = "#E0E0E0";
   //get ac set and calculate strength
   $ac_set=array();
-  $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id";
-  $res=$mysqli->query($sql);
-  while($pid=$res->fetch_array()[0]){
-    $set_name=get_problemset($pid);
+  $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id"; 
+  $res=$mysqli->query($sql);  
+  while($arr=$res->fetch_array()){
+	$pid = $arr[0];
+    if (empty($pid) || $pid == 0) continue;
+	$set_name=get_problemset($pid);
     if(!$ac_set[$set_name])$ac_set[$set_name]=array();
     array_push($ac_set[$set_name], $pid);
     
     //calculate strength
     $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
-    $y_result=$mysqli->query($sql);
+    $y_result=$mysqli->query($sql); 
     $y_row = $y_result->fetch_object();
     $solved = $y_row->solved_user;
     $submit = $y_row->submit_user;
