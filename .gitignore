@@ -16,3 +16,4 @@ judger/core/sim/.idea/
 /web/index.html
 /OJ/index.html
 /.vs
+.DS_Store

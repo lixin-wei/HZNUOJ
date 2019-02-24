@@ -1,157 +1,168 @@
 <?php
-require_once "./header.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/OJ/hznu-contest/header.php";
 ?>
 <div class="am-container" style="padding-top: 50px;">
-	<div class="am-g" style="margin-bottom: 20px;">
-		<ul class="am-nav am-nav-tabs am-nav-justify">
-			<li class="am-active" id="tab-list"><a href="#">已报名列表</a></li>
-			<li id="tab-register"><a href="#" >我要报名</a></li>
-		</ul>
-	</div>
-	<div id="content-list">
-		<div class="am-g">
-			<?php
-			$sql="SELECT COUNT(*) FROM hznu_contest_user WHERE year = $year";
-			$res=$mysqli->query($sql);
-			$register_cnt=$res->fetch_array()[0];
-			?>
-			报名总人数: <?php echo $register_cnt ?>
-			<table class="am-table" style="margin-top: 10px;">
-				<thead>
-					<tr>
-						<th>学院</th>
-						<th>学号</th>
-						<th>班级</th>
-						<th>姓名</th>
-						<th>注册时间</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php
-				$sql="SELECT institute, stu_id, class, name, register_time, anonymous FROM hznu_contest_user WHERE year = $year ORDER BY register_time DESC";
-				$res=$mysqli->query($sql);
-				while($row=$res->fetch_array()){
-					echo "<tr>";
-					echo "<td>".htmlentities($row['institute'])."</td>";
-					if($row['anonymous']) echo "<td>****</td>";
-					else echo "<td>".htmlentities($row['stu_id'])."</td>";
-					echo "<td>".htmlentities($row['class'])."</td>";
-					if($row['anonymous']) echo "<td>****</td>";
-					else echo "<td>".htmlentities($row['name'])."</td>";
-					echo "<td>".htmlentities($row['register_time'])."</td>";
-					echo "</tr>";
-				}
-				?>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div id="content-register" style="display: none;">
-		<div class="am-g" style="max-width: 800px;">
-			<form class="am-form" action="contest_register.php" method="post" data-am-validator id="form_register">
-        <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
-				<div class="am-form-group">
-					<label for="institute">学院</label>
-					<select name="institute" id="institute" required>
-						<option value="人文学院">人文学院</option>
-						<option value="体育与健康学院">体育与健康学院</option>
-						<option value="医学院">医学院</option>
-						<option value="外国语学院">外国语学院</option>
-						<option value="政治与社会学院">政治与社会学院</option>
-						<option value="教育学院">教育学院</option>
-						<option value="文化创意学院">文化创意学院</option>
-						<option value="材料与化学化工学院">材料与化学化工学院</option>
-						<option value="杭州国际服务工程学院" selected="">杭州国际服务工程学院</option>
-						<option value="理学院">理学院</option>
-						<option value="生命与环境科学学院">生命与环境科学学院</option>
-						<option value="经亨颐学院">经亨颐学院</option>
-						<option value="经济与管理学院">经济与管理学院</option>
-						<option value="美术学院">美术学院</option>
-						<option value="阿里巴巴商学院">阿里巴巴商学院</option>
-						<option value="沈钧儒法学院">沈钧儒法学院</option>
-					</select>
-				</div>
-				<div class="am-form-group">
-					<label for="stu_id">学号</label>
-					<input type="text" class="js-pattern-number" id="stu_id" name="stu_id" placeholder="请输入学号" required minlength="10">
-				</div>
-				<div class="am-form-group">
-					<label for="class">班级</label>
-					<input type="text" class="" id="class" name="class" placeholder="请输入班级" required minlength="4">
-				</div>
-				<div class="am-form-group">
-					<label for="name">姓名</label>
-					<input type="text" class="" id="name" name="name" placeholder="请输入姓名" required minlength="2">
-				</div>
-				<div class="am-form-group">
-					<label for="phone">手机号码 (此项不会公布在已报名列表中)</label>
-					<input type="text" class="" id="phone" name="phone" placeholder="请输入手机号码" required minlength="11" maxlength="11">
-				</div>
-				<div class="am-checkbox">
-					<input type="checkbox" name="anonymous" id="anonymous" value="yes"> 匿名
-				</div>
-				<div class="am-text-center" style="margin: 20px 0;" id="register_submit">
-					<button type="submit" class="am-btn am-btn-primary" id="submit">确认提交</button>
-					<button type="submit" class="am-btn am-btn-success" id="query">咨询注册结果</button>
-				</div>
-				<div class="am-text-center am-text-secondary">
-					*咨询注册结果供匿名报名者使用，重新填入你注册时的信息，点击咨询注册结果，即可咨询是否注册成功，后台会比对你的学号、学院、班级和姓名，只有全部匹配才会提示注册成功。
-				</div>
-			</form>
-		</div>
-	</div>
+    <div class="am-g" style="margin-bottom: 20px;">
+        <ul class="am-nav am-nav-tabs am-nav-justify">
+            <li class="am-active" id="tab-list"><a href="#">已报名列表</a></li>
+            <li id="tab-register"><a href="#" >报名/修改信息</a></li>
+        </ul>
+    </div>
+    <div id="content-list">
+        <div class="am-g">
+            <?php
+            $sql="SELECT COUNT(*) FROM formal_contest_user WHERE contest_id = $contest_id";
+            $res=$mysqli->query($sql);
+            $register_cnt=$res->fetch_array()[0];
+            ?>
+            报名队伍数: <?php echo $register_cnt ?>
+            <table class="am-table" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>队名</th>
+                        <th>院校</th>
+                        <th>队员1</th>
+                        <th>队员2</th>
+                        <th>队员3</th>
+                        <th>注册时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                $sql="SELECT team_name, school, name1, name2, name3, register_time, anonymous FROM formal_contest_user WHERE contest_id = $contest_id ORDER BY register_time DESC";
+                $res=$mysqli->query($sql);
+                while($row=$res->fetch_array()){
+                    echo "<tr>";
+                    echo "<td>".htmlentities($row['team_name'])."</td>";
+                    echo "<td>".htmlentities($row['school'])."</td>";
+
+                    if($row['anonymous']) echo "<td>****</td>";
+                    else echo "<td>".htmlentities($row['name1'])."</td>";
+
+                    if($row['anonymous']) echo "<td>****</td>";
+                    else echo "<td>".htmlentities($row['name2'])."</td>";
+
+                    if($row['anonymous']) echo "<td>****</td>";
+                    else echo "<td>".htmlentities($row['name3'])."</td>";
+
+                    echo "<td>".htmlentities($row['register_time'])."</td>";
+                    echo "</tr>";
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="content-register" style="display: none;">
+        <?php if (!$has_login): ?>
+            <div class="am-text-center">
+                报名信息与HZNUOJ账号绑定，请先<a href="../loginpage.php">登录</a>或者<a href="../registerpage.php">注册</a>。
+            </div>
+        <?php elseif($is_end): ?>
+            <div class="am-text-center">
+                报名已截止。
+            </div>
+        <?php endif ?>
+        <div class="am-g" style="max-width: 800px;">
+            <form class="am-form" action="contest_register.php" method="post" data-am-validator id="form_register">
+                <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+                <fieldset <?php if(!$has_login) echo "disabled";?>>
+                    <div class="am-form-group">
+                        <label for="institute">院校</label>
+                        <select name="institute" id="school" data-am-selected="{searchBox: 1, btnWidth: '100%', maxHeight: 250}" required>
+                            <?php
+                            $json_string = file_get_contents("./res/school.json");
+                            $json = json_decode($json_string, true);
+                            foreach($json as $provience => $school_list) {
+                                foreach ($school_list as $single_school) {
+                                    $selected = $single_school == $school ? "selected" : "";
+                                    echo "<option $selected value=\"$single_school\">$single_school</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="team_name">队名</label>
+                        <input type="text" class="am-form-field" id="team_name" name="team_name" placeholder="请输入队名" required minlength="1" maxlength="16" value="<?php echo htmlentities($team_name); ?>">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="name1">队员1</label>
+                        <input type="text" class="am-form-field" id="name1" name="name1" placeholder="请输入队员1姓名" required minlength="2" value="<?php echo htmlentities($name1) ?>">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="name2">队员2</label>
+                        <input type="text" class="am-form-field" id="name2" name="name2" placeholder="请输入队员2姓名" value="<?php echo htmlentities($name2) ?>">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="name3">队员3</label>
+                        <input type="text" class="am-form-field" id="name3" name="name3" placeholder="请输入队员3姓名" value="<?php echo htmlentities($name3) ?>">
+                    </div>
+                    <div class="am-form-group">
+                        <label for="phone">联系电话 (此项不会公布在已报名列表中)</label>
+                        <input type="text" class="am-form-field" id="phone" name="phone" placeholder="请输入手机号码" required minlength="11" maxlength="11" value="<?php echo htmlentities($phone) ?>">
+                    </div>
+                    <div class="am-checkbox">
+                        <input <?php if($anonymous) echo "checked"; ?> type="checkbox" class="" name="anonymous" id="anonymous" value="yes"> 匿名
+                    </div>
+                    <div class="am-text-center" style="margin: 20px 0;" id="register_submit">
+                        <button type="submit" class="am-btn am-btn-primary" id="submit">确认提交</button>
+                    </div>
+                </fieldset>
+                <div class="am-text-center am-text-secondary">
+                    *队长一人注册报名即可，无需所有队员各自报名。报名时间截止后信息将无法修改。
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <?php require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/footer.php" ?>
 
 <script>
-	var aim="contest_register.php";
-	$("#tab-list").click(function(){
-		$(this).addClass("am-active");
-		$("#tab-register").removeClass("am-active");
-		$("#content-list").fadeIn();
-		$("#content-register").hide();
-	});
-	$("#tab-register").click(function(){
-		$(this).addClass("am-active");
-		$("#tab-list").removeClass("am-active");
-		$("#content-list").hide();
-		$("#content-register").fadeIn();
-	});
-	$("#submit").click(function(){
-		aim="contest_register.php";
-	});
-	$("#query").click(function(){
-		aim="register_query.php";
-	});
-	$("#form_register").validator({
-		submit: function(){
-			if(this.isFormValid()){
-				$.ajax({
-					type: "POST",
-					url: aim,
-					data: {
-						institute: $("#institute").val(),
-						stu_id: $("#stu_id").val(),
-						class: $("#class").val(),
-						name: $("#name").val(),
-						anonymous: $("#anonymous").is(":checked"),
-						phone: $("#phone").val(),
-					},
-					context: this,
-					success: function(data){
-						alert(data);
-						if(aim=="contest_register.php" && data=="注册成功!")
-							window.location.reload();
-				    },
-				    complete: function(){
-				    	console.log("ajax complete!");
-				    },
-				    error: function(xmlrqst,info){
-				    	console.log(info);
-				    }
-				})
-			}
-			return false;
-		}
-	});
+    var aim="contest_register.php";
+    $("#tab-list").click(function(){
+        $(this).addClass("am-active");
+        $("#tab-register").removeClass("am-active");
+        $("#content-list").fadeIn();
+        $("#content-register").hide();
+    });
+    $("#tab-register").click(function(){
+        $(this).addClass("am-active");
+        $("#tab-list").removeClass("am-active");
+        $("#content-list").hide();
+        $("#content-register").fadeIn();
+    });
+    $("#submit").click(function(){
+        aim="ajax/update_info.php";
+    });
+    $("#form_register").validator({
+        submit: function(){
+            if(this.isFormValid()){
+                $.ajax({
+                    type: "POST",
+                    url: aim,
+                    data: {
+                        team_name: $("#team_name").val(),
+                        school: $("#school").val(),
+                        name1: $("#name1").val(),
+                        name2: $("#name2").val(),
+                        name3: $("#name3").val(),
+                        anonymous: $("#anonymous").is(":checked") ? 1 : 0,
+                        phone: $("#phone").val(),
+                    },
+                    context: this,
+                    success: function(data){
+                        alert(data);
+                    },
+                    complete: function(){
+                        console.log("ajax complete!");
+                    },
+                    error: function(xmlrqst,info){
+                        console.log(info);
+                    }
+                })
+            }
+            return false;
+        }
+    });
 </script>
