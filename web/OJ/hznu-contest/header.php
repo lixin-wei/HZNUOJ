@@ -1,11 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/OJ/plugins/Parserdown.php";
-require_once "./config.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/OJ/hznu-contest/config.php";
 
-$sql="SELECT announcement FROM hznu_contest WHERE year = $year";
+$sql="SELECT announcement, title FROM formal_contest WHERE id = $contest_id";
 $res=$mysqli->query($sql)->fetch_array();
 $announcement = $res['announcement'];
+$title = $res['title'];
 ?>
 
 
@@ -18,8 +19,8 @@ $announcement = $res['announcement'];
 <div class="big-title">
     <div class="am-g am-text-center" style="padding-top: 75px;">
         <span style="font-size: 30pt;">
-            <?php echo $year ?>年杭州师范大学程序设计竞赛
-            <?php if($isEnd) echo "(报名已终止)"; ?>     
+            <?php echo $title ?>
+            <?php if($is_end) echo "(报名已终止)"; ?>     
         </span>
     </div>
     <div class="am-g" style="margin-top: 60px; width: 70%;">
