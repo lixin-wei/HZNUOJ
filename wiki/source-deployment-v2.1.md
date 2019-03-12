@@ -8,7 +8,7 @@
 
 2. 若已安装mysql，请修改`intall.sh` `judge.conf` `/web/OJ/include/db_info.inc.php` 中的相应账户密码信息(默认为root/root)。若还未安装，请确保接下来安装mysql的过程中将用户名和密码都设成root。
 
-3. 以root权限运行`judger/install.sh`
+3. 以root权限运行`judger//install.sh`
 
 4. 打开`/etc/apache2/sites-available/000-default.conf` ，将`DocumentRoot /var/www/html` 更改为 `DocumentRoot /var/www/web` ，即Apache的站点根目录设置为`/var/www/web` 
 
