@@ -5,7 +5,6 @@
 * 更华丽的界面
 * 更灵活的权限管理
 * 支持多组样例
-* 有封装好的docker镜像，更简单的部署
 
 
 # 界面截图
@@ -41,10 +40,6 @@
 ![privilege](images/privilege.jpg)
 
 # 部署指南
-
-## 使用Docker镜像（推荐）
-
-详情参考[Docker部署指南v2.1](wiki/docker-deployment-v2.1.md)
 
 ## 使用源码
 
