@@ -7,6 +7,9 @@
 ?>
 
 <?php
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
   $cache_time=10; 
   $OJ_CACHE_SHARE=false;
   require_once('./include/cache_start.php');
@@ -15,7 +18,7 @@
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
   require_once "include/classList.inc.php";
- 
+
   // check user
   $user=$_GET['user'];
   if (!is_valid_user_name($user)){
@@ -62,10 +65,9 @@
   // 获取解题数大于10的用户数量存入user_cnt_divisor
   $sql = "SELECT user_id FROM users WHERE solved>10";
   $result  = $mysqli->query($sql) or die($mysqli->error);
-  if($result) $user_cnt_divisor = $result->num_rows;
+  if($result && $result->num_rows > 0 ) $user_cnt_divisor = $result->num_rows;
   else $user_cnt_divisor = 1;
   $result->free();
-  //  echo $user_cnt_divisor;
   $strength = 0;
   $level = "斗之气一段";
   $color = "#E0E0E0";
@@ -74,9 +76,9 @@
   $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id"; 
   $res=$mysqli->query($sql);  
   while($arr=$res->fetch_array()){
-	$pid = $arr[0];
+    $pid = $arr[0];
     if (empty($pid) || $pid == 0) continue;
-	$set_name=get_problemset($pid);
+    $set_name=get_problemset($pid);
     if(!$ac_set[$set_name])$ac_set[$set_name]=array();
     array_push($ac_set[$set_name], $pid);
     
@@ -86,15 +88,18 @@
     $y_row = $y_result->fetch_object();
     $solved = $y_row->solved_user;
     $submit = $y_row->submit_user;
+
     $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
     if ($scores < 10) $scores = 10;
     $strength += $scores;
   }
+
   // count hznuoj solved
   $sql="SELECT count(DISTINCT problem_id) as ac FROM solution WHERE user_id='".$user_mysql."' AND result=4";
   $result=$mysqli->query($sql) or die($mysqli->error);
   $row=$result->fetch_object();
   $AC=$row->ac;
+  //echo ($AC);
   $result->free();
 
   // count hznuoj submission
@@ -144,6 +149,7 @@
 
   // 获取排名
   $sql="SELECT count(*) as `Rank` FROM `users` WHERE strength>".round($strength,2);
+  //echo $sql;
   $result=$mysqli->query($sql);
   $row=$result->fetch_array();
   $Rank=intval($row[0])+1;
@@ -163,9 +169,11 @@
   $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
   $result->free();
 
-  // 计算平均难度分
-  $dif_score = round(1.0*$strength/$total_ac); 
-
+  // 计算平均难度分  
+  if ($total_ac == 0) 
+    $dif_score = 0;
+  else 
+    $dif_score = round(1.0*$strength/$total_ac); 
   // 计算活跃度分
   $AC_day = 0; // A过题目的天数
   $sub_day = 0; // 交过题目的天数
@@ -282,6 +290,7 @@
   /* 获取HZNUOJ推荐题目的题目编号 start */
   $hznu_recommend_set = array();
   $sql = "SELECT DISTINCT problem_id FROM problem WHERE score<=$dif_score+5 AND score>=$dif_score-5 ORDER BY problem_id";
+  //echo $sql;
   $result = $mysqli->query($sql);
   for ($i=0; $row=$result->fetch_array(); ++$i) {
     $hznu_recommend_set[$i] = $row['problem_id'];
@@ -296,4 +305,3 @@
   if(file_exists('./include/cache_end.php'))
     require_once('./include/cache_end.php');
 ?>
-
