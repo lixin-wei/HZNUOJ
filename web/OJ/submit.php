@@ -164,18 +164,14 @@ if ($len>65536){
 }
 
 // last submit
-$now=strftime("%Y-%m-%d %X",time()-1);
+$submit_interval_limit=30;
+$now=strftime("%Y-%m-%d %X",time()-$submit_interval_limit);
 $sql="SELECT `in_date` from `solution` where `user_id`='$user_id' and in_date>'$now' order by `in_date` desc limit 1";
 $res=$mysqli->query($sql);
-if (0&&$res->num_rows==1){
-	//$row=$res->fetch_row();
-	//$last=strtotime($row[0]);
-	//$cur=time();
-	//if ($cur-$last<10){
-		$view_errors="You should not submit more than twice in 10 seconds.....<br>";
-		require("template/".$OJ_TEMPLATE."/error.php");
-		exit(0);
-	//}
+if ($res->num_rows>0){
+	$view_errors="You should not submit more than twice in $submit_interval_limit seconds.....<br>";
+	require("template/".$OJ_TEMPLATE."/error.php");
+	exit(0);
 }
 
 
