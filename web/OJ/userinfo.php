@@ -15,7 +15,9 @@
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
   require_once "include/classList.inc.php";
- 
+  ini_set('display_errors', 'On');
+  ini_set('display_startup_errors', 'On');
+  error_reporting(E_ALL);
   // check user
   $user=$_GET['user'];
   if (!is_valid_user_name($user)){
@@ -27,6 +29,7 @@
   $user_mysql=$mysqli->real_escape_string($user);
 
   $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id FROM `users` WHERE `user_id`='$user_mysql'";
+
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
   if ($row_cnt==0){ 
@@ -282,6 +285,7 @@
   /* 获取HZNUOJ推荐题目的题目编号 start */
   $hznu_recommend_set = array();
   $sql = "SELECT DISTINCT problem_id FROM problem WHERE score<=$dif_score+5 AND score>=$dif_score-5 ORDER BY problem_id";
+  echo "$sql";
   $result = $mysqli->query($sql);
   for ($i=0; $row=$result->fetch_array(); ++$i) {
     $hznu_recommend_set[$i] = $row['problem_id'];
