@@ -1,6 +1,6 @@
 # HZNUOJ 安装说明 
 
-0. HZNUOJ目前只支持Ubuntu14.04，在更高版本下判题机可能无法正常运行。
+0. HZNUOJ目前只在Ubuntu16.04上跑过，在更高版本下判题机可能无法正常运行。
 
 1. 下载源码
    `git clone https://github.com/wlx65003/HZNUOJ.git`
