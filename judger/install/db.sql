@@ -21,6 +21,15 @@
 CREATE Database jol;
 use jol;
 
+DROP TABLE IF EXISTS `printer_code`;
+CREATE TABLE `printer_code` (
+  `user_id` char(20) NOT NULL,
+  `contest_id` int(11) NOT NULL,
+  `code` text NOT NULL,
+  `in_date` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `compileinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

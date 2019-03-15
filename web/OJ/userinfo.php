@@ -30,6 +30,7 @@ error_reporting(E_ALL);
   $user_mysql=$mysqli->real_escape_string($user);
 
   $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id FROM `users` WHERE `user_id`='$user_mysql'";
+
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
   if ($row_cnt==0){ 
@@ -290,7 +291,6 @@ error_reporting(E_ALL);
   /* 获取HZNUOJ推荐题目的题目编号 start */
   $hznu_recommend_set = array();
   $sql = "SELECT DISTINCT problem_id FROM problem WHERE score<=$dif_score+5 AND score>=$dif_score-5 ORDER BY problem_id";
-  //echo $sql;
   $result = $mysqli->query($sql);
   for ($i=0; $row=$result->fetch_array(); ++$i) {
     $hznu_recommend_set[$i] = $row['problem_id'];
