@@ -7,60 +7,64 @@
 ?>
 <?php include "template/hznu/contest_header.php"; ?>
 <div class="am-container">
-    <h2>Code Submiting History</h2>
-    <hr />
-    <form method="post">
-    	<div class="form-group">
-        <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10"><textarea name="code_print" id="" rows="13" class="kindeditor"></textarea></div>
+  <h2>Code printing service</h2>
+  <hr />
+    <form class="am-form">
+      <div class="am-form-group">
+        <textarea id="code_to_be_print" id="" rows="13" class="kindeditor"></textarea>
       </div>
-    <button type="submit" value="submit" class="btn btn-default">Submit</button>
-	</form> 
+      <button id="submit" value="submit" class="am-btn am-btn-lg am-btn-primary am-btn-block">Submit</button>
+    </form>
+    <h2>History</h2><hr/>
+    <table class="am-table">
+      <thead>
+        <tr>
+          <th>code</th>
+          <th>length</th>
+          <th>date</th>
+          <th>status</th>
+        </tr>
+      </thead>
     <?php
-    $user_id=$mysqli->real_escape_string($_SESSION['user_id']);
-    $contest_id=$mysqli->real_escape_string($_GET['cid']);
-    $sql = "select code,in_date from printer_code where user_id = '$user_id' and contest_id = $contest_id";
-    $result = $mysqli->query ( $sql );
- 	if ($result){
-	 	while ($row=$result->fetch_object()) {
-	 		$code_write = $row->code;
-	 		$code_len = strlen($code_write)."B";
-	 		if(strlen($code_write) >= 150) $code_write = substr($code_write,0,150)."...";
-	 		$code_write = htmlentities($code_write,ENT_QUOTES,"UTF-8");
-
-	 		echo <<<HTML
-	 		<ul class="am-list am-list-static am-list-border">
-		      <li>
-		        <span class="am-badge am-badge-success">$code_len</span> <span class="am-badge">$row->in_date;</span>
-		        
-		        $code_write
-		        </li></ul>
+    foreach ($printed_codes as $row) {
+      $code_write = $row->code;
+      $code_len = strlen($code_write)."B";
+      if(strlen($code_write) >= 30) $code_write = substr($code_write,0,30)."...";
+      $code_write = htmlentities($code_write,ENT_QUOTES,"UTF-8");
+      $status = $row->status == 0 ? "pending" : "printed";
+      echo <<<HTML
+      <tr>
+        <td>$code_write</td>
+        <td>$code_len</td>
+        <td>$row->in_date</td>
+        <td>$status</td>
+      </tr>
 HTML;
-
-	 	}
-	 }
-	 $result->free();
-
-?>
-    
+    }
+    ?>
+    </table>
+  
 </div>
-
-
 
 <?php include "footer.php" ?>
 
-<?php
 
- 
-if(isset($_POST['code_print'])){
-    $user_id=$mysqli->real_escape_string($_SESSION['user_id']);
-    $contest_id=$mysqli->real_escape_string($_GET['cid']);
-    $code=$mysqli->real_escape_string($_POST ['code_print']);
-  //  $spj=($spj);
-    $sql = "INSERT into `printer_code` (`user_id`,`contest_id`,`code`,`in_date`) VALUES('$user_id','$contest_id','$code',NOW())";
-    @$mysqli->query ( $sql ) or die ( $mysqli->error );
- }
-
-?>
-
-
+<script type="text/javascript">
+  $("#submit").click(function(e) {
+    e.preventDefault();
+    var code = $("#code_to_be_print").val();
+    if (code.length <= 3) {
+      alert("code is too short to be printed.");
+      return;
+    }
+    $.post("ajax/printer_code/add.php", {
+      cid: <?php echo $contest_id ?>,
+      code: $("#code_to_be_print").val()
+    }, function(data) {
+      alert(data['msg']);
+      if(data['result']) {
+        location.reload();
+      }
+    }, "json");
+  });
+</script>
