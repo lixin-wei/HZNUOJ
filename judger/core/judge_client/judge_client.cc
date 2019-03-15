@@ -936,7 +936,7 @@ int compile(int lang,char * work_dir) {
 	const char * CP_Y3[] = { "python3", "-m", "py_compile", "Main.py", NULL };
 	const char * CP_PH[] = { "php", "-l", "Main.php", NULL };
 	const char * CP_PL[] = { "perl", "-c", "Main.pl", NULL };
-	const char * CP_CS[] = { "gmcs", "-warn:0", "Main.cs", NULL };
+	const char * CP_CS[] = { "mcs", "-warn:0", "Main.cs", NULL };
 	const char * CP_OC[] = { "gcc", "-o", "Main", "Main.m",
 			"-fconstant-string-class=NSConstantString", "-I",
 			"/usr/include/GNUstep/", "-L", "/usr/lib/GNUstep/Libraries/",

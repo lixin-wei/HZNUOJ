@@ -15,6 +15,12 @@ if(isset($_GET['cid'])){
 	$sql="SELECT user_limit FROM contest WHERE contest_id=$cid";
 	$user_limit=$mysqli->query($sql)->fetch_array()[0];
 
+	$sql = "SELECT user_id FROM contest_excluded_user WHERE contest_id = $cid";
+	$res = $mysqli->query($sql);
+	$is_exclude = array();
+	while ($row = $res->fetch_array()) {
+		$is_exclude[$row['user_id']] = true;
+	}
 	if($user_limit=="Y"){
 		$sql=<<<SQL
 		SELECT
@@ -29,14 +35,6 @@ if(isset($_GET['cid'])){
 		LEFT JOIN team ON solution.user_id = team.user_id
 		WHERE
 			solution.contest_id = $cid
-		AND team.user_id NOT IN (
-			SELECT
-				user_id
-			FROM
-				contest_excluded_user
-			WHERE
-				contest_id = $cid
-		)
 		ORDER BY
 			in_date
 SQL;
@@ -72,6 +70,7 @@ SQL;
 			$json['users']["$id"]=array(
 				"name" => $row['nick'],
 				"college" => "HZNU",
+				"is_exclude" => isset($is_exclude[$row['user_id']])
 			);
 			$vis[$row['user_id']]="$id";
 			$id++;
