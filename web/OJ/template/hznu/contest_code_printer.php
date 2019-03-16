@@ -1,21 +1,20 @@
 <?php
   /**
-   * Need to modify the interface
    * by jnxxhzz
    * @2019.03.15
   **/
 ?>
 <?php include "template/hznu/contest_header.php"; ?>
 <div class="am-container">
+  <hr/>
   <h2>Code printing service</h2>
-  <hr />
     <form class="am-form">
       <div class="am-form-group">
         <textarea id="code_to_be_print" id="" rows="13" class="kindeditor"></textarea>
       </div>
       <button id="submit" value="submit" class="am-btn am-btn-lg am-btn-primary am-btn-block">Submit</button>
     </form>
-    <h2>History</h2><hr/>
+    <h2>History</h2>
     <table class="am-table">
       <thead>
         <tr>
