@@ -5,21 +5,60 @@ if (!HAS_PRI("inner_function")){
 	exit(1);
 }
 ?>
-<?php function image_save_file($filepath ,$base64_encoded_img){
-	$fp=fopen($filepath ,"wb");
-	fwrite($fp,base64_decode($base64_encoded_img));
-	fclose($fp);
-}
+<?php 
+	function image_save_file($filepath ,$base64_encoded_img){
+		$fp=fopen($filepath ,"wb");
+		fwrite($fp,base64_decode($base64_encoded_img));
+		fclose($fp);
+	}
+require_once ("../include/db_info.inc.php");
 require_once ("../include/problem.php");
+
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
+
+
+function import_addSample($id,$sample_input,$sample_output,$spj){
+	
+	global $mysqli;
+
+    $sample_input=preg_replace("/(\r\n)/","\n",$sample_input);
+    $sample_output=preg_replace("/(\r\n)/","\n",$sample_output);
+    // if($sample_input=="" && $sample_output=="") return "Error";
+ 
+    
+    $sample_input=$mysqli->real_escape_string($sample_input);
+    $sample_output=$mysqli->real_escape_string($sample_output);
+    $sql=<<<SQL
+		INSERT INTO problem_samples (
+			problem_id,
+			sample_id,
+			input,
+			output,
+			show_after
+		)
+		VALUES
+		($id, 0, "$sample_input", "$sample_output", "0")
+SQL;
+    echo "$sql";
+    $mysqli->query($sql);
+	
+	echo "Sample data file Updated!<br>";
+}
+
+
+
+
+
 
 function submitSolution($pid,$solution,$language)
 {
-	
-	require ("../include/db_info.inc.php");
+	global $mysqli;
 	if(isset($OJ_LANG)){
-		require("../lang/$OJ_LANG.php");
+		require_once("../lang/$OJ_LANG.php");
 	}	
-	require ("../include/const.inc.php");
+	require_once ("../include/const.inc.php");
 
 	for($i=0;$i<count($language_name);$i++){
 		//echo "$language=$language_name[$i]=".($language==$language_name[$i]);
@@ -55,7 +94,8 @@ function getAttribute($Node, $TagName,$attribute) {
 	return $Node->children()->$TagName->attributes()->$attribute;
 }
 function hasProblem($title){
-	require("../include/db_info.inc.php");
+	// require_once("../include/db_info.inc.php");
+	global $mysqli;
 	$md5=md5($title);
 	$sql="select 1 from problem where md5(title)='$md5'";  
 	$result=$mysqli->query ( $sql );
@@ -70,10 +110,10 @@ if ($_FILES ["fps"] ["error"] > 0) {
 	echo "Error: " . $_FILES ["fps"] ["error"] . "File size is too big, change in PHP.ini<br />";
 } else {
 	$tempfile = $_FILES ["fps"] ["tmp_name"];
-//	echo "Upload: " . $_FILES ["fps"] ["name"] . "<br />";
-//	echo "Type: " . $_FILES ["fps"] ["type"] . "<br />";
-//	echo "Size: " . ($_FILES ["fps"] ["size"] / 1024) . " Kb<br />";
-//	echo "Stored in: " . $tempfile;
+	echo "Upload: " . $_FILES ["fps"] ["name"] . "<br />";
+	echo "Type: " . $_FILES ["fps"] ["type"] . "<br />";
+	echo "Size: " . ($_FILES ["fps"] ["size"] / 1024) . " Kb<br />";
+	echo "Stored in: " . $tempfile;
 	
 	//$xmlDoc = new DOMDocument ();
 	//$xmlDoc->load ( $tempfile );
@@ -82,7 +122,7 @@ if ($_FILES ["fps"] ["error"] > 0) {
 	$searchNodes = $xmlDoc->xpath ( "/fps/item" );
 	$spid=0;
 	foreach($searchNodes as $searchNode) {
-		//echo $searchNode->title,"\n";
+		echo $searchNode->title,"\n";
 
 		$title =$searchNode->title;
 		
@@ -110,12 +150,17 @@ if ($_FILES ["fps"] ["error"] > 0) {
 		$spjcode = getValue ( $searchNode, 'spj' );
 		$spj = trim($spjcode)?1:0;
 		if(!hasProblem($title )){
-			$pid=addproblem ( $title, $time_limit, $memory_limit, $description, $input, $output, $sample_input, $sample_output, $hint, $source, $spj, $OJ_DATA );
+			$pid=addproblem ("default",$title, $time_limit, $memory_limit, $description, $input, $output, $hint,"", $source, $spj, $OJ_DATA );
 			if($spid==0) $spid=$pid;
+			echo $pid;
 			$basedir = "$OJ_DATA/$pid";
 			mkdir ( $basedir );
+			
+			import_addSample($pid,$sample_input,$sample_output,$spj);
+			
 			if(strlen($sample_input)) mkdata($pid,"sample.in",$sample_input,$OJ_DATA);
 			if(strlen($sample_output)) mkdata($pid,"sample.out",$sample_output,$OJ_DATA);
+        	
         //  	if(!isset($OJ_SAE)||!$OJ_SAE){
 				$testinputs=$searchNode->children()->test_input;
 				$testno=0;
