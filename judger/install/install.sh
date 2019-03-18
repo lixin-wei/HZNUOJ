@@ -12,7 +12,7 @@ DBUSER=root
 DBPASS=root
 
 #try install tools
-sudo apt-get install make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli mono-mcs subversion
+sudo apt-get install make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli php-xml mono-mcs subversion
 sudo /etc/init.d/mysql start
 
 #set up database
