@@ -21,14 +21,29 @@
 CREATE Database jol;
 use jol;
 
+DROP TABLE IF EXISTS `contest_discuss`;
+CREATE TABLE `contest_discuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL DEFAULT '',
+  `contest_id` int(11) NOT NULL,
+  `problem_id` int(11) DEFAULT NULL,
+  `content` text,
+  `reply` text,
+  `in_date` datetime DEFAULT NULL,
+  `reply_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `printer_code`;
 CREATE TABLE `printer_code` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` char(20) NOT NULL,
   `contest_id` int(11) NOT NULL,
   `code` text NOT NULL,
   `in_date` datetime DEFAULT NULL,
-  `status` int(11) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `status` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `compileinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
