@@ -68,7 +68,7 @@ SQL;
 		if(isset($vis[$row['user_id']]));
 		else{
 			$json['users']["$id"]=array(
-				"name" => $row['nick'],
+				"name" => substr($row['nick'], 6),
 				"college" => "HZNU",
 				"is_exclude" => isset($is_exclude[$row['user_id']])
 			);
