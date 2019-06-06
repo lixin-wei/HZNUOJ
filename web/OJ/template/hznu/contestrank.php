@@ -280,7 +280,7 @@
     var c_width=$("#container").outerWidth();
     var else_width=$("#rank").outerWidth()+$("#user").outerWidth()+$("#solved").outerWidth()+$("#penalty").outerWidth();
     var left=c_width-p_cnt*p_width-else_width;
-    left-=20;
+    left-=100;
     $(".nick").css({'width':left});
   }
   $(document).ready(function(){
