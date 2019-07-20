@@ -273,7 +273,7 @@
       //echo $row['result'];
 
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
-          (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
+          (is_numeric($row['contest_id']) && $open_source) || // solution在比赛中，且开放了源代码查看
           is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
           !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")
         ) { // 可以查看代码的情况

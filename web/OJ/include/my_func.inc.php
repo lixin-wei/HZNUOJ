@@ -218,7 +218,7 @@ function canSeeSource($sid) {
             $open_source = $row->open_source=="Y"?1:0; // 默认值为0
             $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
             $result->free();
-            return  ( (!is_running(intval($cid))  && $open_source) || // 比赛已经结束了且开放源代码查看
+            return  ( $open_source || // 比赛已经结束了且开放源代码查看
                 HAS_PRI("see_source_in_contest")
             );
         } else { // 该代码不是在比赛中的
