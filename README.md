@@ -103,8 +103,10 @@ docker run -it --rm -p 90:80 hznuoj:latest
 
 出题手册见https://www.yuque.com/weilixinlianxin/zcf10d/yfk05w
 
-# 求赞
+# 贡献代码/Bug反馈
 
-HZNUOJ目前主要只有我一个人在开发，还有许多不友好的功能和小BUG，只能抽时间慢慢改了，欢迎大家提交pull request帮忙一起完善HZNUOJ。
+HZNUOJ目前开发人手很有限，只有已经上班的我和训练繁忙的一些学弟，有许多已知的不友好的功能和小BUG，只能抽时间慢慢改了。
+
+同时也欢迎大家反馈[issue](https://github.com/wlx65003/HZNUOJ/issues)/提交[pull request](https://github.com/wlx65003/HZNUOJ/pulls)帮忙一起完善HZNUOJ。
 
 最后，如果您觉得HZNUOJ好用，请给我一个Star，这将是对我莫大的帮助与鼓励，十分感谢！
