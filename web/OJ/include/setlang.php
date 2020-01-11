@@ -8,11 +8,11 @@
 
 <?php 
   if (isset($OJ_LANG)) {
-    require_once("./lang/$OJ_LANG.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/OJ/lang/$OJ_LANG.php");
     if (file_exists("./faqs.$OJ_LANG.php")) {
       $OJ_FAQ_LINK = "./faqs.$OJ_LANG.php";
     }
   } else {
-    require_once("./lang/en.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/OJ/lang/en.php");
   }
 ?>
