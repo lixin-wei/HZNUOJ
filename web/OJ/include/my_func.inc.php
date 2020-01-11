@@ -322,7 +322,8 @@ function get_order($group_name){
 function get_group($uid){
     global $mysqli;
     if($uid=="")$uid=$_SESSION['user_id'];
-    $sql="SELECT rightstr FROM privilege WHERE user_id='$uid'";
+    $sql="SELECT a.rightstr, b.group_order FROM privilege a, privilege_groups b 
+	      WHERE a.rightstr = b.group_name and user_id='$uid' order by b.group_order";
     return ($mysqli->query($sql)->fetch_array()[0]);
 }
 ?>
