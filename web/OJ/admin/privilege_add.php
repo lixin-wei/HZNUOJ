@@ -23,19 +23,29 @@
       require_once("error.php");
       exit(1);
     }
-    $sql="INSERT INTO `privilege` (user_id,rightstr) VALUES('$user_id','$rightstr')";
-    $mysqli->query($sql);
-    if ($mysqli->affected_rows==1) echo "$user_id $rightstr added!";
-    else echo "No such user!";
+	$sql = "SELECT user_id FROM users WHERE defunct='N' and user_id='$user_id' ";
+    $result = $mysqli->query($sql);
+	if($result->num_rows == 0){
+	   echo "用户名".$user_id."不存在或未激活！";
+	} else {
+		$sql = "SELECT rightstr FROM `privilege` WHERE user_id='$user_id' and rightstr='$rightstr'";
+        $result = $mysqli->query($sql);
+		if($result->num_rows == 0){
+			$sql="INSERT INTO `privilege` (user_id,rightstr) VALUES('$user_id','$rightstr')";
+			$mysqli->query($sql);
+			if ($mysqli->affected_rows==1) echo "$user_id $rightstr added!";
+		} else echo "$user_id $rightstr has added!";
+	}
   }
 ?>
-<title>Add Privilege For User</title>
-<h1>Add Privilege For User</h1><hr/>
+  <title><?php echo $html_title.$MSG_ADD.$MSG_PRIVILEGE ?></title>
+  <h1><?php echo $MSG_ADD.$MSG_PRIVILEGE ?></h1>
+  <h5>&lt;<?php echo $MSG_HELP_ADD_PRIVILEGE ?>&gt;</h5>
+  <hr/>
 <form class="form-inline" method=post>
   <?php require("../include/set_post_key.php");?>
-  <b>Add privilege for User:</b><br />
-  User: <input class="form-control" type=text size=10 name="user_id"><br />
-  Privilege: 
+  <p><?php echo $MSG_USER_ID?> : <input class="form-control" type=text size=10 name="user_id">&nbsp;&nbsp;
+  <?php echo $MSG_PRIVILEGE ?> : 
   <select class="selectpicker" name="rightstr">
     <?php
       $res=$mysqli->query("SELECT * FROM privilege_groups");
@@ -47,7 +57,7 @@
     ?>
   </select><br />
   <input type='hidden' name='do' value='do'>
-  <input class="btn btn-default" type=submit value='Add'>
+  <input class="btn btn-default" type=submit value='<?php echo $MSG_ADD ?>'>
 </form>
 
 <!-- <form method=post>
