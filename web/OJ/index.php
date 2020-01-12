@@ -23,6 +23,7 @@ $sql = <<<SQL
   SELECT
     news_id,
     title,
+	`time`,
     importance
   FROM
     `news`
@@ -34,9 +35,9 @@ $sql = <<<SQL
 SQL;
 
 $result = $mysqli->query($sql);
-for (; $row=$result->fetch_array(); ++$i) {
+for (; $row=$result->fetch_array(); ++$i) {	
   $news_id[$i]=$row['news_id'];
-  $news_title[$i] = $row['title'];
+  $news_title[$i] = $row['title']."&nbsp;&nbsp;&nbsp;&nbsp;[".date("Y-m-d",strtotime($row['time']))."]";
   if($row['importance']==10)$news_title[$i].="&nbsp;&nbsp;&nbsp;&nbsp;<b>[置顶]</b>";
   $news_title[$i].="&nbsp&nbsp<i id='news-load-icon-{$row['news_id']}' style='display:none;' class='am-icon-spinner am-icon-pulse'></i>";
   $news_importance[$i] = $row['importance'];
