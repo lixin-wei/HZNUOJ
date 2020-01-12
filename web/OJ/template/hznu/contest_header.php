@@ -38,7 +38,7 @@ if(isset($_GET['cid'])){
   $sql="SELECT title FROM contest WHERE contest_id='$cid'";
   $res=$mysqli->query($sql);
   $contest_title=$res->fetch_array()[0];
-  $title=$contest_title;
+  $title=$contest_title."<".$title.">";
 }
 ?>
 <!doctype html>
@@ -56,6 +56,19 @@ if(isset($_GET['cid'])){
     <link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
     <!-- <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/> -->
     <style type="text/css">
+	 .well{
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    /*font-size: 1.3rem;*/
+    line-height: 1.6;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #555;
+    background-color: #f8f8f8;
+    border: 1px solid #dedede;
+    border-radius: 0;
+ }
       .blog-footer {
         padding: 10px 0;
         text-align: center;
@@ -86,12 +99,13 @@ if(isset($_GET['cid'])){
   <div class="am-container">
     <div class="am-collapse am-topbar-collapse" id="collapse-head">
       <ul class="am-nav am-nav-pills am-topbar-nav">
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="index.php"){echo "class='am-active'";} ?>><a class="am-icon-chevron-left" href="/OJ/contest.php"> Back</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php"){echo "class='am-active'";} ?>><a href='./contest.php?cid=<?php echo $cid?>'>Overview</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="status.php"){echo "class='am-active'";} ?>><a href='./status.php?cid=<?php echo $cid?>'>Status</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank.php"){echo "class='am-active'";} ?>><a href='./contestrank.php?cid=<?php echo $cid?>'>Standings</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_code_printer.php"){echo "class='am-active'";} ?>><a href='./contest_code_printer.php?cid=<?php echo $cid?>'>Printer</a></li>
-        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_discuss.php"){echo "class='am-active'";} ?>><a href='./contest_discuss.php?cid=<?php echo $cid?>'>Discuss</a></li>      
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="index.php"){echo "class='am-active'";} ?>><a class="am-icon-chevron-left" href="/OJ/contest.php"> <?php echo $BACK_TO_CONTEST ?></a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest.php" || basename($_SERVER['SCRIPT_NAME'])=="problem.php"){echo "class='am-active'";} ?>><a href='./contest.php?cid=<?php echo $cid?>'><?php echo $MSG_PROBLEM ?></a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="status.php"){echo "class='am-active'";} ?>><a href='./status.php?cid=<?php echo $cid?>'><?php echo $MSG_STATUS ?></a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank.php"){echo "class='am-active'";} ?>><a href='./contestrank.php?cid=<?php echo $cid?>'><?php echo $MSG_RANKLIST ?></a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="conteststatistics.php"){echo "class='am-active'";} ?>><a href='./conteststatistics.php?cid=<?php echo $cid?>'><?php echo $MSG_STATISTICS ?></a></li>
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_code_printer.php"){echo "class='am-active'";} ?>><a href='./contest_code_printer.php?cid=<?php echo $cid?>'>Printer</a></li>     
+        <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_discuss.php"){echo "class='am-active'";} ?>><a href='./contest_discuss.php?cid=<?php echo $cid?>'>Discuss</a></li>   
       </ul>
         <!-- 用户部分 start -->
         <?php
@@ -100,10 +114,10 @@ echo <<<BOT
           <div class="am-topbar-right">
             <ul class="am-nav am-nav-pills am-topbar-nav">
               <li class="am-dropdown" data-am-dropdown>
-                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">Login<span class="am-icon-caret-down"></span></a>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">$MSG_LOGIN<span class="am-icon-caret-down"></span></a>
                   <ul class="am-dropdown-content">
-                    <li><a href="loginpage.php"><span class="am-icon-user"></span> Login</a></li>
-                    <li><a href="registerpage.php"><span class="am-icon-pencil"></span> Register</a></li>
+                    <li><a href="loginpage.php"><span class="am-icon-user"></span> $MSG_LOGIN</a></li>
+                    <li><a href="registerpage.php"><span class="am-icon-pencil"></span> $MSG_REGISTER</a></li>
                   </ul>
               </li>
             </ul>
@@ -117,16 +131,19 @@ echo <<<BOT
                 <li class="am-dropdown" data-am-dropdown>
                   <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'><span class='am-icon-user'></span> {$_SESSION['user_id']}<span class='am-icon-caret-down'></span></a>
                     <ul class="am-dropdown-content">
-                      <li><a href="modifypage.php"><span class="am-icon-eraser"></span> Modify Info</a></li>
-                      <li><a href="userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span> User Info</a></li>
+                      <li><a href="modifypage.php"><span class="am-icon-eraser"></span> $MSG_MODIFY_USER</a></li>
+                      <li><a href="userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span> $MSG_USERINFO</a></li>
                       <!-- <li><a href="mail.php"><span class="am-icon-comments"></span> Mail</a></li> -->
-                      <li><a href="status.php?user_id=$user_session"><span class="am-icon-leaf"></span> Recent</a></li>
-                      <li><a href="logout.php"><span class="am-icon-reply"></span> Logout</a></li>
+                      <li><a href="status.php?user_id=$user_session"><span class="am-icon-leaf"></span> $MSG_MY_SUBMISSIONS</a></li>
+					  <li><a href="/OJ/contest.php?my"><span class="am-icon-leaf"></span> $MSG_MY_CONTESTS </a></li> 
 BOT;
-
+          if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
+          else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> $MSG_SHOWTAG</a></li>";
+		  
+		  echo "<li><a href='/OJ/logout.php'><span class='am-icon-reply'></span> $MSG_LOGOUT</a></li>";
           if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
-              <li><a href="admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
+              <li><a href="admin/index.php"><span class="am-icon-cog"></span> $MSG_ADMIN</a></li>
                       </ul>
                   </li>
                 </ul>
@@ -155,34 +172,34 @@ BOT;
 <div class="am-container" style="margin-top: 20px;">
   <div class="am-g" style="padding-bottom: 7px;">
     <div class="am-u-sm-3">
-      <span class="text-bold">Start: </span>
-      <span><?php echo date("M, d, o H:i:s",$contest_time[0]) ?></span>
+      <span class="text-bold"><?php echo $MSG_StartTime ?>: </span>
+      <span><?php echo date("Y-m-d, H:i:s",$contest_time[0]) ?></span>
     </div>
     <div class="am-u-sm-6 am-text-center">
       <span class="text-bold" style="font-size: large;"><?php echo $contest_title ?></span>
     </div>
     <div class="am-u-sm-3 am-text-right">
-      <span class="text-bold">End: </span>
-      <span><?php echo date("M, d, o H:i:s",$contest_time[1]) ?></span>
+      <span class="text-bold"><?php echo $MSG_EndTime ?>: </span>
+      <span><?php echo date("Y-m-d, H:i:s",$contest_time[1]) ?></span>
     </div>
   </div>
 
   <div class="am-progress am-progress-striped am-active" id="contest-bar" style="margin-bottom: 0;">
     <div class="am-progress-bar <?php echo $bar_color ?>" style="width: <?php echo $bar_percent ?>%" id="contest-bar-progress">
-      <?php if (!$is_started): ?>
-        Contest hasn't started now!
-      <?php endif ?>
+      <?php if (!$is_started)
+         echo $MSG_notStart;
+     ?>
     </div>
   </div>
 
   <?php if ($is_started): ?>
   <div class="am-g">
     <div class="am-u-sm-6">
-      <span class="text-bold">Time elapsed: </span>
+      <span class="text-bold"><?php echo $MSG_TimeElapsed ?>: </span>
       <span id="time_elapsed"></span>
     </div>
     <div class="am-u-sm-6 am-text-right">
-      <span class="text-bold">Time remaining: </span>
+      <span class="text-bold"><?php echo $MSG_TimeRemaining ?>: </span>
       <span id="time_remaining"></span>
     </div>
   </div>
@@ -191,7 +208,7 @@ BOT;
         echo <<<HTML
         <div align="center" style="margin-top: 5px;">
           <span class="am-badge am-badge-success am-text-lg">
-            <a href="/OJ/admin/contest_edit.php?cid={$_GET['cid']}" style="color: white;">Edit</a>
+            <a href="/OJ/admin/contest_edit.php?cid={$_GET['cid']}" style="color: white;">$MSG_EDIT</a>
           </span>
         </div>
 HTML;
