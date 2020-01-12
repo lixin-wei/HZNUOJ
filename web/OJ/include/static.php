@@ -58,4 +58,5 @@
 
   static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
   static  $OJ_REGISTER=true; //允许注册新用户
+  static  $OJ_NEED_CLASSMODE=true;//班级模式，包括显示班级、学号、真名
 ?>
