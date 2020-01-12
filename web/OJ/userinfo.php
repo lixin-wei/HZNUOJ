@@ -17,8 +17,9 @@ error_reporting(E_ALL);
   require_once('./include/setlang.php');
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
-  require_once "include/classList.inc.php";
-
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+  	require_once("./include/classList.inc.php");
+  }
   // check user
   $user=$_GET['user'];
   if (!is_valid_user_name($user)){
@@ -45,7 +46,8 @@ error_reporting(E_ALL);
   $nick=$row->nick;
   $real_name = $row->real_name;
   $stu_id=$row->stu_id;
-  $class = $row->class;
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+     $class = $row->class;
             if ($class=="null") $class = "其它";
             if ($class=="cs151") $class = "计算机151";
             if ($class=="cs152") $class = "计算机152";
@@ -61,6 +63,7 @@ error_reporting(E_ALL);
             if ($class=="se141") $class = "软件工程141";
             if ($class=="se142") $class = "软件工程142";
             if ($class=="iot141") $class = "物联网141";
+  }
   $result->free();
  
   // 获取解题数大于10的用户数量存入user_cnt_divisor

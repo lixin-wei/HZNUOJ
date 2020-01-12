@@ -9,7 +9,7 @@
   **/
 ?>
 
-<?php $title="User Info";?>
+<?php $title=$MSG_USERINFO;?>
 <?php
 require_once("header.php");
 ?>
@@ -20,43 +20,46 @@ require_once("header.php");
 </style>
 <div class="am-container" style="margin-top:40px;">
   <!-- userinfo上半部分 start -->
-  <h1>User Statics</h1><hr>
+  <h1><?php echo $MSG_USERINFO.$MSG_STATISTICS ?></h1><hr>
   <div class='am-g'>
     <!-- 左侧个人信息表格 start -->`
     <div class='am-u-md-4'>
+    <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
       <form action="modify.php" method="post">
-        <table class="am-table am-table-striped am-table-compact am-text-center">
+    <?php } ?>  
+        <table class="am-table am-table-striped am-table-compact">
           <tbody>
-            <tr><td class="first-col">User ID</td><td><?php echo htmlentities($user)?></td></tr>
-            <tr><td class="first-col">Nick Name</td><td><?php echo htmlentities($nick)?></td></tr>
-            <tr><td class="first-col">Rank</td><td><?php echo $Rank?></td></tr>
-            <tr><td class="first-col">Douqi</td><td><?php echo round($strength)?></td></tr>
-            <tr><td class="first-col">Level</td><td><?php echo $level?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_USER_ID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($user)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($nick)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_RANK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $Rank?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_STRENGTH ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo round($strength)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_LEVEL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $level?></td></tr>
             <tr>
-              <td class="first-col">Total AC</td>
+              <th class="first-col am-text-right"><?php echo $MSG_SOLVED ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
               <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
             </tr>
-            <tr><td class="first-col">School</td><td><?php echo htmlentities($school)?></td></tr>
-            <tr><td class="first-col">Email</td><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
-            <?php if (HAS_PRI("edit_user_profile")): ?>
-              <?php require_once('./include/set_post_key.php');?>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($school)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
+            <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+              if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
               <input type="hidden" name="admin_mode" value="1">
               <input type="hidden" name="user_id" value="<?php echo htmlentities($user)?>">
-              <tr><td colspan="2" class="am-danger">----The followings are  admin only----</td></tr>
+              <tr><td colspan="2" class="am-danger  am-text-center">----The followings are  admin only----</td></tr>
               <tr>
-                <td class="first-col" style="padding-top: 10px;">Student ID</td>
+                <th class="first-col am-text-right" style="padding-top: 10px;">Student ID&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <input class="am-form-field" name="stu_id" type="text" value="<?php echo htmlentities($stu_id)?>">
                 </td>
               </tr>
               <tr>
-                <td class="first-col" style="padding-top: 10px;">Real Name</td>
+                <th class="first-col am-text-right" style="padding-top: 10px;">Real Name&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <input class="am-form-field" name="real_name" type="text" value="<?php echo htmlentities($real_name)?>">
                 </td>
               </tr>
               <tr>
-                <td class="first-col" style="padding-top: 10px;">Class</td>
+                <th class="first-col am-text-right" style="padding-top: 10px;">Class&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'100%'}">
                     <?php foreach ($classList as $c):?>
@@ -65,20 +68,23 @@ require_once("header.php");
                   </select>
                 </td>
               </tr>
-            <?php elseif (HAS_PRI("see_hidden_user_info")): ?>
-              <tr><td colspan="2" class="am-danger">----The followings are  admin only----</td></tr>
-              <tr><td class="first-col">Student ID</td><td><?php echo htmlentities($stu_id)?></td></tr>
-              <tr><td class="first-col">Real Name</td><td><?php echo htmlentities($real_name)?></td></tr>
-              <tr><td class="first-col">Class</td><td><?php echo htmlentities($class)?></td></tr>
-            <?php endif ?>
+            <?php  }elseif (HAS_PRI("see_hidden_user_info")){ ?>
+              <tr><td colspan="2" class="am-danger  am-text-center">----The followings are  admin only----</td></tr>
+              <tr><th class="first-col am-text-right">Student ID&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($stu_id)?></td></tr>
+              <tr><th class="first-col am-text-right">Real Name&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($real_name)?></td></tr>
+              <tr><th class="first-col am-text-right">Class&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($class)?></td></tr>
+            <?php } }?>
           </tbody>
         </table>
-        <?php if (HAS_PRI("edit_user_profile")): ?>
+        <?php 
+		if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+		if (HAS_PRI("edit_user_profile")){ ?>
           <div class="am-text-center">
-            <button class="am-btn am-btn-secondary">Submit</button>
+            <button class="am-btn am-btn-secondary"><?php echo $MSG_SUBMIT ?></button>
           </div>
-        <?php endif?>
+        <?php }	?>
       </form>
+      <?php }?>
     </div>
     <!-- 左侧个人信息表格 end -->
      
@@ -99,12 +105,12 @@ require_once("header.php");
   <div class="am-g">
     <div class="am-u-md-12">
       <!-- userinfo下半部分 start -->
-      <?php if ($AC): ?>
+      <?php //if ($AC): ?>
         <div class="am-panel am-panel-default">
-          <div class="am-panel-hd">HZNUOJ <?php echo "($AC)" ?>:</div>
+          <div class="am-panel-hd"> <strong><?php echo $OJ_NAME."($AC)" ?>:</strong></div>
           <div class="am-panel-bd">
           <?php
-            echo "<b>Solved:</b><br/>";
+            echo "<b>$MSG_SOLVED:</b><br/>";
             $sql="SELECT set_name,set_name_show FROM problemset";
             $res=$mysqli->query($sql);
             echo "<div style='margin-left: 10px;'>";
@@ -124,7 +130,7 @@ require_once("header.php");
             }
             echo "</div>";
             echo "<br />";
-            echo "<div><b>Tried:</b></div>";
+            echo "<div><b>$MSG_Tried:</b></div>";
             foreach($hznu_unsolved_set as $i) {
               if ($i != 0) echo "<a href=problem.php?id=".$i."> ".$i." </a>&nbsp;";
             }
@@ -146,7 +152,7 @@ require_once("header.php");
             }
             //solution video END
             if(count($hznu_recommend_set)){
-              echo "<div><b>Recommended:</b></div>";
+              echo "<div><b>$MSG_Recommended:</b></div>";
               foreach($hznu_recommend_set as $i) {
                 echo "<a href=problem.php?id=".$i."> ".$i." </a>&nbsp;";
               }
@@ -154,7 +160,7 @@ require_once("header.php");
           ?>
           </div>
         </div>
-      <?php endif ?>
+      <?php //endif ?>
       <?php if ($CF): ?>
         <div class="am-panel am-panel-default">
           <div class="am-panel-hd">CodeForces <?php echo "($CF)" ?>:</div>
@@ -278,7 +284,7 @@ chart.setOption(option);
 var chart_sub=echarts.init(document.getElementById("chart-sub"));
 option = {
     title : {
-        text: "Submissions"
+        text: "<?php echo $MSG_SUBMISSION?>"
     },
     tooltip : {
         trigger: 'item',
