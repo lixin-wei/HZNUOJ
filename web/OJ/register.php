@@ -9,6 +9,7 @@
 <?php
   require_once "include/check_post_key.php";
   require_once("./include/db_info.inc.php");
+  if(isset($OJ_REGISTER)&&!$OJ_REGISTER) exit(0);
   require_once("./include/my_func.inc.php");
   // OJ 用户名合法性判断
   $err_str="";

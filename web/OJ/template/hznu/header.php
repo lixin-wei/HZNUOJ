@@ -50,6 +50,19 @@
     <link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
     <!-- <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/> -->
     <style type="text/css">
+	   .well{
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    /*font-size: 1.3rem;*/
+    line-height: 1.6;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #555;
+    background-color: #f8f8f8;
+    border: 1px solid #dedede;
+    border-radius: 0;
+ }
       .blog-footer {
         padding: 10px 0;
         text-align: center;
@@ -77,7 +90,7 @@
     </button>
     <div class="am-container" >
       <h1 class="am-topbar-brand">
-        <a href="/OJ/index.php">HZNUOJ</a>
+        <a href="/OJ/index.php"><?php echo $OJ_NAME ?></a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
@@ -85,11 +98,29 @@
           <!-- ProblemSet部分 start -->
           <li <?php
           $page_name=basename($_SERVER['SCRIPT_NAME']);
-          if($page_name=="problemset.php" || $page_name=="status.php" || $page_name=="ranklist.php" || $page_name=="problem.php") {
+          if($page_name=="problemset.php" || $page_name=="problem.php") {
             echo "class='am-active'";
           }
-          ?>><a href="/OJ/problemset.php">ProblemSet</a></li>
+          ?>><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
           <!-- ProblemSet部分 end -->
+          
+          <!-- status部分 start -->
+          <li <?php
+          $page_name=basename($_SERVER['SCRIPT_NAME']);
+          if($page_name=="status.php") {
+            echo "class='am-active'";
+          }
+          ?>><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
+          <!-- status部分 end -->
+          
+          <!-- ranklist部分 start -->
+          <li <?php
+          $page_name=basename($_SERVER['SCRIPT_NAME']);
+          if($page_name=="ranklist.php") {
+            echo "class='am-active'";
+          }
+          ?>><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
+          <!-- ranklist部分 end -->
           
           <!-- Contest部分 start -->
           <li <?php
@@ -97,40 +128,41 @@
           if($page_name=="contest.php" || $page_name=="recent-contest.php") {
               echo "class='am-active'";
           }
-          ?>><a href="/OJ/contest.php">Contest</a></li>
+          ?>><a href="/OJ/contest.php"><?php echo $MSG_CONTEST ?></a></li>
           <!-- Contest部分 end -->
 
-          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){echo "class='am-active'";} ?>><a href="/OJ/faqs.php">F.A.Q</a></li>
-  
+          <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){
+			  echo "class='am-active'";}
+	      ?>><a href="/OJ/faqs.php"><?php echo $MSG_FAQ ?></a></li>   
+         <?php /*  
           <!-- Others Begin -->
-          <li class="am-dropdown" data-am-dropdown>
+          <!--<li class="am-dropdown" data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content">
               <li><a href="/OJ/c_course.php">Programming Fundamentals</a></li>
               <li><a href="/OJ/donation.php">Donation</a></li>
               <li><a href="/forum/">Forum</a></li>
             </ul>
-          </li>
+          </li>-->
           <!-- Others End -->
-
-          <!-- <li><a href="/OJ/tools.php">Tools</a></li> -->
+           <!--<li><a href="/OJ/tools.php">Tools</a></li> -->
+		   */ ?>
         </ul>
 
         <!-- 用户部分 start -->
         <?php
         if (!isset($_SESSION['user_id'])){
+			if(!isset($OJ_REGISTER)|| $OJ_REGISTER){					 				
+                $reg_link = "<li><a href='/OJ/registerpage.php'><span class='am-icon-pencil'></span> $MSG_REGISTER </a></li>";
+			}
 echo <<<BOT
           <div class="am-topbar-right">
             <ul class="am-nav am-nav-pills am-topbar-nav">
               <li class="am-dropdown" data-am-dropdown>
-                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">Login <span class="am-icon-caret-down"></span></a>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;"> $MSG_LOGIN<span class="am-icon-caret-down"></span></a>
                   <ul class="am-dropdown-content">
-                    <li><a href="/OJ/loginpage.php"><span class="am-icon-user"></span> Login</a></li>
-                    <li><a href="/OJ/registerpage.php"><span class="am-icon-pencil"></span> Register</a></li>
-BOT;
-                  if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
-                  else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
-echo <<<BOT
+                    <li><a href="/OJ/loginpage.php"><span class="am-icon-user"></span> $MSG_LOGIN </a></li>	
+                    $reg_link
                   </ul>
               </li>
             </ul>
@@ -147,19 +179,19 @@ echo <<<BOT
 BOT;
           if (!isset($_SESSION['contest_id'])) {
 echo <<<BOT
-                    <li><a href="/OJ/modifypage.php"><span class="am-icon-eraser"></span> Modify Info</a></li>
-                    <li><a href="/OJ/userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span> User Info</a></li>
+                    <li><a href="/OJ/modifypage.php"><span class="am-icon-eraser"></span> $MSG_MODIFY_USER</a></li>
+                    <li><a href="/OJ/userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span>  $MSG_USERINFO </a></li>
                     <!-- <li><a href="/OJ/mail.php"><span class="am-icon-comments"></span> Mail</a></li> -->
-                    <li><a href="/OJ/status.php?user_id=$user_session"><span class="am-icon-leaf"></span> Recent</a></li>                
+                    <li><a href="/OJ/status.php?user_id=$user_session"><span class="am-icon-leaf"></span> $MSG_MY_SUBMISSIONS </a></li>            
 BOT;
           }
-          if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> Hide Tag</a></li>";
-          else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> Show Tag</a></li>";
-          echo "<li><a href='/OJ/logout.php'><span class='am-icon-reply'></span> Logout</a></li>";
+          if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
+          else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> $MSG_SHOWTAG</a></li>";
+          echo "<li><a href='/OJ/logout.php'><span class='am-icon-reply'></span> $MSG_LOGOUT</a></li>";
 
           if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
-              <li><a href="/OJ/admin/index.php"><span class="am-icon-cog"></span> Admin</a></li>
+              <li><a href="/OJ/admin/index.php"><span class="am-icon-cog"></span> $MSG_ADMIN </a></li>
                       </ul>
                   </li>
                 </ul>

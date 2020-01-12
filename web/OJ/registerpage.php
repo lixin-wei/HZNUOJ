@@ -5,6 +5,7 @@
 	require_once('./include/cache_start.php');
     require_once('./include/db_info.inc.php');
 	require_once('./include/setlang.php');
+	if(isset($OJ_REGISTER)&&!$OJ_REGISTER) exit(0);
 	require_once('./include/classList.inc.php');
 	$view_title= "Welcome To Online Judge";
 	
