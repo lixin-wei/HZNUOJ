@@ -55,4 +55,6 @@
   static $SMTP_SERVER_PORT = 25;
   static $SMTP_USER = "forgot@hsacm.com";
   static $SMTP_PASS = "hznuojForgot123";
+
+  static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
 ?>
