@@ -167,7 +167,11 @@ error_reporting(E_ALL);
   $result = $mysqli->query($sql);
   $row = $result->fetch_array();
   $max_solved = intval($row[0]);
-  $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
+  if($max_solved==0){
+    $solved_score = 0;
+  } else {
+      $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
+  }
   $result->free();
 
   // 计算平均难度分  
