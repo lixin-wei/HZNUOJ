@@ -57,4 +57,5 @@
   static $SMTP_PASS = "hznuojForgot123";
 
   static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
+  static  $OJ_REGISTER=true; //允许注册新用户
 ?>
