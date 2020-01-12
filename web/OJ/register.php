@@ -19,9 +19,14 @@
   $nick=$mysqli->real_escape_string(trim($_POST['nick']));
   $email=$mysqli->real_escape_string(trim($_POST['email']));
   $school=$mysqli->real_escape_string(trim($_POST['school']));
+  $class="其它";
+  $stu_id="";
+  $real_name="";
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){	  
   $class=$mysqli->real_escape_string(trim($_POST['class']));
   $stu_id=$mysqli->real_escape_string(trim($_POST['stu_id']));
   $real_name=$mysqli->real_escape_string(trim($_POST['real_name']));
+  }
   $vcode=$mysqli->real_escape_string(trim($_POST['vcode']));
   // echo $user_id.$email.$vcode."<br>";
   // echo $_SESSION["vcode"];

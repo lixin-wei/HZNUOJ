@@ -57,6 +57,7 @@
         <input type="text" id="school" name="school" value="" style="width:300px;" placeholder="就读学校" pattern="^[\u4e00-\u9fa5]{3,20}$"/>
       </div>
     </div>
+    <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
       <div class="am-u-sm-8">
@@ -83,6 +84,7 @@
         <input type="text" id='real_name' style="width:300px;" value="" name="real_name" placeholder="Your real name">
       </div>
     </div>
+    <?php } ?>
     <div class="am-form-group">
       <label for="email" class="am-u-sm-4 am-form-label">
         &nbsp;<?php echo $MSG_EMAIL ?>:
