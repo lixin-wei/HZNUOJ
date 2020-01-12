@@ -14,7 +14,7 @@
   static  $DB_VJUSER="root";
   static  $DB_PASS="root";
   static  $DB_VJPASS="root";
-
+  static  $VJ_OPEN=false;
   $OJ_HOME=dirname(dirname(__FILE__));//:OJ/
   static  $OJ_NAME="HZNUOJ";
   static  $OJ_ADMIN="root@localhost";
