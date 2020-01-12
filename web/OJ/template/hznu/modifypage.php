@@ -9,60 +9,60 @@
   **/
 ?>
 
-<?php $title="Modify Info";?>
+<?php $title=$MSG_MODIFY_USER;?>
 <?php require_once("header.php") ?>
 <div class="am-container">
-  <h1 style="margin-top:40px; margin-bottom: 0px;">Modify Page</h1>
+  <h1 style="margin-top:40px; margin-bottom: 0px;"><?php echo $MSG_MODIFY_USER ?></h1>
   <hr>
   <form class="am-form am-form-horizontal" action="modify.php" method="post">
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">User ID:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_USER_ID ?>:</label>
       <div class="am-u-sm-8">
         <label class="am-form-label"><?php echo $_SESSION['user_id']?></label>
         <?php require_once('./include/set_post_key.php');?>
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Nick Name:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_NICK ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->nick)?>" name="nick">
+        <input type="text" style="width:340px;" maxlength="6" placeholder="真实姓名" pattern="^[\u4e00-\u9fa5]{2,6}$" value="<?php echo htmlentities($row->nick)?>" name="nick" required>
       </div>
     </div> 
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
-        <font color='red'><b>*</b></font>&nbsp;Old Password:
+        <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_OldPasswd ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="password" style="width:340px;" name="opassword">
+        <input type="password" style="width:340px;" name="opassword" placeholder="输入6-22位的旧密码" maxlength="22" pattern="^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{1,22}$" required>
       </div>
     </div> 
     <div class="am-form-group">
-      <label class="am-u-sm-3 am-u-sm-offset-1 am-form-label">New Password:</label>
+      <label class="am-u-sm-3 am-u-sm-offset-1 am-form-label"><?php echo $MSG_NewPasswd ?>:</label>
       <div class="am-u-sm-8">
-        <input type="password" style="width:340px;" name="npassword">
+        <input type="password" style="width:340px;" name="npassword" minlength="6" maxlength="22" placeholder="设定6-22位的新密码" pattern="^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,22}$">
       </div>
     </div> 
     <div class="am-form-group">
-      <label class="am-u-sm-3 am-u-sm-offset-1 am-form-label">Repeat Password:</label>
+      <label class="am-u-sm-3 am-u-sm-offset-1 am-form-label"><?php echo $MSG_REPEAT_PASSWORD ?>:</label>
       <div class="am-u-sm-8">
-        <input type="password" style="width:340px;" name="rptpassword">
+        <input type="password" style="width:340px;" name="rptpassword" placeholder="确认密码">
       </div>
     </div> 
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">School:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_SCHOOL ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->school)?>" name="school">
+        <input type="text" style="width:340px;" placeholder="就读学校" value="<?php echo htmlentities($row->school)?>" name="school" required>
       </div>
     </div>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
-        <font color='red'><b>*</b></font>&nbsp;Email:
+      <font color='red'><b>*</b></font><?php echo $MSG_EMAIL ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email">
+        <input type="email" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email">
       </div>
     </div>
-
+    <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
     <div class="am-text-center am-u-sm-8 am-u-sm-offset-4" style="margin-bottom: 15px;">
       <div style="width: 340px; color: grey; ">--The following items are set by admins--</div>
     </div>
@@ -84,10 +84,10 @@
         <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name" disabled>
       </div>
     </div>
-  
+    <?php } ?>
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">
-        <font color='red'><b>*</b></font>&nbsp;Show Tag:
+        <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_SHOWTAG?>:
       </label>
       <div class="am-u-sm-8" style='padding-top:12px'>
         <input type="checkbox" <?php if ($row->tag == 'Y') echo "checked='checked'" ?> name="tag">
@@ -95,7 +95,7 @@
     </div>
     <div class="am-form-group">
       <div class="am-u-sm-8 am-u-sm-offset-4">
-        <input type="submit" value="Modify" name="submit" class="am-btn am-btn-success">
+        <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="submit" class="am-btn am-btn-success">
       </div>
     </div>
   </form>
