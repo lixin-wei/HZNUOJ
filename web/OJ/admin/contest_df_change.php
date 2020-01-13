@@ -9,31 +9,43 @@
 <?php
 require_once("admin-header.php");
 require_once("../include/check_get_key.php");
-if (!HAS_PRI("edit_contest")) {
-	echo "Permission denied!";
-	exit(1);
-}
+$clist="";
+sort($_POST['cid']);
+foreach($_POST['cid'] as $i){
+    if($clist) {
+        if(isset($_SESSION["m$i"])||HAS_PRI("edit_contest")) $clist.=','.intval($i);
+  	} else{
+    	if(isset($_SESSION["m$i"])||HAS_PRI("edit_contest")) $clist = $i;
+  	}
+}  
 
 
 $cid=intval($_GET['cid']);
-// 	if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))) exit();
-
-$sql="select `defunct` FROM `contest` WHERE `contest_id`=$cid";
-$result=$mysqli->query($sql);
-$num=$result->num_rows;
-
-if ($num<1){
-	$result->free();
-	echo "No Such Contest!";
-	require_once("../oj-footer.php");
-	exit(0);
+if(!(isset($_GET['cid']) && isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
+	require_once("./error.php");
+	exit(1);
+}
+if (!isset($_GET['cid'])&& $clist=="") {
+    require_once("./error.php");
+    exit(1);
 }
 
-$row=$result->fetch_row();
-if ($row[0]=='N') $sql="UPDATE `contest` SET `defunct`='Y' WHERE `contest_id`=$cid";
-else $sql="UPDATE `contest` SET `defunct`='N' WHERE `contest_id`=$cid";
-$result->free();
-$mysqli->query($sql);
+//20190826 批量改变状态
+if(isset($_POST['enable'])&&$clist){
+  $sql = "UPDATE `contest` SET `defunct`='N' WHERE `contest_id` IN ($clist)";           
+}else if(isset($_POST['disable'])&&$clist){
+  $sql = "UPDATE `contest` SET `defunct`='Y' WHERE `contest_id` IN ($clist)";           
+}else{  
+	$sql="select `defunct` FROM `contest` WHERE `contest_id`=$cid";
+	$result=$mysqli->query($sql);
+	$row=$result->fetch_row();
+	$defunct = $row[0];
+    echo $defunct;
+    $result->free();
+	if ($defunct=='Y') $sql="UPDATE `contest` SET `defunct`='N' WHERE `contest_id`=$cid";
+	else $sql="UPDATE `contest` SET `defunct`='Y' WHERE `contest_id`=$cid";
+}
+$mysqli->query($sql) or die($mysqli->error);
 ?>
 <script language=javascript>
 	history.go(-1);
