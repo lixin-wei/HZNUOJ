@@ -9,7 +9,10 @@
 <?php require_once("admin-header.php");
 require_once("../include/check_get_key.php");
 $cid=intval($_GET['cid']);
-	if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))) exit();
+if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
+	echo "Permission denied!";
+	exit(1);
+}
 $sql="select `private` FROM `contest` WHERE `contest_id`=$cid";
 $result=$mysqli->query($sql);
 $num=$result->num_rows;
