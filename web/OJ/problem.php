@@ -19,7 +19,6 @@ require_once("./include/db_info.inc.php");
 require_once "./include/my_func.inc.php";
 require_once "./include/const.inc.php";
 
-if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
 /* 获取我的标签 start */
 $my_tag;
 if(isset($_SESSION['user_id'])){
@@ -101,8 +100,12 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
 
     
     //get problem count
-    $sql = "SELECT COUNT(*) FROM contest_problem WHERE contest_id = $cid";
-    $problem_cnt = $mysqli->query($sql)->fetch_array()[0];
+    //$sql = "SELECT COUNT(*) FROM contest_problem WHERE contest_id = $cid";
+    $sql = "SELECT `num` FROM contest_problem a 
+	        inner join (select problem_id from `problem`) b 
+			on a.problem_id = b.problem_id 
+			WHERE contest_id = $cid order by num" ;
+	$problem_num = $mysqli->query($sql)->fetch_all(MYSQLI_BOTH);
     
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<span class='am-text-danger'>You can only enter the correspond contest!</span>";
@@ -199,12 +202,12 @@ ORDER BY `num`
                 $view_errors.= "<a href=problem.php?cid=$row[0]&pid=$row[2]>Contest $row[0]: $row[1]</a><br>";
             }
         }else{
-            $view_title= "<title>$MSG_NO_SUCH_PROBLEM!</title>";
-            $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM!</h2>";
+            $view_title= "<title>$MSG_NO_SUCH_PROBLEM</title>";
+            $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM</h2>";
         }
     }else{
-        $view_title= "<title>$MSG_NO_SUCH_PROBLEM!</title>";
-        $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM!</h2>";
+        $view_title= "<title>$MSG_NO_SUCH_PROBLEM</title>";
+        $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM</h2>";
     }
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
