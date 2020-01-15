@@ -156,6 +156,10 @@ sss;
           $html_li="";
           if(HAS_PRI("inner_function")){
             $html_li .= "<li><a href='/OJ/admin/source_give.php'>Give Source</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/contestrank-solutions.php?cid=1000'>Export Source</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_export.php'>Export Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_import.php'>Import Problem</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_copy.php' title='Create your own data'>CopyProblem</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_changeid.php' title='Danger,Use it on your own risk'>ReOrderProblem</a></li>";
           }
           if($html_li!=""){
