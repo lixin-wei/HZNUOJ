@@ -13,19 +13,26 @@ $sql="SELECT * FROM `contest` WHERE `contest_id`='$cid' AND `start_time`<NOW()";
 $result=$mysqli->query($sql);
 $num=$result->num_rows;
 if ($num==0){
-	$view_errors= "Not Started!";
+	$view_errors= $MSG_notStart;
 	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);
 }
 $result->free();
 
-$view_title= "Contest Statistics";
+$view_title= $MSG_CONTEST.$MSG_STATISTICS;
 
 $sql="SELECT count(`num`) FROM `contest_problem` WHERE `contest_id`='$cid'";
 $result=$mysqli->query($sql);
 $row=$result->fetch_array();
-$pid_cnt=intval($row[0]);
-$result->free();
+$pid_total=intval($row[0]);
+
+//跳过不存在题目的题号
+$sql = "SELECT `num` FROM contest_problem a 
+	        inner join (select problem_id from `problem`) b 
+			on a.problem_id = b.problem_id 
+			WHERE contest_id = $cid and num >=0 order by num" ;
+$result=$mysqli->query($sql) or die($mysqli->error);
+$pid_nums=$result->fetch_all(MYSQLI_BOTH);
 
 $sql="SELECT `result`,`num`,`language` FROM `solution` WHERE `contest_id`='$cid' and num>=0"; 
 $result=$mysqli->query($sql);
@@ -43,22 +50,22 @@ while ($row=$result->fetch_object()){
 		$R[$num][$lag+10]=1;
 	else
 		$R[$num][$lag+10]++;
-	if(!isset($R[$pid_cnt][$res]))
-		$R[$pid_cnt][$res]=1;
+	if(!isset($R[$pid_total][$res]))
+		$R[$pid_total][$res]=1;
 	else
-		$R[$pid_cnt][$res]++;
-	if(!isset($R[$pid_cnt][$lag+10]))
-		$R[$pid_cnt][$lag+10]=1;
+		$R[$pid_total][$res]++;
+	if(!isset($R[$pid_total][$lag+10]))
+		$R[$pid_total][$lag+10]=1;
 	else
-		$R[$pid_cnt][$lag+10]++;
-	if(!isset($R[$num][8]))
-		$R[$num][8]=1;
+		$R[$pid_total][$lag+10]++;
+	if(!isset($R[$num][9]))
+		$R[$num][9]=1;
 	else
-		$R[$num][8]++;
-	if(!isset($R[$pid_cnt][8]))
-		$R[$pid_cnt][8]=1;
+		$R[$num][9]++;
+	if(!isset($R[$pid_total][9]))
+		$R[$pid_total][9]=1;
 	else
-		$R[$pid_cnt][8]++;
+		$R[$pid_total][9]++;
 }
 $result->free();
 
