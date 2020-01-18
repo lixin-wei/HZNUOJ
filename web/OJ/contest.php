@@ -14,17 +14,54 @@ require_once('./include/my_func.inc.php');
 require_once('./include/setlang.php');
 require_once './include/const.inc.php';
 $view_title= $MSG_CONTEST;
-function formatTimeLength($length) {
-    $result = "";
-    $day = floor($length/86400); $length%=86400;
-    $hour = floor($length/3600); $length%=3600;
-    $minute = floor($length/60); $length%=60;
-    $second = $length;
-    $result .= $day." Day".($day>1?"s":"")." ";
-    $result .= $hour." Hour".($hour>1?"s":"")." ";
-    $result .= $minute." Minute".($minute>1?"s":"")." ";
-    $result .= $second." Second".($second>1?"s":"")." ";
-    return $result;
+function formatTimeLength($length)
+{
+  $hour = 0;
+  $minute = 0;
+  $second = 0;
+  $result = '';
+  global $OJ_LANG;
+  //加个语言判断，cn则显示中文时间，其他的都显示英文
+  if($OJ_LANG == "cn"){
+	  if($length >= 60){
+		$second = $length%60;
+		if($second > 0){ $result = $second.'秒';}
+		$length = floor($length/60);
+		if($length >= 60){
+		  $minute = $length%60;
+		  if($minute == 0){ if($result != ''){ $result = '0分' . $result;}}
+		  else{ $result = $minute.'分'.$result;}
+		  $length = floor($length/60);
+		  if($length >= 24){
+			$hour = $length%24;
+			if($hour == 0){ if($result != ''){ $result = '0小时' . $result;}}
+			else{ $result = $hour . '小时' . $result;}
+			$length = floor($length / 24);
+			$result = $length . '天' . $result;
+		  } else{ $result = $length . '小时' . $result;}
+		} else{ $result = $length . '分' . $result;}
+	  } else{ $result = $length . '秒';}
+  } else {
+	  if($length >= 60){
+		$second = $length%60;
+		if($second > 0){ $result = $second.' Second'.($second>1?"s":"");}
+		$length = floor($length/60);
+		if($length >= 60){
+		  $minute = $length%60;
+		  if($minute == 0){ if($result != ''){ $result = '0 Minute' . $result;}}
+		  else{ $result = $minute.' Minute'.($length>1?"s":"")." ".$result;}
+		  $length = floor($length/60);
+		  if($length >= 24){
+			$hour = $length%24;
+			if($hour == 0){ if($result != ''){ $result = '0 Hour' . $result;}}
+			else{ $result = $hour . ' Hour'.($length>1?"s":"")." " . $result;}
+			$length = floor($length / 24);
+			$result = $length . ' Day'.($length>1?"s":"")." " . $result;
+		  } else{ $result = $length . ' Hour'.($length>1?"s":"")." " . $result;}
+		} else{ $result = $length . ' Minute'.($length>1?"s":"")." " . $result;}
+	  } else{ $result = $length . ' Second'.($length>1?"s":"");}
+  }
+  return $result;
 }
 
 if (isset($_GET['cid'])){
