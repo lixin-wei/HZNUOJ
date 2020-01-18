@@ -72,13 +72,13 @@
     //$uid = uc_user_register($user_id, $password, $email);
 
     echo "<script language='javascript'>\n";
-    echo "history.go(-2);\n";
+    echo "window.location.href='userinfo.php?user=$user_id';";  //echo "history.go(-2);\n";
     echo "</script>";
 
   } else {
     echo "<script language='javascript'>\n";
     echo "alert('$MSG_LoginError');\n";
-    echo "history.go(-1);\n";
+	  echo "window.location.href='loginpage.php';";  //echo "history.go(-1);\n";
     echo "</script>";
   }
 ?>
