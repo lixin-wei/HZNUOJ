@@ -133,20 +133,19 @@
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){
 			  echo "class='am-active'";}
-	      ?>><a href="/OJ/faqs.php"><?php echo $MSG_FAQ ?></a></li>   
-         <?php /*  
+	      ?>><a href="/OJ/faqs.php"><?php echo $MSG_FAQ ?></a></li>    
           <!-- Others Begin -->
-          <!--<li class="am-dropdown" data-am-dropdown>
+          <li class="am-dropdown" data-am-dropdown>
             <a href="#" class="am-dropdown-toggle" >Others&nbsp;<span class="am-icon-caret-down"></span></a>
             <ul class="am-dropdown-content">
               <li><a href="/OJ/c_course.php">Programming Fundamentals</a></li>
               <li><a href="/OJ/donation.php">Donation</a></li>
               <li><a href="/forum/">Forum</a></li>
             </ul>
-          </li>-->
+          </li>
           <!-- Others End -->
+
            <!--<li><a href="/OJ/tools.php">Tools</a></li> -->
-		   */ ?>
         </ul>
 
         <!-- 用户部分 start -->

@@ -1,4 +1,8 @@
 <?php $title="Programming Fundamentals"; ?>
+<?php
+require_once('./include/static.php'); 
+require_once('./include/setlang.php'); 
+?>
 <?php require_once "template/hznu/header.php"; ?>
   <style>
     .box{
