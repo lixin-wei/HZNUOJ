@@ -20,7 +20,7 @@
   static  $OJ_ADMIN="root@localhost";
   static  $OJ_DATA = "/home/judge/data";
   static  $OJ_ONLINE=false;
-  static  $OJ_LANG="en";
+  static  $OJ_LANG="cn";
   static  $OJ_SIM=true;
   static  $OJ_DICT=true;
   static  $OJ_LANGMASK=979967; //1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
