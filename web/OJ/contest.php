@@ -87,7 +87,7 @@ if (isset($_GET['cid'])){
     }
     if ($rows_cnt==0){
         $result->free();
-        $view_title= "比赛已经关闭!";
+        $view_title= $MSG_ContestIsClosed;
     } else {
         $row=$result->fetch_object();
         if($row->user_limit=="Y" && $_SESSION['contest_id']!=$cid && !HAS_PRI("edit_contest")){
@@ -104,13 +104,13 @@ if (isset($_GET['cid'])){
         
         if (!$contest_ok){
             $view_errors = "<font style='color:red;text-decoration:underline;'>$MSG_PRIVATE_WARNING</font><br>";
-            $view_errors .= "Click <a href=contestrank.php?cid=$cid>HERE</a> to watch contest rank, or input password to enter it.";
+            $view_errors .= "<a href=contestrank.php?cid=$cid>$MSG_WATCH_RANK</a>";
             $view_errors .= "<form method=post action='contest.php?cid=$cid' class='am-form-inline am-text-center'>";
             $view_errors .= "<div class='am-form-group'>";
-            $view_errors .= "<input class='am-form-field' type='password' name='pwd' placeholder='input contest password'>";
+            $view_errors .= "<input class='am-form-field' type='password' name='pwd' placeholder='$MSG_Input$MSG_PASSWORD'>";
             $view_errors .= "</div>";
             $view_errors .= "<div class='am-form-group'>";
-            $view_errors .= "<button class='am-btn am-btn-default' type=submit>submit</button>";
+            $view_errors .= "<button class='am-btn am-btn-default' type=submit>$MSG_SUBMIT</button>";
             $view_errors .= "</div>";
             $view_errors .= "</form>";
             require("template/".$OJ_TEMPLATE."/error.php");
@@ -211,11 +211,11 @@ SQL;
         $view_problemset[$cnt][1] = $row->score;
         if ($practice || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
             $view_problemset[$cnt][2]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
-        $view_problemset[$cnt][2] .= "Problem &nbsp;".PID($cnt);
+        $view_problemset[$cnt][2] .= "$MSG_PROBLEM &nbsp;".PID($row->pnum);
         if($practice && is_in_running_contest($row->pid) && !$can_edit_contest)
             $view_problemset[$cnt][3]= "<span style='color: dimgrey;' title='this problem is locked because they are in running contest.'>$row->title <i class='am-icon-lock'></i></span>";
         else
-            $view_problemset[$cnt][3]= "<a href='problem.php?cid=$cid&pid=$cnt'>$row->title</a>";
+            $view_problemset[$cnt][3]= "<a href='problem.php?cid=$cid&pid=$row->pnum'>$row->title</a>";
         $view_problemset[$cnt][4]=$row->author;
         $view_problemset[$cnt][5]=$row->accepted ;
         $view_problemset[$cnt][6]=$row->submit ;
@@ -228,17 +228,48 @@ SQL;
     $result->free();
 }
 else {
-    $keyword="";
-    if(isset($_POST['keyword'])){
-        $keyword=$mysqli->real_escape_string($_POST['keyword']);
+  $getMy = "";
+  $wheremy = " 1";
+  $mycontests = "";	
+    if(isset($_GET['my'])){ //我的比赛、作业
+      $getMy = "my";
+    foreach($_SESSION as $key => $value){
+      if(($key[0]=='m'||$key[0]=='c')&&intval(mb_substr($key,1))>0){ //验证是否有m1、c1之类的
+        //echo substr($key,1)."<br>";
+        $mycontests.=",".intval(mb_substr($key,1));
+      }
+      }	
+    if(strlen($mycontests)>0) $mycontests=substr($mycontests,1);//去掉最开始的","	
+    $wheremy=" contest_id in ($mycontests)";
+  }
+  $search = ""; //查找关键字
+  if(isset($_GET['search'])&&trim($_GET['search'])!="") {
+    $search=$mysqli->real_escape_string($_GET['search']);
+  }	
+    $page = 1;
+    if(isset($_GET['page'])) $page = intval($_GET['page']);
+    $page_cnt = 10;
+    $pstart = $page_cnt*$page-$page_cnt;
+    $pend = $page_cnt;
+    if($search){
+      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy AND contest.title LIKE '%$search%' ";		
+      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND contest.title LIKE '%$search%' AND $wheremy ORDER BY contest_id DESC";		
+      $sql .= " limit ".strval($pstart).",".strval($pend); 
+    }else{
+      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy";
+      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND $wheremy ORDER BY contest_id DESC";
+      $sql .= " limit ".strval($pstart).",".strval($pend); 
     }
-    $sql="SELECT * FROM `contest` WHERE `defunct`='N' ORDER BY `contest_id` DESC limit 1000";
-    // $sql="select * from contest left join (select * from privilege where rightstr like 'm%') p on concat('m',contest_id)=rightstr where contest.defunct='N' and contest.title like '%$keyword%'  order by contest_id desc limit 1000;";
+    $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
+    if($rows) $total = $rows[0][0];
+    $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
+
     $result=$mysqli->query($sql);
     $view_contest=Array();
     $i=0;
     while ($row=$result->fetch_object()){
         $view_contest[$i][0]= $row->contest_id;
+        if(trim($row->title)=="") $row->title=$MSG_CONTEST.$row->contest_id;
         $view_contest[$i][1]= "<a href='contest.php?cid=$row->contest_id'>$row->title</a>";
         $start_time=strtotime($row->start_time);
         $end_time=strtotime($row->end_time);
@@ -255,10 +286,10 @@ else {
             $view_contest[$i][2]= "<span style='color: #ff5722;'> $MSG_Running&nbsp;";
             $view_contest[$i][2].= "$MSG_LeftTime ".formatTimeLength($left)." </span>";
         }
-        $type = "<span style='color: green;'>Public</span>";
-        if($row->private) $type = "<span style='color: dodgerblue;'>Password</span>";
-        if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>Special</span>";
-        if($row->practice) $type = "<span style='color: #009688;'>Practice</span>";
+        $type = "<span style='color: green;'>$MSG_Public</span>";
+        if($row->private) $type = "<span style='color: dodgerblue;'>$MSG_Private</span>";
+        if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>$MSG_Special</span>";
+        if($row->practice) $type = "<span style='color: #009688;'>$MSG_Practice</span>";
         $view_contest[$i][4]= $type;
         $view_contest[$i][6]=$row->user_id;
         $i++;
