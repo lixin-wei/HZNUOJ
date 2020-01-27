@@ -83,6 +83,7 @@ function generate_url($data){
       <th class='am-text-left'><?php echo $MSG_Name ?></th>
       <th class='am-text-left'><?php echo $MSG_STATUS ?></th>
       <th class='am-text-left'><?php echo $MSG_Type ?></th>
+      <th class='am-text-left'><?php echo $MSG_Creator ?></th>
       </thead>
       <tbody>
       <?php

@@ -25,6 +25,7 @@
     $title=$mysqli->real_escape_string($_POST['title']);
     $private=$mysqli->real_escape_string($_POST['private']);
     $password=$mysqli->real_escape_string($_POST['password']);
+	  $user_id=$_SESSION['user_id'];
     $description=$mysqli->real_escape_string($_POST['description']);
     $user_limit = $mysqli->real_escape_string($_POST['user_limit']);
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
@@ -44,8 +45,8 @@
 	  echo $t." ";
       $langmask+=1<<$t;
     }
-    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice)
-          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice')";
+    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`)
+          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice', '$user_id')";
   //echo $sql;
   $mysqli->query($sql) or die($mysqli->error);
   //添加contest记录 end  

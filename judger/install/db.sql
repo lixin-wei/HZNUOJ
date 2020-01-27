@@ -81,6 +81,7 @@ CREATE TABLE `contest` (
   `private` tinyint(4) NOT NULL DEFAULT '0',
   `langmask` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'bits for LANG to mask',
   `password` char(16) NOT NULL DEFAULT '',
+  `user_id` varchar(48) NOT NULL DEFAULT 'admin',
   `user_limit` char(1) NOT NULL,
   `defunct_TA` char(1) NOT NULL,
   `open_source` char(1) NOT NULL,
