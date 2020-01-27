@@ -24,6 +24,11 @@
   static  $OJ_SIM=true;
   static  $OJ_DICT=true;
   static  $OJ_LANGMASK=979967; //1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
+                //1开启 0关闭，各个语言从后往前排，在最高位补1，再二进制转成十进制变成掩码,语言顺序见/include/const.inc.php						  
+							  //1 1101111001111111111=1(455679D)=979967 github上down下来默认JavaScript(nodejs) Obj-C FreeBasic(fbc)不开
+							  //1 1111111111111111111=1(524287D)=1048575 语言全开
+							  //1 1100000000000000111 = 1(393223D)=917511 只开gcc g++ fpc python3 GO
+							  //试验了下最高位1不补好像也没问题
   static  $OJ_EDITE_AREA=true; //true: syntax highlighting is active
   static  $OJ_AUTO_SHARE=true; //true: One can view all AC submit if he/she has ACed it onece.
   static  $OJ_CSS="hoj.css";
