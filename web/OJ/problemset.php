@@ -176,7 +176,7 @@ while ($row=$result->fetch_object()) {
     }
     $view_problemset[$i][1] = "<td>".$p_id."</td>";
     if(!$row->locked)
-        $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+        $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a></td>";
     else
         $view_problemset[$i][2] = "<td style='color: dimgrey;'>"."<span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
     $view_problemset[$i][3] = "<td >";
