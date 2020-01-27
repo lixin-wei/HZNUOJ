@@ -19,21 +19,21 @@
     <form action="lostpassword.php" method="post" class="am-form am-form-horizontal">
       <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
       <div class="am-form-group">
-        <label for="username" class="am-u-sm-4 am-form-label">User ID: </label>
+        <label for="username" class="am-u-sm-4 am-form-label"><?php echo $MSG_USER_ID ?>: </label>
         <div class="am-u-sm-8">
           <input type="text" name="user_id" id="username" value="" placeholder="Your user ID" style="width:300px;">
         </div>
       </div>
       <div class="am-form-group">
-        <label class="am-u-sm-4 am-form-label">Email: </label>
+        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_EMAIL ?>: </label>
         <div class="am-u-sm-8">
           <input type="text" name="email" id="pwd" value="" placeholder="Your Email" style="width:300px;">
         </div>
       </div>
       <div class="am-form-group">
-        <label for="pwd" class="am-u-sm-4 am-form-label">Verify Code: </label>
-        <div class="am-u-sm-4"><input name="vcode" size=4 type='text' style="width:150px;"></input></div>
-        <div class="am-u-sm-4"><img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <label for="pwd" class="am-u-sm-4 am-form-label"><?php echo $MSG_VCODE ?>: </label>
+        <div class="am-u-sm-1"><input name="vcode" size=4 type='text' style="width:150px;"  autocomplete="off" maxlength="4" required></input></div>
+        <div class="am-u-sm-5"><img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
       </div>
       <div class="am-from-group">
         <div class="am-cf am-u-sm-offset-4 am-u-sm-5 am-u-end">
