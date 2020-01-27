@@ -20,11 +20,11 @@
   	}
   }  
   if (isset($_GET['id'])&& !HAS_PRI("edit_".get_problemset($_GET['id'])."_problem")) {
-    require_once("./error.php");
+    echo "<script language=javascript>history.go(-1);</script>";
     exit(1);
   }
   if (!isset($_GET['id'])&& $plist=="") {
-    require_once("./error.php");
+    echo "<script language=javascript>history.go(-1);</script>";
     exit(1);
   }
 

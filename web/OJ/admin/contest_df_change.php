@@ -22,11 +22,11 @@ foreach($_POST['cid'] as $i){
 
 $cid=intval($_GET['cid']);
 if(!(isset($_GET['cid']) && isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
-	require_once("./error.php");
+	echo "<script language=javascript>history.go(-1);</script>";
 	exit(1);
 }
 if (!isset($_GET['cid'])&& $clist=="") {
-    require_once("./error.php");
+  echo "<script language=javascript>history.go(-1);</script>";
     exit(1);
 }
 
