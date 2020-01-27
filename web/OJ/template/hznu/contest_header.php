@@ -134,7 +134,7 @@ echo <<<BOT
                       <li><a href="modifypage.php"><span class="am-icon-eraser"></span> $MSG_MODIFY_USER</a></li>
                       <li><a href="userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span> $MSG_USERINFO</a></li>
                       <!-- <li><a href="mail.php"><span class="am-icon-comments"></span> Mail</a></li> -->
-                      <li><a href="status.php?user_id=$user_session"><span class="am-icon-leaf"></span> $MSG_MY_SUBMISSIONS</a></li>
+                      <li><a href="status.php?user_id=$user_session"><span class="am-icon-keyboard-o"></span> $MSG_MY_SUBMISSIONS</a></li>
 					  <li><a href="/OJ/contest.php?my"><span class="am-icon-leaf"></span> $MSG_MY_CONTESTS </a></li> 
 BOT;
           if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
