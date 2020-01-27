@@ -23,9 +23,9 @@
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_NICK ?>:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_NICK ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" maxlength="6" placeholder="真实姓名" pattern="^[\u4e00-\u9fa5]{2,6}$" value="<?php echo htmlentities($row->nick)?>" name="nick" required>
+        <input type="text" style="width:340px;" maxlength="6" placeholder="<?php echo $MSG_NICK ?>" pattern="^[\u4e00-\u9fa5]{2,6}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
       </div>
     </div> 
     <div class="am-form-group">
@@ -45,13 +45,13 @@
     <div class="am-form-group">
       <label class="am-u-sm-3 am-u-sm-offset-1 am-form-label"><?php echo $MSG_REPEAT_PASSWORD ?>:</label>
       <div class="am-u-sm-8">
-        <input type="password" style="width:340px;" name="rptpassword" placeholder="确认密码">
+        <input type="password" style="width:340px;" name="rptpassword" placeholder="<?php echo $MSG_REPEAT_PASSWORD ?>">
       </div>
     </div> 
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_SCHOOL ?>:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_SCHOOL ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" placeholder="就读学校" value="<?php echo htmlentities($row->school)?>" name="school" required>
+        <input type="text" style="width:340px;" placeholder="<?php echo $MSG_SCHOOL ?>" value="<?php echo htmlentities($row->school)?>" name="school">
       </div>
     </div>
     <div class="am-form-group">
@@ -59,7 +59,7 @@
       <font color='red'><b>*</b></font><?php echo $MSG_EMAIL ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="email" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email">
+        <input type="email" style="width:340px;" value="<?php echo htmlentities($row->email)?>" name="email" required>
       </div>
     </div>
     <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>

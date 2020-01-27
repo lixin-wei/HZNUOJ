@@ -41,20 +41,20 @@
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_REPEAT_PASSWORD ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="password" id="rname" name="rptpassword" value="" style="width:300px;" placeholder="确认密码"
+        <input type="password" id="rname" name="rptpassword" value="" style="width:300px;" placeholder="<?php echo $MSG_REPEAT_PASSWORD ?>"
           data-equal-to="#pwd" required/>
       </div>
     </div>
     <div class="am-form-group">
-      <label for="nc" class="am-u-sm-4 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_NICK ?>: </label>
+      <label for="nc" class="am-u-sm-4 am-form-label"><?php echo $MSG_NICK ?>: </label>
       <div class="am-u-sm-8">
-        <input name="nick" type="text" id="nc" placeholder="真实姓名" style="width:300px;" value="" maxlength="6"  pattern="^[\u4e00-\u9fa5]{2,6}$"/>
+        <input name="nick" type="text" id="nc" placeholder="<?php echo $MSG_NICK ?>" style="width:300px;" value="" maxlength="6"  pattern="^[\u4e00-\u9fa5]{2,6}$"/>
       </div>
     </div>
     <div class="am-form-group">
-      <label for="school" class="am-u-sm-4 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_SCHOOL ?>: </label>
+      <label for="school" class="am-u-sm-4 am-form-label"><?php echo $MSG_SCHOOL ?>: </label>
       <div class="am-u-sm-8">
-        <input type="text" id="school" name="school" value="" style="width:300px;" placeholder="就读学校" pattern="^[\u4e00-\u9fa5]{3,20}$"/>
+        <input type="text" id="school" name="school" value="" style="width:300px;" placeholder="<?php echo $MSG_SCHOOL ?>" pattern="^[\u4e00-\u9fa5]{3,20}$"/>
       </div>
     </div>
     <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
@@ -87,10 +87,10 @@
     <?php } ?>
     <div class="am-form-group">
       <label for="email" class="am-u-sm-4 am-form-label">
-        &nbsp;<?php echo $MSG_EMAIL ?>:
+        <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_EMAIL ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL ?>"
+        <input type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL?>"
           required/>
       </div>
     </div>
