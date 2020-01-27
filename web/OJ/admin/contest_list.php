@@ -39,7 +39,7 @@ function generate_url($data){
     return $link;
 }  
     // check the order_by arg
-  $sql_filter = "FROM `contest`";
+  $sql_filter = " FROM `contest` ";
   $sql_limit = " limit ".strval($pstart).",".strval($pend); 
   if(isset($_GET['keyword']) && trim($_GET['keyword']) != ""){
 	$keyword=htmlentities($_GET['keyword']);
@@ -51,7 +51,10 @@ function generate_url($data){
   $sql_page = "SELECT count(1) ".$sql_filter;  
   $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
   if($rows) $total = $rows[0][0];  
-  if($sql_limit == "") $page_cnt = $total;//查找结果全部显示在一页上
+  if($sql_limit == "") { //查找结果全部显示在一页上
+    $page_cnt = $total;
+    $view_total_page = 1;
+  } else
   $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
   //分页end 
   
