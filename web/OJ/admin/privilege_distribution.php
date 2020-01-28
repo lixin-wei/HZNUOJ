@@ -29,8 +29,8 @@ if($_POST['data']){
   }
 }
 ?>
-<title>Privilege Distribution</title>
-<h1>Privilege Distribution Edit</h1>
+<title><?php echo $html_title.$MSG_Distribution ?></title>
+<h1><?php echo $MSG_Distribution ?></h1>
 <hr/>
 <form method="post">
   <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
@@ -67,7 +67,7 @@ if($_POST['data']){
             if($value)$html .= " checked ";
             if(!$can_edit) $html.="disabled";
             $html .= ">";
-            $html .= $key;
+            $html .= ${"MSG_".$key};
             $html .= "</label></div>";
           }
           $html .= "</div>";

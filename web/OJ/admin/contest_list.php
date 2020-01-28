@@ -63,7 +63,7 @@ function generate_url($data){
 ?>
 <title><?php echo $html_title.$MSG_CONTEST.$MSG_LIST?></title>
   <h1><?php echo $MSG_CONTEST.$MSG_LIST?></h1>
-  <h5>&lt;<?php echo $MSG_HELP_CONTEST_LIST ?>&gt;</h5>
+  <h4><?php echo $MSG_HELP_CONTEST_LIST ?></h4>
   <hr/>  
 
  <div style="margin-top: 10px;margin-bottom: 10px;">

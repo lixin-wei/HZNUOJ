@@ -55,7 +55,7 @@ if(!$add_problem_mod){
         <?php
         if($add_problem_mod){
             echo "<h1>$MSG_ADD$MSG_PROBLEM</h1>";
-			echo "<h5>&lt;$MSG_HELP_ADD_PROBLEM &gt;</h5>";
+			echo "<h4>$MSG_HELP_ADD_PROBLEM</h4>";
         }
         else{
             echo<<<HTML

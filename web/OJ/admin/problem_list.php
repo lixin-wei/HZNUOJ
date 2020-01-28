@@ -86,7 +86,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
 
   <title><?php echo $html_title.$MSG_PROBLEM.$MSG_LIST?></title>
   <h1><?php echo $MSG_PROBLEM.$MSG_LIST?></h1>
-  <h5>&lt;<?php echo $MSG_HELP_PROBLEM_LIST ?>&gt;</h5>
+  <h4><?php echo $MSG_HELP_PROBLEM_LIST ?></h4>
   <hr/>
   <div style="margin-top: 10px;margin-bottom: 10px;">
   <form action="problem_list.php">

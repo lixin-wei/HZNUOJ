@@ -127,8 +127,7 @@
   $MSG_RESET = "重置";
   
   //problemstatistics.php      
-  $MSG_TR="测试运行";
-  
+  $MSG_TR="测试运行";  
   $MSG_PD="等待";
   $MSG_PR="等待重判";
   $MSG_CI="编译中";
@@ -142,7 +141,6 @@
   $MSG_RE="运行错误";
   $MSG_CE="编译错误";
   $MSG_CO="编译成功";
-
 
   //registerpage.php
   $MSG_USER_ID="用户名(学号)";
@@ -234,18 +232,18 @@
   
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS;
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS;
-  //$MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息。";
-  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，多组测试数据在添加后从题目列表'".$MSG_TestData."'按钮进入上传，新建题目<b>默认隐藏</b>，需在问题列表中点击'".$MSG_Reserved."'按钮切换启用状态。";
+  $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息。";
+  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，多组测试数据在添加后从题目列表'".$MSG_TestData."'按钮进入上传，新建题目<b>默认隐藏</b>，需在问题列表中点击'".$MSG_Reserved."'按钮切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
-  //$MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，无法删除。";
-  //$MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
+  $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，无法删除。";
+  $MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
   $MSG_HELP_REJUDGE="重判指定的题目、提交或比赛。";
   $MSG_HELP_ADD_PRIVILEGE="给指定用户增加权限，包括管理员、教师、助教等权限。";
   $MSG_HELP_PRIVILEGE_LIST="查看已有的特殊权限列表、进行删除操作。";
-  //$MSG_HELP_GIVESOURCE="将导入系统的标程赠与指定帐号，用于训练后辅助未通过的人学习参考。";
-  //$MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
-  //$MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件。";
+  $MSG_HELP_GIVESOURCE="将导入系统的标程赠与指定帐号，用于训练后辅助未通过的人学习参考。";
+  $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
+  $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件。";
   
   $MSG_HELP_AC="答案正确，请再接再厉。"; 
   $MSG_HELP_PE="答案基本正确，但是格式不对。"; 
@@ -256,24 +254,7 @@
   $MSG_HELP_RE="运行时错误，非法的内存访问，数组越界，指针漂移，调用禁用的系统函数。请点击后获得详细输出";
   $MSG_HELP_CE="编译错误，请点击后获得编译器的详细输出"; 
   
-  $MSG_judge_result=Array(
-    $MSG_Pending,              //0
-    $MSG_Pending_Rejudging,    //1
-    $MSG_Compiling,            //2
-    $MSG_Running_Judging,      //3
-    $MSG_HELP_AC,              //4
-    $MSG_HELP_PE,              //5
-    $MSG_HELP_WA,              //6
-    $MSG_HELP_TLE,             //7
-    $MSG_HELP_MLE,             //8
-    $MSG_HELP_OLE,             //9
-    $MSG_HELP_RE,              //10
-    $MSG_HELP_CE,              //11
-    $MSG_Compile_OK,           //12
-    $MSG_TEST_RUN              //13
-  );
-  
-  //$MSG_HELP_MORE_TESTDATA_LATER="更多组测试数据，请在题目添加完成后补充"; 
+  $MSG_HELP_MORE_TESTDATA_LATER="更多组测试数据，请在题目添加完成后补充"; 
   //$MSG_HELP_SPJ="特殊裁判的使用，请参考<a href='https://cn.bing.com/search?q=hustoj+special+judge' target='_blank'>搜索hustoj special judge</a>"; 
   
   //$MSG_WARNING_LOGIN_FROM_DIFF_IP="从不同的ip地址登录";

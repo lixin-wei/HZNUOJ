@@ -40,7 +40,7 @@
 ?>
   <title><?php echo $html_title.$MSG_ADD.$MSG_PRIVILEGE ?></title>
   <h1><?php echo $MSG_ADD.$MSG_PRIVILEGE ?></h1>
-  <h5>&lt;<?php echo $MSG_HELP_ADD_PRIVILEGE ?>&gt;</h5>
+  <h4><?php echo $MSG_HELP_ADD_PRIVILEGE ?></h4>
   <hr/>
 <form class="form-inline" method=post>
   <?php require("../include/set_post_key.php");?>

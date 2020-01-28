@@ -38,14 +38,16 @@ if(isset($_POST['do'])){
   else echo "No such user! or He/Her is an administrator!";
 }
 ?>
-<title>Change Password</title>
-<h1>Change Password</h1><hr>
+<title><?php echo $html_title.$MSG_SETPASSWORD?></title>
+<h1><?php echo $MSG_SETPASSWORD?></h1>
+<h4><?php echo $MSG_HELP_SETPASSWORD ?></h4>
+<hr>
 <form class="form-inline" action='changepass.php' method=post>
-	User:<input class="form-control" type=text size=10 name="user_id"><br />
-	Pass:<input class="form-control" type=text size=10 name="passwd"><br />
+	<p><?php echo $MSG_USER_ID?> : <input class="form-control" type=text size=20 name="user_id" required>&nbsp;&nbsp;&nbsp;&nbsp;
+	   <?php echo $MSG_New.$MSG_PASSWORD?> : <input class="form-control" type="password" minlength="6" maxlength="22"  size=20 name="passwd" required></p>
 	<?php require_once("../include/set_post_key.php");?>
 	<input type='hidden' name='do' value='do'>
-	<input class="btn btn-default" type=submit value='Change'>
+	<input class="btn btn-default" type=submit value='<?php echo $MSG_SUBMIT ?>'>
 </form>
 <?php 
   require_once("admin-footer.php")

@@ -46,7 +46,7 @@ if (!HAS_PRI("rejudge")) {
 ?>
     <title><?php echo $html_title.$MSG_REJUDGE ?></title>
 	<h1><?php echo $MSG_REJUDGE ?></h1>
-    <h5>&lt;<?php echo $MSG_HELP_REJUDGE ?>&gt;</h5>
+    <h4><?php echo $MSG_HELP_REJUDGE ?></h4>
     <hr/>
 	<ol>
 	<li><?php echo $MSG_PROBLEM ?>
