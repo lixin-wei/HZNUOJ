@@ -116,7 +116,7 @@ HTML;
 HTML;
             }
             else {
-              echo "<a href=\"/OJ/userinfo.php?user={$row['user_id']}\">{$row['user_id']}</a>";
+              echo "<a href=\"/OJ/userinfo.php?user={$row['user_id']}\" target='_blank'>{$row['user_id']}</a>";
             }
             echo "</td>";
             echo <<<HTML
@@ -128,7 +128,7 @@ HTML;
             if(canSeeSource($row['solution_id'])) {
                 echo <<<HTML
                   <td>
-                    <a href="showsource.php?id={$row['solution_id']}&normal_mod">
+                    <a href="showsource.php?id={$row['solution_id']}&normal_mod" target='_blank'>
                       {$language_name[$row['language']]}
                     </a>
                   </td>
