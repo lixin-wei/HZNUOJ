@@ -127,7 +127,7 @@ function generate_url($data){
         <th class='am-text-left'><?php echo $MSG_SOLVED ?></th>
         <th class='am-text-left'><?php echo $MSG_SUBMIT ?></th>
         <th class='am-text-left'><?php echo $MSG_RATIO ?></th>
-        <th class='am-text-left' style='width=100px'><?php echo $MSG_LEVEL ?></th>
+        <th class='am-text-left' style='width:100px'><?php echo $MSG_LEVEL ?></th>
         <th class='am-text-left'><?php echo $MSG_STRENGTH ?></th>
       </tr>
       </thead>
