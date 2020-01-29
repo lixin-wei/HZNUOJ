@@ -25,12 +25,13 @@ if(!can_see_problem($pid)) {
 $page_cnt = 30;
 $language = -1;
 $result = 4;
-$page = max(intval($_GET['page']), 0);
+$page = max(intval($_GET['page']), 1);
 $order_method = "length";
 if(isset($_GET['language'])) $language = intval($_GET['language']);
 if(isset($_GET['result'])) $result = intval($_GET['result']);
 if(isset($_GET['order'])) $order_method = $_GET['order'];
-$left_bound = $page*$page_cnt;
+$left_bound = $page_cnt*($page-1);
+$rank = $left_bound;
 $filter_sql = "";
 $sql = <<<SQL
     SELECT

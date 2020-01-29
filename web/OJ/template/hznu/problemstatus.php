@@ -41,10 +41,12 @@ HTML;
                 <?php
                 $count_lang=count($language_name);
                 for($i=0 ; $i<$count_lang ; ++$i) {
+                    $j = $language_order[$i];
                     $sel = "";
-                    if($i==$language) $sel="selected";
+                    if($j==$language) $sel="selected";
+                    if($OJ_LANGMASK & (1<<$j))
                     echo <<<HTML
-                      <option value="$i" $sel>{$language_name[$i]}</option>
+                      <option value="$j" $sel>{$language_name[$j]}</option>
 HTML;
                 }
                 ?>
@@ -92,6 +94,7 @@ HTML;
     <div style="margin-left: 400px;">
       <table class="am-table am-table-compact am-table-striped am-table-hover">
         <tr>
+          <th><?php echo $MSG_RANK ?></th>
           <th><?php echo $MSG_RUNID ?></th>
           <th><?php echo $MSG_USER ?></th>
           <th><?php echo $MSG_RESULT ?></th>
@@ -104,6 +107,7 @@ HTML;
           <?php
           foreach ($data as $row) {
             echo "<tr>";
+            echo "<td>".++$rank."</td>"; 
             echo "<td>{$row['solution_id']}</td>";
             echo "<td>";
             if(isset($row['is_temp_user'])) {
@@ -151,16 +155,15 @@ HTML;
           $url .= "&page=$page";
           return $url;
         }
-        $top_page_url = generate_page_url(0);
-        $pre_page_url = generate_page_url(max($page-1, 0));
-        $next_page_url = generate_page_url($page + 1);
-        $last_page_url = generate_page_url($total_page-1);
-        $view_page = $page + 1;
+        $top_page_url = generate_page_url(1);
+        $pre_page_url = generate_page_url(max($page-1, 1));
+        $next_page_url = generate_page_url(min($page+1, $total_page));
+        $last_page_url = generate_page_url($total_page);
         echo <<<HTML
           <ul class="am-pagination">
             <li><a href="$top_page_url">Top</a></li>
             <li><a href="$pre_page_url">&laquo; Prev</a></li>
-            ($view_page/$total_page)
+            ($page/$total_page)
             <li><a href="$next_page_url">Next &raquo;</a></li>
             <li><a href="$last_page_url">Last</a></li>
           </ul>
