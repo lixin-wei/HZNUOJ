@@ -51,7 +51,7 @@ if(!$add_problem_mod){
           echo "$MSG_EDIT$MSG_PROBLEM:".$pid;
       }
       ?></title>
-  <div class="container" style="width: 800px">    
+  <div style="width: 800px">    
         <?php
         if($add_problem_mod){
             echo "<h1>$MSG_ADD$MSG_PROBLEM</h1>";
@@ -123,15 +123,15 @@ HTML;
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label"><?php echo $MSG_Description ?></label>
-        <div class="col-sm-10"><textarea name="description" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->description,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <div class="col-sm-10"><textarea name="description" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->description,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label"><?php echo $MSG_Input ?></label>
-        <div class="col-sm-10"><textarea name="input" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->input,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <div class="col-sm-10"><textarea name="input" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->input,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label"><?php echo $MSG_Output ?></label>
-        <div class="col-sm-10"><textarea name="output" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->output,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <div class="col-sm-10"><textarea name="output" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->output,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label"><?php echo $MSG_Samples ?></label>
@@ -215,7 +215,7 @@ HTML;
       </div>
       <div class="form-group">
         <label class="col-sm-2 control-label"><?php echo $MSG_HINT ?></label>
-        <div class="col-sm-10"><textarea name="hint" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->hint,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <div class="col-sm-10"><textarea name="hint" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->hint,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-2 control-label">Special judge</label>
@@ -353,7 +353,7 @@ SQL;
             $mysqli->query($sql);
         }
     }
-    echo "$MSG_SampleDataIsUpdated <br>";
+    echo $MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
     $title=$mysqli->real_escape_string($title);
     $time_limit=$mysqli->real_escape_string($time_limit);
     $memory_limit=$mysqli->real_escape_string($memory_limit);

@@ -50,7 +50,7 @@
 
   //ranklist.php
   $MSG_RANK = "名次";
-  $MSG_NICK = "姓名";
+  $MSG_NICK = "外号";
   $MSG_SOLVED = "解决";
   $MSG_RATIO = "比率";
   $MSG_LEVEL = "等级";
@@ -91,6 +91,8 @@
   $MSG_Content = "内容";
   $MSG_OpenSource ="开放源码";
   $MSG_RankingExcludedUsers = "排名不包括以下用户";
+  $MSG_CodeArchive = "代码档案";
+  $MSG_Order_by = "排序";
     
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -233,9 +235,9 @@
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS;
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS;
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息。";
-  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，多组测试数据在添加后从题目列表'".$MSG_TestData."'按钮进入上传，新建题目<b>默认隐藏</b>，需在问题列表中点击'".$MSG_Reserved."'按钮切换到启用状态。";
+  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认隐藏</b>，需点击列表状态栏中对应的'".$MSG_Reserved."'切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
-  $MSG_HELP_CONTEST_LIST="已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
+  $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
   $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，无法删除。";
   $MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
   $MSG_HELP_REJUDGE="重判指定的题目、提交或比赛。";
@@ -244,17 +246,18 @@
   $MSG_HELP_GIVESOURCE="将导入系统的标程赠与指定帐号，用于训练后辅助未通过的人学习参考。";
   $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
   $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件。";
-  
+  $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
+
   $MSG_HELP_AC="答案正确，请再接再厉。"; 
   $MSG_HELP_PE="答案基本正确，但是格式不对。"; 
   $MSG_HELP_WA="答案不对，仅仅通过样例数据的测试并不一定是正确答案，一定还有你没想到的地方，点击查看系统可能提供的对比信息。"; 
-  $MSG_HELP_TLE="运行超出时间限制，检查下是否有死循环，或者应该有更快的计算方法"; 
-  $MSG_HELP_MLE="超出内存限制，数据可能需要压缩，检查内存是否有泄露"; 
-  $MSG_HELP_OLE="输出超过限制，你的输出比正确答案长了两倍，一定是哪里弄错了"; 
+  $MSG_HELP_TLE="运行超出时间限制，检查下是否有死循环，或者应该有更快的计算方法。"; 
+  $MSG_HELP_MLE="超出内存限制，数据可能需要压缩，检查内存是否有泄露。"; 
+  $MSG_HELP_OLE="输出超过限制，你的输出比正确答案长了两倍，一定是哪里弄错了。"; 
   $MSG_HELP_RE="运行时错误，非法的内存访问，数组越界，指针漂移，调用禁用的系统函数。请点击后获得详细输出";
-  $MSG_HELP_CE="编译错误，请点击后获得编译器的详细输出"; 
+  $MSG_HELP_CE="编译错误，请点击后获得编译器的详细输出。"; 
   
-  $MSG_HELP_MORE_TESTDATA_LATER="更多组测试数据，请在题目添加完成后补充"; 
+  $MSG_HELP_MORE_TESTDATA_LATER="更多组测试数据，请在题目添加完成后补充。"; 
   //$MSG_HELP_SPJ="特殊裁判的使用，请参考<a href='https://cn.bing.com/search?q=hustoj+special+judge' target='_blank'>搜索hustoj special judge</a>"; 
   
   //$MSG_WARNING_LOGIN_FROM_DIFF_IP="从不同的ip地址登录";

@@ -91,6 +91,8 @@
   $MSG_Content = "Content";
   $MSG_OpenSource ="Open source";
   $MSG_RankingExcludedUsers = "Ranking Excluded Users";
+  $MSG_CodeArchive = "Code archive";
+  $MSG_Order_by = "Order by";
 	
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -244,22 +246,23 @@
   $MSG_HELP_GIVESOURCE=" transfers the label of the import system to the designated account number, which is used to assist the person who has not passed the training after the training. ";
   $MSG_HELP_EXPORT_PROBLEM= "export the problems of the system in the form of fps.xml file. ";
   $MSG_HELP_IMPORT_PROBLEM=" import fps.xml files downloaded from internet or tk.hustoj.com. ";
+  $MSG_HELP_PROBLEM_STATISTICS="You are able to view all submissions after solving this problem.";
 
   $MSG_HELP_AC="Congratulations!"; 
-  $MSG_HELP_PE="Your output format is not exactly the same as the judge's output, although your answer to the problem is correct. Check your output for spaces, blank lines,etc against the problem output specification"; 
+  $MSG_HELP_PE="Your output format is not exactly the same as the judge's output, although your answer to the problem is correct. Check your output for spaces, blank lines,etc against the problem output specification."; 
   $MSG_HELP_WA=" Correct solution not reached for the inputs. The inputs and outputs that we use to test the programs are not public (it is recomendable to get accustomed to a true contest dynamic ;-)"; 
-  $MSG_HELP_TLE="Your program tried to run during too much time"; 
-  $MSG_HELP_MLE="Your program tried to use more memory than the judge default settings"; 
-  $MSG_HELP_OLE="Your program tried to write too much information. This usually occurs if it goes into a infinite loop. Currently the output limit is 1M bytes"; 
-  $MSG_HELP_RE="All the other Error on the running phrase will get Runtime Error, such as 'segmentation fault','floating point exception','used forbidden functions', 'tried to access forbidden memories' and so on";
-  $MSG_HELP_CE="The compiler (gcc/g++/gpc) could not compile your ANSI program. Of course, warning messages are not error messages. Click the link at the judge reply to see the actual error message"; 
+  $MSG_HELP_TLE="Your program tried to run during too much time."; 
+  $MSG_HELP_MLE="Your program tried to use more memory than the judge default settings."; 
+  $MSG_HELP_OLE="Your program tried to write too much information. This usually occurs if it goes into a infinite loop. Currently the output limit is 1M bytes."; 
+  $MSG_HELP_RE="All the other Error on the running phrase will get Runtime Error, such as 'segmentation fault','floating point exception','used forbidden functions', 'tried to access forbidden memories' and so on.";
+  $MSG_HELP_CE="The compiler (gcc/g++/gpc) could not compile your ANSI program. Of course, warning messages are not error messages. Click the link at the judge reply to see the actual error message."; 
 
   $MSG_HELP_MORE_TESTDATA_LATER="more testdata can be added later after this problem added."; 
-  //$MSG_HELP_SPJ="<a href='https://cn.bing.com/search?q=hustoj+special+judge' target='_blank'>search hustoj special judge</a>for more details"; 
+  //$MSG_HELP_SPJ="<a href='https://cn.bing.com/search?q=hustoj+special+judge' target='_blank'>search hustoj special judge</a>for more details."; 
  
-  //$MSG_WARNING_LOGIN_FROM_DIFF_IP="Login from a diffrent ip ";
-  //$MSG_LOSTPASSWORD_MAILBOX="Input the Code sended to your email (Trash Box )";
-  //$MSG_LOSTPASSWORD_WILLBENEW="if it's correct, it will be the new password";
+  //$MSG_WARNING_LOGIN_FROM_DIFF_IP="Login from a diffrent ip. ";
+  //$MSG_LOSTPASSWORD_MAILBOX="Input the Code sended to your email (Trash Box ).";
+  //$MSG_LOSTPASSWORD_WILLBENEW="if it's correct, it will be the new password.";
 
   //privilege_distribution.php
   $MSG_enter_admin_page ="enter_admin_page";

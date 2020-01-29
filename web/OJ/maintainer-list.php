@@ -1,11 +1,9 @@
-<?php include "template/hznu/header.php" ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>HZNUOJ -- Maintainer List</title>
+<?php
+$title="Maintainer List";
+require_once('include/static.php'); 
+require_once('include/setlang.php'); 
+require_once('template/hznu/header.php'); 
+?>
     <style>
         .box{
             border: 1px solid #eee;
@@ -20,10 +18,8 @@
             margin-bottom: 0;
         }
     </style>
-</head>
-<body>
     <div class="am-container" style="padding-top: 20px; max-width: 800px;">
-        <h1>Maintainer History</h1>
+        <h1>HZNUOJ Maintainer History</h1>
         <hr>
         <div class="box">
             <table class="am-table">
@@ -180,8 +176,6 @@
             </table>
         </div>
     </div>
-</body>
-</html>
 <?php include "template/hznu/footer.php" ?>
 
 

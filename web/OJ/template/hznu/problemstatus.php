@@ -10,7 +10,7 @@
 ?>
 
 <?php
-  $title="Problem Statics";
+  $title=$MSG_PROBLEM.$MSG_STATISTICS;
  require_once "header.php";
  require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/const.inc.php";
 ?>
@@ -19,12 +19,12 @@
 <div class="am-container" style="margin-top:40px;">
     <?php
     echo <<<HTML
-      <h1>Code archive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
+      <h1>$MSG_CodeArchive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
       <hr/>
 HTML;
     ?>
   <div style="color: grey;">
-    You are able to view all submissions after solving this problem.
+    <h4><?php echo $MSG_HELP_PROBLEM_STATISTICS ?></h4>
   </div>
   <div style="padding: 15px;">
     <div style="width: 350px; float: left;" class="am-text-center">
@@ -34,7 +34,7 @@ HTML;
           
           <form action="" method="GET">
             <div style="height: 40px;" class="am-vertical-align">
-              <label for="language" class="am-vertical-align-middle">Language:</label>
+              <label for="language" class="am-vertical-align-middle"><?php echo $MSG_LANG ?>:</label>
               <div style="float: right;">
                 <select name="language" id="language" data-am-selected="{maxHeight:300}">
                   <option value="-1">All</option>
@@ -53,9 +53,9 @@ HTML;
             </div>
             
             <div style="height: 40px;" class="am-vertical-align">
-              <label for="result" class="am-vertical-align-middle">Result:</label>
+              <label for="result" class="am-vertical-align-middle"><?php echo $MSG_RESULT ?>:</label>
               <div style="float: right;">
-                <select name="result" id="result" data-am-selected>4
+                <select name="result" id="result" data-am-selected>
                 <?php
                 for($i=4 ; $i<=11 ; ++$i){
                     $sel = "";
@@ -70,13 +70,13 @@ HTML;
             </div>
   
             <div style="height: 40px;" class="am-vertical-align">
-              <label for="order" class="am-vertical-align-middle">Order by:</label>
+              <label for="order" class="am-vertical-align-middle"><?php echo $MSG_Order_by ?>:</label>
               <div style="float: right;">
                 <select name="order" id="order" data-am-selected>
-                  <option value="length" <?php if($_GET['order']=="length") echo "selected";?>>Code length</option>
-                  <option value="time" <?php if($_GET['order']=="time") echo "selected";?>>Time</option>
-                  <option value="memory" <?php if($_GET['order']=="memory") echo "selected";?>>Memory</option>
-                  <option value="date" <?php if($_GET['order']=="date") echo "selected";?>>Submit date</option>
+                  <option value="length" <?php if($_GET['order']=="length") echo "selected";?>><?php echo $MSG_CODE_LENGTH ?></option>
+                  <option value="time" <?php if($_GET['order']=="time") echo "selected";?>><?php echo $MSG_TIME ?></option>
+                  <option value="memory" <?php if($_GET['order']=="memory") echo "selected";?>><?php echo $MSG_MEMORY ?></option>
+                  <option value="date" <?php if($_GET['order']=="date") echo "selected";?>><?php echo $MSG_SUBMIT_TIME ?></option>
                 </select>
               </div>
             </div>
@@ -84,7 +84,7 @@ HTML;
               <?php
               echo "<input type=\"hidden\"  name=\"id\" value=\"$pid\">";
               ?>
-            <button class="am-btn am-btn-primary am-btn-sm">Filter</button>
+            <button class="am-btn am-btn-primary am-btn-sm"><?php echo $MSG_FILTER ?></button>
           </form>
         </div>
       </div>
@@ -92,14 +92,14 @@ HTML;
     <div style="margin-left: 400px;">
       <table class="am-table am-table-compact am-table-striped am-table-hover">
         <tr>
-          <th>Run ID</th>
-          <th>User</th>
-          <th>Result</th>
-          <th>Run time</th>
-          <th>Memory</th>
-          <th>Code length</th>
-          <th>Language</th>
-          <th>Submit date</th>
+          <th><?php echo $MSG_RUNID ?></th>
+          <th><?php echo $MSG_USER ?></th>
+          <th><?php echo $MSG_RESULT ?></th>
+          <th><?php echo $MSG_TIME ?></th>
+          <th><?php echo $MSG_MEMORY ?></th>
+          <th><?php echo $MSG_CODE_LENGTH ?></th>
+          <th><?php echo $MSG_LANG ?></th>
+          <th><?php echo $MSG_SUBMIT_TIME ?></th>
         </tr>
           <?php
           foreach ($data as $row) {
@@ -117,10 +117,10 @@ HTML;
             echo "</td>";
             echo <<<HTML
               <td>{$judge_result[$row['result']]}</td>
-              <td>{$row['time']} MS</td>
+              <td>{$row['time']} ms</td>
               <td>{$row['memory']} KB</td>
 HTML;
-              echo "<td>{$row['code_length']}B</td>";
+              echo "<td>{$row['code_length']} B</td>";
             if(canSeeSource($row['solution_id'])) {
                 echo <<<HTML
                   <td>

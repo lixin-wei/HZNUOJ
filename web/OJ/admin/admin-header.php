@@ -78,8 +78,8 @@
           echo "<li><a href='/OJ/'>$MSG_SEEOJ</a></li>";
           $html_li="";
           if($can_see_problem){
-            $html_li .= "<li><a href='/OJ/admin/problem_edit.php?new_problem'>$MSG_ADD$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_list.php'>$MSG_PROBLEM$MSG_LIST</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/problem_edit.php?new_problem'>$MSG_ADD$MSG_PROBLEM</a></li>";            
           }
           if($html_li!=""){
             echo<<<sss
@@ -117,8 +117,8 @@ sss;
 
           $html_li="";
           if(HAS_PRI("edit_contest")){
-            $html_li .= "<li><a href='/OJ/admin/contest_add.php'>$MSG_ADD$MSG_CONTEST</a></li>";
             $html_li .= "<li><a href='/OJ/admin/contest_list.php'>$MSG_CONTEST$MSG_LIST</a></li>";
+            $html_li .= "<li><a href='/OJ/admin/contest_add.php'>$MSG_ADD$MSG_CONTEST</a></li>";
           }
           if(HAS_PRI("generate_team")){
             $html_li .= "<li><a href='/OJ/admin/team_generate.php'>$MSG_TEAMGENERATOR</a></li>";
@@ -195,4 +195,4 @@ sss;
       </div><!-- collapse navbar-collapse -->
     </div>
   </nav>
-  <div class="am-container">
+  <div class="am-container" style="margin-left: 150px;margin-bottom: 30px;">

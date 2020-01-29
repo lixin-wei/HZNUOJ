@@ -25,7 +25,7 @@
         </select>
       </p>
       <p align=left><?php echo $MSG_Content ?>:<br>
-      <textarea class=kindeditor name=content ></textarea></p>
+      <textarea class=kindeditor name=content  rows="15"></textarea></p>
       <input class="btn btn-default" type=submit value=<?php echo $MSG_SUBMIT ?> name=submit>
       <?php require_once("../include/set_post_key.php");?>
     </form>
