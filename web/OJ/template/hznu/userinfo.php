@@ -237,11 +237,10 @@ require_once("header.php");
 
 <?php
 $chart_sub_data="";
-for($i=4 ; $i<=11 ; ++$i){
-  $sql="SELECT count(*) FROM solution WHERE result=$i AND user_id='{$_GET['user']}'";
-  $res=$mysqli->query($sql);
-  $cnt=$res->fetch_array()[0];
-  $chart_sub_data.="{value: $cnt, name: '{$judge_result[$i]}'},";
+$sql="SELECT result,count(*) FROM solution WHERE user_id='{$_GET['user']}' group by result";
+$res=$mysqli->query($sql)->fetch_all();
+foreach($res as $row){
+  $chart_sub_data.="{value: $row[1], name: '{$judge_result[$row[0]]}'},";
 }
 ?>
 <script type="text/javascript">
@@ -290,12 +289,12 @@ option = {
         trigger: 'item',
         formatter: "{b} : {c} ({d}%)"  
     },
-    color : [
-      '#5EB95E', '#6b8e23', '#DD514C', '#F37B1D', '#b8860b', 
-      '#ff69b4', '#ba55d3', '#6495ed', '#ffa500', '#40e0d0', 
-      '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700', 
-      '#ff00ff', '#3cb371', '#87cefa', '#30e0e0', '#32cd32' ,
-    ],
+    // color : [
+    //   '#5EB95E', '#6b8e23', '#DD514C', '#F37B1D', '#b8860b', 
+    //   '#ff69b4', '#ba55d3', '#6495ed', '#ffa500', '#40e0d0', 
+    //   '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700', 
+    //   '#ff00ff', '#3cb371', '#87cefa', '#30e0e0', '#32cd32' ,
+    // ],
     //color : ['#5EB95E','#DD514C'],
     series : [
         {
@@ -304,21 +303,6 @@ option = {
             data:[
                 <?php echo $chart_sub_data; ?>
             ],
-            itemStyle: {
-                normal: {
-                  label: {
-                    show: false,
-                    position: "inner",
-                  },
-                },
-                emphasis: {
-                    label: {
-                      show: false,
-                      position: "inner",
-                    },
-                },
-
-            }
         }
     ]
 };
