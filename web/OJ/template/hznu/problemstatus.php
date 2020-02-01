@@ -16,7 +16,7 @@
 ?>
 
 
-<div class="am-container" style="margin-top:40px;">
+<div class="am-container" style="margin-top:10px;">
     <?php
     echo <<<HTML
       <h1>$MSG_CodeArchive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
@@ -28,9 +28,10 @@ HTML;
   </div>
   <div style="padding: 15px;">
     <div style="width: 350px; float: left;" class="am-text-center">
-      <div class="am-panel am-panel-default" data-am-sticky="{top:60}">
-        <div class="am-panel-hd">Solution filter</div>
-        <div class="am-panel-bd">
+    <div class="am-panel-group">
+      <section class="am-panel am-panel-default">
+        <header class="am-panel-hd">Solution filter</header>
+        <main class="am-panel-bd">
           
           <form action="" method="GET">
             <div style="height: 40px;" class="am-vertical-align">
@@ -88,8 +89,28 @@ HTML;
               ?>
             <button class="am-btn am-btn-primary am-btn-sm"><?php echo $MSG_FILTER ?></button>
           </form>
-        </div>
-      </div>
+        </main>
+      </section>
+      
+      <section class="am-panel am-panel-default" >
+        <header class="am-panel-hd"><?php echo $MSG_SUBMISSIONS.$MSG_STATISTICS ?></header>
+        <main class="am-panel-bd">
+        <div id="statistics_chart" style="width: 100%;height: 200px;"></div>
+        <table class="am-table am-text-middle">
+          <?php
+          foreach ( $view_problem as $row ) {
+            echo "<tr>\n";
+            echo "<th class='am-text-right'>" . $row[0] . "：</th>\n";
+            echo "<td width='40%'  class='am-text-left'>&nbsp;&nbsp;" . $row[1] . "</td>\n";
+            echo "</tr>\n";
+          }
+          ?>
+           <tr>      
+    </tr>
+        </table>
+        </main>
+      </section>
+    </div>
     </div>
     <div style="margin-left: 400px;">
       <table class="am-table am-table-compact am-table-striped am-table-hover">
@@ -174,3 +195,46 @@ HTML;
   </div>
 </div>
 <?php require_once("footer.php")?>
+
+<script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
+<!-- <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script> -->
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var statistics_chart = echarts.init(document.getElementById('statistics_chart'));
+    //statistics_chart.showLoading();
+    option = null;
+option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    series: [
+        {
+            name: '<?php echo $MSG_SUBMISSIONS.$MSG_STATISTICS ?>',
+            type: 'pie',
+            radius: '65%',
+            center: ['50%', '50%'],
+            roseType: 'radius',
+            labelLine: {
+                smooth: 0.1,
+                length: 5,
+                length2: 10
+            },
+            data: [
+              <?php 
+                foreach ( $view_echart as $row ) {
+                   echo " {value:" . $row[1] . ", name: '". $row[0] . "'},\n";
+                }
+              ?>
+            ].sort(function (a, b) { return a.value - b.value; })
+        }
+    ]
+};
+if (option && typeof option === "object") {
+  statistics_chart.setOption(option, true);
+}
+</script>
+
+<!--get charts json START-->
+
+<!--get charts json END-->
