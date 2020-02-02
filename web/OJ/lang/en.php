@@ -11,10 +11,10 @@
   // 主导航栏
   $MSG_HOME = "Home";
   $MSG_BBS = "BBS";
-  $MSG_PROBLEMSET = "ProblemSet";
-  $MSG_STATUS = "Status";
-  $MSG_RANKLIST = "Ranklist";
-  $MSG_CONTEST = "Contest";
+  $MSG_PROBLEMSET = " ProblemSet";
+  $MSG_STATUS = " Status";
+  $MSG_RANKLIST = " Ranklist";
+  $MSG_CONTEST = " Contest";
   $MSG_RECENT_CONTEST = "RecentContest";
   $MSG_FAQ = "F.A.Qs";
   $MSG_ACM_MAIL = "ACM Mail";
@@ -28,7 +28,7 @@
   $MSG_ADMIN = "Admin";
   $MSG_USERINFO = "User Info";
   $MSG_MY_SUBMISSIONS = "My Status";
-  $MSG_MY_CONTESTS="My $MSG_CONTEST"; 
+  $MSG_MY_CONTESTS="My ".$MSG_CONTEST; 
   $MSG_HIDETAG = "Hide Tag";
   $MSG_SHOWTAG = "Show Tag";
   
@@ -41,7 +41,7 @@
   // problemset.php
   $MSG_SEARCH = "Search";
   $MSG_PROBLEM_ID = "Prob ID";
-  $MSG_TITLE = "Title";
+  $MSG_TITLE = " Title";
   $MSG_SUBMIT = "Submit";
   $MSG_SCORES = "Scores";
   $MSG_KEYWORDS = "Keywords";
@@ -194,9 +194,11 @@
   $MSG_REJUDGE="Rejudge ";
   $MSG_PRIVILEGE="Privilege";
   $MSG_Distribution = "Privilege Distribution";
+  $MSG_SourceCode= "Source" ;
   $MSG_GIVESOURCE="Give Source";
   $MSG_IMPORT="Import";
   $MSG_EXPORT="Export";
+  $MSG_ReOrderProblem="ReOrderProblem";
   $MSG_UPDATE_DATABASE="Update Database";
   $MSG_ONLINE="Online";  
   $MSG_Copy = "Copy";
@@ -242,7 +244,7 @@
   $MSG_HELP_TEAMGENERATOR="Generate accounts and passwords in batches for competitors from different schools. Small system should not be used casually, may produce garbage accounts, which can not be easily deleted.";
   $MSG_HELP_SETPASSWORD="Reset the password for the specified user, for administrator account need to downgrade to ordinary users to modify.";
   $MSG_HELP_REJUDGE="To review a specified subject, submission, or contest.";
-  $MSG_HELP_ADD_PRIVILEGE=" adds permissions to designated users, including administrators, teacher, teacher_assistant, code viewer and other permissions. ";
+  $MSG_HELP_ADD_PRIVILEGE=" adds permissions to designated users, including administrators, teacher, teacher_assistant, code viewer and other permissions.";
   $MSG_HELP_PRIVILEGE_LIST= "looks at the existing list of special permissions and deletes them. ";
   $MSG_HELP_GIVESOURCE=" transfers the label of the import system to the designated account number, which is used to assist the person who has not passed the training after the training. ";
   $MSG_HELP_EXPORT_PROBLEM= "export the problems of the system in the form of fps.xml file. ";
@@ -270,20 +272,43 @@
   $MSG_edit_default_problem ="edit_default_problem";
   $MSG_rejudge ="rejudge";
   $MSG_edit_news ="edit_news";
+  $MSG_HELP_edit_news = "edit and add News";
   $MSG_edit_contest ="edit_contest";
+  $MSG_HELP_edit_contest1 = "edit and add contest.";
+  $MSG_HELP_edit_contest2 = "you can enter any contest in passing. ";
+  $MSG_HELP_edit_contest3 = "you can see problem ID even when contest is running. ";
   $MSG_download_ranklist ="download_ranklist";
   $MSG_generate_team ="generate_team";
+  $MSG_HELP_generate_team ="Generate accounts and passwords in batches.";
   $MSG_edit_user_profile ="edit_user_profile";
+  $MSG_HELP_edit_user_profile ="change user ID, password.";
   $MSG_edit_privilege_group ="edit_privilege_group";
+  $MSG_HELP_edit_privilege_group ="add and delete permissions to designated users."
   $MSG_edit_privilege_distribution="edit_privilege_distribution";
   $MSG_inner_function ="inner_function";
+  $MSG_HELP_inner_function ="some Inner functions, Dangerous functions";
+  $MSG_edit_xx_problem = "edit_xx_problem";
+  $MSG_HELP_edit_xx_problem1 = "edit problems, see problems' data in corresponding problemset.";
+  $MSG_see_hidden_xx_problem ="see_hidden_default_problem";
+  $MSG_HELP_see_hidden_xx_problem1 ="see hidden problems in corresponding problemset at problemset page. ";
+  $MSG_HELP_see_hidden_xx_problem2 ="including problems in running contest. ";
   $MSG_see_hidden_default_problem ="see_hidden_default_problem";
   $MSG_see_hidden_user_info ="see_hidden_user_info";
+  $MSG_HELP_see_hidden_user_info ="see the hidden information in userinfo page, including real name, class and recent login info.";
   $MSG_see_wa_info_out_of_contest ="see_wa_info_out_of_contest";
+  $MSG_HELP_see_wa_info_out_of_contest ="see WA,RE,PE,TEST_RUN and CE information of all users only in normal status.";
   $MSG_see_wa_info_in_contest ="see_wa_info_in_contest";
+  $MSG_HELP_see_wa_info_in_contest ="see WA,RE,PE,TEST_RUN and CE information of all users in contest status.";
   $MSG_see_source_out_of_contest ="see_source_out_of_contest";
+  $MSG_HELP_see_source_out_of_contest1 ="see source code of all subbmissions out of contest.";
+  $MSG_HELP_see_source_out_of_contest2 ="you can see the hidden time,memory,language info of all users only in normal status.";
   $MSG_see_source_in_contest ="see_source_in_contest";
+  $MSG_HELP_see_source_in_contest1 ="see source code of all subbmissions in contest.";
+  $MSG_HELP_see_source_in_contest2 ="you can see the hidden time,memory,language info in conteset of all users in passing.";
   $MSG_see_compare ="see_compare";
+  $MSG_HELP_see_compare ="view the compare source page.";
   $MSG_upload_files ="upload_files";
+  $MSG_HELP_upload_files1 = "checked when uploading files. ";
+  $MSG_HELP_upload_files2 = "problem and contest editor need this privilege. ";
   $MSG_watch_solution_video ="watch_solution_video";  
 ?>
