@@ -17,6 +17,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="alternate icon" type="image/jpg" href="../image/hznuoj.ico">
+    <link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="/OJ/plugins/bootstrap/css/bootstrap.min.css">
   <link href="/OJ/plugins/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">

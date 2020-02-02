@@ -204,6 +204,7 @@
   $MSG_Operations = "操作";
   $MSG_Old = "老";
   $MSG_New = "新";
+  $MSG_FastTrack = "快速通道";
   
   //contest
   $MSG_PRIVATE_WARNING="私有比赛或考试作业，您无权查看题目。";
@@ -277,7 +278,7 @@
   $MSG_edit_privilege_distribution=$MSG_EDIT.$MSG_Distribution;
   $MSG_inner_function ="inner_function";
   $MSG_see_hidden_default_problem ="查看隐藏的题目";
-  $MSG_see_hidden_user_info ="查看未激活用户的信息";
+  $MSG_see_hidden_user_info ="查看隐藏的用户信息";
   $MSG_see_wa_info_out_of_contest ="查看比赛之外正提交代码的错误信息";
   $MSG_see_wa_info_in_contest ="查看比赛中提交代码的错误信息";
   $MSG_see_source_out_of_contest ="查看比赛之外正常提交的源代码";

@@ -204,6 +204,7 @@
   $MSG_Operations = "Operations";
   $MSG_Old = "Old ";
   $MSG_New = "New ";
+  $MSG_FastTrack = "Fast Track";
    
   //contest.php
   $MSG_PRIVATE_WARNING="This is a private contest which you don't have privilege.";

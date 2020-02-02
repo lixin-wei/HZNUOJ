@@ -8,6 +8,31 @@ require_once "../include/my_func.inc.php";
     	<h1>Welcome To Administration Page</h1><hr>
     	Your group is: <b><?php echo get_group($_SESSION['user_id']); ?></b><br>
     	<a href="privilege_distribution.php">See what you can do here.</a>
+      <section class="am-panel am-panel-default" style="width:400px;margin-top:20px;">
+          <header class="am-panel-hd">
+            <h3 class="am-panel-title"><b><?php echo $MSG_FastTrack?></b></h3>
+           </header>
+          <main class="am-panel-bd">
+            <table class="am-table am-text-middle">              
+              <?php 
+                if($can_see_problem){
+                  echo "<tr>\n<td><a href='/OJ/admin/problem_edit.php?new_problem'>$MSG_ADD$MSG_PROBLEM</a></td>\n";
+                  echo "<td><a href='/OJ/admin/problem_list.php'>$MSG_PROBLEM$MSG_LIST</a></td>\n</tr>\n";
+                  }
+                if(HAS_PRI("edit_contest")){
+                    echo "<tr>\n<td><a href='/OJ/admin/contest_add.php'>$MSG_ADD$MSG_CONTEST</a></td>\n";
+                    echo "<td><a href='/OJ/admin/contest_list.php'>$MSG_CONTEST$MSG_LIST</a></td>\n</tr>\n";
+                  }
+                echo "<tr>\n<td><a href='/OJ/admin/user_list.php'>$MSG_USER$MSG_LIST</a></td>\n";
+                if(HAS_PRI("edit_user_profile")){
+                  echo "<td><a href='/OJ/admin/changepass.php'>$MSG_SETPASSWORD</a></td>\n</tr>\n";
+                } else {
+                  echo "<td>&nbsp;</td>\n</tr>\n";
+                }
+              ?>
+            </table>
+            </main>
+       </section>
     </div>
   </div>
 <?php 
