@@ -113,14 +113,16 @@
 	  $defunct="N";
   }
   $sql="INSERT INTO `users`("
-  ."`user_id`,`email`,`defunct`,`ip`,`accesstime`,`password`,`reg_time`,`nick`,`school`,class, stu_id, real_name)"
-  ."VALUES('".$user_id."','".$email."','".$defunct."','".$_SERVER['REMOTE_ADDR']."',NOW(),'".$password."',NOW(),'".$nick."','".$school."','".$class."','".$stu_id."','".$real_name."')";
+  ."`user_id`,`email`,`defunct`,`ip`,`password`,`reg_time`,`nick`,`school`,class, stu_id, real_name)"
+  ."VALUES('".$user_id."','".$email."','".$defunct."','".$_SERVER['REMOTE_ADDR']."','".$password."',NOW(),'".$nick."','".$school."','".$class."','".$stu_id."','".$real_name."')";
 
   $mysqli->query($sql) or die ($mysqli->error);
   $msg = "注册成功！";
   $sql="INSERT INTO `loginlog` VALUES('$user_id','$password','$ip',NOW())";
   $mysqli->query($sql);
   if(!isset($OJ_REG_NEED_CONFIRM)||!$OJ_REG_NEED_CONFIRM){
+    $sql="UPDATE `users` SET `accesstime`=NOW() WHERE `user_id`='$user_id'";
+    $mysqli->query($sql);
 	  $_SESSION['user_id']=$user_id;
   $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$_SESSION['user_id']."'";
   //echo $sql."<br />";
