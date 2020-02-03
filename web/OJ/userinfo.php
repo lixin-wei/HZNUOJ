@@ -30,7 +30,7 @@ error_reporting(E_ALL);
   $view_title=$user ."@".$OJ_NAME;
   $user_mysql=$mysqli->real_escape_string($user);
 
-  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id FROM `users` WHERE `user_id`='$user_mysql'";
+  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id,defunct FROM `users` WHERE `user_id`='$user_mysql'";
 
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
@@ -44,6 +44,9 @@ error_reporting(E_ALL);
   $school=$row->school;
   $email=$row->email;
   $nick=$row->nick;
+  if($row->defunct=="Y"){
+    $defunct = "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>【". $MSG_STATUS."：".$MSG_Reserved."】</font>";
+  }
   $real_name = $row->real_name;
   $stu_id=$row->stu_id;
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 

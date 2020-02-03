@@ -18,7 +18,7 @@ require_once("header.php");
     width: 120px;
   }
 </style>
-<div class="am-container" style="margin-top:40px;">
+<div class="am-container" style="margin-top:20px;">
   <!-- userinfo上半部分 start -->
   <h1><?php echo $MSG_USERINFO.$MSG_STATISTICS ?></h1><hr>
   <div class='am-g'>
@@ -29,7 +29,7 @@ require_once("header.php");
     <?php } ?>  
         <table class="am-table am-table-striped am-table-compact">
           <tbody>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_USER_ID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($user)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_USER_ID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($user).$defunct?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($nick)?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_RANK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $Rank?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_STRENGTH ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo round($strength)?></td></tr>
