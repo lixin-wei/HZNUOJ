@@ -67,21 +67,21 @@
       <div style="width: 340px; color: grey; ">--The following items are set by admins--</div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Student ID:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_StudentID ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" value="<?php echo htmlentities($row->stu_id)?>" name="stu_id" disabled>
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_REAL_NAME ?>:</label>
       <div class="am-u-sm-8">
-          <input type="text" style="width:340px;" value="<?php echo htmlentities($row->class)?>" name="real_name" disabled>
+        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name" disabled>
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Real Name:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" value="<?php echo htmlentities($row->real_name)?>" name="real_name" disabled>
+          <input type="text" style="width:340px;" value="<?php echo htmlentities($row->class)?>" name="class" disabled>
       </div>
     </div>
     <?php } ?>

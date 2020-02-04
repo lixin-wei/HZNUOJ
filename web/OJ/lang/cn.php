@@ -50,7 +50,7 @@
 
   //ranklist.php
   $MSG_RANK = "名次";
-  $MSG_NICK = "外号";
+  $MSG_NICK = "昵称";
   $MSG_SOLVED = "解决";
   $MSG_RATIO = "比率";
   $MSG_LEVEL = "等级";
@@ -84,7 +84,7 @@
   $MSG_NewPasswd = "新密码";
   $MSG_TOTAL = "合计";
   $MSG_Available = "启用";
-  $MSG_Reserved = "隐藏";
+  $MSG_Reserved = "停用";
   $MSG_CreatedDate = "创建日期";
   $MSG_Solution = "单个提交代码";
   $MSG_Importance = "优先级";
@@ -93,6 +93,9 @@
   $MSG_RankingExcludedUsers = "排名不包括以下用户";
   $MSG_CodeArchive = "代码档案";
   $MSG_Order_by = "排序";
+  $MSG_AccessTime = "登录时间";
+  $MSG_StudentID = "学号";
+  $MSG_Class = "班级";
     
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -145,7 +148,7 @@
   $MSG_CO="编译成功";
 
   //registerpage.php
-  $MSG_USER_ID="用户名(学号)";
+  $MSG_USER_ID="用户名";
   $MSG_PASSWORD="密码";
   $MSG_REPEAT_PASSWORD="重复密码";
   $MSG_SCHOOL="学校";
@@ -238,7 +241,7 @@
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS."。";
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息。";
-  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认隐藏</b>，需点击列表状态栏中对应的'".$MSG_Reserved."'切换到启用状态。";
+  $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
   $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，无法删除。";

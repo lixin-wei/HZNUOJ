@@ -133,7 +133,7 @@
       <tr>
       <th id="rank" width=5%><?php echo $MSG_RANK ?></th>
       <?php if($real_name_mode):?>
-        <th id="user" width=10%>Stu.ID</th>
+        <th id="user" width=10%><?php echo $MSG_StudentID ?></th>
         <th id="nick" width=10%><?php echo $MSG_REAL_NAME ?></th>
       <?php else: ?>
         <th id="user" width=10%><?php echo $MSG_USER ?></th>

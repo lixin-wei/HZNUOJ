@@ -93,6 +93,9 @@
   $MSG_RankingExcludedUsers = "Ranking Excluded Users";
   $MSG_CodeArchive = "Code archive";
   $MSG_Order_by = "Order by";
+  $MSG_AccessTime = "Access Time";
+  $MSG_StudentID = "Student ID";
+  $MSG_Class = "Class";
 	
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -283,7 +286,7 @@
   $MSG_edit_user_profile ="edit_user_profile";
   $MSG_HELP_edit_user_profile ="change user ID, password.";
   $MSG_edit_privilege_group ="edit_privilege_group";
-  $MSG_HELP_edit_privilege_group ="add and delete permissions to designated users."
+  $MSG_HELP_edit_privilege_group ="add and delete permissions to designated users.";
   $MSG_edit_privilege_distribution="edit_privilege_distribution";
   $MSG_inner_function ="inner_function";
   $MSG_HELP_inner_function ="some Inner functions, Dangerous functions";

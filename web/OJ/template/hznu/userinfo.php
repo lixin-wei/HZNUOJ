@@ -47,19 +47,19 @@ require_once("header.php");
               <input type="hidden" name="user_id" value="<?php echo htmlentities($user)?>">
               <tr><td colspan="2" class="am-danger  am-text-center">----The followings are  admin only----</td></tr>
               <tr>
-                <th class="first-col am-text-right" style="padding-top: 10px;">Student ID&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th class="first-col am-text-right" style="padding-top: 10px;"><?php echo $MSG_StudentID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <input class="am-form-field" name="stu_id" type="text" value="<?php echo htmlentities($stu_id)?>">
                 </td>
               </tr>
               <tr>
-                <th class="first-col am-text-right" style="padding-top: 10px;">Real Name&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th class="first-col am-text-right" style="padding-top: 10px;"><?php echo $MSG_REAL_NAME ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <input class="am-form-field" name="real_name" type="text" value="<?php echo htmlentities($real_name)?>">
                 </td>
               </tr>
               <tr>
-                <th class="first-col am-text-right" style="padding-top: 10px;">Class&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th class="first-col am-text-right" style="padding-top: 10px;"><?php echo $MSG_Class ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'100%'}">
                     <?php foreach ($classList as $c):?>

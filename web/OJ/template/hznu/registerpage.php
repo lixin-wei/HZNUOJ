@@ -59,7 +59,7 @@
     </div>
     <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
     <div class="am-form-group">
-      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label">Class:</label>
+      <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
         <select name="class" style="width:300px;">
         <?php
@@ -73,13 +73,13 @@
       </div>
     </div>
     <div class="am-form-group">
-      <label for="school" class="am-u-sm-4 am-form-label">Student ID: </label>
+      <label for="school" class="am-u-sm-4 am-form-label"><?php echo $MSG_StudentID ?>: </label>
       <div class="am-u-sm-8">
         <input type="text" id="stu_id" name="stu_id"value="" style="width:300px;" placeholder="Your student ID" pattern="^[0-9]*$"/>
       </div>
     </div>
     <div class="am-form-group">
-      <label class="am-u-sm-4 am-form-label">Real Name:</label>
+      <label class="am-u-sm-4 am-form-label"><?php echo $MSG_REAL_NAME ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" id='real_name' style="width:300px;" value="" name="real_name" placeholder="Your real name">
       </div>
