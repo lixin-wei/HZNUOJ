@@ -32,7 +32,8 @@ if(isset($_POST['do'])){
 	}
 	$user_id=$mysqli->real_escape_string($user_id);
 	$passwd=pwGen($passwd);
-	$sql="update `users` set `password`='$passwd' where `user_id`='$user_id'  and user_id not in( select user_id from privilege where rightstr='administrator') ";
+	$sql="update `users` set `password`='$passwd' where `user_id`='$user_id'  and user_id not in(";
+	$sql.=" select DISTINCT user_id from privilege where rightstr in (SELECT `group_name` FROM `privilege_distribution` ))";
 	$mysqli->query($sql);
 	if ($mysqli->affected_rows) echo "Password Changed!";
   else echo "No such user! or He/Her is an administrator!";
