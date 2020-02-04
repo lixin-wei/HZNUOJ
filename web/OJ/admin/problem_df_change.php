@@ -13,8 +13,9 @@
   $plist = "";
   sort($_POST['pid']);
   foreach($_POST['pid'] as $i){
+    $i = intval($mysqli->real_escape_string($i));
   	if($plist) {
-        if(HAS_PRI("edit_".get_problemset($i)."_problem")) $plist.=','.intval($i);
+        if(HAS_PRI("edit_".get_problemset($i)."_problem")) $plist.=','.$i;
   	} else{
     	if(HAS_PRI("edit_".get_problemset($i)."_problem")) $plist = $i;
   	}
@@ -34,7 +35,7 @@ if(isset($_POST['enable'])&&$plist){
 }else if(isset($_POST['disable'])&&$plist){
   $sql = "UPDATE `problem` SET defunct='Y' WHERE `problem_id` IN ($plist)";           
 }else{  
-  $id = intval($_GET['id']);
+  $id = intval($mysqli->real_escape_string($_GET['id']));
 $sql="SELECT `defunct` FROM `problem` WHERE `problem_id`=$id";
 $result=$mysqli->query($sql);
 $row=$result->fetch_row();

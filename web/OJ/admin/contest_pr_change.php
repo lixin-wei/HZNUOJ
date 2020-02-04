@@ -8,7 +8,7 @@
 
 <?php require_once("admin-header.php");
 require_once("../include/check_get_key.php");
-$cid=intval($_GET['cid']);
+$cid=intval($mysqli->real_escape_string($_GET['cid']));
 if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
 	echo "Permission denied!";
 	exit(1);

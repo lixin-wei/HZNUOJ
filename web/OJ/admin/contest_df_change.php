@@ -12,15 +12,16 @@ require_once("../include/check_get_key.php");
 $clist="";
 sort($_POST['cid']);
 foreach($_POST['cid'] as $i){
+    $i = intval($mysqli->real_escape_string($i));
     if($clist) {
-        if(isset($_SESSION["m$i"])||HAS_PRI("edit_contest")) $clist.=','.intval($i);
+        if(isset($_SESSION["m$i"])||HAS_PRI("edit_contest")) $clist.=','.$i;
   	} else{
     	if(isset($_SESSION["m$i"])||HAS_PRI("edit_contest")) $clist = $i;
   	}
 }  
 
 
-$cid=intval($_GET['cid']);
+$cid=intval($mysqli->real_escape_string($_GET['cid']));
 if(!(isset($_GET['cid']) && isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
 	echo "<script language=javascript>history.go(-1);</script>";
 	exit(1);
