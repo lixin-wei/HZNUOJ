@@ -23,17 +23,6 @@
   <link href="/OJ/plugins/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
-     <style type="text/css">
-      .am-container {
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        max-width: 1400px;
-      }
-	  .am-container p{
-            vertical-align: middle;
-      }
-    </style>
 <?php 
   require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
   require_once('../include/setlang.php');
@@ -57,11 +46,11 @@
 ?>
   <style type="text/css">
     body{
-      padding-top: 70px;
+      padding-top: 50px;
     }
   </style>
   <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="am-container">
+    <div class="am-container" style="max-width: 1400px;width: 100%;">
     <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -196,4 +185,4 @@ sss;
       </div><!-- collapse navbar-collapse -->
     </div>
   </nav>
-  <div class="am-container" style="margin-left: 150px;margin-bottom: 30px;">
+  <div class="am-container" style="margin-left: 150px;margin-bottom: 30px;max-width: 1300px;width: 100%;">
