@@ -32,7 +32,7 @@ class TM {
     var $stu_id;
     var $class;
     var $try_after_lock;
-    function TM(){
+    function TM__construct(){
         $this->score = 0;
         $this->solved=0;
         $this->time=0;
