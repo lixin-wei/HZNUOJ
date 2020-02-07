@@ -51,8 +51,8 @@
     $err_cnt++;
   }
   $len=strlen($nick);
-  if ($len>100){
-    $err_str=$err_str."输入的姓名过长！\\n";//$err_str=$err_str."Nick Name Too Long!\\n";
+  if ($len>=30){
+    $err_str=$err_str."输入的{$MSG_NICK}过长！\\n";//$err_str=$err_str."Nick Name Too Long!\\n";
     $err_cnt++;
   }else if ($len==0) $nick=$user_id;
   $len = strlen($_POST['password']);

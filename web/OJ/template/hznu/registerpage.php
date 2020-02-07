@@ -48,7 +48,7 @@
     <div class="am-form-group">
       <label for="nc" class="am-u-sm-4 am-form-label"><?php echo $MSG_NICK ?>: </label>
       <div class="am-u-sm-8">
-        <input name="nick" type="text" id="nc" placeholder="<?php echo $MSG_NICK ?>" style="width:300px;" value="" maxlength="6"  pattern="^[\u4e00-\u9fa5]{2,6}$"/>
+        <input name="nick" type="text" id="nc" placeholder="1-20位汉字、字母、数字" style="width:300px;" value="" maxlength="20" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$"/>
       </div>
     </div>
     <div class="am-form-group">
