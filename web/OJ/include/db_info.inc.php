@@ -52,4 +52,10 @@ function HAS_PRI($pri_str){  // if has privilege
     $mysqli->query($sql);
 //}
 /*Count the hit time END*/
+function IS_ADMIN($uid){ //判断是否是管理员级别的用户
+    global $mysqli;
+    if($uid=="")$uid=$_SESSION['user_id'];
+    $sql="SELECT COUNT(`user_id`) FROM `privilege` WHERE `user_id`='$uid' AND `rightstr` in (SELECT `group_name` FROM `privilege_distribution`)";
+    return ($mysqli->query($sql)->fetch_array()[0]);
+}
 ?>
