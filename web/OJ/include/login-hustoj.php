@@ -60,9 +60,9 @@
 		$sql="update team set accesstime=now() where user_id='$user_id' AND contest_id='$cid'";
 	    $mysqli->query($sql) or die($mysqli->error);
 		$checkResult = $user_id;
-		$sql="INSERT INTO `loginlog` (user_id,password,ip,`time`)VALUES('$user_id','login OK','$ip',NOW())";
+		$sql="INSERT INTO `loginlog` (user_id,password,ip,`time`)VALUES('$user_id','team account login OK','$ip',NOW())";
       } else {
-		$sql="INSERT INTO `loginlog` (user_id,password,ip,`time`)VALUES('$user_id','login Failed','$ip',NOW())";
+		$sql="INSERT INTO `loginlog` (user_id,password,ip,`time`)VALUES('$user_id','team account login Failed','$ip',NOW())";
 	  }
     }
       $result->free();
