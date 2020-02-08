@@ -46,11 +46,11 @@
 ?>
   <style type="text/css">
     body{
-      padding-top: 50px;
+      padding-top: 55px;
     }
   </style>
   <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="am-container" style="max-width: 1400px;width: 100%;">
+    <div class="am-container" style="margin-left: 100px;max-width: 1400px;width: 100%;">
     <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
