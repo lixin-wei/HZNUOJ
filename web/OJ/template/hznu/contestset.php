@@ -9,10 +9,11 @@
   **/
 ?>
 
-<?php $title=$MSG_CONTEST;?>
-<?php include "header.php" ?>
 <?php 
-if(isset($_GET['my'])) $title = $MSG_MY.$title;
+$title=$MSG_CONTEST;
+if(isset($_GET['my'])) $title = $MSG_MY.$MSG_CONTEST;
+require_once("header.php");
+
 if(isset($_GET['search'])) $args['search']=htmlentities($search);
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
