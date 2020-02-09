@@ -236,16 +236,15 @@ else {
   $getMy = "";
   $wheremy = " 1";
   $mycontests = "";	
-    if(isset($_GET['my'])){ //我的比赛、作业
-      $getMy = "my";
+  if(isset($_GET['my'])){ //我的比赛、作业
+    $getMy = "my";
     foreach($_SESSION as $key => $value){
       if(($key[0]=='m'||$key[0]=='c')&&intval(mb_substr($key,1))>0){ //验证是否有m1、c1之类的
-        //echo substr($key,1)."<br>";
         $mycontests.=",".intval(mb_substr($key,1));
       }
-      }	
-    if(strlen($mycontests)>0) $mycontests=substr($mycontests,1);//去掉最开始的","	
-    $wheremy=" contest_id in ($mycontests)";
+    }
+    if(strlen($mycontests)>0) $wheremy=" contest_id in (substr($mycontests,1))";//去掉最开始的","
+    else $wheremy=" 0 ";
   }
   $search = ""; //查找关键字
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
