@@ -96,6 +96,9 @@
   $MSG_AccessTime = "Access Time";
   $MSG_StudentID = "Student ID";
   $MSG_Class = "Class";
+  $MSG_RegTime = "RegTime";
+  $MSG_RegIP = "RegIP";
+  $MSG_Institute = "Institute";
 	
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -238,9 +241,10 @@
   $MSG_ContestIsClosed = "Contest is closed!";
   $MSG_Creator = "Creator";
   
+  $$MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
   $MSG_HELP_ADD_NEWS="add news for the homepage";
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
-  $MSG_HELP_USER_LIST="enable/disable user";
+  $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
   $MSG_HELP_ADD_PROBLEM="add new problem,multi test cases can be added after problem added ,using TestData button on the Problem List";
   $MSG_HELP_PROBLEM_LIST="manage existing problems, test case files can be uploaded within a zip file and decompress later";
   $MSG_HELP_CONTEST_LIST="The existing list of contests, modification time and public / private……, try not to adjust the list of items after the start.";

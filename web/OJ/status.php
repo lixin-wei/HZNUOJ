@@ -83,6 +83,11 @@
   } else {
     //require_once("oj-header.php");
     //$sql="SELECT * FROM `solution` WHERE contest_id is null ";
+    if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的排名
+      $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+      require("template/".$OJ_TEMPLATE."/error.php");
+      exit(0);
+    }
     $sql=" WHERE contest_id is null ";
   }
   //若要在主状态页面中不显示contest中提交的代码，注释掉else段代码

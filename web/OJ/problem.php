@@ -47,7 +47,12 @@ if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
 $real_id=0;
 $pr_flag=false;
 $co_flag=false;
-if (isset($_GET['id'])) { // 如果是比赛外的题目
+if (isset($_GET['id']) && !(isset($_GET['cid']) && isset($_GET['pid'])) ) { // 如果是比赛外的题目
+    if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的题目
+        $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+      }
     $id=intval($_GET['id']);
     $real_id=$id;
     //require("oj-header.php");

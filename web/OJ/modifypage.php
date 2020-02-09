@@ -21,7 +21,7 @@
     exit(0);
   }
   if (isset($_SESSION['contest_id'])){
-    $view_errors= "<font color='red'>Team account can not use this page!</font>";
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }

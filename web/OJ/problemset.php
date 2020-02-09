@@ -12,7 +12,11 @@ $cache_time=60;
 require_once('./include/cache_start.php');
 require_once('./include/setlang.php');
 $view_title= "Problem Set";
-
+if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的题库
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+  }
 //get all problemsets START
 
 //get all problemsets END

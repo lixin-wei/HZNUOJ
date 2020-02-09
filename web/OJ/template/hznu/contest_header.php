@@ -9,6 +9,24 @@
   **/
 ?>
 <?php
+ // 是否显示tag的判断
+require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
+if(!isset($mysqli))exit(0);
+$show_tag = true;
+if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
+  $uid = $_SESSION['user_id'];
+  $sql = "SELECT tag FROM users WHERE user_id='$uid'";
+  $result = $mysqli->query($sql);
+  $row_h = $result->fetch_array();
+  $result->free();
+  if ($row_h['tag'] == "N") $show_tag = false;
+} else if (isset($_SESSION['tag'])) {
+  if ($_SESSION['tag'] == "N") $show_tag = false;
+  else $show_tag = true;
+}
+if ($show_tag) $_SESSION['tag'] = "Y";
+else $_SESSION['tag'] = "N";
+
 if(isset($_GET['cid'])){
   $warnning_percent=90;
   $cid =  $mysqli->real_escape_string($_GET['cid']);
@@ -131,12 +149,16 @@ echo <<<BOT
                 <li class="am-dropdown" data-am-dropdown>
                   <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'><span class='am-icon-user'></span> {$_SESSION['user_id']}<span class='am-icon-caret-down'></span></a>
                     <ul class="am-dropdown-content">
+BOT;
+                    if (!isset($_SESSION['contest_id'])) {
+echo <<<BOT
                       <li><a href="modifypage.php"><span class="am-icon-eraser"></span> $MSG_MODIFY_USER</a></li>
                       <li><a href="userinfo.php?user={$_SESSION['user_id']}"><span class="am-icon-info-circle"></span> $MSG_USERINFO</a></li>
                       <!-- <li><a href="mail.php"><span class="am-icon-comments"></span> Mail</a></li> -->
                       <li><a href="status.php?user_id=$user_session"><span class="am-icon-keyboard-o"></span> $MSG_MY_SUBMISSIONS</a></li>
 					  <li><a href="/OJ/contest.php?my"><span class="am-icon-leaf"></span> $MSG_MY_CONTESTS </a></li> 
 BOT;
+          }
           if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
           else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> $MSG_SHOWTAG</a></li>";
 		  

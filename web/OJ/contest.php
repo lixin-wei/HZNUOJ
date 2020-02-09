@@ -14,6 +14,11 @@ require_once('./include/my_func.inc.php');
 require_once('./include/setlang.php');
 require_once './include/const.inc.php';
 $view_title= $MSG_CONTEST;
+if(isset($_GET['my']) && isset($_SESSION['contest_id'])){ //不允许比赛用户查看“我的比赛、作业”
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+}
 function formatTimeLength($length)
 {
   $hour = 0;

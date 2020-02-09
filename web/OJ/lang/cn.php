@@ -96,6 +96,9 @@
   $MSG_AccessTime = "登录时间";
   $MSG_StudentID = "学号";
   $MSG_Class = "班级";
+  $MSG_RegTime = "注册时间";
+  $MSG_RegIP = "注册IP";
+  $MSG_Institute = "机构";
     
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -217,7 +220,7 @@
   $MSG_Public="公开";
   $MSG_Private="私有";
   $MSG_Practice = "练习赛";
-  $MSG_Special = "队赛专用(Special)";
+  $MSG_Special = "比赛专用(Special)";
   $MSG_Running="运行中";
   $MSG_Start="开始于";
   $MSG_StartTime="开始时间";
@@ -238,9 +241,10 @@
   $MSG_ContestIsClosed = "竞赛&作业已关闭！";
   $MSG_Creator = "组织者";
   
+  $MSG_HELP_TeamAccount_forbid = $MSG_TEAM."不能访问此页！";
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS."。";
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
-  $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息。";
+  $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";

@@ -12,6 +12,11 @@ $cache_time=30;
 require_once('./include/cache_start.php');
 require_once('./include/db_info.inc.php');
 require_once('./include/setlang.php');
+if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的排名
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+  }
 //require_once('updateRank.php'); // 有此语句后每次点击ranklist会自动更新排名
 
 $view_title= $MSG_RANKLIST;

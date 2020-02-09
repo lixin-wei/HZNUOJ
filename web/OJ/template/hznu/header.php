@@ -40,7 +40,7 @@
 <html>
   <head lang="en">
     <meta charset="UTF-8">
-    <title><?php if(isset($title))echo $OJ_NAME."--".$title?></title>
+    <title><?php echo $OJ_NAME."--".$title?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
@@ -95,6 +95,7 @@
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
 
+        <?php if (!isset($_SESSION['contest_id'])) { ?>
           <!-- ProblemSet部分 start -->
           <li <?php
           $page_name=basename($_SERVER['SCRIPT_NAME']);
@@ -122,6 +123,7 @@
           ?>><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
           <!-- ranklist部分 end -->
           
+          <?php } ?>
           <!-- Contest部分 start -->
           <li <?php
           $page_name=basename($_SERVER['SCRIPT_NAME']);

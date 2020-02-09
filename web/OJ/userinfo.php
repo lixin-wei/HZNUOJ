@@ -7,14 +7,19 @@
 ?>
 
 <?php
-ini_set('display_errors', 'On');
-ini_set('display_startup_errors', 'On');
-error_reporting(E_ALL);
+// ini_set('display_errors', 'On');
+// ini_set('display_startup_errors', 'On');
+// error_reporting(E_ALL);
   $cache_time=10; 
   $OJ_CACHE_SHARE=false;
   require_once('./include/cache_start.php');
   require_once('./include/db_info.inc.php');
   require_once('./include/setlang.php');
+  if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看普通用户信息
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+  }
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
