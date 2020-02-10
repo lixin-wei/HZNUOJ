@@ -25,7 +25,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_NICK ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" maxlength="6" placeholder="<?php echo $MSG_NICK ?>" pattern="^[\u4e00-\u9fa5]{2,6}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
+        <input type="text" style="width:340px;" maxlength="20" placeholder="1-20位汉字、字母、数字" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
       </div>
     </div> 
     <div class="am-form-group">

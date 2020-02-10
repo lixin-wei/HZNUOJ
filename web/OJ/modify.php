@@ -47,8 +47,8 @@
   if ($tag_arr[0] == "o") $tag = "Y";
   else $tag = "N";
   $len = strlen($nick);
-  if ($len>70){
-    $err_str=$err_str."输入的姓名过长！\\n";// $err_str=$err_str."Nick Name Too Long!";
+  if ($len>=30){
+    $err_str=$err_str."输入的{$MSG_NICK}过长！\\n";// $err_str=$err_str."Nick Name Too Long!";
     $err_cnt++;
   }else if ($len==0) $nick=$user_id;
   $password=$_POST['opassword'];
