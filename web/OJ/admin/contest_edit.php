@@ -198,7 +198,7 @@ for ($i=$result->num_rows;$i>0;$i--){
   <div style="color: #ff0000">
     visit <a href="../faqs.php#p-5" target="_blank">FAQ</a> to know differences between types of contest.
         <br />
-        <strong><?php echo $MSG_Importance."&nbsp;:&nbsp;".$MSG_Practice."&nbsp;&gt;&nbsp;".$MSG_Special."&nbsp;&gt;&nbsp;".$MSG_Public."/".$MSG_Private ?></strong> </div>
+        <strong><?php echo $MSG_Importance."&nbsp;:&nbsp;".$MSG_Practice."&nbsp;&gt;&nbsp;".$MSG_Special."&nbsp;&gt;&nbsp;".$MSG_Public."/".$MSG_Private."(密码最多15位，只能包含数字、字母和下划线)"  ?></strong> </div>
  <p align=left> <strong><?php echo $MSG_Practice ?>&nbsp;:</strong>&nbsp;
   <select name='practice' style='width:100px'>
     <option value='1' <?php echo $practice==1?'selected=selected':''?>>Yes</option>
@@ -220,7 +220,7 @@ for ($i=$result->num_rows;$i>0;$i--){
     <option value=0 <?php echo $private=='0'?'selected=selected':''?>><?php echo $MSG_Public ?></option>
     <option value=1 <?php echo $private=='1'?'selected=selected':''?>><?php echo $MSG_Private ?></option>
   </select>&nbsp;&nbsp;  
-  <strong><?php echo $MSG_PASSWORD ?>:</strong>&nbsp;<input name=password type=text style='width:150px' value="<?php echo htmlentities($password,ENT_QUOTES,'utf-8')?>" maxlength="15">&nbsp;&nbsp;
+  <strong><?php echo $MSG_PASSWORD ?>:</strong>&nbsp;<input name=password type=text style='width:150px' value="<?php echo htmlentities($password,ENT_QUOTES,'utf-8')?>" pattern="^[_a-zA-Z0-9]{1,15}$" maxlength="15">&nbsp;&nbsp;
   <strong><?php echo $MSG_OpenSource ?>&nbsp;:</strong>&nbsp;
   <select name='open_source' style='width:50px'>
     <option value='Y' <?php echo $open_souce=='Y'?'selected=selected':''?>>Yes</option>

@@ -42,7 +42,7 @@
     $lang=$_POST['lang'];
     $langmask=0;
     foreach($lang as $t) {
-	  echo $t." ";
+	  //echo $t." ";
       $langmask+=1<<$t;
     }
     $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`)
@@ -215,7 +215,7 @@ else if(isset($_POST['problem2contest'])){
   <div style="color: #ff0000">
     visit <a href="../faqs.php#p-5" target="_blank">FAQ</a> to know differences between types of contest.
         <br />
-        <strong><?php echo $MSG_Importance."&nbsp;:&nbsp;".$MSG_Practice."&nbsp;&gt;&nbsp;".$MSG_Special."&nbsp;&gt;&nbsp;".$MSG_Public."/".$MSG_Private ?></strong> </div>
+        <strong><?php echo $MSG_Importance."&nbsp;:&nbsp;".$MSG_Practice."&nbsp;&gt;&nbsp;".$MSG_Special."&nbsp;&gt;&nbsp;".$MSG_Public."/".$MSG_Private."(密码最多15位，只能包含数字、字母和下划线)" ?></strong> </div>
  <p align=left> <strong><?php echo $MSG_Practice ?>&nbsp;:</strong>&nbsp;
   <select name='practice' style='width:100px'>
   <?php if(isset($_GET['cid'])){ ?>
@@ -257,7 +257,7 @@ else if(isset($_POST['problem2contest'])){
      echo "<option value='1'>$MSG_Private</option>";
   } ?>
   </select>&nbsp;&nbsp;  
-  <strong><?php echo $MSG_PASSWORD ?>:</strong>&nbsp;<input name=password type=text style='width:150px' value="<?php echo htmlentities($password,ENT_QUOTES,'utf-8')?>" maxlength="15">&nbsp;&nbsp;
+  <strong><?php echo $MSG_PASSWORD ?>:</strong>&nbsp;<input name=password type=text style='width:150px' value="<?php echo htmlentities($password,ENT_QUOTES,'utf-8')?>" pattern="^[_a-zA-Z0-9]{1,15}$" maxlength="15">&nbsp;&nbsp;
   <strong><?php echo $MSG_OpenSource ?>&nbsp;:</strong>&nbsp;
   <select name='open_source' style='width:50px'>
    <?php if(isset($_GET['cid'])){ ?>
