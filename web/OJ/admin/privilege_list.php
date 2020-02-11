@@ -32,7 +32,7 @@
     ON
       a.rightstr=b.group_name
     ORDER BY
-      b.group_order
+      a.user_id, b.group_order
 SQL;
   $result=$mysqli->query($sql) or die($mysqli->error);
   ?>
