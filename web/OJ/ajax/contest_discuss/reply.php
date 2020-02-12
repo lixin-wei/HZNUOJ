@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
-session_start();
+if(!session_id()) session_start();
 $json = array();
 if (HAS_PRI("edit_contest")) {
     $question_id = intval($_POST['id']);

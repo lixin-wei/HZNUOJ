@@ -8,7 +8,7 @@
 
 <?php
 require_once("../../include/db_info.inc.php");
-@session_start();
+if(!session_id()) @session_start();
 
 //------------------------------------------------------------------------------
 // Configuration Variables

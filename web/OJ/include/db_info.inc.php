@@ -5,7 +5,7 @@
  * by D_Star @2016.08.23
  **/
 ?>
-<?php @session_start();
+<?php if(!session_id()) @session_start();
 
 ini_set("display_errors","Off");
 require_once($_SERVER['DOCUMENT_ROOT']."/OJ/include/static.php");

@@ -2,8 +2,8 @@
 <?php
 	require_once("./include/db_info.inc.php");
 	require_once("./include/my_func.inc.php"); 
-	//Step1£º»ñÈ¡Authorization Code
-	session_start();
+	//Step1ï¿½ï¿½ï¿½ï¿½È¡Authorization Code
+	if(!session_id()) session_start();
 	$code = $_REQUEST["code"];
 	if(empty($code)) 
 	{
