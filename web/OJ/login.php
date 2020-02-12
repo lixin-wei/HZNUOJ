@@ -9,15 +9,17 @@
 <?php 
   require_once("./include/db_info.inc.php");
   require_once('./include/setlang.php');
-  require_once "include/check_post_key.php";
-  $vcode=trim($_POST['vcode']);
-  if($OJ_VCODE&&($vcode!= $_SESSION["vcode"]||$vcode==""||$vcode==null) ){
-    echo "<script language='javascript'>\n";
-    echo "alert('$MSG_VCODE$MSG_Wrong !');\n";
-	  echo "window.location.href='loginpage.php';";  //echo "history.go(-1);\n";
-    echo "</script>";
-    exit(0);
-  }
+  require_once("include/check_post_key.php");
+  if($OJ_VCODE){
+    $vcode=trim($_POST['vcode']);
+    if(($vcode!= $_SESSION["vcode"]||$vcode==""||$vcode==null) ){
+      echo "<script language='javascript'>\n";
+      echo "alert('$MSG_VCODE$MSG_Wrong !');\n";
+      echo "window.location.href='loginpage.php';";  //echo "history.go(-1);\n";
+      echo "</script>";
+      exit(0);
+    }
+  } 
   require_once("./include/login-".$OJ_LOGIN_MOD.".php");
   $user_id=$_POST['user_id'];
   $password=$_POST['password'];
