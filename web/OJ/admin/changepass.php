@@ -13,6 +13,16 @@ if (!HAS_PRI("edit_user_profile")) {
 	require_once("error.php");
 	exit(1);
 }
+$user_id = "";
+if(isset($_GET['cid'])){
+	require_once("../include/my_func.inc.php");
+	$user_id = $_GET['cid'];
+	if(get_order(get_group($user_id))<=get_order(get_group(""))){
+    	$view_error="You can't edit this user!";
+		require_once("error.php");
+		exit(1);
+    }
+}
 if(isset($_POST['do'])){
 	//echo $_POST['user_id'];
 	require_once("../include/check_post_key.php");
@@ -49,7 +59,7 @@ if(isset($_POST['do'])){
 <h4><?php echo $MSG_HELP_SETPASSWORD ?></h4>
 <hr>
 <form class="form-inline" action='changepass.php' method=post>
-	<p><?php echo $MSG_USER_ID?> : <input class="form-control" type=text size=20 name="user_id" value="<?php echo $_GET['cid'] ?>" required>&nbsp;&nbsp;&nbsp;&nbsp;
+	<p><?php echo $MSG_USER_ID?> : <input class="form-control" type=text size=20 name="user_id" value="<?php echo $user_id ?>" required>&nbsp;&nbsp;&nbsp;&nbsp;
 	   <?php echo $MSG_New.$MSG_PASSWORD?> : <input class="form-control" type="password" minlength="6" maxlength="22"  size=20 name="passwd" required></p>
 	<?php require_once("../include/set_post_key.php");?>
 	<input type='hidden' name='do' value='do'>

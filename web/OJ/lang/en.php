@@ -15,7 +15,7 @@
   $MSG_STATUS = " Status";
   $MSG_RANKLIST = " Ranklist";
   $MSG_CONTEST = " Contest";
-  $MSG_RECENT_CONTEST = "RecentContest";
+  $MSG_RECENT_CONTEST = "Recent Contest";
   $MSG_FAQ = "F.A.Qs";
   $MSG_ACM_MAIL = "ACM Mail";
 
@@ -23,7 +23,7 @@
   $MSG_LOGIN = "Login";
   $MSG_REGISTER = "Register";
   $MSG_LOGOUT = "Logout";
-  $MSG_MODIFY_USER = "ModifyUser";
+  $MSG_MODIFY_USER = "Modify User";
   $MSG_MAIL = "Mail";
   $MSG_ADMIN = "Admin";
   $MSG_USERINFO = "User Info";
@@ -33,10 +33,10 @@
   $MSG_SHOWTAG = "Show Tag";
   
   // 比赛导航栏
-  $MSG_BACK_TO_HOME = "BackToHome";
+  $MSG_BACK_TO_HOME = "Back To  Home";
   $MSG_PROBLEM = " Problem ";
   $MSG_STATISTICS = " Statistics"; 
-  $BACK_TO_CONTEST = "BackToContest";
+  $BACK_TO_CONTEST = "Back To Contest";
   
   // problemset.php
   $MSG_SEARCH = "Search";
@@ -74,7 +74,7 @@
   $MSG_ALL = "All";
   $MSG_GO = "Go";
   $MSG_EDIT = "Edit ";
-  $MSG_DEL = "Delete";
+  $MSG_DEL = "Delete ";
   $MSG_MY = "My ";
   $MSG_NO = "No ";
   $MSG_LoginError = "UserID or Password or ContestID Wrong, or UesrID is not actived!";
@@ -99,6 +99,7 @@
   $MSG_RegTime = "RegTime";
   $MSG_RegIP = "RegIP";
   $MSG_Institute = "Institute";
+  $MSG_Seat = "Seat";
 	
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -193,7 +194,7 @@
   $MSG_LIST=" List";
   $MSG_NEWS="News";
   $MSG_TEAMGENERATOR="Team Generator";
-  $MSG_TEAM = "Team ";
+  $MSG_TEAM = "Team Account";
   $MSG_SETMESSAGE="Set Message";
   $MSG_SETPASSWORD="Change Password";
   $MSG_SET_USER_ID = "Change User ID";
