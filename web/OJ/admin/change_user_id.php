@@ -31,7 +31,7 @@
     $origin = $_POST['origin'];
     $dest = $_POST['dest'];
     $exist = 0;
-    if(get_order(get_group($origin))<=get_order(get_group())){
+    if(get_order(get_group($origin))<=get_order(get_group(""))){
       $view_error="You can't edit this user!";
       require_once("error.php");
       exit(1);
@@ -75,7 +75,7 @@
 		if ($exist != 0) {
 		  echo "新用户名".$dest."已存在！";
 		} else {
-		  $sql = "UPDATE loginlog SET user_id='$dest' WHERE user_id='$origin'";
+		  $sql = "UPDATE loginlog SET user_id='$dest' WHERE user_id='$origin' and password not like '%team account%'";
 		  $mysqli->query($sql);
 		  $sql = "UPDATE mail SET to_user='$dest' WHERE to_user='$origin'";
 		  $mysqli->query($sql);
@@ -90,6 +90,7 @@
 		  $sql = "UPDATE reply SET author_id='$dest' WHERE author_id='$origin'";
 		  $mysqli->query($sql);
 		  $sql = "UPDATE solution SET user_id='$dest' WHERE user_id='$origin'";
+		  $sql .= " AND solution_id not in (SELECT solution.solution_id FROM solution, team WHERE solution.user_id='$origin' AND solution.contest_id = team.contest_id AND solution.user_id = team.user_id ";
 		  $mysqli->query($sql);
 		  $sql = "UPDATE topic SET author_id='$dest' WHERE author_id='$origin'";
 		  $mysqli->query($sql);
@@ -97,6 +98,16 @@
 		  $mysqli->query($sql);
 		  $sql = "UPDATE tag SET user_id='$dest' WHERE user_id='$origin'";
 		  $mysqli->query($sql);
+		  $sql = "UPDATE contest SET user_id='$dest' WHERE user_id='$origin'";
+		  $mysqli->query($sql);
+		  //$sql = "UPDATE contest_discuss SET user_id='$dest' WHERE user_id='$origin'";
+		  //$mysqli->query($sql);
+		  //$sql = "UPDATE printer_code SET user_id='$dest' WHERE user_id='$origin'";
+		  //$mysqli->query($sql);
+		  //$sql = "UPDATE hit_log SET user_id='$dest' WHERE user_id='$origin' and password like '%team account%'";
+		  //$mysqli->query($sql);
+		  //$sql = "UPDATE solution_video_watch_log SET user_id='$dest' WHERE user_id='$origin'";
+		  //$mysqli->query($sql);
 		  echo "done.";
 		} // 判断新用户是否存在 end
 	}// OJ中判断老用户是否存在 end

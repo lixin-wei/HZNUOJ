@@ -8,7 +8,7 @@ if (!HAS_PRI("edit_privilege_group")) {
 if(isset($_GET['uid'])){
 	$user_id=$mysqli->real_escape_string($_GET['uid']);
 	$rightstr =$mysqli->real_escape_string($_GET['rightstr']);
-	if (get_order($rightstr)<=get_order(get_group())) {
+	if (get_order($rightstr)<=get_order(get_group(""))) {
 		require_once("error.php");
 		exit(1);
 	}

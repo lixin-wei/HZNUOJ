@@ -19,7 +19,7 @@
     require_once("../include/check_post_key.php");
     $user_id=$mysqli->real_escape_string($_POST['user_id']);
     $rightstr =$_POST['rightstr'];
-    if($rightstr<=get_order(get_group())){
+    if($rightstr<=get_order(get_group(""))){
       require_once("error.php");
       exit(1);
     }
@@ -50,7 +50,7 @@
     <?php
       $res=$mysqli->query("SELECT * FROM privilege_groups");
       while($row=$res->fetch_array()){
-        if($row['group_order']>get_order(get_group())){
+        if($row['group_order']>get_order(get_group(""))){
           echo '<option value="'.$row['group_name'].'">'.$row['group_name'].'</option>';
         }
       }
