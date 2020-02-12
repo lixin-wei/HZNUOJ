@@ -35,7 +35,7 @@
   $view_title=$user ."@".$OJ_NAME;
   $user_mysql=$mysqli->real_escape_string($user);
 
-  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id,defunct FROM `users` WHERE `user_id`='$user_mysql'";
+  $sql="SELECT `school`,`email`,`nick`,`level`,`color`,`strength`,`real_name`,`class`,`stu_id`,`defunct` FROM `users` WHERE `user_id`='$user_mysql'";
 
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
@@ -49,6 +49,7 @@
   $school=$row->school;
   $email=$row->email;
   $nick=$row->nick;
+  $defunct = "";
   if($row->defunct=="Y"){
     $defunct = "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>【". $MSG_STATUS."：".$MSG_Reserved."】</font>";
   }
@@ -218,10 +219,10 @@
   $result_num = $result->num_rows;
   $result->free();
   if ($result_num) { // 如果表中已存在该user的信息，直接更新
-    $sql = "UPDATE users_cache SET class='$stu->class', AC_day=$AC_day, sub_day=$sub_day WHERE user_id='$user_id'";
+    $sql = "UPDATE users_cache SET class='$class', AC_day=$AC_day, sub_day=$sub_day WHERE user_id='$user_id'";
     $mysqli->query($sql);
   } else { // 否则插入
-    $sql = "INSERT INTO users_cache(user_id, class, AC_day, sub_day) VALUES ('$user_id', '$stu->class', $AC_day, $sub_day)";
+    $sql = "INSERT INTO users_cache(user_id, class, AC_day, sub_day) VALUES ('$user_id', '$class', $AC_day, $sub_day)";
     $mysqli->query($sql);
   }
   // 查找最大活跃度
@@ -241,7 +242,7 @@
               WHERE result=4 AND user_id='$user_mysql'
             ) AS s 
             ON sim.s_id=s.solution_id";
-  $result = $mysqli->query($sql, $conn);
+  $result = $mysqli->query($sql);
   $copy_sum = 0; // sim和
   $AC_num = $result->num_rows; // AC数
   // 逐个查看每个提交是否为抄袭
