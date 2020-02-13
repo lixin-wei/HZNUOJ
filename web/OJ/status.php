@@ -140,8 +140,8 @@
     $sql=$sql."AND `result`='".strval($jresult_get)."' ";
   }
   $sql_page = "SELECT count(1) FROM `solution` ".$sql;
-  $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
-  if($rows) $total = $rows[0][0];  
+  $rows =$mysqli->query($sql_page) or die($mysqli->error);
+  $total = $rows->num_rows;
   $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
 
 

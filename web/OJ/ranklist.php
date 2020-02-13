@@ -103,8 +103,8 @@ if($scope){
 	$sql = "SELECT * FROM users ".$sql_filter.$sql_orderby.$sql_limit;
 	$sql_page = "SELECT count(1) FROM users ".$sql_filter.$sql_orderby;
 }
-$rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
-if($rows) $total = $rows[0][0];  
+$rows =$mysqli->query($sql_page) or die($mysqli->error);
+$total = $rows->num_rows;
 $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
 
 if($OJ_MEMCACHE){

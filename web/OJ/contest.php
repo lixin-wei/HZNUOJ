@@ -264,8 +264,8 @@ else {
       $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND $wheremy ORDER BY contest_id DESC";
       $sql .= " limit ".strval($pstart).",".strval($pend); 
     }
-    $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
-    if($rows) $total = $rows[0][0];
+    $rows=$mysqli->query($sql0);
+    $total = $rows->num_rows;
     $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
 
     $result=$mysqli->query($sql);
@@ -298,7 +298,7 @@ else {
         $view_contest[$i][6]=$row->user_id;
         $i++;
     }
-    $result->free();
+    if($result) $result->free();
 }
 
 
