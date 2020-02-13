@@ -42,7 +42,7 @@
       <div class="am-form-group">
         <label for="pwd" class="am-u-sm-4 am-form-label"><?php echo $MSG_CONTEST ?>ID: </label>
         <div class="am-u-sm-8">
-          <input type="text" name="contest_id" id="contest_id" value="" placeholder="Don't input if you are not team account" style="width:100%;">
+          <input type="text" name="contest_id" id="contest_id" value=""autocomplete="off"  placeholder="<?php echo $MSG_HELP_TeamAccount_login ?>" style="width:100%;">
         </div>
       </div>
       <div class="am-from-group">
