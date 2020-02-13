@@ -77,7 +77,7 @@
   $MSG_DEL = "Delete ";
   $MSG_MY = "My ";
   $MSG_NO = "No ";
-  $MSG_LoginError = "UserID or Password or ContestID Wrong, or UesrID is not actived!";
+  $MSG_LoginError = "UserID or Password or ContestID Wrong, or Contest is not actived，or UesrID is not actived!";
   $MSG_Tried = "Tried";
   $MSG_Recommended = "Recommended";
   $MSG_OldPasswd = "Old Password";
@@ -242,7 +242,8 @@
   $MSG_ContestIsClosed = "Contest is closed!";
   $MSG_Creator = "Creator";
   
-  $$MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
+  $MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
+  $MSG_HELP_TeamAccount_login = "Don't input if you are not team account!";
   $MSG_HELP_ADD_NEWS="add news for the homepage";
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";

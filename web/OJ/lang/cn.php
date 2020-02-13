@@ -77,7 +77,7 @@
   $MSG_DEL = "删除";
   $MSG_MY = "我的";
   $MSG_NO = "没有";
-  $MSG_LoginError = "用户名或密码或".$MSG_CONTEST."ID错误，或账号未激活!";  
+  $MSG_LoginError = "用户名、密码错误，或".$MSG_CONTEST."ID错误、被停用，或账号未激活!";  
   $MSG_Tried = "正在努力的".$MSG_PROBLEM;
   $MSG_Recommended = "推荐".$MSG_PROBLEM;
   $MSG_OldPasswd = "旧密码";
@@ -243,6 +243,7 @@
   $MSG_Creator = "组织者";
   
   $MSG_HELP_TeamAccount_forbid = $MSG_TEAM."不能访问此页！";
+  $MSG_HELP_TeamAccount_login = "非".$MSG_TEAM."登录勿填！";
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS."。";
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
