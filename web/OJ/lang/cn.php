@@ -100,6 +100,7 @@
   $MSG_RegIP = "注册IP";
   $MSG_Institute = "机构";
   $MSG_Seat = "座位";
+  $MSG_ChangeTeamContest = "重新分配".$MSG_CONTEST;
     
   /*
   下面的代码请不要乱动，以免出问题！！！

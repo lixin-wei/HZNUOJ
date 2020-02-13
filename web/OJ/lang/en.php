@@ -33,7 +33,7 @@
   $MSG_SHOWTAG = "Show Tag";
   
   // 比赛导航栏
-  $MSG_BACK_TO_HOME = "Back To  Home";
+  $MSG_BACK_TO_HOME = "Back To Home";
   $MSG_PROBLEM = " Problem ";
   $MSG_STATISTICS = " Statistics"; 
   $BACK_TO_CONTEST = "Back To Contest";
@@ -100,7 +100,8 @@
   $MSG_RegIP = "RegIP";
   $MSG_Institute = "Institute";
   $MSG_Seat = "Seat";
-	
+  $MSG_ChangeTeamContest = "Redistribute Team Contest";
+  
   /*
   下面的代码请不要乱动，以免出问题！！！
   */

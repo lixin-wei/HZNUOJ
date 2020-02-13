@@ -39,7 +39,6 @@ if(isset($_GET['del'])) { //删除账号
         if(isset($_GET['cid'])){
           $cid[0] = $_GET['cid'];
         } else if(isset($_POST['cid'])) $cid = $_POST['cid'];
-        $i = 0;
         $ulist="";
         foreach($cid as $user_id){
           $user_id = $mysqli->real_escape_string($user_id);
@@ -54,7 +53,7 @@ if(isset($_GET['del'])) { //删除账号
     }
     echo "<script language=javascript>history.go(-1);</script>";
     exit(0);
-} else if (isset($_POST['cid']) && !isset($_GET['resetpwd'])){ //用户资料写入数据库，保存后资料后跳转回用户列表
+} else if (isset($_POST['cid']) && !isset($_GET['resetpwd']) && !isset($_GET['changeTeamContest'])){ //用户资料写入数据库，保存后资料后跳转回用户列表
   $user_id=trim($mysqli->real_escape_string($_POST['cid']));
   require_once("../include/my_func.inc.php");
   if(!isset($_POST['team']) && $user_id != $_SESSION['user_id'] && get_order(get_group($user_id))<=get_order(get_group(""))){
@@ -181,6 +180,29 @@ if(isset($_GET['del'])) { //删除账号
   echo "alert('$result');";
 	echo "window.location.href='".generate_url("")."';";
   echo "</script>";
+  exit(0);
+} else if(isset($_GET['changeTeamContest'])) { //给比赛账号重新分配比赛
+  require_once("../include/check_get_key.php");
+  $cid = $_POST['cid'];
+  $contestid = $mysqli->real_escape_string($_POST['contestid']);
+  $ulist="";
+  foreach($cid as $user_id){
+      $user_id = $mysqli->real_escape_string($user_id);
+      if($ulist) {
+          $ulist.=",'".$user_id ."'";
+      } else $ulist.="'".$user_id ."'";
+  }
+  if($ulist && $contestid){
+    $sql = "SELECT `contest_id`,`title` FROM `contest` WHERE `contest_id` = $contestid AND NOT `practice` AND `user_limit`='Y'";
+    $result = $mysqli->query($sql);
+    if($result->num_rows==1){
+      $row = $result->fetch_object();
+      $sql = "UPDATE `team` SET `contest_id` = $contestid WHERE `user_id`in ($ulist)";
+      $mysqli->query($sql);
+    }
+    echo "<script language=javascript>alert('成功将【{$row->contest_id}】{$row->title} 重新分配给{$mysqli->affected_rows}个比赛用户！');</script>";
+  }
+  echo "<script language=javascript>history.go(-1);</script>";
   exit(0);
 } else if(isset($_GET['resetpwd'])) { //比赛账号重置密码
   require_once("../include/check_get_key.php");
