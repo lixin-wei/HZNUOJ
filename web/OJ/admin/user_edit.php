@@ -134,10 +134,10 @@ if(isset($_GET['del'])) { //删除账号
     $contestid=trim($mysqli->real_escape_string($_POST['contestid']));
     $seat=trim($mysqli->real_escape_string($_POST['seat']));
     $institute=trim($mysqli->real_escape_string($_POST['institute']));
-    $sql = "SELECT `title` FROM `contest` WHERE `defunct`='N' AND `contest_id`=$contestid AND NOT `practice` AND `user_limit`='Y'";
+    $sql = "SELECT `title` FROM `contest` WHERE `contest_id`=$contestid AND NOT `practice` AND `user_limit`='Y'";
     $result = $mysqli->query($sql);
     if($result->num_rows == 0){
-      $err_str=$err_str."编号为{$contestid}的{$MSG_CONTEST}未启用或不存在或不是{$MSG_Special}！";
+      $err_str=$err_str."编号为{$contestid}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！";
       $err_cnt++;
     } else {
       $len = strlen($seat);
@@ -194,7 +194,7 @@ if(isset($_GET['del'])) { //删除账号
   foreach($cid as $user_id){
     $user_id = $mysqli->real_escape_string($user_id);
     $report[$i]['user_id'] = $user_id;
-    $sql = "SELECT a.`nick`,a.`contest_id`, `contest`.`title` FROM `team` as a ";
+    $sql = "SELECT a.`nick`,a.`contest_id`, `contest`.`title`,`contest`.`defunct` FROM `team` as a ";
     $sql .= " LEFT JOIN `contest` ON a.`contest_id` = `contest`.`contest_id` WHERE a.`user_id`='$user_id'";
     $row = $mysqli->query($sql)->fetch_object();
     if(!$row){
@@ -204,7 +204,8 @@ if(isset($_GET['del'])) { //删除账号
       $report[$i]['success'] = false;
     } else {
       $report[$i]['nick']=$row->nick;
-      $report[$i]['contest'] = "【".$row->contest_id."】".$row->title;
+      $contest_status = ($row->defunct=='Y')?'<font color=red>【'.$MSG_Reserved.'】</font>':"";
+      $report[$i]['contest'] = "【".$row->contest_id."】".$row->title.$contest_status;
       $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
       while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
       str_replace("I","X",$password);
@@ -280,22 +281,22 @@ $result->free();
 if(isset($_GET['team'])) {
   $view_contest = array();
 
-  $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `defunct`='N' AND NOT `practice` AND `user_limit`='Y' ORDER BY contest_id";
+  $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='Y' ORDER BY contest_id DESC";//类型优先级2
   $result=$mysqli->query($sql);
   $view_contest['Special']['type'] = $MSG_Special;
   $view_contest['Special']['data'] = $result->fetch_all(MYSQLI_ASSOC);
 
-  $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `defunct`='N' AND NOT `practice` AND `user_limit`='N' AND `private` ORDER BY contest_id";
+  $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND `private` ORDER BY contest_id DESC";//类型优先级3
   $result=$mysqli->query($sql);
   $view_contest['Private']['type'] = $MSG_Private;
   $view_contest['Private']['data'] = $result->fetch_all(MYSQLI_ASSOC);
 
-  $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `defunct`='N' AND NOT `practice` AND `user_limit`='N' AND NOT `private` ORDER BY contest_id";
+  $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND NOT `private` ORDER BY contest_id DESC";//类型优先级3
   $result=$mysqli->query($sql);
   $view_contest['Public']['type'] = $MSG_Public;
   $view_contest['Public']['data'] = $result->fetch_all(MYSQLI_ASSOC);
 
-  $sql="SELECT `contest_id`,`title` FROM `contest` WHERE `defunct`='N' AND `practice` ORDER BY contest_id";
+  $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE `practice` ORDER BY contest_id DESC";//类型优先级1
   $result=$mysqli->query($sql);
   $view_contest['Practice']['type'] = $MSG_Practice;
   $view_contest['Practice']['data'] = $result->fetch_all(MYSQLI_ASSOC);
@@ -363,8 +364,9 @@ if(isset($_GET['team'])) {
             foreach($view_contest as $view_con):
               if($view_con['data']) { ?>
                 <optgroup <?php echo "label='{$view_con['type']}' ";  if($view_con['type']!=$MSG_Special) echo "disabled"?>>
-                <?php foreach ($view_con['data'] as $contest):?>
-                  <option value="<?php echo $contest['contest_id']?>" <?php if($contest['contest_id'] == $row->contest_id) echo "selected"?>><?php echo "【".$contest['contest_id']."】".$contest['title']?></option>
+                <?php foreach ($view_con['data'] as $contest):
+                  $contest_status = ($contest['defunct']=='Y')?'【'.$MSG_Reserved.'】':""; ?>
+                  <option value="<?php echo $contest['contest_id']?>" <?php if($contest['contest_id'] == $row->contest_id) echo "selected"?>><?php echo "【".$contest['contest_id']."】".$contest['title'].$contest_status?></option>
                 <?php endforeach ?>
                 </optgroup>
             <?php }
