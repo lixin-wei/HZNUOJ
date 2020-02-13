@@ -42,8 +42,8 @@
   if(isset($_GET['tp'])) $OJ_TEMPLATE=$_GET['tp'];
   static  $OJ_LOGIN_MOD="hustoj";
   static  $OJ_RANK_LOCK_PERCENT=0.2; // 封榜
-  static  $OJ_SHOW_DIFF=false;
-  static  $OJ_TEST_RUN = true;
+  static  $OJ_SHOW_DIFF=false;//是否显示WA的对比说明
+  static  $OJ_TEST_RUN = true;//提交界面是否允许测试运行
   static $OJ_OPENID_PWD = '8a367fe87b1e406ea8e94d7d508dcf01';
 
 
@@ -55,13 +55,13 @@
   static $LOGIN_DEFUNCT = false;
   static $VIDEO_SUBMIT_TIME=3;// can see video after
 
+  static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
+  static  $OJ_REGISTER=true; //允许注册新用户
+  static  $OJ_NEED_CLASSMODE=true;//班级模式，包括显示班级、学号、真名
+
   /* Email configuration */
   static $SMTP_SERVER = "smtp.exmail.qq.com";
   static $SMTP_SERVER_PORT = 25;
   static $SMTP_USER = "forgot@hsacm.com";
   static $SMTP_PASS = "hznuojForgot123";
-
-  static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
-  static  $OJ_REGISTER=true; //允许注册新用户
-  static  $OJ_NEED_CLASSMODE=true;//班级模式，包括显示班级、学号、真名
 ?>
