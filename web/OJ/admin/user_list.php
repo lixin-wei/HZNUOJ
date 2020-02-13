@@ -14,7 +14,9 @@ require_once("../include/set_get_key.php");
 $page = 1;
 $args=array();
 if(isset($_GET['page'])) $page = intval($_GET['page']);
-if(isset($_GET['team'])) $args['team'] = $_GET['team'];
+if(isset($_GET['team'])) $args['team'] = $_GET['team']; else $args['team']="";
+if(isset($_GET['contest'])) $args['contest']=$_GET['contest']; else $args['contest']="";
+if(isset($_GET['class'])) $args['class']=$_GET['class']; else $args['class']="";
 if(isset($_GET['sort_method'])) $args['sort_method']=$_GET['sort_method']; else $args['sort_method']="";
 if(isset($_GET['keyword'])) $args['keyword']=$_GET['keyword']; else $args['keyword']="";
 if(isset($page)) $args['page']=$page;
@@ -33,22 +35,26 @@ function generate_url($data,$link){
     return $link;
 }
 //分页end 
-$sql_filter = "";
+$sql_filter = "WHERE 1";
 if(isset($_GET['keyword']) && $_GET['keyword']!=""){
     $keyword = $mysqli->real_escape_string($_GET['keyword']);
     $keyword = "'%$keyword%'";
     if(!isset($_GET['team'])) {
-        $sql_filter = " WHERE (user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (email LIKE $keyword )";
+        $sql_filter .= " AND ((user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (email LIKE $keyword ))";
     } else {
-        $sql_filter = " WHERE (a.user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (class LIKE $keyword ) OR (institute LIKE $keyword ) OR (real_name LIKE $keyword )";
+        $sql_filter .= " AND ((a.user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (institute LIKE $keyword ))";
+    }
+    if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+        $sql_filter .=" OR (real_name LIKE $keyword ) ";
     }
 }
-if(isset($_GET['team']) && $_GET['team']!="all" && $_GET['team']!=""){
-    if($sql_filter==""){
-        $sql_filter = " WHERE `prefix`= '{$_GET['team']}' ";
-    } else {
-        $sql_filter .= " AND `prefix`= '{$_GET['team']}' ";
-    }
+if(isset($_GET['team'])){
+    if($_GET['team']!="all" && $_GET['team']!="") $sql_filter .= " AND `prefix`= '{$mysqli->real_escape_string($_GET['team'])}' ";
+    if($_GET['contest']!="all" && $_GET['contest']!="") $sql_filter .= " AND a.`contest_id`= {$mysqli->real_escape_string($_GET['contest'])} ";
+}
+if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE 
+   && isset($_GET['class']) && $_GET['class']!="all" && $_GET['class']!=""){
+    $sql_filter .= " AND `class`= '{$mysqli->real_escape_string($_GET['class'])}' ";
 }
 switch ($args['sort_method']) {
     case 'AccTime_DESC':
@@ -182,13 +188,13 @@ if(!isset($_GET['team'])) { //查询普通账号
         $cnt++;
     }
 } else { //查询比赛临时账号
-    $sql = "SELECT a.`user_id`,a.`nick`,a.`contest_id`, `contest`.`title`,a.`school`,a.`class`,a.`stu_id`,a.`real_name`,a.`accesstime`,a.`reg_time`,a.`ip`,a.`institute`,a.`seat` FROM `team` as a ";
-    $sql .= " left join `contest` ON a.`contest_id` = `contest`.`contest_id`";
+    $sql = "SELECT a.`user_id`,a.`nick`,a.`contest_id`, `contest`.`title`, `contest`.`defunct`,a.`school`,a.`class`,a.`stu_id`,a.`real_name`,a.`accesstime`,a.`reg_time`,a.`ip`,a.`institute`,a.`seat` FROM `team` as a ";
+    $sql .= " LEFT JOIN `contest` ON a.`contest_id` = `contest`.`contest_id`";
     $sql .=$sql_filter;
     //echo $sql;
     //exit(0);
     $result =$mysqli->query($sql);
-    while ($row=$result->fetch_object()){
+    while ($result && $row=$result->fetch_object()){
         if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id' />&nbsp;".++$u_id;
             else $view_users[$cnt][0] = ++$u_id;
         $view_users[$cnt][1] = $row->user_id;
@@ -198,7 +204,8 @@ if(!isset($_GET['team'])) { //查询普通账号
             $view_users[$cnt][4] = "<a href='".generate_url("","user_edit.php")."&cid=$row->user_id'>$MSG_EDIT</a>";
             $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
         }
-        $view_users[$cnt][6] = ($row->title)?"<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title</a>" : "【{$row->contest_id}】";        
+        $contest_status = ($row->defunct=='Y')?'<font color=red>【'.$MSG_Reserved.'】</font>':"";
+        $view_users[$cnt][6] = ($row->title)?"<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
         $view_users[$cnt][7] = $row->accesstime;
         $view_users[$cnt][8] = $row->reg_time;;
         $view_users[$cnt][9] = $row->ip;
@@ -232,9 +239,9 @@ if(!isset($_GET['team'])) { //查询普通账号
 </div>
 <!-- 查找 start -->
 <div class='am-g'>
-    <div class='am-u-md-6'>
+    <div class='am-u-md-12'>
         <form id= "searchform" class="am-form am-form-inline">
-        <?php if (isset($_GET['team'])) { ?>
+          <?php if (isset($_GET['team'])) { ?>
             <div class='am-form-group'>
                 <select class="selectpicker show-tick" data-live-search="true" id='team' name='team' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
                     <option value='all' <?php if (isset($_GET['team']) && ($_GET['team']=="" || $_GET['team']=="all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
@@ -251,14 +258,53 @@ if(!isset($_GET['team'])) { //查询普通账号
                 ?>
                 </select>                
             </div>
+            <div class='am-form-group'>
+                <select class="selectpicker show-tick" data-live-search="true" id='contest' name='contest' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+                    <option value='all' <?php if (isset($_GET['contest']) && ($_GET['contest']=="" || $_GET['contest']=="all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                <?php
+                    $sql = "SELECT DISTINCT `team`.`contest_id`, `contest`.`title`,`contest`.`defunct` FROM `team`";
+                    $sql .= " LEFT JOIN `contest` ON `team`.`contest_id` = `contest`.`contest_id` ORDER BY `team`.`contest_id` desc";
+                    $result = $mysqli->query($sql);
+                    $contest = $result->fetch_all(MYSQLI_ASSOC);
+                    $result->free();
+                    foreach($contest as $row){
+                        echo "<option value='".$row['contest_id']."' ";
+                        if (isset($_GET['contest']) && $_GET['contest']==$row['contest_id'])  echo "selected";
+                        $contest_status = ($row['defunct']=='Y')?'【'.$MSG_Reserved.'】':"";
+                        echo ">【".$row['contest_id']."】".$row['title'].$contest_status."</option>";
+                    }
+                ?>
+                </select>                
+            </div>
+          <?php } 
+          if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+          ?>
+          <div class='am-form-group'>
+                <select class="selectpicker show-tick" data-live-search="true" id='class' name='class' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+                    <option value='all' <?php if (isset($_GET['class']) && ($_GET['class']=="" || $_GET['class']=="all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                <?php
+                    if (isset($_GET['team'])) {
+                        $sql = "SELECT DISTINCT `class` FROM `team` ORDER BY `class`";
+                    } else $sql = "SELECT DISTINCT `class` FROM `users` ORDER BY `class`";
+                    $result = $mysqli->query($sql);
+                    $prefix = $result->fetch_all();
+                    $result->free();
+                    foreach($prefix as $row){
+                        echo "<option value='".$row[0]."' ";
+                        if (isset($_GET['class']) && $_GET['class']==$row[0])  echo "selected";
+                        echo ">".$row[0]."</option>";
+                    }
+                ?>
+                </select>                
+            </div>
         <?php } ?>
             <div class="am-form-group am-form-icon">  
                 <i class="am-icon-search"></i>
-                <input class="am-form-field" name="keywords" type="text"  placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>"/>
+                <input class="am-form-field" name="keyword" type="text"  placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>"/>
             </div>
             <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH?>" >
-            </form>
-        </div>
+        </form>
+    </div>
 </div>
                       
 <!-- 查找 end -->
