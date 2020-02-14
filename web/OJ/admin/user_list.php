@@ -59,10 +59,7 @@ if (isset($_GET['team'])) {
     if ($_GET['team'] != "all" && $_GET['team'] != "") $sql_filter .= " AND `prefix`= '{$mysqli->real_escape_string($_GET['team'])}' ";
     if ($_GET['contest'] != "all" && $_GET['contest'] != "") $sql_filter .= " AND a.`contest_id`= {$mysqli->real_escape_string($_GET['contest'])} ";
 }
-if (
-    isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE
-    && isset($_GET['class']) && $_GET['class'] != "all" && $_GET['class'] != ""
-) {
+if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE && isset($_GET['class']) && $_GET['class'] != "all" && $_GET['class'] != "") {
     $sql_filter .= " AND `class`= '{$mysqli->real_escape_string($_GET['class'])}' ";
 }
 switch ($args['sort_method']) {
@@ -204,7 +201,7 @@ if (!isset($_GET['team'])) { //查询普通账号
     //echo $sql;
     //exit(0);
     $result = $mysqli->query($sql);
-    while ($result && $row = $result->fetch_object()) {
+    while ($row = $result->fetch_object()) {
         if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id' />&nbsp;" . ++$u_id;
         else $view_users[$cnt][0] = ++$u_id;
         $view_users[$cnt][1] = $row->user_id;
@@ -248,8 +245,7 @@ if (!isset($_GET['team'])) { //查询普通账号
     </ul>
 </div>
 <!-- 查找 start -->
-<div class='am-g'>
-    <div class='am-u-md-12'>
+<div class='am-g' style="margin-left: 5px;">
         <form id="searchform" class="am-form am-form-inline">
             <?php if (isset($_GET['team'])) { ?>
                 <div class='am-form-group'>
@@ -314,13 +310,11 @@ if (!isset($_GET['team'])) { //查询普通账号
             </div>
             <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH ?>">
         </form>
-    </div>
 </div>
-
 <!-- 查找 end -->
 
 <!-- 页标签 start -->
-<div class="am-g">
+<div class="am-g" style="margin-left: 5px;">
     <ul class="pagination text-center" style="margin-top: 10px;margin-bottom: 0px;">
         <?php $link = generate_url(array("page" => max($page - 1, 1)), "") ?>
         <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
@@ -346,9 +340,9 @@ if (!isset($_GET['team'])) { //查询普通账号
         cursor: pointer;
     }
 </style>
+<div class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-left: 5px;">
 <?php if (!isset($_GET['team'])) { ?>
     <!-- 罗列普通用户 start -->
-    <div class="am-g am-scrollable-horizontal" style="max-width: 1300px;">
         <form action="user_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>" method='post'>
             <table class="table table-hover table-bordered table-condensed table-striped" style="white-space: nowrap;">
                 <thead>
@@ -401,11 +395,9 @@ if (!isset($_GET['team'])) { //查询普通账号
                 </tbody>
             </table>
         </form>
-    </div>
     <!-- 罗列普通用户 end -->
 <?php } else { ?>
     <!-- 罗列比赛账号 start -->
-    <div class="am-g am-scrollable-horizontal" style="max-width: 1300px;">
         <form method='post'>
             <?php
             if (HAS_PRI("edit_user_profile")) {
@@ -504,12 +496,11 @@ if (!isset($_GET['team'])) { //查询普通账号
                 </tbody>
             </table>
         </form>
-    </div>
     <!-- 罗列比赛账号 end -->
 <?php }; ?>
-
+</div>
 <!-- 页标签 start -->
-<div class="am-g">
+<div class="am-g" style="margin-left: 5px;">
     <ul class="pagination text-center" style="margin-top: 1px;margin-bottom: 0px;">
         <?php $link = generate_url(array("page" => max($page - 1, 1)), "") ?>
         <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
@@ -530,7 +521,6 @@ if (!isset($_GET['team'])) { //查询普通账号
 <!-- 页标签 end -->
 
 <?php
-//require_once("../template/".$OJ_TEMPLATE."/footer.php");
 require_once("admin-footer.php")
 ?>
 <!-- sort by acctime、regtime BEGIN -->
