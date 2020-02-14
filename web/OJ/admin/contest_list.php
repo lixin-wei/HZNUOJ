@@ -49,8 +49,8 @@ function generate_url($data){
 	$sql_limit = "";
   } 
   $sql_page = "SELECT count(1) ".$sql_filter;  
-  $rows =$mysqli->query($sql_page) or die($mysqli->error);
-  $total = $rows->num_rows;
+  $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
+  if($rows) $total = $rows[0][0];  
   if($sql_limit == "") { //查找结果全部显示在一页上
     $page_cnt = $total;
     $view_total_page = 1;
