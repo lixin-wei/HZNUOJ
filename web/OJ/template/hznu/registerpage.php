@@ -24,7 +24,7 @@
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_USER_ID ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="text" name="user_id" id="username" value="" placeholder="设定3-20位用户名" style="width:300px;" minlength="3" maxlength="20" required/>
+        <input type="text" name="user_id" id="username" value="" placeholder="3-20位只能包含字母和数字的用户名" style="width:300px;" minlength="3" maxlength="20" pattern="^[a-zA-Z0-9]{3,20}$" required/>
       </div>
     </div>
     <div class="am-form-group">
@@ -48,13 +48,13 @@
     <div class="am-form-group">
       <label for="nc" class="am-u-sm-4 am-form-label"><?php echo $MSG_NICK ?>: </label>
       <div class="am-u-sm-8">
-        <input name="nick" type="text" id="nc" placeholder="1-20位汉字、字母、数字" style="width:300px;" value="" maxlength="20" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$"/>
+        <input name="nick" type="text" id="nc" placeholder="限20个以内的汉字/字母/数字/下划线" style="width:300px;" value="" maxlength="20" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$"/>
       </div>
     </div>
     <div class="am-form-group">
       <label for="school" class="am-u-sm-4 am-form-label"><?php echo $MSG_SCHOOL ?>: </label>
       <div class="am-u-sm-8">
-        <input type="text" id="school" name="school" value="" style="width:300px;" placeholder="<?php echo $MSG_SCHOOL ?>" pattern="^[\u4e00-\u9fa5]{3,20}$"/>
+        <input type="text" id="school" name="school" value="" style="width:300px;" maxlength="20" placeholder="限20个以内的汉字/字母/数字" pattern="^[\u4e00-\u9fa5a-zA-Z0-9]{1,20}$"/>
       </div>
     </div>
     <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
@@ -75,13 +75,13 @@
     <div class="am-form-group">
       <label for="school" class="am-u-sm-4 am-form-label"><?php echo $MSG_StudentID ?>: </label>
       <div class="am-u-sm-8">
-        <input type="text" id="stu_id" name="stu_id"value="" style="width:300px;" placeholder="Your student ID" pattern="^[0-9]*$"/>
+        <input type="text" id="stu_id" name="stu_id"value="" style="width:300px;" maxlength="20" placeholder="20位以内的字母+数字的学号" pattern="^[a-zA-Z0-9]{1,20}$"/>
       </div>
     </div>
     <div class="am-form-group">
       <label class="am-u-sm-4 am-form-label"><?php echo $MSG_REAL_NAME ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" id='real_name' style="width:300px;" value="" name="real_name" placeholder="Your real name">
+        <input type="text" id='real_name' style="width:300px;" value="" name="real_name" maxlength="10" placeholder="20字以内的中文或英文姓名" pattern="^[\u4e00-\u9fa5a-zA-Z]{1,20}$">
       </div>
     </div>
     <?php } ?>

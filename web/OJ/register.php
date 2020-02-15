@@ -10,6 +10,7 @@
   require_once "include/check_post_key.php";
   require_once("./include/db_info.inc.php");
   if(isset($OJ_REGISTER)&&!$OJ_REGISTER) exit(0);
+  require_once('./include/setlang.php');
   require_once("./include/my_func.inc.php");
   // OJ 用户名合法性判断
   $err_str="";
@@ -42,19 +43,14 @@
   $len=strlen($user_id);
   if($len<3 || $len>20){
     //$err_str=$err_str."User ID Too Long!\\n";
-	//$err_str=$err_str."User ID Too Short!\\n";
-	$err_str=$err_str."用户名长度要求3-20个字符！\\n";
+	  //$err_str=$err_str."User ID Too Short!\\n";
+	  $err_str=$err_str."用户名长度要求3-20个字符！\\n";
     $err_cnt++;
   }
   if (!is_valid_user_name($user_id)){
     $err_str=$err_str."用户名只能包含英文字母和数字！\\n"; //$err_str=$err_str."User ID can only contain NUMBERs & LETTERs!\\n";	
     $err_cnt++;
   }
-  $len=strlen($nick);
-  if ($len>=30){
-    $err_str=$err_str."输入的{$MSG_NICK}过长！\\n";//$err_str=$err_str."Nick Name Too Long!\\n";
-    $err_cnt++;
-  }else if ($len==0) $nick=$user_id;
   $len = strlen($_POST['password']);
   if ($len<6 || $len>22){
     $err_str=$err_str."密码位数要求6-22位！\\n";
@@ -63,10 +59,26 @@
 	  $err_str=$err_str."两次输入的密码不一致！\\n";//$err_str=$err_str."Password Not Same!\\n";
     $err_cnt++;
   }
-  $len=strlen($_POST['school']);
-  if ($len>100){
-	  $err_str=$err_str."输入的就读学校名称过长！\\n";//$err_str=$err_str."School Name Too Long!\\n";   	
+  $len=strlen($nick);
+  if ($len==0){
+    $nick=$user_id;
+  } else if(!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $nick)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+    $err_str=$err_str."输入的{$MSG_NICK}限20个以内的汉字、字母、数字或下划线 ！\\n";
     $err_cnt++;
+  } 
+  if(!preg_match("/^[\u{4e00}-\u{9fa5}a-zA-Z0-9]{0,60}$/", $school)) { //
+    $err_str=$err_str."输入的{$MSG_SCHOOL}限20个以内的汉字、字母或数字 ！\\n";
+    $err_cnt++;
+  }
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+    if(!preg_match("/^[a-zA-Z0-9]{0,20}$/", $stu_id)) {
+      $err_str=$err_str."输入的学号要求为20位以内的字母+数字或者纯数字的学号！\\n";
+      $err_cnt++;
+    }
+    if(!preg_match("/^[\u{4e00}-\u{9fa5}a-zA-Z]{0,60}$/", $real_name)) {
+      $err_str=$err_str."输入的真实姓名要求为20字以内的中文或英文姓名！\\n";
+      $err_cnt++;
+    }
   }
   $len=strlen($_POST['email']);
   if ($len>100){

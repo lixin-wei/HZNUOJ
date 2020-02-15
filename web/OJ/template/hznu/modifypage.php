@@ -25,7 +25,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_NICK ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" maxlength="20" placeholder="1-20位汉字、字母、数字" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
+        <input type="text" style="width:340px;" maxlength="20" placeholder="限20个以内的汉字、字母、数字或下划线" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
       </div>
     </div> 
     <div class="am-form-group">
@@ -33,7 +33,7 @@
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_OldPasswd ?>:
       </label>
       <div class="am-u-sm-8">
-        <input type="password" style="width:340px;" name="opassword" placeholder="输入6-22位的旧密码" maxlength="22" pattern="^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{1,22}$" required>
+        <input type="password" style="width:340px;" name="opassword" placeholder="输入6-22位的旧密码" maxlength="22" pattern="^[\@A-Za-z0-9\!\#\$\%\^\&\*\.\~]{6,22}$" required>
       </div>
     </div> 
     <div class="am-form-group">
@@ -51,7 +51,7 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_SCHOOL ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" placeholder="<?php echo $MSG_SCHOOL ?>" value="<?php echo htmlentities($row->school)?>" name="school">
+        <input type="text" style="width:340px;" maxlength="20" placeholder="限20个以内的汉字、字母、数字" value="<?php echo htmlentities($row->school)?>" name="school" pattern="^[\u4e00-\u9fa5a-zA-Z0-9]{1,20}$">
       </div>
     </div>
     <div class="am-form-group">

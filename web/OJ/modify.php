@@ -47,10 +47,12 @@
   if ($tag_arr[0] == "o") $tag = "Y";
   else $tag = "N";
   $len = strlen($nick);
-  if ($len>=30){
-    $err_str=$err_str."输入的{$MSG_NICK}过长！\\n";// $err_str=$err_str."Nick Name Too Long!";
+  if ($len==0){
+    $nick=$user_id;
+  } else if(!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $nick)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+    $err_str=$err_str."输入的{$MSG_NICK}限20个以内的汉字、字母、数字或下划线 ！\\n";
     $err_cnt++;
-  }else if ($len==0) $nick=$user_id;
+  }
   $password=$_POST['opassword'];
   $sql="SELECT `user_id`,`password` FROM `users` WHERE `user_id`='".$user_id."'";
   $result=$mysqli->query($sql);
@@ -67,14 +69,13 @@
 	  if ($len<6 || $len>22){
 		$err_str=$err_str."新密码位数要求6-22位！\\n";
 		$err_cnt++;
-  }else if (strcmp($_POST['npassword'],$_POST['rptpassword'])!=0){
-  	$err_str=$err_str."两次输入的新密码不一致！\\n";//$err_str=$err_str."Two Passwords Not Same!";
-    $err_cnt++;
+    }else if (strcmp($_POST['npassword'],$_POST['rptpassword'])!=0){
+      $err_str=$err_str."两次输入的新密码不一致！\\n";//$err_str=$err_str."Two Passwords Not Same!";
+      $err_cnt++;
+    }
   }
-  }
-  $len=strlen($_POST['school']);
-  if ($len>100){
-    $err_str=$err_str."输入的就读学校名称过长！\\n";//$err_str=$err_str."School Name Too Long!";
+  if(!preg_match("/^[\u{4e00}-\u{9fa5}a-zA-Z0-9]{0,60}$/", $school)) { //
+    $err_str=$err_str."输入的{$MSG_SCHOOL}限20个以内的汉字、字母或数字 ！\\n";
     $err_cnt++;
   }
   $len=strlen($_POST['email']);
@@ -108,5 +109,8 @@
   //echo $sql;
   //exit(0);
   $mysqli->query($sql);// or die("Insert Error!\n");
-  header("Location: ./");
+  //header("Location: ./");
 ?>
+<script language=javascript>
+  history.go(-2);
+</script>
