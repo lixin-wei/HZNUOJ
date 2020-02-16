@@ -336,40 +336,40 @@ if(isset($_GET['team'])) {
     <input type='hidden' name='page' value='<?php if(isset($_GET['page'])) echo $_GET['page'] ?>'>
     <input type='hidden' name='sort_method' value='<?php if(isset($_GET['sort_method'])) echo $_GET['sort_method'] ?>'>
     <input type='hidden' name='keyword' value='<?php if(isset($_GET['keyword'])) echo $_GET['keyword'] ?>'>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_USER_ID ?>:</label>
       <div class="am-u-sm-8">
         <label class="am-form-label"><?php echo $cid?></label>        
       </div>
     </div>
     <?php if(!isset($_GET['team'])) {?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_STRENGTH ?>:</label>
       <div class="am-u-sm-8">
         <label class="am-form-label"><?php echo round($row->strength)?></label>        
       </div>
     </div>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_LEVEL ?>:</label>
       <div class="am-u-sm-8">
         <label class="am-form-label"><?php echo $row->level?></label>        
       </div>
     </div>
     <?php }?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_NICK ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" maxlength="20" autocomplete="off" placeholder="1-20位汉字、字母、数字" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" value="<?php echo htmlentities($row->nick)?>" name="nick">
       </div>
     </div>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_SCHOOL ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" autocomplete="off" placeholder="<?php echo $MSG_SCHOOL ?>" value="<?php echo htmlentities($row->school)?>" name="school">
       </div>
     </div>
     <?php if(!isset($_GET['team'])) {?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label" style="float:left;">
       <?php echo $MSG_EMAIL ?>:
       </label>
@@ -378,7 +378,7 @@ if(isset($_GET['team'])) {
       </div>
     </div>
     <?php } else {?>
-      <div class="am-form-group">
+      <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_CONTEST ?>:</label>
       <div class="am-u-sm-8">
           <select name="contestid" class="selectpicker show-tick" data-live-search="true"  data-width= "340px">
@@ -402,19 +402,19 @@ if(isset($_GET['team'])) {
         $class = $row->class;
         if ($class=="null" or  $class=="" ) $class = "其它";
       ?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_StudentID ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->stu_id)?>" name="stu_id">
       </div>
     </div>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_REAL_NAME ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->real_name)?>" name="real_name">
       </div>
     </div>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
           <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="340px">
@@ -428,20 +428,20 @@ if(isset($_GET['team'])) {
     if(isset($_GET['team'])) {
           echo "<input type='hidden' name='team' value='{$_GET['team']}'>";
     ?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Seat ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->seat)?>" name="seat">
       </div>
     </div>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Institute ?>:</label>
       <div class="am-u-sm-8">
         <input type="text" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->institute)?>" name="institute">
       </div>
     </div>
     <?php } ?>
-    <div class="am-form-group">
+    <div class="am-form-group" style="white-space: nowrap;">
       <div class="am-u-sm-8 am-u-sm-offset-4">
         <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="submit" class="am-btn am-btn-success">
       </div>
