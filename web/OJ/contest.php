@@ -243,7 +243,7 @@ else {
         $mycontests.=",".intval(mb_substr($key,1));
       }
     }
-    if(strlen($mycontests)>0) $wheremy=" contest_id in (substr($mycontests,1))";//去掉最开始的","
+    if($mycontests) $wheremy=" contest_id IN (".substr($mycontests,1).")";//去掉最开始的","
     else $wheremy=" 0 ";
   }
   $search = ""; //查找关键字
@@ -264,6 +264,7 @@ else {
       $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND $wheremy ORDER BY contest_id DESC";
       $sql .= " limit ".strval($pstart).",".strval($pend); 
     }
+    //echo $sql0;
     $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
     if($rows) $total = $rows[0][0];
     $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
