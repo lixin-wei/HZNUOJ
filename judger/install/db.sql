@@ -1057,3 +1057,16 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-03-13 17:03:43
+-- ----------------------------
+-- Table structure for `class_list`
+-- ----------------------------
+DROP TABLE IF EXISTS `class_list`;
+CREATE TABLE `class_list` (
+  `class_name` varchar(100) NOT NULL,
+  `enrollment_year` smallint(4) NOT NULL,
+  PRIMARY KEY (`class_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Records of class_list
+-- ----------------------------
+INSERT INTO `class_list` VALUES ('其它', '0');

@@ -101,6 +101,15 @@
   $MSG_Institute = "Institute";
   $MSG_Seat = "Seat";
   $MSG_ChangeTeamContest = "Redistribute Team Contest";
+  $MSG_Enrollment_Year = "Enrollment Year";
+  $MSG_Class_Name = "Class Name";
+  $MSG_Stu_List = "Student List";
+  $MSG_Grade = "Grade/Specialty/Prefix";
+  $MSG_Amount = " Amount";
+  $MSG_Mode = "Mode";
+  $MSG_Not_Empty_Class = "Not Empty Class";
+  $MSG_Empty_Class = "Empty Class";
+  $MSG_Back = "Back";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -248,6 +257,7 @@
   $MSG_HELP_ADD_NEWS="add news for the homepage";
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
+  $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.if you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
   $MSG_HELP_ADD_PROBLEM="add new problem,multi test cases can be added after problem added ,using TestData button on the Problem List";
   $MSG_HELP_PROBLEM_LIST="manage existing problems, test case files can be uploaded within a zip file and decompress later";
   $MSG_HELP_CONTEST_LIST="The existing list of contests, modification time and public / private……, try not to adjust the list of items after the start.";
@@ -291,7 +301,7 @@
   $MSG_generate_team ="generate_team";
   $MSG_HELP_generate_team ="Generate accounts and passwords in batches.";
   $MSG_edit_user_profile ="edit_user_profile";
-  $MSG_HELP_edit_user_profile ="change user ID, password.";
+  $MSG_HELP_edit_user_profile ="change user ID, password, and edit class.";
   $MSG_edit_privilege_group ="edit_privilege_group";
   $MSG_HELP_edit_privilege_group ="add and delete permissions to designated users.";
   $MSG_edit_privilege_distribution="edit_privilege_distribution";

@@ -326,4 +326,9 @@ function get_group($uid){
 	      WHERE a.rightstr = b.group_name and user_id='$uid' order by b.group_order";
     return ($mysqli->query($sql)->fetch_array()[0]);
 }
+function class_is_exist($class){
+    global $mysqli;
+    $sql = "SELECT COUNT(`class_name`) FROM `class_list` WHERE `class_name`='$class'";
+    return $mysqli->query($sql)->fetch_array()[0];
+}
 ?>

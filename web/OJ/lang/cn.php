@@ -100,8 +100,17 @@
   $MSG_RegIP = "注册IP";
   $MSG_Institute = "机构";
   $MSG_Seat = "座位";
-  $MSG_ChangeTeamContest = "重新分配".$MSG_CONTEST;
-    
+  $MSG_ChangeTeamContest = "分配".$MSG_CONTEST;
+  $MSG_Enrollment_Year = "入学年份";
+  $MSG_Class_Name = "班级名称";
+  $MSG_Stu_List = "学生名单";
+  $MSG_Grade = "年级/专业/前缀";
+  $MSG_Amount = "数量";
+  $MSG_Mode = "编号模式";
+  $MSG_Not_Empty_Class = "有人班级";
+  $MSG_Empty_Class = "无人班级";
+  $MSG_Back = "返回";
+  
   /*
   下面的代码请不要乱动，以免出问题！！！
   */
@@ -248,6 +257,7 @@
   $MSG_HELP_ADD_NEWS="添加首页显示的".$MSG_NEWS."。";
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
+  $MSG_HELP_CLASS_LIST="班级模式下，添加、删除和编辑班级。若删除一个班级，则该班所有普通账号和比赛账号都会归到<b>“其它”</b>班下。";
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
@@ -291,7 +301,7 @@
   $MSG_generate_team ="账号生成";
   $MSG_HELP_generate_team ="批量生成比赛帐号以及批量导入普通账号。";
   $MSG_edit_user_profile = $MSG_EDIT.$MSG_USER;
-  $MSG_HELP_edit_user_profile ="可以修改".$MSG_USER_ID."和".$MSG_PASSWORD."。";
+  $MSG_HELP_edit_user_profile ="可以修改".$MSG_USER_ID."和".$MSG_PASSWORD."，以及增加、删除、编辑班级。";
   $MSG_edit_privilege_group =$MSG_EDIT."用户".$MSG_PRIVILEGE;
   $MSG_HELP_edit_privilege_group ="添加、删除指定用户的".$MSG_PRIVILEGE."。";
   $MSG_edit_privilege_distribution=$MSG_Distribution;
