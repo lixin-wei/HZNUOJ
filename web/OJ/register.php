@@ -79,6 +79,10 @@
       $err_str=$err_str."输入的真实姓名要求为20字以内的中文或英文姓名！\\n";
       $err_cnt++;
     }
+    if(!class_is_exist($class)){
+      $err_str=$MSG_Class.$err_str."{$class}不存在！\\n";
+      $err_cnt++;
+    }
   }
   $len=strlen($_POST['email']);
   if ($len>100){

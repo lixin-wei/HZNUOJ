@@ -26,8 +26,10 @@
           $stu_id = $mysqli->real_escape_string(trim($_POST['stu_id']));
           $real_name = $mysqli->real_escape_string(trim($_POST['real_name']));
           $class = $mysqli->real_escape_string(trim($_POST['class']));
-          $sql = "UPDATE users SET stu_id = '$stu_id', real_name = '$real_name', class = '$class' WHERE user_id = '$user_id'";
-          $mysqli->query($sql);
+          if(class_is_exist($class)){
+            $sql = "UPDATE users SET stu_id = '$stu_id', real_name = '$real_name', class = '$class' WHERE user_id = '$user_id'";
+            $mysqli->query($sql);
+          } 
           echo "<script>window.history.go(-1)</script>";
       }
       else {
