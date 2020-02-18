@@ -62,7 +62,10 @@ if(isset($_GET['del'])) { //删除账号
     exit(1);
   }
   if(isset($_POST['team'])) $args['team']=$_POST['team'];
-  if(isset($_POST['sort_method'])) $args['sort_method']=$_POST['sort_method'];else $args['sort_method']="";
+  if(isset($_POST['class'])) $args['class']=$_POST['class'];
+  if (isset($_POST['defunct'])) $args['defunct'] = $_POST['defunct'];
+  if (isset($_POST['contest'])) $args['contest'] = $_POST['contest'];
+  if(isset($_POST['sort_method'])) $args['sort_method']=$_POST['sort_method'];
   if(isset($_POST['keyword'])) $args['keyword']=$_POST['keyword'];
   if(isset($_POST['page'])) $args['page']=$_POST['page'];
   function generate_url($data){
@@ -90,7 +93,7 @@ if(isset($_GET['del'])) { //删除账号
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){	  
     $stu_id=trim($mysqli->real_escape_string($_POST['stu_id']));
     $real_name=trim($mysqli->real_escape_string($_POST['real_name']));
-    $class=trim($mysqli->real_escape_string($_POST['class']));
+    $class=trim($mysqli->real_escape_string($_POST['newclass']));
   }
   $len = strlen($nick);
   if ($len>=30){
@@ -125,7 +128,7 @@ if(isset($_GET['del'])) { //删除账号
       $err_str=$err_str."输入的电子邮箱地址过长！\\n";
       $err_cnt++;
     }
-    if(!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/", $_POST['email'])) {
+    if($len!=0 && !preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/", $_POST['email'])) {
       $err_str=$err_str."输入的电子邮箱地址不合法！\\n";
       $err_cnt++;
     }
@@ -365,9 +368,20 @@ if(isset($_GET['team'])) {
   <form class="am-form am-form-horizontal" action="user_edit.php" method="post">
     <?php require_once('../include/set_post_key.php');?>
     <input type='hidden' name='cid' value='<?php echo $cid ?>'>
-    <input type='hidden' name='page' value='<?php if(isset($_GET['page'])) echo $_GET['page'] ?>'>
+    <?php
+      if(isset($_GET['team'])) {
+          echo "<input type='hidden' name='team' value='{$_GET['team']}'>\n";
+          echo "<input type='hidden' name='contest' value='{$_GET['contest']}'>\n";
+      } else {
+        echo "<input type='hidden' name='defunct' value='{$_GET['defunct']}'>\n";
+        if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE) {
+          echo "<input type='hidden' name='class' value='{$_GET['class']}'>\n";
+        }
+      }
+    ?>    
     <input type='hidden' name='sort_method' value='<?php if(isset($_GET['sort_method'])) echo $_GET['sort_method'] ?>'>
     <input type='hidden' name='keyword' value='<?php if(isset($_GET['keyword'])) echo $_GET['keyword'] ?>'>
+    <input type='hidden' name='page' value='<?php if(isset($_GET['page'])) echo $_GET['page'] ?>'>
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_USER_ID ?>:</label>
       <div class="am-u-sm-8">
@@ -448,7 +462,7 @@ if(isset($_GET['team'])) {
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
-          <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="340px">
+          <select name="newclass" class="selectpicker show-tick" data-live-search="true" data-width="340px">
             <?php foreach ($classList as $c):?>
               <option value="<?php echo $c?>" <?php if($c == $class) echo "selected"?>><?php echo $c?></option>
             <?php endforeach ?>
@@ -457,7 +471,6 @@ if(isset($_GET['team'])) {
     </div>
     <?php } 
     if(isset($_GET['team'])) {
-          echo "<input type='hidden' name='team' value='{$_GET['team']}'>";
     ?>
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Seat ?>:</label>
@@ -474,7 +487,8 @@ if(isset($_GET['team'])) {
     <?php } ?>
     <div class="am-form-group" style="white-space: nowrap;">
       <div class="am-u-sm-8 am-u-sm-offset-4">
-        <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="saveUser" class="am-btn am-btn-success">
+        <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="saveUser" class="am-btn am-btn-success">&nbsp;
+        <input type="button" value="<?php echo $MSG_Back ?>"  name="submit" onclick="javascript:history.go(-1);" class="am-btn am-btn-secondary">
       </div>
     </div>
   </form>

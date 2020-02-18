@@ -16,11 +16,9 @@ $page = 1;
 $args = array();
 if (isset($_GET['page'])) $page = intval($_GET['page']);
 if (isset($_GET['team'])) $args['team'] = $_GET['team'];
-else $args['team'] = "";
 if (isset($_GET['contest'])) $args['contest'] = $_GET['contest'];
-else $args['contest'] = "";
+if (isset($_GET['defunct'])) $args['defunct'] = $_GET['defunct'];
 if (isset($_GET['class'])) $args['class'] = $_GET['class'];
-else $args['class'] = "";
 if (isset($_GET['sort_method'])) $args['sort_method'] = $_GET['sort_method'];
 else $args['sort_method'] = "";
 if (isset($_GET['keyword'])) $args['keyword'] = $_GET['keyword'];
@@ -42,25 +40,34 @@ function generate_url($data, $link)
     return $link;
 }
 //分页end 
-$sql_filter = "WHERE 1";
+$sql_filter = " WHERE 1 ";
 if (isset($_GET['keyword']) && $_GET['keyword'] != "") {
     $keyword = $mysqli->real_escape_string($_GET['keyword']);
     $keyword = "'%$keyword%'";
+    $sql_filter .= " AND (";
     if (!isset($_GET['team'])) {
-        $sql_filter .= " AND ((user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (email LIKE $keyword ))";
+        $sql_filter .= " (user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (email LIKE $keyword )";
     } else {
-        $sql_filter .= " AND ((a.user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (institute LIKE $keyword ))";
+        $sql_filter .= " (a.user_id LIKE $keyword ) OR (nick LIKE $keyword ) OR (school LIKE $keyword ) OR (institute LIKE $keyword )";
     }
     if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         $sql_filter .= " OR (real_name LIKE $keyword ) ";
     }
+    $sql_filter .= ") ";
 }
 if (isset($_GET['team'])) {
     if ($_GET['team'] != "all" && $_GET['team'] != "") $sql_filter .= " AND `prefix`= '{$mysqli->real_escape_string($_GET['team'])}' ";
     if ($_GET['contest'] != "all" && $_GET['contest'] != "") $sql_filter .= " AND a.`contest_id`= {$mysqli->real_escape_string($_GET['contest'])} ";
 }
 if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE && isset($_GET['class']) && $_GET['class'] != "all" && $_GET['class'] != "") {
-    $sql_filter .= " AND `class`= '{$mysqli->real_escape_string($_GET['class'])}' ";
+    if($_GET['class']<>"empty"){
+        $sql_filter .= " AND `class`='{$mysqli->real_escape_string($_GET['class'])}' ";
+    } else $sql_filter .= " AND (ISNULL(`class`) OR `class`='') ";
+}
+if (isset($_GET['defunct']) && $_GET['defunct'] != "all") {
+    if ($_GET['defunct'] == "N") {
+        $sql_filter .= " AND `defunct`= 'N' ";
+    } else $sql_filter .= " AND `defunct`= 'Y' ";
 }
 switch ($args['sort_method']) {
     case 'AccTime_DESC':
@@ -151,7 +158,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                 if ($row->defunct == "N") {
                     $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
                 } else {
-                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Reserved . "</a>";
+                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'><font color=red><b>" . $MSG_Reserved . "</b></font></a>";
                 }
                 $view_users[$cnt][4] = get_group($row->user_id);
                 if (!IS_ADMIN($row->user_id)) {
@@ -211,7 +218,7 @@ if (!isset($_GET['team'])) { //查询普通账号
             $view_users[$cnt][4] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
             $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
         }
-        $contest_status = ($row->defunct == 'Y') ? '<font color=red>【' . $MSG_Reserved . '】</font>' : "";
+        $contest_status = ($row->defunct == 'Y') ? '<font color=red><b>【' . $MSG_Reserved . '】</b></font>' : "";
         $view_users[$cnt][6] = ($row->title) ? "<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
         $view_users[$cnt][7] = $row->accesstime;
         $view_users[$cnt][8] = $row->reg_time;;
@@ -252,7 +259,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         <?php if (isset($_GET['team'])) { ?>
             <div class='am-form-group'>
                 <select class="selectpicker show-tick" data-live-search="true" id='team' name='team' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                    <option value='all' <?php if (isset($_GET['team']) && ($_GET['team'] == "" || $_GET['team'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                    <option value='all' <?php if (isset($_GET['team']) && ($_GET['team'] == "" || $_GET['team'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_TEAM ?></option>
                     <?php
                     $sql = "SELECT DISTINCT `prefix` FROM `team` ORDER BY `prefix`";
                     $result = $mysqli->query($sql);
@@ -268,7 +275,7 @@ if (!isset($_GET['team'])) { //查询普通账号
             </div>
             <div class='am-form-group'>
                 <select class="selectpicker show-tick" data-live-search="true" id='contest' name='contest' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                    <option value='all' <?php if (isset($_GET['contest']) && ($_GET['contest'] == "" || $_GET['contest'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                    <option value='all' <?php if (isset($_GET['contest']) && ($_GET['contest'] == "" || $_GET['contest'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Special ?></option>
                     <?php
                     $sql = "SELECT DISTINCT `team`.`contest_id`, `contest`.`title`,`contest`.`defunct` FROM `team`";
                     $sql .= " LEFT JOIN `contest` ON `team`.`contest_id` = `contest`.`contest_id` ORDER BY `team`.`contest_id` desc";
@@ -284,16 +291,26 @@ if (!isset($_GET['team'])) { //查询普通账号
                     ?>
                 </select>
             </div>
+        <?php }else { ?>
+            <div class='am-form-group'>
+            <select class="selectpicker show-tick" id='defunct' name='defunct' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+                <option value='all' <?php if (isset($_GET['defunct']) && ($_GET['defunct'] == "" || $_GET['defunct'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_STATUS ?></option>
+                <option value='N' <?php if (isset($_GET['defunct']) && $_GET['defunct'] == "N" ) echo "selected"; ?>> <?php echo $MSG_Available?></option>
+                <option value='Y' <?php if (isset($_GET['defunct']) && $_GET['defunct'] == "Y" ) echo "selected"; ?>> <?php echo $MSG_Reserved ?></option>
+            </select>
+        </div>
         <?php }
         if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         ?>
             <div class='am-form-group'>
                 <select class="selectpicker show-tick" data-live-search="true" id='class' name='class' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                    <option value='all' <?php if (isset($_GET['class']) && ($_GET['class'] == "" || $_GET['class'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                    <option value='all' <?php if (isset($_GET['class']) && ($_GET['class'] == "" || $_GET['class'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Class ?></option>
+                    <option value='其它' <?php if (isset($_GET['class']) && $_GET['class'] == "其它") echo "selected"; ?>>其它</option>
+                    <option value='empty' <?php if (isset($_GET['class']) && $_GET['class'] == "empty") echo "selected"; ?>>无归属班级</option>                    
                     <?php
                     if (isset($_GET['team'])) {
-                        $sql = "SELECT DISTINCT `class` FROM `team` ORDER BY `class`";
-                    } else $sql = "SELECT DISTINCT `class` FROM `users` ORDER BY `class`";
+                        $sql = "SELECT DISTINCT `class` FROM `team` WHERE NOT ISNULL(`class`) AND `class`<>'' AND `class`<>'其它' ORDER BY `class`";
+                    } else $sql = "SELECT DISTINCT `class` FROM `users` WHERE NOT ISNULL(`class`) AND `class`<>'' AND `class`<>'其它' ORDER BY `class`";
                     $result = $mysqli->query($sql);
                     $prefix = $result->fetch_all();
                     $result->free();
@@ -342,7 +359,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         cursor: pointer;
     }
 </style>
-<div class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-left: 5px;">
+<div class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-left: 5px; overflow:visible;">
     <?php if (!isset($_GET['team'])) { ?>
         <!-- 罗列普通用户 start -->
         <form action="user_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>" method='post'>
@@ -357,7 +374,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     require_once("../include/classList.inc.php");                                    
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto">
+                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" required>
                                 <option value='' selected></option>
                                     <?php foreach ($classList as $c):?>
                                     <option value="<?php echo $c?>"><?php echo $c?></option>
@@ -458,7 +475,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?team&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="contestid" class="selectpicker show-tick" data-live-search="true" data-width="340px">
+                                <select name="contestid" class="selectpicker show-tick" data-live-search="true" data-width="auto">
                                     <option value='' selected></option>
                                     <?php
                                     foreach ($view_contest as $view_con) :
