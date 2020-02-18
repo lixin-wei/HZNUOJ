@@ -55,10 +55,8 @@ SQL;
 function submitSolution($pid,$solution,$language)
 {
 	global $mysqli;
-	if(isset($OJ_LANG)){
-		require_once("../lang/$OJ_LANG.php");
-	}	
-	require_once ("../include/const.inc.php");
+	require_once("../include/setlang.php");
+	require_once("../include/const.inc.php");
 
 	for($i=0;$i<count($language_name);$i++){
 		//echo "$language=$language_name[$i]=".($language==$language_name[$i]);

@@ -1,10 +1,7 @@
 <?php
 @session_start ();
-require_once ("../include/db_info.inc.php");
-
-if(isset($OJ_LANG)){
-		require_once("../lang/$OJ_LANG.php");
-}
+require_once("../include/db_info.inc.php");
+require_once("../include/setlang.php");
 function getTestFileIn($pid, $testfile,$OJ_DATA) {
 	if ($testfile != "")
 		return file_get_contents ( "$OJ_DATA/$pid/" . $testfile . ".in" );
@@ -83,9 +80,7 @@ class Solution{
 function getSolution($pid,$lang){
 	$ret=new Solution();
 	require("../include/db_info.inc.php");
-	if(isset($OJ_LANG)){
-			require("../lang/$OJ_LANG.php");
-	}
+	require('../include/setlang.php');
 	require("../include/const.inc.php");
          $con=false;
 	if($OJ_SAE)     {
