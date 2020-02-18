@@ -61,12 +61,13 @@
     <div class="am-form-group">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
-        <select name="class" style="width:300px;">
-        <?php
-          foreach ($classList as $i) {
-        ?>
-            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-        <?php
+        <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'300px'}">
+        <?php 
+          foreach ($classList as $c){
+            if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+              foreach ($c[1] as $cl){
+                echo "<option value='$cl'>$cl</option>\n";
+              }
           }
         ?>
         </select>

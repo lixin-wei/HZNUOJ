@@ -463,9 +463,15 @@ if(isset($_GET['team'])) {
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
           <select name="newclass" class="selectpicker show-tick" data-live-search="true" data-width="340px">
-            <?php foreach ($classList as $c):?>
-              <option value="<?php echo $c?>" <?php if($c == $class) echo "selected"?>><?php echo $c?></option>
-            <?php endforeach ?>
+            <?php 
+              foreach ($classList as $c){
+                if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                  foreach ($c[1] as $cl){
+                    if($cl == $class) $selected = "selected"; else $selected ="";
+                    echo "<option value='$cl' $selected>$cl</option>\n";
+                  }
+              }
+            ?>
           </select>
       </div>
     </div>

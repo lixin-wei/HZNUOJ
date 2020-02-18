@@ -376,9 +376,14 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" required>
                                 <option value='' selected></option>
-                                    <?php foreach ($classList as $c):?>
-                                    <option value="<?php echo $c?>"><?php echo $c?></option>
-                                    <?php endforeach ?>
+                                <?php 
+                                    foreach ($classList as $c){
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                                        foreach ($c[1] as $cl){
+                                            echo "<option value='$cl'>$cl</option>\n";
+                                        }
+                                    }
+                                ?>
                                 </select>&nbsp;
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>
@@ -468,9 +473,14 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto">
                                 <option value='' selected></option>
-                                    <?php foreach ($classList as $c):?>
-                                    <option value="<?php echo $c?>"><?php echo $c?></option>
-                                    <?php endforeach ?>
+                                <?php 
+                                    foreach ($classList as $c){
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                                        foreach ($c[1] as $cl){
+                                            echo "<option value='$cl'>$cl</option>\n";
+                                        }
+                                    }
+                                ?>
                                 </select>&nbsp;
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?team&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>

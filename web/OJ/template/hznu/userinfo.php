@@ -62,9 +62,15 @@ require_once("header.php");
                 <th class="first-col am-text-right" style="padding-top: 10px;"><?php echo $MSG_Class ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <td>
                   <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'100%'}">
-                    <?php foreach ($classList as $c):?>
-                      <option value="<?php echo $c?>" <?php if($c == $class) echo "selected"?>><?php echo $c?></option>
-                    <?php endforeach ?>
+                    <?php 
+                      foreach ($classList as $c){
+                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                          foreach ($c[1] as $cl){
+                            if($cl == $class) $selected = "selected"; else $selected ="";
+                            echo "<option value='$cl' $selected>$cl</option>\n";
+                          }
+                      }
+                    ?>
                   </select>
                 </td>
               </tr>
