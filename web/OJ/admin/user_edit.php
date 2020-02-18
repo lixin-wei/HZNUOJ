@@ -13,7 +13,7 @@ if (!HAS_PRI("edit_user_profile")) {
 	require_once("error.php");
 	exit(1);
 }
-
+require_once("../include/my_func.inc.php");
 if(isset($_GET['del'])) { //删除账号
     require_once("../include/check_get_key.php");
     $cid = $mysqli->real_escape_string($_GET['cid']);
@@ -53,15 +53,14 @@ if(isset($_GET['del'])) { //删除账号
     }
     echo "<script language=javascript>history.go(-1);</script>";
     exit(0);
-} else if (isset($_POST['cid']) && !isset($_GET['resetpwd']) && !isset($_GET['changeTeamContest'])){ //用户资料写入数据库，保存后资料后跳转回用户列表
+} else if (isset($_POST['saveUser']) ){ //用户资料写入数据库，保存后资料后跳转回用户列表
+  require_once("../include/check_post_key.php");
   $user_id=trim($mysqli->real_escape_string($_POST['cid']));
-  require_once("../include/my_func.inc.php");
   if(!isset($_POST['team']) && $user_id != $_SESSION['user_id'] && get_order(get_group($user_id))<=get_order(get_group(""))){
     $view_error="You can't edit this user!";
     require_once("error.php");
     exit(1);
   }
-  require_once("../include/check_post_key.php");
   if(isset($_POST['team'])) $args['team']=$_POST['team'];
   if(isset($_POST['sort_method'])) $args['sort_method']=$_POST['sort_method'];else $args['sort_method']="";
   if(isset($_POST['keyword'])) $args['keyword']=$_POST['keyword'];
@@ -85,9 +84,14 @@ if(isset($_GET['del'])) { //删除账号
   
   $nick=trim($mysqli->real_escape_string($_POST['nick']));
   $school=trim($mysqli->real_escape_string($_POST['school']));
-  $stu_id=trim($mysqli->real_escape_string($_POST['stu_id']));
-  $real_name=trim($mysqli->real_escape_string($_POST['real_name']));
-  $class=trim($mysqli->real_escape_string($_POST['class']));
+  $class="其它";
+  $stu_id="";
+  $real_name="";
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){	  
+    $stu_id=trim($mysqli->real_escape_string($_POST['stu_id']));
+    $real_name=trim($mysqli->real_escape_string($_POST['real_name']));
+    $class=trim($mysqli->real_escape_string($_POST['class']));
+  }
   $len = strlen($nick);
   if ($len>=30){
     $err_str=$err_str."输入的{$MSG_NICK}过长！\\n";
@@ -98,15 +102,21 @@ if(isset($_GET['del'])) { //删除账号
     $err_str=$err_str."输入的就读学校名称过长！\\n";
     $err_cnt++;
   }
-  $len = strlen($stu_id);
-  if ($len>=30){
-    $err_str=$err_str."输入的{$MSG_StudentID}过长！\\n";
-    $err_cnt++;
-  }
-  $len = strlen($real_name);
-  if ($len>=30){
-    $err_str=$err_str."输入的{$MSG_REAL_NAME}过长！\\n";
-    $err_cnt++;
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+    $len = strlen($stu_id);
+    if ($len>=30){
+      $err_str=$err_str."输入的{$MSG_StudentID}过长！\\n";
+      $err_cnt++;
+    }
+    $len = strlen($real_name);
+    if ($len>=30){
+      $err_str=$err_str."输入的{$MSG_REAL_NAME}过长！\\n";
+      $err_cnt++;
+    }
+    if(!class_is_exist($class)){
+      $err_str=$err_str."{$class}不存在！\\n";
+      $err_cnt++;
+    }
   }
   if(!isset($_POST['team'])) { //普通用户sql    
     $email=trim($mysqli->real_escape_string($_POST['email']));
@@ -175,13 +185,13 @@ if(isset($_GET['del'])) { //删除账号
   $mysqli->query($sql) or die("Update Error!\n");
   if ($mysqli->affected_rows) {
     $result="编辑成功！";
-  } else $result="No such user";
+  } else $result="No such user or No change!";
   echo "<script language='javascript'>\n";
   echo "alert('$result');";
 	echo "window.location.href='".generate_url("")."';";
   echo "</script>";
   exit(0);
-} else if(isset($_GET['changeTeamContest'])) { //给比赛账号重新分配比赛
+} else if(isset($_POST['changeTeamContest'])) { //给比赛账号重新分配比赛
   require_once("../include/check_get_key.php");
   $cid = $_POST['cid'];
   $contestid = $mysqli->real_escape_string($_POST['contestid']);
@@ -204,9 +214,32 @@ if(isset($_GET['del'])) { //删除账号
   }
   echo "<script language=javascript>history.go(-1);</script>";
   exit(0);
+} else if(isset($_POST['changeClass'])) { //批量调整班级
+  require_once("../include/check_get_key.php");
+  $cid = $_POST['cid'];
+  $ulist = "";
+  foreach ($cid as $user_id) {
+    $user_id = $mysqli->real_escape_string($user_id);
+    if ($ulist) {
+      $ulist .= ",'" . $user_id . "'";
+    } else $ulist .= "'" . $user_id . "'";
+  }
+  $class = $mysqli->real_escape_string($_POST['class']);
+  if(class_is_exist($class) && $ulist){
+    if(!isset($_GET['team'])) { //普通用户调整班级
+      $sql = "UPDATE `users_cache` SET `class`='$class' WHERE `user_id` IN ($ulist)";
+      $mysqli->query($sql);
+      $sql = "UPDATE `users` SET `class`='$class' WHERE `user_id` IN ($ulist)";
+      $mysqli->query($sql);
+    } else { //比赛账号调整班级
+      $sql = "UPDATE `team` SET `class`='$class' WHERE `user_id` IN ($ulist)";
+      $mysqli->query($sql);
+    }
+  }
+  echo "<script language=javascript>history.go(-1);</script>";
+  exit(0);
 } else if(isset($_GET['resetpwd'])) { //比赛账号重置密码
   require_once("../include/check_get_key.php");
-  require_once("../include/my_func.inc.php");
   $cid = array();
   $report = array();
   if(isset($_GET['cid'])){
@@ -249,7 +282,7 @@ if(isset($_GET['del'])) { //删除账号
 <h1><?php echo $title ?></h1>
 <hr>
 <div  class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-top: 0px;margin-bottom: 0px;">
-<input type="submit" name="submit" value="返回" onclick="javascript:history.go(-1);" style="margin-bottom: 20px;">
+<input type="button" name="submit" value="返回" onclick="javascript:history.go(-1);" style="margin-bottom: 20px;">
 <table id="passwords" class="table table-hover table-bordered table-condensed table-striped" style="white-space: nowrap;width:600px">
   <thead>
     <tr><td colspan=5>Copy these accounts to distribute</td></tr>
@@ -285,7 +318,6 @@ if(isset($_GET['del'])) { //删除账号
 //显示资料修改界面 start
 $cid = $mysqli->real_escape_string($_GET['cid']);
 if(!isset($_GET['team'])) {
-  require_once("../include/my_func.inc.php");
   if(!isset($_POST['team']) && $user_id != $_SESSION['user_id'] && get_order(get_group($cid))<=get_order(get_group(""))){
     $view_error="You can't edit this user!";
     require_once("error.php");
@@ -400,7 +432,6 @@ if(isset($_GET['team'])) {
       if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
         require_once("../include/classList.inc.php");
         $class = $row->class;
-        if ($class=="null" or  $class=="" ) $class = "其它";
       ?>
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_StudentID ?>:</label>
@@ -443,7 +474,7 @@ if(isset($_GET['team'])) {
     <?php } ?>
     <div class="am-form-group" style="white-space: nowrap;">
       <div class="am-u-sm-8 am-u-sm-offset-4">
-        <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="submit" class="am-btn am-btn-success">
+        <input type="submit" value="<?php echo $MSG_SUBMIT?>" name="saveUser" class="am-btn am-btn-success">
       </div>
     </div>
   </form>

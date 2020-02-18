@@ -101,6 +101,7 @@
   $MSG_Institute = "机构";
   $MSG_Seat = "座位";
   $MSG_ChangeTeamContest = "分配".$MSG_CONTEST;
+  $MSG_ChangeClass = "分配".$MSG_Class;
   $MSG_Enrollment_Year = "入学年份";
   $MSG_Class_Name = "班级名称";
   $MSG_Stu_List = "学生名单";

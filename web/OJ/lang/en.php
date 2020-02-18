@@ -101,6 +101,7 @@
   $MSG_Institute = "Institute";
   $MSG_Seat = "Seat";
   $MSG_ChangeTeamContest = "Redistribute Team Contest";
+  $MSG_ChangeClass = "Redistribute User's Class";
   $MSG_Enrollment_Year = "Enrollment Year";
   $MSG_Class_Name = "Class Name";
   $MSG_Stu_List = "Student List";
