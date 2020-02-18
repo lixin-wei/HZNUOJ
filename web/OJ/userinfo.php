@@ -57,21 +57,6 @@
   $stu_id=$row->stu_id;
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
      $class = $row->class;
-            if ($class=="null") $class = "其它";
-            if ($class=="cs151") $class = "计算机151";
-            if ($class=="cs152") $class = "计算机152";
-            if ($class=="cs153") $class = "计算机153";
-            if ($class=="cs154") $class = "计算机154";
-            if ($class=="se151") $class = "软件工程151";
-            if ($class=="se152") $class = "软件工程152";
-            if ($class=="iot151") $class = "物联网151";
-            if ($class=="cs141") $class = "计算机141";
-            if ($class=="cs142") $class = "计算机142";
-            if ($class=="cs143") $class = "计算机143";
-            if ($class=="cs144") $class = "计算机144";
-            if ($class=="se141") $class = "软件工程141";
-            if ($class=="se142") $class = "软件工程142";
-            if ($class=="iot141") $class = "物联网141";
   }
   $result->free();
  
