@@ -48,14 +48,25 @@ if (isset($_GET['year']) && $_GET['year'] != "" && $_GET['year'] != "all") {
 }
 if (isset($_GET['zero'])){
     switch($_GET['zero']){
-        case "0":
+        case "y":
             $sql_filter .= " AND ISNULL(stu_num) AND ISNULL(team_account_num) ";
             break;
-        case "1":
+        case "n":
             $sql_filter .= " AND NOT (ISNULL(stu_num) AND ISNULL(team_account_num)) ";
             break;
     }
 }
+$leftJoin = " LEFT JOIN (SELECT `users`.`class`, COUNT(`users`.`user_id`) AS stu_num FROM `users` GROUP BY `users`.`class`) AS u  ON `class_name`= u.`class` ";
+$leftJoin .= " LEFT JOIN (SELECT `team`.`class`, COUNT(`team`.`user_id`) AS team_account_num FROM `team` GROUP BY `team`.`class`) AS t ON `class_name`= t.`class`";
+$sql0 = "SELECT COUNT(`class_name`) FROM `class_list` " . $leftJoin . $sql_filter;
+$result = $mysqli->query($sql0)->fetch_all();
+$total = 0;
+if ($result) $total = $result[0][0];
+$page_cnt = 10;
+$view_total_page = ceil($total / $page_cnt); //计算页数
+if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
+$left_bound = $page_cnt * $page - $page_cnt;
+$u_id = $left_bound;
 switch ($args['sort_method']) {
     case 'class_DESC':
         $class_icon = "am-icon-sort-amount-desc";
@@ -90,15 +101,6 @@ switch ($args['sort_method']) {
         $year = 'year_ASC';
         break;
 }
-$sql = "SELECT COUNT(`class_name`) FROM `class_list` WHERE `class_name`<> '其它'";
-$result = $mysqli->query($sql)->fetch_all();
-$total = 0;
-if ($result) $total = $result[0][0];
-$page_cnt = 20;
-$view_total_page = ceil($total / $page_cnt); //计算页数
-if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
-$left_bound = $page_cnt * $page - $page_cnt;
-$u_id = $left_bound;
 $sql_filter .= " LIMIT $left_bound, $page_cnt";
 $view_class = array();
 $cnt = 0;
@@ -108,10 +110,7 @@ $view_class[$cnt][2] = "其它";
 $view_class[$cnt][3] = $MSG_DEL;
 $view_class[$cnt][4] = $MSG_EDIT;
 
-$sql = "SELECT `class_list`.*, stu_num, team_account_num FROM `class_list` ";
-$sql .= " LEFT JOIN (SELECT `users`.`class`, COUNT(`users`.`user_id`) AS stu_num FROM `users` GROUP BY `users`.`class`) AS u  ON `class_name`= u.`class` ";
-$sql .= " LEFT JOIN (SELECT `team`.`class`, COUNT(`team`.`user_id`) AS team_account_num FROM `team` GROUP BY `team`.`class`) AS t ON `class_name`= t.`class`";
-
+$sql = "SELECT `class_list`.*, stu_num, team_account_num FROM `class_list` " . $leftJoin;
 $sql_other = $sql . " WHERE `class_name`='其它'";
 $result = $mysqli->query($sql_other);
 if ($row = $result->fetch_object()) {
@@ -200,9 +199,9 @@ while ($row = $result->fetch_object()) {
         </div>
         <div class='am-form-group'>
             <select class="selectpicker show-tick" name='zero' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                <option value='all' <?php if (isset($_GET['zero']) && $_GET['zero'] != "0" && $_GET['zero'] != "0") echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
-                <option value='0' <?php if (isset($_GET['zero']) && $_GET['zero'] == "0") echo "selected"; ?>><?php echo $MSG_Empty_Class ?></option>
-                <option value='1' <?php if (isset($_GET['zero']) && $_GET['zero'] == "1") echo "selected"; ?>><?php echo $MSG_Not_Empty_Class ?></option>
+                <option value='all' <?php if (isset($_GET['zero']) && $_GET['zero'] != "y" && $_GET['zero'] != "n") echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                <option value='y' <?php if (isset($_GET['zero']) && $_GET['zero'] == "y") echo "selected"; ?>><?php echo $MSG_Empty_Class ?></option>
+                <option value='n' <?php if (isset($_GET['zero']) && $_GET['zero'] == "n") echo "selected"; ?>><?php echo $MSG_Not_Empty_Class ?></option>
             </select>
         </div>
         <div class="am-form-group am-form-icon">
@@ -302,19 +301,24 @@ while ($row = $result->fetch_object()) {
                         </select>
                     </div>
                     <div class="am-form-group" style="white-space: nowrap;">
-                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Grade ?>:</label>
-                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" name="prefix" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required />
-                    </div>
-                    <div class="am-form-group" style="white-space: nowrap;">
-                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Amount ?>:</label>
-                        <input type="number" style="width:220px;" class="am-u-sm-8 am-u-end" name="class_num" min="1" max="99" value="4" required />
-                    </div>
-                    <div class="am-form-group" style="white-space: nowrap;">
                         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Mode ?>:</label>
-                        <select name="mode" style="width:220px;" class="am-u-sm-8 am-u-end">
+                        <select id="mode" name="mode" style="width:220px;" class="am-u-sm-8 am-u-end">
                             <option value="A" selected>1/2/3/4(最多99个班)</option>
                             <option value="B">A/B/C/D(最多26个班)</option>
+                            <option value="C"><?php echo $MSG_Customiz.$MSG_Class.$MSG_LIST ?></option>
                         </select>
+                    </div>
+                    <div class="am-form-group" style="white-space: nowrap;" id="A">
+                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Grade ?>:</label>
+                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" id="prefix" name="prefix" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required/>
+                    </div>
+                    <div class="am-form-group" style="white-space: nowrap;" id="B">
+                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Amount ?>:</label>
+                        <input type="number" style="width:220px;" class="am-u-sm-8 am-u-end" id="class_num" name="class_num" min="1" max="99" value="4" required/>
+                    </div>
+                    <div class="am-form-group" style="white-space: nowrap;" id="C" hidden>
+                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Class.$MSG_LIST ?>:</label>
+                        <textarea id="classes" name="classes" rows="5" class="am-u-sm-8 am-u-end" style="width:220px;" placeholder="*示例：一个班级名称占一行<?php echo "\n"?>班级1<?php echo "\n"?>班级2<?php echo "\n"?>班级3<?php echo "\n"?>" disabled required></textarea>
                     </div>
                     <div class="am-form-group">
                         <div class="am-u-sm-8 am-u-sm-offset-4">
@@ -323,7 +327,7 @@ while ($row = $result->fetch_object()) {
                     </div>
                 </form>
             </main>
-            <footer class="am-panel-footer"><b><?php echo $MSG_Grade ?></b>限20个以内的汉字、字母、数字、下划线</footer>
+            <footer class="am-panel-footer"><b><?php echo $MSG_Grade."/".$MSG_Class ?></b>限20个以内汉字、字母、数字、下划线</footer>
         </section>
     </div>
 </div>
@@ -369,5 +373,22 @@ require_once("admin-footer.php")
     $("#strength").click(function() {
         var link = "<?php echo generate_url(array("page" => "1"), "") ?>";
         window.location.href = link;
+    });
+    $("#mode").change(function(){
+        if($(this).val() =="A" || $(this).val() =="B"){
+            $("#A").show();
+            $("#B").show();
+            $("#C").hide();
+            $('#prefix').attr("disabled",false);
+            $('#class_num').attr("disabled",false);
+            $('#classes').attr("disabled",true);
+        } else {
+            $("#A").hide();
+            $("#B").hide();
+            $("#C").show();
+            $('#prefix').attr("disabled",true);
+            $('#class_num').attr("disabled",true);
+            $('#classes').attr("disabled",false);
+        }
     });
 </script>

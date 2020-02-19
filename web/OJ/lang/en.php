@@ -71,7 +71,7 @@
   $MSG_HINTS= "Hits";
   $MSG_SERVERTIME = "Server Time";
   $MSG_MAINTAINER = "Maintainer List";
-  $MSG_ALL = "All";
+  $MSG_ALL = "All ";
   $MSG_GO = "Go";
   $MSG_EDIT = "Edit ";
   $MSG_DEL = "Delete ";
@@ -95,14 +95,14 @@
   $MSG_Order_by = "Order by";
   $MSG_AccessTime = "Access Time";
   $MSG_StudentID = "Student ID";
-  $MSG_Class = "Class";
-  $MSG_RegTime = "RegTime";
-  $MSG_RegIP = "RegIP";
+  $MSG_Class = "Class ";
+  $MSG_RegTime = "Reg Time";
+  $MSG_RegIP = "Reg IP";
   $MSG_Institute = "Institute";
   $MSG_Seat = "Seat";
   $MSG_ChangeTeamContest = "Redistribute Team Contest";
-  $MSG_ChangeClass = "Redistribute User's Class";
-  $MSG_Enrollment_Year = "Enrollment Year";
+  $MSG_ChangeClass = "Redistribute Class";
+  $MSG_Enrollment_Year = "Enroll Year";
   $MSG_Class_Name = "Class Name";
   $MSG_Stu_List = "Student List";
   $MSG_Grade = "Grade/Specialty/Prefix";
@@ -111,6 +111,7 @@
   $MSG_Not_Empty_Class = "Not Empty Class";
   $MSG_Empty_Class = "Empty Class";
   $MSG_Back = "Back";
+  $MSG_Customiz = "Customiz ";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -143,8 +144,8 @@
   $MSG_OK="OK";
   $MSG_Explain="Type reason or explaination";
   $MSG_RUNID="Run ID";
-  $MSG_FILTER = "Filter";
-  $MSG_RESET = "Reset";
+  $MSG_FILTER = "Filter ";
+  $MSG_RESET = "Reset ";
   
   //problemstatistics.php
   $MSG_PD="PD";
@@ -258,7 +259,7 @@
   $MSG_HELP_ADD_NEWS="add news for the homepage";
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
-  $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.if you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
+  $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.If you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
   $MSG_HELP_ADD_PROBLEM="add new problem,multi test cases can be added after problem added ,using TestData button on the Problem List";
   $MSG_HELP_PROBLEM_LIST="manage existing problems, test case files can be uploaded within a zip file and decompress later";
   $MSG_HELP_CONTEST_LIST="The existing list of contests, modification time and public / private……, try not to adjust the list of items after the start.";

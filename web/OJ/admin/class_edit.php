@@ -53,16 +53,21 @@ if (isset($_GET['del'])) { //删除班级信息
     $err_str .= "输入的{$MSG_Enrollment_Year}({$year})不是一个合法的年份 ！\\n";
     $err_cnt++;
   }
-  if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
-    $err_str .= "输入的{$MSG_Grade}限20个以内的汉字、字母、数字或下划线 ！\\n";
-    $err_cnt++;
-  }
-  if (!is_numeric($class_num) || $class_num > 99 || $class_num < 1) {
-    $err_str .= "输入的{$MSG_Class}{$MSG_Amount}要求是介于1-99的整数 ！\\n";
-    $err_cnt++;
-  } else if ($err_cnt == 0) {
+  if ($mode == "A" || $mode == "B") {
+    if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+      $err_str .= "输入的{$MSG_Grade}限20个以内的汉字、字母、数字或下划线 ！\\n";
+      $err_cnt++;
+    }
+    if (!is_numeric($class_num) || $class_num > 99 || $class_num < 1) {
+      $err_str .= "输入的{$MSG_Class}{$MSG_Amount}要求是介于1-99的整数 ！\\n";
+      $err_cnt++;
+    }
+  } 
+  if ($err_cnt == 0) {
     // <option value="A">1/2/3/4(最多99个班)</option>
     // <option value="B">A/B/C/D(最多26个班)</option>
+    // <option value="C">自定义班级列表</option>
+    $class_list_err = array();
     switch ($mode) {
       case 'B':
         if ($class_num > 26) {
@@ -87,6 +92,22 @@ if (isset($_GET['del'])) { //删除班级信息
           array_push($class_list, $prefix . sprintf($format, $i));
         }
         break;
+      case "C":
+        if (trim($_POST['classes'])){
+          $classes = explode("\n", trim($_POST['classes']));
+          $class_list = array();        
+          foreach($classes as $c){
+            $c = str_replace("\r","",$c);
+            if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $c)) {
+              array_push($class_list_err, "输入的{$MSG_Class_Name} {$c} 不合规，限20个以内的汉字、字母、数字或下划线 ！<br>\n");
+            } else array_push($class_list, $mysqli->real_escape_string(htmlentities($c)));
+          }
+        } else {
+          $err_str .= "请填写$MSG_Class{$MSG_LIST}！";
+          $err_cnt++;
+        }
+        $class_num = count($class_list);
+        break;
     }
   }
   if ($err_cnt > 0) {
@@ -103,9 +124,12 @@ if (isset($_GET['del'])) { //删除班级信息
     } else {
       $sql = "INSERT INTO `class_list` VALUES ('" . $class_list[$i] . "', '" . $year . "')";
       $mysqli->query($sql);
-      echo $class_list[$i] . "-成功写入！<br>\n";
+      echo $year . "级 " . $class_list[$i] . "-成功写入！<br>\n";
       $cnt++;
     }
+  }
+  foreach ($class_list_err as $err){
+    echo $err;
   }
   echo "成功写入{$cnt}个班级。";
   echo "<p><input type='button' name='submit' value='$MSG_Back' onclick='javascript:history.go(-1);' style='margin-bottom: 20px;'>";
@@ -189,7 +213,7 @@ $result->free();
 <title><?php echo $html_title . $title ?></title>
 <h1><?php echo $title ?></h1>
 <hr>
-<div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;width:700px;">
+<div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;width:800px;">
   <form class="am-form am-form-horizontal" action="class_edit.php" method="post">
     <?php require_once('../include/set_post_key.php'); ?>
     <input type='hidden' name='cid' value='<?php echo $cid ?>'>
@@ -217,7 +241,7 @@ $result->free();
     <div class="am-form-group">
       <div class="am-u-sm-8 am-u-sm-offset-4">
         <input type="submit" value="<?php echo $MSG_SUBMIT ?>" name="submit" class="am-btn am-btn-success">&nbsp;
-        <input type="button" value="<?php echo $MSG_Back ?>"  name="submit" onclick="javascript:history.go(-1);" class="am-btn am-btn-secondary">
+        <input type="button" value="<?php echo $MSG_Back ?>" name="submit" onclick="javascript:history.go(-1);" class="am-btn am-btn-secondary">
       </div>
     </div>
   </form>

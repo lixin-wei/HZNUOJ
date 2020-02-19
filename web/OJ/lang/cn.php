@@ -111,6 +111,7 @@
   $MSG_Not_Empty_Class = "有人班级";
   $MSG_Empty_Class = "无人班级";
   $MSG_Back = "返回";
+  $MSG_Customiz = "自定义";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
