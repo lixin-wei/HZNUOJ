@@ -10,7 +10,7 @@
 <?php
 require_once("admin-header.php");
 if (!HAS_PRI("edit_user_profile")) {
-  $view_error = "You can't edit this user!";
+  $view_error = "You don't have the privilege to view this page!";
   require_once("error.php");
   exit(1);
 }
