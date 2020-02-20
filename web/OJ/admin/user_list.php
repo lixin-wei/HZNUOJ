@@ -69,6 +69,18 @@ if (isset($_GET['defunct']) && $_GET['defunct'] != "all") {
         $sql_filter .= " AND `defunct`= 'N' ";
     } else $sql_filter .= " AND `defunct`= 'Y' ";
 }
+if (!isset($_GET['team']))
+    $sql = "SELECT COUNT('user_id') FROM `users` " . $sql_filter;
+else
+    $sql = "SELECT COUNT('user_id') FROM `team` as a " . $sql_filter;
+$result = $mysqli->query($sql)->fetch_all();
+$total = 0;
+if ($result) $total = $result[0][0];
+$page_cnt = 50;
+$view_total_page = ceil($total / $page_cnt); //计算页数
+if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
+$left_bound = $page_cnt * $page - $page_cnt;
+$u_id = $left_bound;
 switch ($args['sort_method']) {
     case 'AccTime_DESC':
         $acctime_icon = "am-icon-sort-amount-desc";
@@ -126,19 +138,6 @@ switch ($args['sort_method']) {
         $strength = 'strength_DESC';
         break;
 }
-if (!isset($_GET['team']))
-    $sql = "SELECT COUNT('user_id') FROM `users` " . $sql_filter;
-else
-    $sql = "SELECT COUNT('user_id') FROM `team` as a " . $sql_filter;
-$result = $mysqli->query($sql)->fetch_all();
-$total = 0;
-if ($result) $total = $result[0][0];
-$page_cnt = 50;
-$view_total_page = ceil($total / $page_cnt); //计算页数
-if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
-$left_bound = $page_cnt * $page - $page_cnt;
-$u_id = $left_bound;
-
 $sql_filter .= " LIMIT $left_bound, $page_cnt";
 $view_users = array();
 $cnt = 0;
@@ -359,7 +358,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         cursor: pointer;
     }
 </style>
-<div class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-left: 5px; overflow:visible;">
+<div class="am-g am-scrollable-horizontal" style="max-width: 1300px;margin-left: 5px;">
     <?php if (!isset($_GET['team'])) { ?>
         <!-- 罗列普通用户 start -->
         <form action="user_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>" method='post'>
@@ -374,7 +373,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     require_once("../include/classList.inc.php");                                    
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" required>
+                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" required>
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -471,7 +470,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     require_once("../include/classList.inc.php");                                    
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto">
+                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" >
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -485,7 +484,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?team&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="contestid" class="selectpicker show-tick" data-live-search="true" data-width="auto">
+                                <select name="contestid" class="selectpicker show-tick" data-live-search="true" data-width="auto"  data-size="8" data-title="选择一个比赛">
                                     <option value='' selected></option>
                                     <?php
                                     foreach ($view_contest as $view_con) :
