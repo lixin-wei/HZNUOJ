@@ -29,13 +29,13 @@ if (isset($_GET['del'])) { //删除班级信息
     } else $clist .= "'" . $class . "'";
   }
   if ($clist) { //先将班级名下学生归到“其它”班，再删除班级记录
-    $sql = "UPDATE `users` SET `class`='其它' WHERE `class` IN ($clist)";
+    $sql = "UPDATE `users` SET `class`='其它' WHERE `class`<>'其它' AND `class` IN ($clist)";
     $mysqli->query($sql);
-    $sql = "UPDATE `users_cache` SET `class`='其它' WHERE `class` IN ($clist)";
+    $sql = "UPDATE `users_cache` SET `class`='其它' WHERE `class`<>'其它' AND `class` IN ($clist)";
     $mysqli->query($sql);
-    $sql = "UPDATE `team` SET `class`='其它' WHERE `class` IN ($clist)";
+    $sql = "UPDATE `team` SET `class`='其它' WHERE `class`<>'其它' AND `class` IN ($clist)";
     $mysqli->query($sql);
-    $sql = "DELETE FROM `class_list` WHERE `class_name` IN  ($clist)";
+    $sql = "DELETE FROM `class_list` WHERE `class_name`<>'其它' AND `class_name` IN  ($clist)";
     $mysqli->query($sql);
   }
   echo "<script language=javascript>history.go(-1);</script>";
