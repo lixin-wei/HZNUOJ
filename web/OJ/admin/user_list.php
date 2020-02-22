@@ -370,7 +370,8 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='enable' class='btn btn-default' value='<?php echo $MSG_Available ?>'>&nbsp;
                                 <input type=submit name='disable' class='btn btn-default' value='<?php echo $MSG_Reserved ?>'>
                                 <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { 
-                                    require_once("../include/classList.inc.php");                                    
+                                    require_once("../include/classList.inc.php");
+                                    $classList = get_classlist(true, "");                            
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" required>
@@ -467,7 +468,8 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='delete' class='btn btn-default' value='<?php echo $MSG_DEL ?>' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) $("form").attr("action","user_edit.php?team&del&getkey=<?php echo $_SESSION['getkey'] ?>");'>&nbsp;
                                 <input type=submit name='resetpwd' class='btn btn-default' value='<?php echo $MSG_RESET . $MSG_PASSWORD ?>' onclick='javascript:if(confirm("<?php echo $MSG_RESET . $MSG_TEAM . $MSG_PASSWORD ?>?")) $("form").attr("action","user_edit.php?resetpwd&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { 
-                                    require_once("../include/classList.inc.php");                                    
+                                    require_once("../include/classList.inc.php");
+                                    $classList = get_classlist(true, "");
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" >

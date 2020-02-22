@@ -23,7 +23,8 @@
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
-  	require_once("./include/classList.inc.php");
+    require_once("./include/classList.inc.php");
+    $classList = get_classlist(true, "");
   }
   // check user
   $user=$_GET['user'];

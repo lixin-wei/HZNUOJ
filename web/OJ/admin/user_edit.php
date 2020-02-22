@@ -445,6 +445,7 @@ if(isset($_GET['team'])) {
     <?php } 
       if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
         require_once("../include/classList.inc.php");
+        $classList = get_classlist(true, "");
         $class = $row->class;
       ?>
     <div class="am-form-group" style="white-space: nowrap;">

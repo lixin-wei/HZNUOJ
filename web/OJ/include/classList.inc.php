@@ -14,16 +14,23 @@
   if(!class_is_exist('其它')){
     $mysqli->query("INSERT INTO `class_list` VALUES ('其它', '0');");
   }
-  function get_classlist(){ //返回二维数组班级列表，为带选项组<optgroup>的下拉选择框和一般的常规下拉选择框提供数据
+  function get_classlist($includeOther, $filter){ //返回二维数组班级列表，为带选项组<optgroup>的下拉选择框和一般的常规下拉选择框提供数据
     global $mysqli;
+    $i = 0;
     $class_list = array();
-    $class_list[0][0] = 0;
-    $class_list[0][1] = array("其它");
-    $i = 1;
-    $sqlclass = "SELECT DISTINCT `enrollment_year` FROM `class_list` WHERE `class_name`<>'其它' ORDER BY `enrollment_year` DESC";
-    foreach(array_column($mysqli->query($sqlclass)->fetch_all(MYSQLI_ASSOC), 'enrollment_year') as $enrollment_year){
+    if($includeOther){
+      $class_list[$i][0] = 0;
+      $class_list[$i][1] = array("其它");
+      $i++;
+    }
+    
+    if(!$filter){
+      $filter = " 1 ";
+    }
+    $sql = "SELECT DISTINCT `enrollment_year` FROM `class_list` WHERE `class_name`<>'其它' ORDER BY `enrollment_year` DESC";
+    foreach(array_column($mysqli->query($sql)->fetch_all(MYSQLI_ASSOC), 'enrollment_year') as $enrollment_year){
       $class_list[$i][0] = $enrollment_year;
-      $sqlclass = "SELECT `class_name` FROM `class_list` WHERE `enrollment_year`='$enrollment_year' ORDER BY  `class_name`";
+      $sqlclass = "SELECT c.`class_name` FROM `class_list` AS c WHERE $filter AND c.`enrollment_year`='$enrollment_year' ORDER BY  c.`class_name`";
       $class_list[$i][1] = array_column($mysqli->query($sqlclass)->fetch_all(MYSQLI_ASSOC), 'class_name');
       $i++;
     }
@@ -36,7 +43,6 @@
     // }
     return $class_list;
   }
-  $classList = get_classlist();
   // /* 请将班级加在其它的下一行 */
   // $classList = array(
   //   "其它",
