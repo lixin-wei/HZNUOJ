@@ -441,29 +441,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                 <thead>
                     <?php
                     if (HAS_PRI("edit_user_profile")) {
-                        $view_contest = array();
-
-                        $sql = "SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='Y' ORDER BY contest_id DESC"; //类型优先级2
-                        $result = $mysqli->query($sql);
-                        $view_contest['Special']['type'] = $MSG_Special;
-                        $view_contest['Special']['data'] = $result->fetch_all(MYSQLI_ASSOC);
-
-                        $sql = "SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND `private` ORDER BY contest_id DESC"; //类型优先级3
-                        $result = $mysqli->query($sql);
-                        $view_contest['Private']['type'] = $MSG_Private;
-                        $view_contest['Private']['data'] = $result->fetch_all(MYSQLI_ASSOC);
-
-                        $sql = "SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND NOT `private` ORDER BY contest_id DESC"; //类型优先级3
-                        $result = $mysqli->query($sql);
-                        $view_contest['Public']['type'] = $MSG_Public;
-                        $view_contest['Public']['data'] = $result->fetch_all(MYSQLI_ASSOC);
-
-                        $sql = "SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE `practice` ORDER BY contest_id DESC"; //类型优先级1
-                        $result = $mysqli->query($sql);
-                        $view_contest['Practice']['type'] = $MSG_Practice;
-                        $view_contest['Practice']['data'] = $result->fetch_all(MYSQLI_ASSOC);
-
-                        $result->free();
+                        $view_contest = get_contests("");
                     ?>
                         <tr>
                             <td colspan=<?php echo $colspan ?>>
@@ -493,8 +471,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     <?php
                                     foreach ($view_contest as $view_con) :
                                         if ($view_con['data']) { ?>
-                                            <optgroup <?php echo "label='{$view_con['type']}' ";
-                                                        if ($view_con['type'] != $MSG_Special) echo "disabled" ?>>
+                                            <optgroup <?php echo "label='{$view_con['type']}' {$view_con['disabled']}" ?>>
                                                 <?php foreach ($view_con['data'] as $contest) :
                                                     $contest_status = ($contest['defunct'] == 'Y') ? '【' . $MSG_Reserved . '】' : ""; ?>
                                                     <option value="<?php echo $contest['contest_id'] ?>" <?php if ($contest['contest_id'] == $row->contest_id) echo "selected" ?>><?php echo "【" . $contest['contest_id'] . "】" . $contest['title'] . $contest_status ?></option>

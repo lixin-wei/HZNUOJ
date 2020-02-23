@@ -336,4 +336,45 @@ function get_class_regcode($class){
     $sql = "SELECT r.* FROM `reg_code` AS r, `class_list` AS c WHERE r.`class_name`=c.`class_name` AND r.`class_name`='$class'";
     return $mysqli->query($sql)->fetch_object();
 }
+function get_contests($type_list){ //返回一个二维数组给选择框等提供比赛场次数据
+    if(!$type_list) $type_list = array("Special" => true, "Private" => false, "Public" => false, "Practice" => false);
+    $view_contest = array();
+    global $mysqli, $MSG_Practice, $MSG_Special, $MSG_Private, $MSG_Public;
+    foreach ($type_list as $key => $value) {
+        switch($key){
+            case "Special":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='Y' ORDER BY contest_id DESC";//类型优先级2
+                $result=$mysqli->query($sql);
+                $view_contest['Special']['type'] = $MSG_Special;
+                $view_contest['Special']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Special']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Private":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND `private` ORDER BY contest_id DESC";//类型优先级3
+                $result=$mysqli->query($sql);
+                $view_contest['Private']['type'] = $MSG_Private;
+                $view_contest['Private']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Private']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Public":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND NOT `private` ORDER BY contest_id DESC";//类型优先级3
+                $result=$mysqli->query($sql);
+                $view_contest['Public']['type'] = $MSG_Public;
+                $view_contest['Public']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Public']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Practice":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE `practice` ORDER BY contest_id DESC";//类型优先级1
+                $result=$mysqli->query($sql);
+                $view_contest['Practice']['type'] = $MSG_Practice;
+                $view_contest['Practice']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Practice']['disabled'] = $value ? "" : "disabled";
+            break;
+        }
+    };
+    $result->free();
+    return $view_contest;
+}
+
+
 ?>
