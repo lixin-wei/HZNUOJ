@@ -50,16 +50,6 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
     exit(0);
 } else if (isset($_POST['add'])) { //添加注册码    
     require_once("../include/check_post_key.php");
-    function createPwd($seed, $len)
-    {
-        $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-        while (is_numeric($password))  $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-        str_replace("I", "X", $password);
-        str_replace("O", "Y", $password);
-        str_replace("0", "Z", $password);
-        str_replace("1", "W", $password);
-        return $password;
-    }
     $classes = $_POST['classes'];
     $remain_num =  $mysqli->real_escape_string(trim($_POST['remain_num']));
     $err_str = "";
