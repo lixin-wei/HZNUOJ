@@ -176,6 +176,7 @@ while ($row = $result->fetch_object()) {
         <li><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
         <li><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
         <li class="am-active"><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+        <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
     </ul>
 </div>
 <!-- 查找 start -->
@@ -322,7 +323,7 @@ while ($row = $result->fetch_object()) {
                     </div>
                     <div class="am-form-group">
                         <div class="am-u-sm-8 am-u-sm-offset-4">
-                            <input type="submit" value="<?php echo $MSG_ADD ?>" name="submit" class="am-btn am-btn-success">
+                            <input type="submit" value="<?php echo $MSG_ADD ?>" name="add" class="am-btn am-btn-success">
                         </div>
                     </div>
                 </form>
@@ -366,11 +367,6 @@ require_once("admin-footer.php")
     });
     <?php $args['sort_method'] = $year; ?>
     $("#year").click(function() {
-        var link = "<?php echo generate_url(array("page" => "1"), "") ?>";
-        window.location.href = link;
-    });
-    <?php $args['sort_method'] = $strength; ?>
-    $("#strength").click(function() {
         var link = "<?php echo generate_url(array("page" => "1"), "") ?>";
         window.location.href = link;
     });

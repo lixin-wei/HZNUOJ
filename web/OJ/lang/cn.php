@@ -107,7 +107,7 @@
   $MSG_Stu_List = "学生名单";
   $MSG_Grade = "年级/专业/前缀";
   $MSG_Amount = "数量";
-  $MSG_Mode = "编号模式";
+  $MSG_Mode = "模式";
   $MSG_Not_Empty_Class = "有人班级";
   $MSG_Empty_Class = "无人班级";
   $MSG_Back = "返回";
@@ -171,6 +171,8 @@
   $MSG_EMAIL="电子邮箱";
   $MSG_REG_INFO="注册信息";
   $MSG_VCODE="验证码";
+  $MSG_REG_CODE="注册码";
+  $MSG_Remain_Num="注册名额";
 
     //problem.php
   $MSG_NO_SUCH_PROBLEM="题目不可用!";
@@ -260,6 +262,10 @@
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
   $MSG_HELP_CLASS_LIST="班级模式下，添加、删除和编辑班级。若删除一个班级，则该班所有普通账号和比赛账号都会归到<b>“其它”</b>班下。";
+  $MSG_HELP_RegCode_OpenMode="当前系统为开放模式，注册无限制，账号注册后立即激活。";
+  $MSG_HELP_RegCode_ComfirmMode="当前系统设定为审核模式，注册无限制，账号注册后需要管理员后台审核激活。";
+  $MSG_HELP_RegCode_PwdMode="当前系统设定为密码模式，人员凭后台设置的注册码进行注册，账号注册后立即激活。";
+  $MSG_HELP_RegCode_PwdComfirmMode="当前系统设定为密码+审核模式，人员凭后台设置的注册码进行注册，账号注册后还需管理员后台审核激活。";
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
@@ -303,7 +309,7 @@
   $MSG_generate_team ="账号生成";
   $MSG_HELP_generate_team ="批量生成比赛帐号以及批量导入普通账号。";
   $MSG_edit_user_profile = $MSG_EDIT.$MSG_USER;
-  $MSG_HELP_edit_user_profile ="可以修改".$MSG_USER_ID."和".$MSG_PASSWORD."，以及增加、删除、编辑班级。";
+  $MSG_HELP_edit_user_profile ="可以修改".$MSG_USER_ID."和".$MSG_PASSWORD."，以及增加、删除、编辑班级和班级注册码。";
   $MSG_edit_privilege_group =$MSG_EDIT."用户".$MSG_PRIVILEGE;
   $MSG_HELP_edit_privilege_group ="添加、删除指定用户的".$MSG_PRIVILEGE."。";
   $MSG_edit_privilege_distribution=$MSG_Distribution;
@@ -316,7 +322,7 @@
   $MSG_HELP_see_hidden_xx_problem2 ="包括因为被包含在运行中".$MSG_CONTEST."而被隐藏的".$MSG_PROBLEM."。";
   $MSG_see_hidden_default_problem ="查看隐藏的题目";
   $MSG_see_hidden_user_info ="查看隐藏的用户信息";
-  $MSG_HELP_see_hidden_user_info ="可以在用户信息页面中查看隐藏的信息，包括real name, class和最近的登录信息。";
+  $MSG_HELP_see_hidden_user_info ="可以在用户信息页面中查看隐藏的信息，包括真名、班级和最近的登录信息。";
   $MSG_see_wa_info_out_of_contest ="查看比赛之外提交代码的错误信息";
   $MSG_HELP_see_wa_info_out_of_contest ="可以查看所有用户在".$MSG_CONTEST."之外提交代码的WA、RE、PE、TEST_RUN、CE等错误信息。";
   $MSG_see_wa_info_in_contest ="查看比赛中提交代码的错误信息";

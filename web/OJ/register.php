@@ -9,9 +9,43 @@
 <?php
   require_once "include/check_post_key.php";
   require_once("./include/db_info.inc.php");
-  if(isset($OJ_REGISTER)&&!$OJ_REGISTER) exit(0);
   require_once('./include/setlang.php');
   require_once("./include/my_func.inc.php");
+	if (isset($OJ_REGISTER) && !$OJ_REGISTER) {
+		echo "<script language='javascript'>\n";
+		echo "alert('System do not allow register');\n history.go(-1);\n</script>";
+		exit(0);
+	}  
+  $class="其它";
+  $stu_id="";
+  $real_name="";
+  //验证注册码
+  if (isset($OJ_REG_NEED_CONFIRM) && ($OJ_REG_NEED_CONFIRM=="pwd" || $OJ_REG_NEED_CONFIRM=="pwd+confirm")) {
+    $err_str = "";
+    $err_str_prefix = "";
+    if (isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE) {
+      $class = $mysqli->real_escape_string(trim($_POST['class']));
+      $err_str_prefix = "{$MSG_Class}【{$class}】的";
+    }
+    $regcode = trim($_POST['regcode']);
+    if ($regcode == ""){
+      $err_str="请输入{$MSG_REG_CODE}！";
+    } else {
+      $reg_code = get_class_regcode($class);
+      if (!$reg_code) {
+        $err_str="{$err_str_prefix}{$MSG_REG_CODE}不正确，请联系管理员！"; //数据库中没有对应班级的注册码记录
+      } else if ($regcode != $reg_code->reg_code) {
+        $err_str="{$err_str_prefix}{$MSG_REG_CODE}不正确，请联系管理员！";
+      } else if ($reg_code->remain_num == 0) {
+        $err_str="{$err_str_prefix}注册名额已用完，注册通道关闭，请联系管理员！";
+      }
+    }   
+    if ($err_str != ""){
+      echo "<script language='javascript'>\n";
+      echo "alert('$err_str');\n history.go(-1);\n</script>";
+      exit(0);
+    }
+  }
   // OJ 用户名合法性判断
   $err_str="";
   $err_cnt=0;
@@ -20,13 +54,10 @@
   $nick=$mysqli->real_escape_string(trim($_POST['nick']));
   $email=$mysqli->real_escape_string(trim($_POST['email']));
   $school=$mysqli->real_escape_string(trim($_POST['school']));
-  $class="其它";
-  $stu_id="";
-  $real_name="";
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){	  
-  $class=$mysqli->real_escape_string(trim($_POST['class']));
-  $stu_id=$mysqli->real_escape_string(trim($_POST['stu_id']));
-  $real_name=$mysqli->real_escape_string(trim($_POST['real_name']));
+    $class=$mysqli->real_escape_string(trim($_POST['class']));
+    $stu_id=$mysqli->real_escape_string(trim($_POST['stu_id']));
+    $real_name=$mysqli->real_escape_string(trim($_POST['real_name']));
   }
   $vcode=$mysqli->real_escape_string(trim($_POST['vcode']));
   // echo $user_id.$email.$vcode."<br>";
@@ -72,15 +103,15 @@
   }
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
     if(!preg_match("/^[a-zA-Z0-9]{0,20}$/", $stu_id)) {
-      $err_str=$err_str."输入的学号要求为20位以内的字母+数字或者纯数字的学号！\\n";
+      $err_str=$err_str."输入的{$MSG_StudentID}要求为20位以内的字母+数字或者纯数字的学号！\\n";
       $err_cnt++;
     }
     if(!preg_match("/^[\u{4e00}-\u{9fa5}a-zA-Z]{0,60}$/", $real_name)) {
-      $err_str=$err_str."输入的真实姓名要求为20字以内的中文或英文姓名！\\n";
+      $err_str=$err_str."输入的{$MSG_REAL_NAME}要求为20字以内的中文或英文姓名！\\n";
       $err_cnt++;
     }
     if(!class_is_exist($class)){
-      $err_str=$MSG_Class.$err_str."{$class}不存在！\\n";
+      $err_str=$err_str."{$MSG_Class}【{$class}】不存在！\\n";
       $err_cnt++;
     }
   }
@@ -123,7 +154,7 @@
     $tmp_ip=explode(',',$REMOTE_ADDR);
     $ip =(htmlentities($tmp_ip[0],ENT_QUOTES,"UTF-8"));
   }
-  if(isset($OJ_REG_NEED_CONFIRM)&&$OJ_REG_NEED_CONFIRM) {
+  if(isset($OJ_REG_NEED_CONFIRM) && ($OJ_REG_NEED_CONFIRM=="on" || $OJ_REG_NEED_CONFIRM=="pwd+confirm")) {
 	  $defunct="Y";
   } else {
 	  $defunct="N";
@@ -136,22 +167,29 @@
   $msg = "注册成功！";
   $sql="INSERT INTO `loginlog` VALUES('$user_id','$password','$ip',NOW())";
   $mysqli->query($sql);
-  if(!isset($OJ_REG_NEED_CONFIRM)||!$OJ_REG_NEED_CONFIRM){
-    $sql="UPDATE `users` SET `accesstime`=NOW() WHERE `user_id`='$user_id'";
+  if(isset($OJ_REG_NEED_CONFIRM) && ($OJ_REG_NEED_CONFIRM=="on" || $OJ_REG_NEED_CONFIRM=="pwd+confirm")){
+    $msg = $msg."\\n请联系管理员审核通过！";
+  } else {    
+	  $sql="UPDATE `users` SET `accesstime`=NOW() WHERE `user_id`='$user_id'";
     $mysqli->query($sql);
 	  $_SESSION['user_id']=$user_id;
-  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$_SESSION['user_id']."'";
-  //echo $sql."<br />";
-  $result=$mysqli->query($sql);
-  echo $mysqli->error;
-  while ($row=$result->fetch_array()){
-    $_SESSION[$row['rightstr']]=true;
-    //echo $_SESSION[$row['rightstr']]."<br />";
+    $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$_SESSION['user_id']."'";
+    //echo $sql."<br />";
+    $result=$mysqli->query($sql);
+    echo $mysqli->error;
+    while ($row=$result->fetch_array()){
+      $_SESSION[$row['rightstr']]=true;
+      //echo $_SESSION[$row['rightstr']]."<br />";
+    }
+    $_SESSION['ac']=Array();
+    $_SESSION['sub']=Array();
   }
-  $_SESSION['ac']=Array();
-  $_SESSION['sub']=Array();
-  } else {
-	  $msg = $msg."\\n请联系管理员审核通过！";
+  if (isset($OJ_REG_NEED_CONFIRM) && ($OJ_REG_NEED_CONFIRM=="pwd" || $OJ_REG_NEED_CONFIRM=="pwd+confirm")) {
+    //注册完成，该班级的注册名额减1
+    if ($reg_code->reg_code != -1) {// $reg_code->reg_code == -1 表示注册名额不限次数
+      $sql = "UPDATE`reg_code` SET `remain_num`=`remain_num`-1 WHERE `class_name`='$reg_code->class_name' AND `remain_num`>'0'";
+      $mysqli->query($sql);
+    }
   }
 ?>
 

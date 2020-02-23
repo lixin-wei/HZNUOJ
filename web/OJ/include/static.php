@@ -33,7 +33,7 @@
   static  $OJ_AUTO_SHARE=true; //true: One can view all AC submit if he/she has ACed it onece.
   static  $OJ_CSS="hoj.css";
   static  $OJ_SAE=false; //using sina application engine
-  static  $OJ_VCODE = false; // 是否开启验证码
+  static  $OJ_VCODE = true; // 是否开启验证码
   static  $OJ_APPENDCODE = true; // 是否开启补全代码（用于C语言教学）
   static  $OJ_MEMCACHE=false;
   static  $OJ_MEMSERVER="127.0.0.1";
@@ -55,8 +55,12 @@
   static $LOGIN_DEFUNCT = false;
   static $VIDEO_SUBMIT_TIME=3;// can see video after
 
-  static  $OJ_REG_NEED_CONFIRM=true; //新注册用户需要审核
   static  $OJ_REGISTER=true; //允许注册新用户
+  static  $OJ_REG_NEED_CONFIRM="pwd"; //新注册用户需要审核，四种模式
+                                   //开放模式，值为"off"，注册无限制，账号注册后立即激活
+                                   //审核模式，值为"on"，注册无限制，账号注册后需要管理员后台审核激活
+                                   //密码模式，值为"pwd"，凭后台设置的班级+注册码进行注册（注册码可设定注册次数），账号注册后立即激活
+                                   //密码+审核模式，值为"pwd+confirm"，基础功能同密码模式，但是账号注册后并立即激活，而是还需管理员后台审核激活
   static  $OJ_NEED_CLASSMODE=true;//班级模式，包括显示班级、学号、真名
 
   /* Email configuration */

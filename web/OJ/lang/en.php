@@ -171,6 +171,8 @@
   $MSG_EMAIL="Email";
   $MSG_REG_INFO="Register Information";
   $MSG_VCODE="Verify Code";
+  $MSG_REG_CODE="Register Code";
+  $MSG_Remain_Num="Remain Num";
 
   //problem.php
   $MSG_NO_SUCH_PROBLEM="Problem is not Available!";
@@ -260,6 +262,10 @@
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
   $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.If you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
+  $MSG_HELP_RegCode_OpenMode="Current mode is Open Mode, everyone can register account, and system will activate account automatically.";
+  $MSG_HELP_RegCode_ComfirmMode="Current mode is Comfirm Mode,everyone can register account, but the account must be activated by administrator.";
+  $MSG_HELP_RegCode_PwdMode="Current mode is Password Mode,only someone who have a register code created by administrator can register account, and system will activate account automatically.";
+ $MSG_HELP_RegCode_PwdComfirmMode="Current mode is Password+Comfirm Mode, only someone who have a register code created by administrator can register account, but the account must be activated by administrator.";
   $MSG_HELP_ADD_PROBLEM="add new problem,multi test cases can be added after problem added ,using TestData button on the Problem List";
   $MSG_HELP_PROBLEM_LIST="manage existing problems, test case files can be uploaded within a zip file and decompress later";
   $MSG_HELP_CONTEST_LIST="The existing list of contests, modification time and public / private……, try not to adjust the list of items after the start.";
@@ -303,7 +309,7 @@
   $MSG_generate_team ="generate_team";
   $MSG_HELP_generate_team ="Generate accounts and passwords in batches.";
   $MSG_edit_user_profile ="edit_user_profile";
-  $MSG_HELP_edit_user_profile ="change user ID, password, and edit class.";
+  $MSG_HELP_edit_user_profile ="change user ID, password, and edit class, class's Register Code.";
   $MSG_edit_privilege_group ="edit_privilege_group";
   $MSG_HELP_edit_privilege_group ="add and delete permissions to designated users.";
   $MSG_edit_privilege_distribution="edit_privilege_distribution";

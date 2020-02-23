@@ -245,10 +245,12 @@ if (!isset($_GET['team'])) { //查询普通账号
             <li><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
             <li class="am-active"><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
             <li><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+            <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
         <?php } else { ?>
             <li class="am-active"><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
             <li><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
             <li><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+            <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
         <?php } ?>
     </ul>
 </div>

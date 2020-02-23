@@ -95,15 +95,22 @@
           required/>
       </div>
     </div>
-    <?php if($OJ_VCODE): ?>
-        <div class="am-form-group">
+    <?php if (isset($OJ_REG_NEED_CONFIRM) && ($OJ_REG_NEED_CONFIRM=="pwd" || $OJ_REG_NEED_CONFIRM=="pwd+confirm")) { ?>
+    <div class="am-form-group">
+      <label for="regcode" class="am-u-sm-4 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_REG_CODE ?>: </label>
+		<div class="am-u-sm-8">
+		<input name="regcode" type='password' style="width:300px;" size=4 required></input></div>
+    </div>
+    <?php } ?>
+    <?php if (isset($OJ_VCODE)&&$OJ_VCODE) { ?>
+    <div class="am-form-group">
       <label for="vcode" class="am-u-sm-4 am-form-label"><font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_VCODE ?>: </label>
 		<div class="am-u-sm-1">
 		<input name="vcode" type='text' style="width:150px;" size=4 maxlength="4" autocomplete="off" required></input></div>
         <div class="am-u-sm-5">
         <img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
     </div>
-    <?php endif ?>
+    <?php } ?>
     <div class="am-from-group">
       <div class="am-cf am-u-sm-offset-4 am-u-sm-3 am-u-end">
             <input type="submit" name="submit" value="<?php echo $MSG_REGISTER ?>" class="am-btn am-btn-primary am-btn-sm am-fl am-btn-block">

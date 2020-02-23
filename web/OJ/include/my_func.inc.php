@@ -331,4 +331,9 @@ function class_is_exist($class){
     $sql = "SELECT COUNT(`class_name`) FROM `class_list` WHERE `class_name`='$class'";
     return $mysqli->query($sql)->fetch_array()[0];
 }
+function get_class_regcode($class){
+    global $mysqli;
+    $sql = "SELECT r.* FROM `reg_code` AS r, `class_list` AS c WHERE r.`class_name`=c.`class_name` AND r.`class_name`='$class'";
+    return $mysqli->query($sql)->fetch_object();
+}
 ?>
