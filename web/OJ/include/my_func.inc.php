@@ -43,18 +43,7 @@ function isOldPW($password)
 }
 
 function is_valid_user_name($user_name){
-    $len=strlen($user_name);
-    for ($i=0;$i<$len;$i++){
-        if (
-            ($user_name[$i]>='a' && $user_name[$i]<='z') ||
-            ($user_name[$i]>='A' && $user_name[$i]<='Z') ||
-            ($user_name[$i]>='0' && $user_name[$i]<='9') ||
-            $user_name[$i]=='_'||
-            $user_name[$i]=='-'
-        );
-        else return false;
-    }
-    return true;
+    return preg_match("/^[a-zA-Z0-9]+$/", $user_name);
 }
 
 function sec2str($sec){
