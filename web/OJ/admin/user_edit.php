@@ -264,12 +264,7 @@ if(isset($_GET['del'])) { //删除账号
       $report[$i]['nick']=$row->nick;
       $contest_status = ($row->defunct=='Y')?'<font color=red>【'.$MSG_Reserved.'】</font>':"";
       $report[$i]['contest'] = "【".$row->contest_id."】".$row->title.$contest_status;
-      $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
-      while (is_numeric($password))  $password=strtoupper(substr(MD5($user_id.rand(0,9999999)),0,10));
-      str_replace("I","X",$password);
-      str_replace("O","Y",$password);
-      str_replace("0","Z",$password);
-      str_replace("1","W",$password);
+      $password=createPwd($user_id, 10);
       $report[$i]['password'] = $password;
       $password=pwGen($password);
       $sql = "UPDATE `team` SET `password`='$password' WHERE `user_id`='$user_id'";
@@ -444,11 +439,12 @@ if(isset($_GET['team'])) {
           <select name="newclass" class="selectpicker show-tick" data-live-search="true" data-width="340px">
             <?php 
               foreach ($classList as $c){
-                if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                  if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
                   foreach ($c[1] as $cl){
                     if($cl == $class) $selected = "selected"; else $selected ="";
                     echo "<option value='$cl' $selected>$cl</option>\n";
                   }
+                  echo "</optgroup>\n";                
               }
             ?>
           </select>

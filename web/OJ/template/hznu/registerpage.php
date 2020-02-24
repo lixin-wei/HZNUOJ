@@ -64,10 +64,11 @@
         <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'300px'}">
         <?php 
           foreach ($classList as $c){
-            if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+              if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
               foreach ($c[1] as $cl){
                 echo "<option value='$cl'>$cl</option>\n";
               }
+              echo "</optgroup>\n";
           }
         ?>
         </select>

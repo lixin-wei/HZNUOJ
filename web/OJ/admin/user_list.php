@@ -10,7 +10,7 @@
 <?php require_once("admin-header.php"); ?>
 <?php
 require_once("../include/set_get_key.php");
-
+require_once("../include/my_func.inc.php");
 //分页start
 $page = 1;
 $args = array();
@@ -143,7 +143,6 @@ $view_users = array();
 $cnt = 0;
 $colspan = (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) ? 16 : 13;
 if (!isset($_GET['team'])) { //查询普通账号
-    require_once("../include/my_func.inc.php");
     $sql = "SELECT `user_id`,`nick`,`defunct`,`accesstime`,`reg_time`,`ip`,`email`,`school`,`stu_id`,`class`,`real_name`,`strength`,`level` FROM `users` " . $sql_filter;
     //echo $sql;    
     $result = $mysqli->query($sql);
@@ -380,10 +379,11 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
-                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n";
                                         foreach ($c[1] as $cl){
                                             echo "<option value='$cl'>$cl</option>\n";
                                         }
+                                        if ($c[0]) echo "</optgroup>\n";
                                     }
                                 ?>
                                 </select>&nbsp;
@@ -456,10 +456,11 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
-                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n";
                                         foreach ($c[1] as $cl){
                                             echo "<option value='$cl'>$cl</option>\n";
                                         }
+                                        if ($c[0]) echo "</optgroup>\n";
                                     }
                                 ?>
                                 </select>&nbsp;

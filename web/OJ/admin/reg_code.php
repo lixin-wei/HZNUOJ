@@ -425,6 +425,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                                     foreach ($c[1] as $cl) {
                                         echo "<option value='$cl'>$cl</option>\n";
                                     }
+                                    if ($c[0]) echo "</optgroup>\n";
                                 }
                                 ?>
                             </select>
