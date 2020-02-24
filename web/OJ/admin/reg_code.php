@@ -105,9 +105,8 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
         } else if (!preg_match("/^[1-9][0-9]{0,3}$/", $c[2])) {
             echo "{$MSG_Class} <b>$c[0]</b> 的{$MSG_Remain_Num}不合规（要求是介于1-9999的整数） ！，{$MSG_REG_CODE}添加失败！<br>";
         } else {
-            $sql = "DELETE FROM `reg_code` WHERE `class_name`='$c[0]'";
-            $mysqli->query($sql);
             $sql = "INSERT INTO `reg_code` VALUES ('{$c[0]}', '{$c[1]}', '{$c[2]}')";
+            $sql .= " ON DUPLICATE KEY UPDATE `reg_code`='$c[1]', `remain_num`='$c[2]'";
             $mysqli->query($sql);
             echo "{$MSG_Class} $c[0] 的{$MSG_REG_CODE} {$c[1]} <b>添加成功</b>！<br>";
             $cnt++;
