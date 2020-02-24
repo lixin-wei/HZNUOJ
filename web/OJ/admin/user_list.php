@@ -207,14 +207,14 @@ if (!isset($_GET['team'])) { //查询普通账号
     //exit(0);
     $result = $mysqli->query($sql);
     while ($row = $result->fetch_object()) {
-        if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id' />&nbsp;" . ++$u_id;
+        if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id@$row->contest_id' />&nbsp;" . ++$u_id;
         else $view_users[$cnt][0] = ++$u_id;
         $view_users[$cnt][1] = $row->user_id;
         $view_users[$cnt][2] = $row->nick;
         if (HAS_PRI("edit_user_profile")) {
-            $view_users[$cnt][3] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-            $view_users[$cnt][4] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
-            $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
+            $view_users[$cnt][3] = "<a href='' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+            $view_users[$cnt][4] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id@$row->contest_id'>$MSG_EDIT</a>";
+            $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
         }
         $contest_status = ($row->defunct == 'Y') ? '<font color=red><b>【' . $MSG_Reserved . '】</b></font>' : "";
         $view_users[$cnt][6] = ($row->title) ? "<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
@@ -375,7 +375,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     $classList = get_classlist(true, "");                            
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" required>
+                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级">
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -452,7 +452,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     $classList = get_classlist(true, "");
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" >
+                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" >
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -467,7 +467,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?team&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="contestid" class="selectpicker show-tick" data-live-search="true" data-width="auto"  data-size="8" data-title="选择一个比赛">
+                                <select name="new_contest_id" class="selectpicker show-tick" data-live-search="true" data-width="auto"  data-size="8" data-title="选择一个比赛">
                                     <option value='' selected></option>
                                     <?php
                                     foreach ($view_contest as $view_con) :

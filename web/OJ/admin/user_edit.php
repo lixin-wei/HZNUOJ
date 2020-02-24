@@ -16,41 +16,43 @@ if (!HAS_PRI("edit_user_profile")) {
 require_once("../include/my_func.inc.php");
 if(isset($_GET['del'])) { //删除账号
     require_once("../include/check_get_key.php");
-    $cid = $mysqli->real_escape_string($_GET['cid']);
     if(!isset($_GET['team'])) { //删除普通用户
+      $cid = $mysqli->real_escape_string($_GET['cid']);
       if(!IS_ADMIN($cid)){ //用户是非管理员才能删除
         //不清除用户的登录日志`loginlog`、访问日志`hit_log`、往来消息'mail'、发布的公告'news'、提交的代码`solution`
         //以及`reply`、`topic`、`message`、`contest_discuss`、`printer_code`、`solution_video_watch_log`表的相关记录。
-        //$sql = "DElETE FROM `loginlog` WHERE `user_id`='$cid' and `password` NOT LIKE '%team account%'";
+        //$sql = "DELETE FROM `loginlog` WHERE `user_id`='$cid' and `password` NOT LIKE '%team account%'";
         //$mysqli->query($sql); 删除普通账号的登录日志
-        $sql = "DElETE FROM `privilege` WHERE `user_id`='$cid'";
+        $sql = "DELETE FROM `privilege` WHERE `user_id`='$cid'";
         $mysqli->query($sql); //删除非管理员的权限
-        $sql = "DElETE FROM `tag` WHERE `user_id`='$cid'";
+        $sql = "DELETE FROM `tag` WHERE `user_id`='$cid'";
         $mysqli->query($sql); //删除用户的标签
-        $sql = "DElETE FROM `users` WHERE `user_id`='$cid'";
+        $sql = "DELETE FROM `users` WHERE `user_id`='$cid'";
         $mysqli->query($sql); //删除用户记录
+        if($mysqli->affected_rows==1) $msg = "删除成功";
+        else $msg = "删除失败";
       }
     } else { //删除比赛临时用户
         //不清除比赛用户的登录日志`loginlog`、访问日志`hit_log`、提交的代码`solution`
         //以及`reply`、`topic`、`message`、`contest_discuss`、`printer_code`、`solution_video_watch_log`表的相关记录。
-        //$sql = "DElETE FROM `loginlog` WHERE `user_id`='$cid' and `password` LIKE '%team account%'";
+        //$sql = "DELETE FROM `loginlog` WHERE `user_id`='$cid' and `password` LIKE '%team account%'";
         //$mysqli->query($sql); 删除比赛账号的登录日志
         $cid = array();
         if(isset($_GET['cid'])){
           $cid[0] = $_GET['cid'];
-        } else if(isset($_POST['cid'])) $cid = $_POST['cid'];
-        $ulist="";
-        foreach($cid as $user_id){
-          $user_id = $mysqli->real_escape_string($user_id);
-          if($ulist) {
-            $ulist.=",'".$user_id ."'";
-          } else $ulist.="'".$user_id ."'";
+        } else $cid = $_POST['cid'];
+        $cnt = 0;
+        foreach($cid as $c){
+          $tuser = explode("@", trim($c));
+          $user_id = $mysqli->real_escape_string(trim($tuser[0]));
+          $contest_id = $mysqli->real_escape_string(trim($tuser[1]));
+          $sql = " DELETE FROM `team` WHERE `user_id`='$user_id' AND `contest_id`='$contest_id'";
+          $mysqli->query($sql);//删除比赛用户记录
+          if($mysqli->affected_rows==1) $cnt++;
         }
-        if($ulist){ //删除比赛用户记录
-          $sql = "DElETE FROM `team` WHERE `user_id`in ($ulist)";
-          $mysqli->query($sql);
-        }
+        $msg = "成功删除{$cnt}个{$MSG_TEAM}！";
     }
+    echo "<script language=javascript>alert('$msg');</script>";
     echo "<script language=javascript>history.go(-1);</script>";
     exit(0);
 } else if (isset($_POST['saveUser']) ){ //用户资料写入数据库，保存后资料后跳转回用户列表
@@ -93,7 +95,7 @@ if(isset($_GET['del'])) { //删除账号
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){	  
     $stu_id=trim($mysqli->real_escape_string($_POST['stu_id']));
     $real_name=trim($mysqli->real_escape_string($_POST['real_name']));
-    $class=trim($mysqli->real_escape_string($_POST['newclass']));
+    $class=trim($mysqli->real_escape_string($_POST['new_class']));
   }
   $len = strlen($nick);
   if ($len>=30){
@@ -143,31 +145,39 @@ if(isset($_GET['del'])) { //删除账号
     $sql.="`email`='".($email)."' "
     ."WHERE `user_id`='".$user_id."'";
   } else {  //比赛账号sql
-    $contestid=trim($mysqli->real_escape_string($_POST['contestid']));
+    $contest_id=trim($mysqli->real_escape_string($_POST['contest_id']));
+    $new_contest_id=trim($mysqli->real_escape_string($_POST['new_contest_id']));
     $seat=trim($mysqli->real_escape_string($_POST['seat']));
     $institute=trim($mysqli->real_escape_string($_POST['institute']));
-    $sql = "SELECT `title` FROM `contest` WHERE `contest_id`=$contestid AND NOT `practice` AND `user_limit`='Y'";
+    $sql = "SELECT `user_id` FROM `team` WHERE `user_id`='".$user_id."' AND `contest_id`='$new_contest_id' AND `contest_id`<>'$contest_id'";
     $result = $mysqli->query($sql);
-    if($result->num_rows == 0){
-      $err_str=$err_str."编号为{$contestid}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！";
+    if($result->num_rows != 0){
+      $err_str=$err_str."编号为{$new_contest_id}的{$MSG_CONTEST}中存在同名{$MSG_TEAM}，不能将{$user_id}放入该比赛！\\n";
       $err_cnt++;
     } else {
-      $len = strlen($seat);
-      if ($len>=30){
-        $err_str=$err_str."输入的{$MSG_Seat}过长！\\n";
+      $sql = "SELECT `title` FROM `contest` WHERE `contest_id`='$new_contest_id' AND NOT `practice` AND `user_limit`='Y'";
+      $result = $mysqli->query($sql);
+      if($result->num_rows == 0){
+        $err_str=$err_str."编号为{$new_contest_id}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！\\n";
         $err_cnt++;
-      }
-      $len = strlen($institute);
-      if ($len>=30){
-        $err_str=$err_str."输入的{$MSG_Institute}过长！\\n";
-        $err_cnt++;
+      } else {
+        $len = strlen($seat);
+        if ($len>=30){
+          $err_str=$err_str."输入的{$MSG_Seat}过长！\\n";
+          $err_cnt++;
+        }
+        $len = strlen($institute);
+        if ($len>=30){
+          $err_str=$err_str."输入的{$MSG_Institute}过长！\\n";
+          $err_cnt++;
+        }
       }
     }
     $result->free();    
     $sql="UPDATE `team` SET "
     ."`nick`='".($nick)."',"
     ."`school`='".($school)."',"
-    ."`contest_id`='".($contestid)."',";
+    ."`contest_id`='".($new_contest_id)."',";
     if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
       $sql.="`stu_id`='".($stu_id)."',"
       ."`real_name`='".($real_name)."',"
@@ -175,7 +185,7 @@ if(isset($_GET['del'])) { //删除账号
     }    
     $sql.="`seat`='".($seat)."',"
     ."`institute`='".($institute)."' "
-    ."WHERE `user_id`='".$user_id."'";
+    ."WHERE `user_id`='".$user_id."' AND `contest_id`='$contest_id'";
   }
   if ($err_cnt>0){
     print "<script language='javascript'>\n";
@@ -186,9 +196,8 @@ if(isset($_GET['del'])) { //删除账号
   }
   //echo $sql;
   $mysqli->query($sql) or die("Update Error!\n");
-  if ($mysqli->affected_rows) {
-    $result="编辑成功！";
-  } else $result="No such user or No change!";
+  if ($mysqli->affected_rows > 0) $result="编辑成功！";
+  else $result="No such user or No change!";
   echo "<script language='javascript'>\n";
   echo "alert('$result');";
 	echo "window.location.href='".generate_url("")."';";
@@ -196,49 +205,72 @@ if(isset($_GET['del'])) { //删除账号
   exit(0);
 } else if(isset($_POST['changeTeamContest'])) { //给比赛账号重新分配比赛
   require_once("../include/check_get_key.php");
-  $cid = $_POST['cid'];
-  $contestid = $mysqli->real_escape_string($_POST['contestid']);
-  $ulist="";
-  foreach($cid as $user_id){
-      $user_id = $mysqli->real_escape_string($user_id);
-      if($ulist) {
-          $ulist.=",'".$user_id ."'";
-      } else $ulist.="'".$user_id ."'";
-  }
-  if($ulist && $contestid){
-    $sql = "SELECT `contest_id`,`title` FROM `contest` WHERE `contest_id` = $contestid AND NOT `practice` AND `user_limit`='Y'";
-    $result = $mysqli->query($sql);
-    if($result->num_rows==1){
-      $row = $result->fetch_object();
-      $sql = "UPDATE `team` SET `contest_id` = $contestid WHERE `user_id`in ($ulist)";
-      $mysqli->query($sql);
+  $cnt = 0;
+  $err_str = $msg = "";
+  $new_contest_id = $mysqli->real_escape_string($_POST['new_contest_id']);
+  $sql = "SELECT `contest_id`,`title` FROM `contest` WHERE `contest_id` = $new_contest_id AND NOT `practice` AND `user_limit`='Y'";
+  $result = $mysqli->query($sql);
+  if($result->num_rows==0){
+    $err_str=$err_str."编号为{$new_contest_id}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！\\n";
+  } else {
+    $row = $result->fetch_object();
+    foreach($_POST['cid'] as $c){
+      $tuser = explode("@", trim($c));
+      $user_id = $mysqli->real_escape_string(trim($tuser[0]));
+      $contest_id = $mysqli->real_escape_string(trim($tuser[1]));
+      if($user_id && $contest_id && $contest_id != $row->contest_id ){
+        $sql = "SELECT `user_id` FROM `team` WHERE `user_id`='".$user_id."' AND `contest_id`='$new_contest_id' ";
+        $result = $mysqli->query($sql);
+        if($result->num_rows != 0){
+          $err_str=$err_str."编号为{$new_contest_id}的{$MSG_CONTEST}中存在同名{$MSG_TEAM}，不能将{$user_id}放入该比赛！\\n";
+        } else {
+          $sql = "UPDATE `team` SET `contest_id` = '$new_contest_id' WHERE `user_id`='".$user_id."' AND `contest_id`='$contest_id'";
+          $mysqli->query($sql);
+          if ($mysqli->affected_rows>0) $cnt++;
+        }
+      }
     }
-    echo "<script language=javascript>alert('成功将【{$row->contest_id}】{$row->title} 重新分配给{$mysqli->affected_rows}个比赛用户！');</script>";
   }
+  if($cnt) $msg .= "成功将【{$row->contest_id}】{$row->title} 重新分配给{$cnt}个比赛账号！\\n" . $err_str;
+  else $msg .= $err_str;
+  if($msg) echo "<script language=javascript>alert('$msg');</script>";
   echo "<script language=javascript>history.go(-1);</script>";
   exit(0);
 } else if(isset($_POST['changeClass'])) { //批量调整班级
   require_once("../include/check_get_key.php");
-  $cid = $_POST['cid'];
-  $ulist = "";
-  foreach ($cid as $user_id) {
-    $user_id = $mysqli->real_escape_string($user_id);
-    if ($ulist) {
-      $ulist .= ",'" . $user_id . "'";
-    } else $ulist .= "'" . $user_id . "'";
-  }
-  $class = $mysqli->real_escape_string($_POST['class']);
-  if(class_is_exist($class) && $ulist){
-    if(!isset($_GET['team'])) { //普通用户调整班级
-      $sql = "UPDATE `users_cache` SET `class`='$class' WHERE `user_id` IN ($ulist)";
-      $mysqli->query($sql);
-      $sql = "UPDATE `users` SET `class`='$class' WHERE `user_id` IN ($ulist)";
-      $mysqli->query($sql);
+  $cnt = 0;
+  $err_str = $msg = "";
+  $new_class = $mysqli->real_escape_string($_POST['new_class']);
+  if (!class_is_exist($new_class)) {
+    $err_str=$err_str."{$MSG_Class}【{$new_class}】不存在！\\n";
+  } else if(!isset($_GET['team'])) { //普通用户调整班级
+      $ulist = "";
+      foreach ($_POST['cid'] as $user_id) {
+        $user_id = $mysqli->real_escape_string($user_id);
+        if ($ulist) {
+          $ulist .= ",'" . $user_id . "'";
+        } else $ulist .= "'" . $user_id . "'";
+      }
+      if($ulist){
+        $sql = "UPDATE `users_cache` SET `class`='$new_class' WHERE `user_id` IN ($ulist)";
+        $mysqli->query($sql);
+        $sql = "UPDATE `users` SET `class`='$new_class' WHERE `user_id` IN ($ulist)";
+        $mysqli->query($sql);
+        if ($mysqli->affected_rows>0) $cnt = $mysqli->affected_rows;
+      }
     } else { //比赛账号调整班级
-      $sql = "UPDATE `team` SET `class`='$class' WHERE `user_id` IN ($ulist)";
-      $mysqli->query($sql);
+      foreach ($_POST['cid'] as $c) {
+        $tuser = explode("@", trim($c));
+        $user_id = $mysqli->real_escape_string(trim($tuser[0]));
+        $contest_id = $mysqli->real_escape_string(trim($tuser[1]));
+        $sql = "UPDATE `team` SET `class`='$new_class' WHERE `user_id`='".$user_id."' AND `contest_id`='$contest_id'";
+        $mysqli->query($sql);
+        if ($mysqli->affected_rows>0) $cnt++;
+      }
     }
-  }
+  if($cnt) $msg .= "成功将{$MSG_Class}【{$new_class}】分配给{$cnt}个账号！\\n" . $err_str;
+  else $msg .= $err_str;
+  if($msg) echo "<script language=javascript>alert('$msg');</script>";
   echo "<script language=javascript>history.go(-1);</script>";
   exit(0);
 } else if(isset($_GET['resetpwd'])) { //比赛账号重置密码
@@ -247,13 +279,15 @@ if(isset($_GET['del'])) { //删除账号
   $report = array();
   if(isset($_GET['cid'])){
         $cid[0] = $_GET['cid'];
-  } else if(isset($_POST['cid']))  $cid = $_POST['cid'];
+  } else $cid = $_POST['cid'];
   $i = 0;
-  foreach($cid as $user_id){
-    $user_id = $mysqli->real_escape_string($user_id);
+  foreach($cid as $c){
+    $tuser = explode("@", trim($c));
+    $user_id = $mysqli->real_escape_string(trim($tuser[0]));
+    $contest_id = $mysqli->real_escape_string(trim($tuser[1]));
     $report[$i]['user_id'] = $user_id;
-    $sql = "SELECT a.`nick`,a.`contest_id`, `contest`.`title`,`contest`.`defunct` FROM `team` as a ";
-    $sql .= " LEFT JOIN `contest` ON a.`contest_id` = `contest`.`contest_id` WHERE a.`user_id`='$user_id'";
+    $sql = "SELECT t.`nick`,t.`contest_id`, c.`title`, c.`defunct` FROM `team` AS t ";
+    $sql .= " LEFT JOIN `contest` AS c ON t.`contest_id` = c.`contest_id` WHERE t.`user_id`='$user_id' AND t.`contest_id`='$contest_id'";
     $row = $mysqli->query($sql)->fetch_object();
     if(!$row){
       $report[$i]['nick']=" ";
@@ -267,9 +301,9 @@ if(isset($_GET['del'])) { //删除账号
       $password=createPwd($user_id, 10);
       $report[$i]['password'] = $password;
       $password=pwGen($password);
-      $sql = "UPDATE `team` SET `password`='$password' WHERE `user_id`='$user_id'";
+      $sql = "UPDATE `team` SET `password`='$password' WHERE `user_id`='$user_id' AND `contest_id`='$contest_id'";
       $mysqli->query($sql);
-      if ($mysqli->affected_rows) $report[$i]['success'] = true;
+      if ($mysqli->affected_rows>0) $report[$i]['success'] = true;
       else $report[$i]['success'] = false;
     }
     $i++;
@@ -314,17 +348,21 @@ if(isset($_GET['del'])) { //删除账号
 }
 
 //显示资料修改界面 start
-$cid = $mysqli->real_escape_string($_GET['cid']);
 if(!isset($_GET['team'])) {
   if(!isset($_POST['team']) && $user_id != $_SESSION['user_id'] && get_order(get_group($cid))<=get_order(get_group(""))){
     $view_error="You can't edit this user!";
     require_once("error.php");
     exit(1);
   }
-  $sql="SELECT * FROM `users` WHERE `user_id`='$cid'";
+  $user_id = $mysqli->real_escape_string($_GET['cid']);
+  $sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
+  echo $sql."<br>";
   $title = $MSG_EDIT.$MSG_USER;
 } else {
-  $sql="SELECT * FROM `team` WHERE `user_id`='$cid'";
+  $tuser = explode("@", trim($_GET['cid']));
+  $user_id = $mysqli->real_escape_string(trim($tuser[0]));
+  $contest_id = $mysqli->real_escape_string(trim($tuser[1]));
+  $sql="SELECT * FROM `team` WHERE `user_id`='$user_id' AND `contest_id`='$contest_id'";
   $title = $MSG_EDIT.$MSG_TEAM;
 }
 $result=$mysqli->query($sql);
@@ -340,11 +378,12 @@ if(isset($_GET['team'])) {
 <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;width:600px;">
   <form class="am-form am-form-horizontal" action="user_edit.php" method="post">
     <?php require_once('../include/set_post_key.php');?>
-    <input type='hidden' name='cid' value='<?php echo $cid ?>'>
+    <input type='hidden' name='cid' value='<?php echo $user_id ?>'>
     <?php
       if(isset($_GET['team'])) {
-          echo "<input type='hidden' name='team' value='{$_GET['team']}'>\n";
-          echo "<input type='hidden' name='contest' value='{$_GET['contest']}'>\n";
+        echo "<input type='hidden' name='contest_id' value='{$contest_id}'>\n";
+        echo "<input type='hidden' name='team' value='{$_GET['team']}'>\n";
+        echo "<input type='hidden' name='contest' value='{$_GET['contest']}'>\n";
       } else {
         echo "<input type='hidden' name='defunct' value='{$_GET['defunct']}'>\n";
         if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE) {
@@ -358,7 +397,7 @@ if(isset($_GET['team'])) {
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_USER_ID ?>:</label>
       <div class="am-u-sm-8">
-        <label class="am-form-label"><?php echo $cid?></label>        
+        <label class="am-form-label"><?php echo $user_id?></label>        
       </div>
     </div>
     <?php if(!isset($_GET['team'])) {?>
@@ -400,7 +439,7 @@ if(isset($_GET['team'])) {
       <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_CONTEST ?>:</label>
       <div class="am-u-sm-8">
-          <select name="contestid" class="selectpicker show-tick" data-live-search="true"  data-width= "340px">
+          <select name="new_contest_id" class="selectpicker show-tick" data-live-search="true"  data-width= "340px">
             <?php 
             foreach($view_contest as $view_con):
               if($view_con['data']) { ?>
@@ -436,7 +475,7 @@ if(isset($_GET['team'])) {
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Class ?>:</label>
       <div class="am-u-sm-8">
-          <select name="newclass" class="selectpicker show-tick" data-live-search="true" data-width="340px">
+          <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="340px">
             <?php 
               foreach ($classList as $c){
                   if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
@@ -444,7 +483,7 @@ if(isset($_GET['team'])) {
                     if($cl == $class) $selected = "selected"; else $selected ="";
                     echo "<option value='$cl' $selected>$cl</option>\n";
                   }
-                  echo "</optgroup>\n";                
+                  echo "</optgroup>\n";
               }
             ?>
           </select>
