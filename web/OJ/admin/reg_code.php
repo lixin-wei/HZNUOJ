@@ -261,7 +261,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         $view_class[$cnt][3] = "<form action='reg_code.php?getkey={$_SESSION['getkey']}' method='post'><input type='hidden' name='class' value='{$row->class_name}'>";
         $view_class[$cnt][3] .= "<input type='text' style='width:200px;' maxlength='20' pattern='^[_a-zA-Z0-9]{6,20}$' name='reg_code' value='$row->reg_code' required />";
         $view_class[$cnt][4] = "<input type='number' style='width:100px;' name='remain_num' min='-1' max='9999' value='$row->remain_num' required />";
-        $view_class[$cnt][5] = "<input type='submit' name='save' value='{$MSG_EDIT}'>";
+        $view_class[$cnt][5] = "<input type='submit' name='save' value='{$MSG_SUBMIT}'>";
         $view_class[$cnt][6] = "<input type='submit' name='del' onclick='javascript:if(confirm(\" {$MSG_DEL} ?\")) return true; else return false;' value='{$MSG_DEL}'></form>";
         $cnt++;
     }
@@ -372,7 +372,8 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                             <li><b><?php echo $MSG_REG_CODE ?></b>限6-20位以内的字母、数字、下划线，<b><?php echo $MSG_Remain_Num ?></b>限 -1 ~ 9999 的整数；</li>
                             <li><b><?php echo $MSG_Remain_Num ?></b> = -1 ——开放无限制数量的注册，<b><?php echo $MSG_Remain_Num ?></b> = 0 ——注册关闭；</li>
                             <li><b><?php echo $MSG_Remain_Num ?></b> != 0 时，人员每注册一个账号，<b><?php echo $MSG_Remain_Num ?></b>自动减1直至为0，系统关闭注册。</li>
-                            <li><b><?php echo $MSG_Class ?></b>修改名称后，系统会自动更新相关<?php echo $MSG_REG_CODE ?>的<?php echo $MSG_Class_Name ?>，<?php echo $MSG_Class ?><b>删除</b>后，其<?php echo $MSG_REG_CODE ?>记录也会被清除。</li>
+                            <li><b><?php echo $MSG_Class ?></b>修改名称后，系统会自动更新其对应<?php echo $MSG_REG_CODE ?>的<?php echo $MSG_Class_Name ?>，<?php echo $MSG_Class ?><b>删除</b>后，其<?php echo $MSG_REG_CODE ?>记录也会被清除。</li>
+                            <li>修改<?php echo $MSG_REG_CODE ?>和<?php echo $MSG_Remain_Num ?>后，点击对应的"<?php echo $MSG_SUBMIT ?>"按钮保存设置，修改不会对已注册用户产生影响。</li>
                         </ol>
                     </td>
                 </tr>
@@ -436,14 +437,14 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                         <div class="am-form-group" style="white-space: nowrap;">
                             <label class="am-u-sm-3 am-form-label"><?php echo $MSG_Mode ?>:</label>
                             <select id="mode" name="mode" style="width:260px;" class="am-u-sm-9 am-u-end">
-                                <option value="A" selected>系统随机生成<?php echo $MSG_REG_CODE ?></option>
+                                <option value="A" selected>系统生成随机<?php echo $MSG_REG_CODE ?></option>
                                 <option value="B"><?php echo $MSG_Customiz . $MSG_REG_CODE ?></option>
                             </select>
                         </div>
 
                         <div class="am-form-group" style="white-space: nowrap;" id="B" hidden>
                             <label class="am-u-sm-3 am-form-label"><?php echo $MSG_REG_CODE ?>:</label>
-                            <textarea id="reg_code" name="reg_code" rows="5" class="am-u-sm-9 am-u-end" style="width:260px;" placeholder="*示例：一个班级名称占一行<?php echo "\n" ?>班级1<?php echo "\n" ?>班级2<?php echo "\n" ?>班级3<?php echo "\n" ?>若行数不足系统将随机生成注册码补足差额。" disabled required></textarea>
+                            <textarea id="reg_code" name="reg_code" rows="5" class="am-u-sm-9 am-u-end" style="width:260px;" placeholder="*示例：一个班级名称占一行<?php echo "\n" ?>班级1<?php echo $MSG_REG_CODE."\n" ?>班级2<?php echo $MSG_REG_CODE."\n" ?>班级3<?php echo $MSG_REG_CODE."\n" ?>若行数不足系统将生成随机<?php echo $MSG_REG_CODE ?>补足差额。" disabled required></textarea>
                         </div>
                         <div class="am-form-group">
                             <div class="am-u-sm-8 am-u-sm-offset-4">
