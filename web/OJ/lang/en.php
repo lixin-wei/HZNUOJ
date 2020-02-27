@@ -95,7 +95,7 @@
   $MSG_Order_by = "Order by";
   $MSG_AccessTime = "Access Time";
   $MSG_StudentID = "Student ID";
-  $MSG_Class = "Class ";
+  $MSG_Class = "Class";
   $MSG_RegTime = "Reg Time";
   $MSG_RegIP = "Reg IP";
   $MSG_Institute = "Institute";
@@ -217,8 +217,8 @@
   $MSG_Distribution = "Privilege Distribution";
   $MSG_SourceCode= "Source" ;
   $MSG_GIVESOURCE="Give Source";
-  $MSG_IMPORT="Import";
-  $MSG_EXPORT="Export";
+  $MSG_IMPORT=" Import";
+  $MSG_EXPORT=" Export";
   $MSG_ReOrderProblem="ReOrderProblem";
   $MSG_UPDATE_DATABASE="Update Database";
   $MSG_ONLINE="Online";  
@@ -265,11 +265,11 @@
   $MSG_HELP_RegCode_OpenMode="Current mode is Open Mode, everyone can register account, and system will activate account automatically.";
   $MSG_HELP_RegCode_ComfirmMode="Current mode is Comfirm Mode,everyone can register account, but the account must be activated by administrator.";
   $MSG_HELP_RegCode_PwdMode="Current mode is Password Mode,only someone who have a register code created by administrator can register account, and system will activate account automatically.";
- $MSG_HELP_RegCode_PwdComfirmMode="Current mode is Password+Comfirm Mode, only someone who have a register code created by administrator can register account, but the account must be activated by administrator.";
+  $MSG_HELP_RegCode_PwdComfirmMode="Current mode is Password+Comfirm Mode, only someone who have a register code created by administrator can register account, but the account must be activated by administrator.";
   $MSG_HELP_ADD_PROBLEM="add new problem,multi test cases can be added after problem added ,using TestData button on the Problem List";
   $MSG_HELP_PROBLEM_LIST="manage existing problems, test case files can be uploaded within a zip file and decompress later";
   $MSG_HELP_CONTEST_LIST="The existing list of contests, modification time and public / private……, try not to adjust the list of items after the start.";
-  $MSG_HELP_TEAMGENERATOR="Generate accounts and passwords in batches for competitors from different schools. Small system should not be used casually, may produce garbage accounts, which can not be easily deleted.";
+  $MSG_HELP_TEAMGENERATOR="Generate accounts and passwords in batches for competitors from different schools. Small system should not be used casually, may produce garbage accounts, which can not be easily deleted.<font color='red'><b>In addition, in the process of account generation, users with the same user name and contest will be overwritten by the system.</b></font>";
   $MSG_HELP_SETPASSWORD="Reset the password for the specified user, for administrator account need to downgrade to ordinary users to modify.";
   $MSG_HELP_REJUDGE="To review a specified subject, submission, or contest.";
   $MSG_HELP_ADD_PRIVILEGE=" adds permissions to designated users, including administrators, teacher, teacher_assistant, code viewer and other permissions.";

@@ -23,7 +23,7 @@ if (isset($_POST['add'])) {
   $contest_id = trim($mysqli->real_escape_string($_POST['contest_id']));
   $prefix = trim($mysqli->real_escape_string($_POST['prefix']));
   $user_num = trim($mysqli->real_escape_string($_POST['user_num']));
-  $nick_list = explode("\n", trim($_POST['nicklist'])); //$pieces =
+  $nick_list = explode("\n", trim($_POST['nicklist']));
 
   $err_str = "";
   $err_cnt = 0;
@@ -31,25 +31,27 @@ if (isset($_POST['add'])) {
     $err_str = $err_str . "school is too long!\\n";
     $err_cnt++;
   }
-  if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
-    if (!$class) $class = "其它";
-    if (!class_is_exist($class)) {
-      $err_str = $err_str . "{$MSG_Class}【{$class}】不存在！\\n";
-      $err_cnt++;
-    }
+  if($prefix == "all"){ //前缀不能是all，会影响用户列表页面的筛选
+    $err_str = $err_str . "{$MSG_Grade}不能设定为“all”！\\n";
+    $err_cnt++;
+  }
+  if (!$class) $class = "其它";
+  if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE && !class_is_exist($class)) {
+    $err_str = $err_str . "{$MSG_Class}【{$class}】不存在！\\n";
+    $err_cnt++;
   }
   $sql = "SELECT `contest_id`, `title`, `defunct` FROM `contest` WHERE `contest_id`='$contest_id'";
   $contest = $mysqli->query($sql)->fetch_object();
   if (!$contest) {
-    $err_str = $err_str . "编号为{$contest_id}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！";
+    $err_str = $err_str . "编号为{$contest_id}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！\\n";
     $err_cnt++;
   }
   if (!preg_match("/^[a-zA-Z0-9]{1,20}$/", $prefix)) {
-    $err_str = $err_str . "{$MSG_Grade}不合规，限20个以内的汉字、字母！";
+    $err_str = $err_str . "{$MSG_Grade}不合规，限20个以内的字母、数字！\\n";
     $err_cnt++;
   }
   if (!preg_match("/^[1-9][0-9]{0,1}$/", $user_num)) {
-    $err_str = $err_str . "{$MSG_Amount}不合规，要求介于1-99的整数 ！！";
+    $err_str = $err_str . "{$MSG_Amount}不合规，要求介于1-99的整数 ！\\n";
     $err_cnt++;
   }
   if ($err_cnt > 0) {
@@ -72,13 +74,15 @@ if (isset($_POST['add'])) {
     $report[$i]['user_id'] = $user_id;
     $nick = $nick_list[$i - $no] ? $nick_list[$i - $no] : $user_id;
     $report[$i]['nick'] = $nick;
-    $report[$i]['class'] = $class;
+    if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) $report[$i]['class'] = $class;
     $contest_status = ($contest->defunct == 'Y') ? '<font color=red>【' . $MSG_Reserved . '】</font>' : "";
     $report[$i]['contest'] = "【" . $contest->contest_id . "】" . $contest->title . $contest_status;
-    $password = createPwd($$user_id, 10);
+    $password = createPwd($user_id, 10);
     $report[$i]['password'] = $password;
     $password = pwGen($password);
-    $sql = "INSERT INTO `team`(`user_id`, `prefix`, `NO`, `ip`,`password`,`reg_time`,`nick`,contest_id, class, `school`)" . "VALUES('" . $user_id . "','" . $prefix . "','" . $i . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $password . "',NOW(),'" . $nick . "','" . $contest_id . "','" . $class . "','" . $school . "') on DUPLICATE KEY UPDATE `ip`='" . $_SERVER['REMOTE_ADDR'] . "',`password`='" . $password . "',`reg_time`=now(),nick='" . $nick . "',`school`='" . $school . "'";
+    $sql = "INSERT INTO `team`(`user_id`, `prefix`, `NO`, `ip`,`password`,`reg_time`,`nick`,`contest_id`, `class`, `school`)";
+    $sql .= " VALUES('" . $user_id . "','" . $prefix . "','" . $i . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $password . "',NOW(),'" . $nick . "','" . $contest_id . "','" . $class . "','" . $school . "')";
+    $sql .= " ON DUPLICATE KEY UPDATE `ip`='" . $_SERVER['REMOTE_ADDR'] . "',`password`='" . $password . "',`reg_time`=now(),nick='" . $nick . "',`school`='" . $school . "',`class`='" . $class . "'";
     $mysqli->query($sql) or die($mysqli->error);
   }
 ?>
@@ -91,12 +95,14 @@ if (isset($_POST['add'])) {
     <table class="table table-hover table-bordered table-condensed table-striped" style="white-space: nowrap;width:600px">
       <thead>
         <tr>
-          <td colspan=5>Copy these accounts to distribute</td>
+          <td colspan="<?php echo (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) ? 5 : 4 ?>">Copy these accounts to distribute</td>
         </tr>
         <tr>
           <th><?php echo $MSG_TEAM ?></th>
           <th><?php echo $MSG_NICK ?></th>
+          <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
           <th><?php echo $MSG_Class ?></th>
+          <?php } ?>
           <th><?php echo $MSG_CONTEST ?></th>
           <th><?php echo $MSG_PASSWORD ?></th>
         </tr>
@@ -167,7 +173,7 @@ if (isset($_POST['add'])) {
         <label class="am-u-sm-4 am-form-label" style="white-space: nowrap;">
           <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_CONTEST ?>:
         </label>
-        <select name="contest_id" class="selectpicker show-tick" data-live-search="true" data-width="250px" data-title="选择一个比赛" required>
+        <select name="contest_id" class="selectpicker show-tick" data-live-search="true" data-width="250px" data-title="选择一个<?php echo $MSG_CONTEST ?>" required>
           <option value='' selected></option>
           <?php
           $view_contest = get_contests("");
@@ -204,12 +210,12 @@ if (isset($_POST['add'])) {
         </div>
       </div>
     </div>
-    <div class="am-u-sm-4 am-u-end"">
+    <div class="am-u-sm-4 am-u-end">
       <div class=" am-form-group">
       <label class="am-u-sm-4 am-form-label">
         <?php echo $MSG_NICK ?>:
       </label>
-      <textarea name="nicklist" rows="13" style="width:250px;" placeholder="*示例：一个<?php echo $MSG_NICK ?>占一行<?php echo "\n" . $MSG_NICK . "1\n" . $MSG_NICK . "2\n" . $MSG_NICK . "3\n" ?>若行数不足，剩余比赛账号将使用账号名作昵称。"></textarea>
+      <textarea name="nicklist" rows="13" style="width:250px;" placeholder="*示例：一个<?php echo $MSG_NICK ?>占一行<?php echo "\n" . $MSG_NICK . "1\n" . $MSG_NICK . "2\n" . $MSG_NICK . "3\n" . "若行数不足，剩余" . $MSG_TEAM . "将使用“" . $MSG_USER_ID . "”作昵称。"?> "></textarea>
     </div>
   </div>
   <?php require_once("../include/set_post_key.php"); ?>

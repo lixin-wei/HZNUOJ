@@ -59,7 +59,7 @@
   $MSG_Wrong = "错误";
 
   // contestRank.php
-  $MSG_REAL_NAME = "真实姓名";
+  $MSG_REAL_NAME = "姓名";
   $MSG_USER = "用户";
   $MSG_PENALTY = "罚时";
   $MSG_DOWNLOAD_RANK = "下载排名";
@@ -269,7 +269,7 @@
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
   $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
-  $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，无法删除。";
+  $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，清理比较麻烦。<font color='red'><b>此外，账号生成过程中遇到相同{$MSG_USER_ID}和{$MSG_CONTEST}的{$MSG_USER}，系统将做覆盖处理。</b></font>";
   $MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
   $MSG_HELP_REJUDGE="可以重判指定的题目、提交或比赛。";
   $MSG_HELP_ADD_PRIVILEGE="给指定用户添加".$MSG_PRIVILEGE."，包括管理员、教师、助教等权限。";
