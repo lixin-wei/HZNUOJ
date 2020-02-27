@@ -57,7 +57,7 @@ if (isset($_GET['keyword']) && $_GET['keyword'] != "") {
 }
 if (isset($_GET['team'])) {
     if ($_GET['team'] != "all" && $_GET['team'] != "") $sql_filter .= " AND `prefix`= '{$mysqli->real_escape_string($_GET['team'])}' ";
-    if ($_GET['contest'] != "all" && $_GET['contest'] != "") $sql_filter .= " AND a.`contest_id`= {$mysqli->real_escape_string($_GET['contest'])} ";
+    if (isset($_GET['contest']) && $_GET['contest'] != "all" && $_GET['contest'] != "") $sql_filter .= " AND a.`contest_id`= {$mysqli->real_escape_string($_GET['contest'])} ";
 }
 if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE && isset($_GET['class']) && $_GET['class'] != "all" && $_GET['class'] != "") {
     if($_GET['class']<>"empty"){
@@ -375,7 +375,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     $classList = get_classlist(true, "");                            
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级">
+                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个<?php echo $MSG_Class ?>">
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -452,7 +452,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                     $classList = get_classlist(true, "");
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个班级" >
+                                <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个<?php echo $MSG_Class ?>" >
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
@@ -467,7 +467,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <input type=submit name='changeClass' class='btn btn-default' value='<?php echo $MSG_ChangeClass ?>' onclick='javascript:if(confirm("<?php echo $MSG_ChangeClass ?>?")) $("form").attr("action","user_edit.php?team&getkey=<?php echo $_SESSION['getkey'] ?>");'>
                                 <?php }?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                                <select name="new_contest_id" class="selectpicker show-tick" data-live-search="true" data-width="auto"  data-size="8" data-title="选择一个比赛">
+                                <select name="new_contest_id" class="selectpicker show-tick" data-live-search="true" data-width="auto"  data-size="8" data-title="选择一个<?php echo $MSG_CONTEST ?>">
                                     <option value='' selected></option>
                                     <?php
                                     foreach ($view_contest as $view_con) :
