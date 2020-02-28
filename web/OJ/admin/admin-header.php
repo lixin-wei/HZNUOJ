@@ -127,12 +127,13 @@ sss;
           }
 
           $html_li = "<li><a href='/OJ/admin/user_list.php'>$MSG_USER$MSG_LIST</a></li>";
-          if(HAS_PRI("edit_user_profile")){
+          $html_li .= "<li><a href='/OJ/admin/class_list.php'>$MSG_Class$MSG_LIST</a></li>";
+          if(HAS_PRI("edit_user_profile")){            
             $html_li .= "<li><a href='/OJ/admin/change_user_id.php'>$MSG_SET_USER_ID</a></li>";
             $html_li .= "<li><a href='/OJ/admin/changepass.php'>$MSG_SETPASSWORD</a></li>";
-            $html_li .= "<li><a href='/OJ/admin/reg_code.php'>$MSG_REG_CODE$MSG_LIST</a></li>";
           }
           if(HAS_PRI("generate_team")){
+              $html_li .= "<li><a href='/OJ/admin/reg_code.php'>$MSG_REG_CODE</a></li>";
               $html_li .= "<li><a href='/OJ/admin/user_import.php'>$MSG_USER$MSG_IMPORT</a></li>";
           }
           if($html_li!=""){

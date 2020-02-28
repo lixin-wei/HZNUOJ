@@ -9,7 +9,7 @@
 
 <?php
 require_once("admin-header.php");
-if (!HAS_PRI("edit_user_profile")) {
+if (!HAS_PRI("generate_team")) {
     $view_error = "You don't have the privilege to view this page!";
     require_once("error.php");
     exit(1);
