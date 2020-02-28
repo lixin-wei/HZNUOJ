@@ -166,7 +166,6 @@ sss;
           $html_li="";
           if(HAS_PRI("inner_function")){
             $html_li .= "<li><a href='/OJ/admin/source_give.php'>$MSG_GIVESOURCE</a></li>";
-            $html_li .= "<li><a href='/OJ/admin/contestrank-solutions.php?cid=1000'>$MSG_EXPORT$MSG_SourceCode</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_export.php'>$MSG_EXPORT$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_import.php'>$MSG_IMPORT$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_copy.php' title='Create your own data'>$MSG_Copy$MSG_PROBLEM</a></li>";
