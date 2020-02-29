@@ -114,7 +114,7 @@ WHERE
   $sid=intval($_GET['sid']);
   $ok = canSeeSource($sid);
   if ($ok==true){
-    $sql="SELECT `source` FROM `source_code` WHERE `solution_id`='".$sid."'";
+    $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`='".$sid."'";
     $result=$mysqli->query($sql);
     $row=$result->fetch_object();
     if($row)

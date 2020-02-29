@@ -42,7 +42,7 @@
   $ok = canSeeSource($id);
 
   $view_source="No source code available!";
-  $sql="SELECT `source` FROM `source_code` WHERE `solution_id`=".$id;
+  $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`=".$id;
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
   if($row) $view_source=$row->source;
