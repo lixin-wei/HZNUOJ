@@ -168,7 +168,6 @@ sss;
             $html_li .= "<li><a href='/OJ/admin/source_give.php'>$MSG_GIVESOURCE</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_export.php'>$MSG_EXPORT$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_import.php'>$MSG_IMPORT$MSG_PROBLEM</a></li>";
-            $html_li .= "<li><a href='/OJ/admin/problem_copy.php' title='Create your own data'>$MSG_Copy$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='/OJ/admin/problem_changeid.php' title='Danger,Use it on your own risk'>$MSG_ReOrderProblem</a></li>";
           }
           if($html_li!=""){
