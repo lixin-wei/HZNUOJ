@@ -161,8 +161,8 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
 			} ?>
           </td>
 <td><a href='#' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey'] ?>"'><?php echo $MSG_DEL ?></a></td>
-<td><a href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>'><?php echo $MSG_EDIT ?></a></td>
-<td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes'><?php echo $MSG_TestData ?></a></td>
+<td><a href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
+<td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
 	
           <td><?php echo $row->author ?></td>         
           <td><?php echo $row->source ?></td>

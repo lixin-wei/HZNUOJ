@@ -186,13 +186,13 @@ HTML;
           echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
       }
       ?>
-    " style="color:white">
+    " style="color:white" target="_blank">
         <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
         if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
-            <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
+            <a href="problemstatus.php?id={$row->problem_id}" style="color:white" target="_blank">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
                 $MSG_Codes
               </button>
@@ -201,7 +201,7 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white' target="_blank">
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
