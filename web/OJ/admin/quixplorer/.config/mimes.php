@@ -21,7 +21,8 @@ $GLOBALS["super_mimes"]=array(
 $GLOBALS["used_mime_types"]=array(
 	// text
 	"text"	=> array($GLOBALS["mimes"]["text"],"txt.gif","\.txt$"),
-	
+	"in"	=> array($GLOBALS["mimes"]["in"],"glyphicon glyphicon-log-in","\.in$"),
+	"out"	=> array($GLOBALS["mimes"]["out"],"glyphicon glyphicon-log-out","\.out$"),
 	// programming
 	"php"	=> array($GLOBALS["mimes"]["php"],"php.gif","\.php$|\.php3$|\.phtml$|\.inc$"),
 	"sql"	=> array($GLOBALS["mimes"]["sql"],"src.gif","\.sql$"),
@@ -48,7 +49,7 @@ $GLOBALS["used_mime_types"]=array(
 	"png"	=> array($GLOBALS["mimes"]["png"],"image.gif","\.png$"),
 	
 	// compressed
-	"zip"	=> array($GLOBALS["mimes"]["zip"],"zip.gif","\.zip$"),
+	"zip"	=> array($GLOBALS["mimes"]["zip"],"glyphicon glyphicon-compressed","\.zip$"),
 	"tar"	=> array($GLOBALS["mimes"]["tar"],"tar.gif","\.tar$"),
 	"gzip"	=> array($GLOBALS["mimes"]["gzip"],"tgz.gif","\.tgz$|\.gz$"),
 	"bzip2"	=> array($GLOBALS["mimes"]["bzip2"],"tgz.gif","\.bz2$"),

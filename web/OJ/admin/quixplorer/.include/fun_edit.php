@@ -97,7 +97,7 @@ function edit_file($dir, $item)
 	// Form
 	echo "<BR><FORM name=\"editfrm\" method=\"post\" action=\"".make_link("edit",$dir,$item)."\">\n";
 	echo "<input type=\"hidden\" name=\"dosave\" value=\"yes\">\n";
-	echo "<TEXTAREA NAME=\"code\" rows=\"25\" cols=\"120\" wrap=\"off\">";
+	echo "<TEXTAREA NAME=\"code\" rows=\"15\" cols=\"120\" wrap=\"off\">";
 		
 	// Show File In TextArea
 	$buffer="";

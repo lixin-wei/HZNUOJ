@@ -71,13 +71,13 @@ function tgz_items($dir,$name) {
 function archive_items($dir)
 {
 	// archive is only allowed if user may change files
-	if (!permissions_grant($dir, NULL, "change"))
-		show_error($GLOBALS["error_msg"]["accessfunc"]);
+	// if (!permissions_grant($dir, NULL, "change"))
+	// 	show_error($GLOBALS["error_msg"]["accessfunc"]);
 
 	if(!$GLOBALS["zip"] && !$GLOBALS["tar"] && !$GLOBALS["tgz"]) show_error($GLOBALS["error_msg"]["miscnofunc"]);
 	
 	if(isset($GLOBALS['__POST']["name"])) {
-		$name=basename(stripslashes($GLOBALS['__POST']["name"]));
+		$name=basename(stripslashes($GLOBALS['__POST']["name"].".".$GLOBALS['__POST']["type"]));
 		if($name=="") show_error($GLOBALS["error_msg"]["miscnoname"]);
 		switch($GLOBALS['__POST']["type"]) {
 			case "zip":	zip_items($dir,$name);	break;
@@ -96,7 +96,7 @@ function archive_items($dir)
 	}
 	
 	echo "<TABLE width=\"300\"><TR><TD>".$GLOBALS["messages"]["nameheader"].":</TD><TD align=\"right\">";
-	echo "<INPUT type=\"text\" name=\"name\" size=\"25\"></TD></TR>\n";
+	echo "<INPUT type=\"text\" name=\"name\" size=\"25\" value=\"PID".$dir."_".date('YmdHi',time())."\"></TD></TR>\n";
 	echo "<TR><TD>".$GLOBALS["messages"]["typeheader"].":</TD><TD align=\"right\"><SELECT name=\"type\">\n";
 	if($GLOBALS["zip"]) echo "<OPTION value=\"zip\">Zip</OPTION>\n";
 	if($GLOBALS["tar"]) echo "<OPTION value=\"tar\">Tar</OPTION>\n";

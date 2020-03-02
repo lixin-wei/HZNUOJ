@@ -36,14 +36,14 @@ if(!session_id()) @session_start();
 	$GLOBALS["global_permissions"] = 0x000f;
 	
 	// language: (en, de, es, fr, nl, ru)
-	$GLOBALS["language"] = "en";
+	$GLOBALS["language"] = isset($OJ_LANG) ? $OJ_LANG : "en";//"en";
 	
 	// the filename of the QuiXplorer script: (you rarely need to change this)
 	$http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
 	$GLOBALS["script_name"] = $http_type.$GLOBALS['__SERVER']['HTTP_HOST'].$GLOBALS['__SERVER']["PHP_SELF"];
 	
 	// allow Zip, Tar, TGz -> Only (experimental) Zip-support
-	$GLOBALS["zip"] = false;	//function_exists("gzcompress");
+	$GLOBALS["zip"] = true;	//function_exists("gzcompress");
 	$GLOBALS["tar"] = false;
 	$GLOBALS["tgz"] = false;
 	
@@ -78,7 +78,7 @@ if(!session_id()) @session_start();
 		"da"  => "Velkommen til denne download server");
 
 	// The title which is displayed in the browser
-	$GLOBALS["site_name"] = "HZNUOJ";
+	$GLOBALS["site_name"] = $OJ_NAME;//"HZNUOJ";
 
 /* NOTE:
 	Users can be defined by using the Admin-section,

@@ -206,7 +206,7 @@ HTML;
               $MSG_EDIT
             </button>
           </a>
-          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white' target="_blank">
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
               $MSG_TestData
             </button>

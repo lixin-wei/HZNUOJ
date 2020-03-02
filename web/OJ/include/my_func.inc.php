@@ -291,7 +291,7 @@ function can_see_res_info($sid) {
 
 function get_problemset($pid){
     global $mysqli;
-    $sql="SELECT problemset FROM problem WHERE problem_id=$pid";
+    $sql="SELECT problemset FROM problem WHERE problem_id='$pid'";
     $res=$mysqli->query($sql);
     return $res->fetch_array()[0];
 }
