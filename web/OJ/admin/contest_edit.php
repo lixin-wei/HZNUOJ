@@ -140,6 +140,7 @@ $practice = $row['practice'];
 $password=$row['password'];
 $langmask=$row['langmask'];
 $description=$row['description'];
+$description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
 $title=htmlentities($row['title'],ENT_QUOTES,"UTF-8");
 $result->free();
 $plist="";

@@ -263,7 +263,7 @@ HTML;
         <?php endif ?>
         <?php require_once("../include/set_post_key.php");?>
       <div align=center>
-        <button type=submit value=submit class="btn btn-default"><?php echo $MSG_SUBMIT ?></button>
+        <button type=submit value=submit class="btn btn-default" style="width:100px;"><?php echo $MSG_SUBMIT ?></button>
       </div>
     </form>
   </div>
@@ -277,29 +277,36 @@ if(isset($_POST['problem_id'])){ //写入数据库
     }
     require_once("../include/check_post_key.php");
     $id=intval($_POST['problem_id']);
-    $title=$_POST['title'];
-    $problemset=$_POST['problemset'];
-    $time_limit=$_POST['time_limit'];
-    $memory_limit=$_POST['memory_limit'];
-    $description=$_POST['description'];
-    $input=$_POST['input'];
-    $output=$_POST['output'];
+    $title=$mysqli->real_escape_string($_POST['title']);
+    $problemset=$mysqli->real_escape_string($_POST['problemset']);
+    $time_limit=$mysqli->real_escape_string($_POST['time_limit']);
+    $memory_limit=$mysqli->real_escape_string($_POST['memory_limit']);
+    $description=$mysqli->real_escape_string($_POST['description']);
+    $input=$mysqli->real_escape_string($_POST['input']);
+    $output=$mysqli->real_escape_string($_POST['output']);
     $sample_inputs=$_POST['sample_input'];
     $sample_outputs=$_POST['sample_output'];
     $sample_show_after=$_POST['show_after'];
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
-    $hint=$_POST['hint'];
+    $hint=$mysqli->real_escape_string($_POST['hint']);
+    $source=$mysqli->real_escape_string($_POST['source']);
+    $spj=$_POST['spj'];
 	  $author = "";
-    $author_tmp = $_POST['author'];
+    $author_tmp = $mysqli->real_escape_string($_POST['author']);
     $strlen = strlen($author_tmp);
     for ($i=0; $i<$strlen; ++$i) {
         if ($author_tmp[$i]==' ' || $author_tmp[$i]=='\n' || $author_tmp[$i]=='\t' || $author_tmp[$i]=='\r') continue;
         $author .= $author_tmp[$i];
     }
-	if($author == "") $author = $_SESSION['user_id'];
-    $source=$_POST['source'];
-    $spj=$_POST['spj'];
+    //火狐浏览器73.0.1版本中kindeditor会在textarea内容的末尾加入<!---->
+    $description = str_replace("<!---->","",$description);
+    $input = str_replace("<!---->","",$input);
+    $output = str_replace("<!---->","",$input);
+    $hint = str_replace("<!---->","",$input);
+
+	  if($author == "") $author = $_SESSION['user_id'];
+
     //remove original samples
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
     $original_sample_cnt=$mysqli->query($sql)->fetch_array()[0];
@@ -322,6 +329,8 @@ if(isset($_POST['problem_id'])){ //写入数据库
         foreach ($sample_inputs as $key => $sample_input) {
             $sample_input=preg_replace("/(\r\n)/","\n",$sample_input);
             $sample_output=preg_replace("/(\r\n)/","\n",$sample_outputs[$key]);
+            $sample_input=$mysqli->real_escape_string($sample_input);
+            $sample_output=$mysqli->real_escape_string($sample_output);
             if($sample_input=="" && $sample_output=="")continue;
             
             //don't auto generate sample files if is SPJ
@@ -335,9 +344,6 @@ if(isset($_POST['problem_id'])){ //写入数据库
                 fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
                 fclose($fp);
             }
-            
-            $sample_input=$mysqli->real_escape_string($sample_input);
-            $sample_output=$mysqli->real_escape_string($sample_output);
             $sql=<<<SQL
           INSERT INTO problem_samples (
             problem_id,
@@ -353,21 +359,10 @@ SQL;
             $mysqli->query($sql);
         }
     }
-    echo $MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
-    $title=$mysqli->real_escape_string($title);
-    $time_limit=$mysqli->real_escape_string($time_limit);
-    $memory_limit=$mysqli->real_escape_string($memory_limit);
-    $description=$mysqli->real_escape_string($description);
-    $input=$mysqli->real_escape_string($input);
-    $output=$mysqli->real_escape_string($output);
-//  $test_input=($test_input);
-//  $test_output=($test_output);
-    $hint=$mysqli->real_escape_string($hint);
-    $author=$mysqli->real_escape_string($author);
-    $source=$mysqli->real_escape_string($source);
-//  $spj=($spj);
+    echo "&nbsp;".$MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
     if(isset($_POST['add_problem_mod'])){
         $_SESSION["p$id"]=true;
+        echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
         echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
     }
     else{
@@ -377,7 +372,8 @@ SQL;
         @$mysqli->query($sql) or die($mysqli->error);
         echo "$MSG_EditOK";
         //echo $sql;
-        echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>";
+        echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
+        echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
     }
 }
 ?>
