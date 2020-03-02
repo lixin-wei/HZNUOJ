@@ -11,9 +11,8 @@
 <?php 
   if (is_numeric($cid) && !isset($_GET['normal_mod'])) {
       $_GET['cid']=$cid;
-      require_once "contest_header.php";
-  }
-  else require_once "header.php";
+      require_once("contest_header.php");
+  }else require_once("header.php");
   require_once("include/const.inc.php");
 ?>
 <div class="am-container">
@@ -35,7 +34,7 @@
         if($sresult==4){//AC
           $res_class="success";
           $time=$stime."ms";
-          $memory=$smemory."kB";
+          $memory=$smemory."KB";
         }
         else if($sresult<=3){//pending or rejudging or compling or judging
           $res_class="default";
@@ -76,19 +75,18 @@
             </span>
           </div>
 HTML;
-        if($cid) {
+        if(isset($_GET['normal_mod']) && $cid) {
           echo <<<HTML
           <div class='solution-info'>
-            In contest: <span class='am-badge am-badge-primary am-text-sm'>
-            <a href="contest.php?cid=$cid" style='color: white;'>$cid</a>
-            </span>
-          </div>
+          $MSG_CONTEST: <span class='am-badge am-badge-primary am-text-sm'>
 HTML;
+          if($ctitle){
+            $ctitle = "【{$cid}】$ctitle";
+            echo "<a href='contest.php?cid=$cid' style='color: white;'>$ctitle</a>";
+          } else echo $cid;
+          echo "</span></div>\n";
         }
-        echo <<<HTML
-          </div>
-        <hr>
-HTML;
+        echo "</div><hr>\n";
 
           // ****mail function currently stashed
           // if($view_user_id!=$_SESSION['user_id'])
