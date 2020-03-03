@@ -186,7 +186,7 @@ HTML;
           echo "submitpage.php?cid=$cid&pid=$pid&langmask=$langmask";
       }
       ?>
-    " style="color:white" target="_blank">
+    " style="color:white">
         <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
@@ -201,7 +201,7 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white' target="_blank">
+          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
