@@ -130,14 +130,17 @@ $source_user=$source;
 if($test_run) $id=-$id;
 
 //use append Main code
+//上传文件的编码不一定是UTF-8，读取数据(包含中文的情况下)插入数据库会出错，因此先把文件编码转为UTF-8并返写
 $prepend_file="$OJ_DATA/$id/prepend.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($prepend_file)){
-     $source=$mysqli->real_escape_string(file_get_contents($prepend_file)."\n").$source;
+	require_once("./include/problem.php");
+    $source=$mysqli->real_escape_string(convert2UTF8($OJ_DATA,$id,pathinfo($prepend_file)['basename'])."\n").$source;
 }
 
 $append_file="$OJ_DATA/$id/append.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($append_file)){
-    $source.=$mysqli->real_escape_string("\n".file_get_contents($append_file));
+	require_once("./include/problem.php");
+    $source.=$mysqli->real_escape_string("\n".convert2UTF8($OJ_DATA,$id,pathinfo($append_file)['basename']));
 }
 //end of append 
 
