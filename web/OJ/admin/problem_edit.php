@@ -302,8 +302,8 @@ if(isset($_POST['problem_id'])){ //写入数据库
     //火狐浏览器73.0.1版本中kindeditor会在textarea内容的末尾加入<!---->
     $description = str_replace("<!---->","",$description);
     $input = str_replace("<!---->","",$input);
-    $output = str_replace("<!---->","",$input);
-    $hint = str_replace("<!---->","",$input);
+    $output = str_replace("<!---->","",$output);
+    $hint = str_replace("<!---->","",$hint);
 
 	  if($author == "") $author = $_SESSION['user_id'];
 
