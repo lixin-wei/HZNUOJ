@@ -68,4 +68,14 @@
 
   }
 
+  function convert2UTF8($OJ_DATA,$pid,$filename){
+    $basedir = "$OJ_DATA/$pid";
+    $source = file_get_contents($basedir . "/$filename");
+    $encode = mb_detect_encoding($source, array("ASCII","GB2312","GBK","UTF-8"));
+    if($encode != "UTF-8"){
+      $source = mb_convert_encoding($source, "UTF-8",$encode);
+      mkdata($pid, $filename, $source, $OJ_DATA);//返写文件，以绝后患
+    }
+    return $source;
+  }
 ?>
