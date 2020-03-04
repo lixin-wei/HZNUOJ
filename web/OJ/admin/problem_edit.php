@@ -327,23 +327,16 @@ if(isset($_POST['problem_id'])){ //写入数据库
     $mysqli->query($sql);
     if($sample_inputs){
         foreach ($sample_inputs as $key => $sample_input) {
-            $sample_input=preg_replace("/(\r\n)/","\n",$sample_input);
-            $sample_output=preg_replace("/(\r\n)/","\n",$sample_outputs[$key]);
-            $sample_input=$mysqli->real_escape_string($sample_input);
-            $sample_output=$mysqli->real_escape_string($sample_output);
+            $sample_output=$sample_outputs[$key];
             if($sample_input=="" && $sample_output=="")continue;
             
             //don't auto generate sample files if is SPJ
             if(!$spj) {
-                $fp=fopen($OJ_DATA."/$id/sample".$key.".in","w");
-                fputs($fp,$sample_input);
-                fclose($fp);
-                //echo "<pre>create: ".$OJ_DATA."/$id/sample".$key.".in"."</pre>";
-    
-                $fp=fopen($OJ_DATA."/$id/sample".$key.".out","w");
-                fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
-                fclose($fp);
+                mkdata($id, "sample{$key}.in", $sample_input, $OJ_DATA);
+                mkdata($id, "sample{$key}.out", $sample_output, $OJ_DATA);
             }
+            $sample_input=$mysqli->real_escape_string($sample_input);
+            $sample_output=$mysqli->real_escape_string($sample_output);
             $sql=<<<SQL
           INSERT INTO problem_samples (
             problem_id,
