@@ -355,6 +355,7 @@ function _print_edit_buttons ($dir)
 		permissions_grant_all($dir, NULL, array("create", "read"))
 			&& ($GLOBALS["zip"] || $GLOBALS["tar"] || $GLOBALS["tgz"]),
 		$dir, NULL);
+	_print_link("Random-data", true, $dir, NULL);
 }
 
 /**
@@ -370,22 +371,27 @@ function _print_link ($function, $allow, $dir, $item)
 			"copy" => array("jfunction" => "javascript:Copy();",
 					"icon" => "glyphicon glyphicon-tags",
 					"imagedisabled" => "_img/_copy_.gif",
-					"message" => $GLOBALS["messages"]["copylink"]),
+					"message" => $GLOBALS["messages"]["copylink"],
+					"target" => ""),
 			"move" => array("jfunction" => "javascript:Move();",
 					"icon" => "glyphicon glyphicon-move",
 					"imagedisabled" => "_img/_move_.gif",
-					"message" => $GLOBALS["messages"]["movelink"]),
+					"message" => $GLOBALS["messages"]["movelink"],
+					"target" => ""),
 			"delete" => array("jfunction" => "javascript:Delete();",
 					"icon" => "glyphicon glyphicon-trash",
 					"imagedisabled" => "_img/_delete_.gif",
-					"message" => $GLOBALS["messages"]["dellink"]),
+					"message" => $GLOBALS["messages"]["dellink"],
+					"target" => ""),
 			"upload" => array("jfunction" => make_link("upload", $dir, NULL),
 					"icon" => "glyphicon glyphicon-upload",
 					"imagedisabled" => "_img/_upload_.gif",
-					"message" => $GLOBALS["messages"]["uploadlink"]),
+					"message" => $GLOBALS["messages"]["uploadlink"],
+					"target" => ""),
 			"archive" => array("jfunction" => "javascript:Archive();",
 					"icon" => "glyphicon glyphicon-compressed",
-					"message" => $GLOBALS["messages"]["comprlink"]),
+					"message" => $GLOBALS["messages"]["comprlink"],
+					"target" => ""),
 			"admin" => array("jfunction" => make_link("admin", $dir, NULL),
 					"icon" => "glyphicon glyphicon-cog",
 					"message" => $GLOBALS["messages"]["adminlink"]),
@@ -396,11 +402,17 @@ function _print_link ($function, $allow, $dir, $item)
 			"edit" => array("jfunction" => make_link("edit", $dir, $item),
 					"icon" => "glyphicon glyphicon-edit",
 					"imagedisabled" => "_img/_edit_.gif",
-					"message" => $GLOBALS["messages"]["editlink"]),
+					"message" => $GLOBALS["messages"]["editlink"],
+					"target" => ""),
 			"download" => array("jfunction" => make_link("download", $dir, $item),
 					"icon" => "glyphicon glyphicon-download",
 					"imagedisabled" => "_img/_download_.gif",
-					"message" => $GLOBALS["messages"]["downlink"]),
+					"message" => $GLOBALS["messages"]["downlink"],
+					"target" => ""),
+			"Random-data" => array("jfunction" => "https://muzea-demo.github.io/random-data/",
+					"icon" => "glyphicon glyphicon-random",
+					"message" => $GLOBALS["messages"]["Random-data"],
+					"target" => "_blank"),
 			);
 	
 	// determine the functio nof this button and it's data
@@ -408,7 +420,7 @@ function _print_link ($function, $allow, $dir, $item)
 	// make an active link if the access is allowed
 	if ($allow)
 	{
-		echo "<A style='margin:5px;' HREF=\"" . $values["jfunction"] . "\" title='".$values["message"]."'>";
+		echo "<A style='margin:5px;' HREF=\"" . $values["jfunction"] . "\" title='".$values["message"]."' target='".$values["target"]."'>";
 		echo "<span class='".$values['icon']."' style='font-size: 18px;'></span>";
 		echo "</A>";
 		return;

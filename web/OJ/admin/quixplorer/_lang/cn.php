@@ -110,6 +110,7 @@ $GLOBALS["messages"] = array(
 	"btnadd"		=> "增加",
 	"btnedit"		=> "编辑",
 	"btnremove"		=> "删除",
+	"Random-data"	=> "随机测试数据生成器",
 	
 	// actions
 	"actdir"		=> "文件夹",
