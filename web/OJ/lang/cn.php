@@ -5,7 +5,6 @@
   * @2015.07.01
   **/
 ?>
-
 <?php
 
   // 主导航栏
@@ -112,6 +111,7 @@
   $MSG_Empty_Class = "无人班级";
   $MSG_Back = "返回";
   $MSG_Customiz = "自定义";
+  $MSG_Download = "下载";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -216,7 +216,7 @@
   $MSG_PRIVILEGE="管理权限";
   $MSG_Distribution = $MSG_PRIVILEGE."分配";
   $MSG_SourceCode= "源码" ;
-  $MSG_GIVESOURCE="转移".$MSG_SourceCode;
+  $MSG_GIVESOURCE="赠送".$MSG_SourceCode;
   $MSG_IMPORT="导入";
   $MSG_EXPORT="导出";
   $MSG_ReOrderProblem="修改原始".$MSG_PROBLEM_ID;
@@ -274,9 +274,9 @@
   $MSG_HELP_REJUDGE="可以重判指定的题目、提交或比赛。";
   $MSG_HELP_ADD_PRIVILEGE="给指定用户添加".$MSG_PRIVILEGE."，包括管理员、教师、助教等权限。";
   $MSG_HELP_PRIVILEGE_LIST="查看用户已有的".$MSG_PRIVILEGE."列表、进行删除操作。";
-  $MSG_HELP_GIVESOURCE="将导入系统的标程赠与指定帐号，用于训练后辅助未通过的人学习参考。";
+  $MSG_HELP_GIVESOURCE="将导入系统的标程赠与指定帐号，用于训练后辅助未通过的人学习参考。<b>注意此处代码赠与是把代码移动到对方名下而非复制。</b>";
   $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
-  $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件。";
+  $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件，支持ZIP压缩文件批量上传。";
   $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
 
   $MSG_HELP_AC="答案正确，请再接再厉。"; 

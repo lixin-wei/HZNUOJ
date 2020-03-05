@@ -5,7 +5,6 @@
   * @2016.03.24
   **/
 ?>
-
 <?php
 
   // 主导航栏
@@ -112,6 +111,7 @@
   $MSG_Empty_Class = "Empty Class";
   $MSG_Back = "Back";
   $MSG_Customiz = "Customiz ";
+  $MSG_Download = "Download";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -276,7 +276,7 @@
   $MSG_HELP_PRIVILEGE_LIST= "looks at the existing list of special permissions and deletes them. ";
   $MSG_HELP_GIVESOURCE=" transfers the label of the import system to the designated account number, which is used to assist the person who has not passed the training after the training. ";
   $MSG_HELP_EXPORT_PROBLEM= "export the problems of the system in the form of fps.xml file. ";
-  $MSG_HELP_IMPORT_PROBLEM=" import fps.xml files downloaded from internet or tk.hustoj.com. ";
+  $MSG_HELP_IMPORT_PROBLEM=" import fps.xml files downloaded from internet or tk.hustoj.com, support zip file. ";
   $MSG_HELP_PROBLEM_STATISTICS="You are able to view all submissions after solving this problem.";
 
   $MSG_HELP_AC="Congratulations!"; 

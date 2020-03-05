@@ -8,6 +8,8 @@
 <?php if(!session_id()) @session_start();
 
 ini_set("display_errors","Off");
+// ini_set("display_errors",true);
+// error_reporting(E_ALL^E_NOTICE^E_WARNING);
 require_once($_SERVER['DOCUMENT_ROOT']."/OJ/include/static.php");
 
 //if(date('H')<5||date('H')>21||isset($_GET['dark'])) $OJ_CSS="dark.css";
