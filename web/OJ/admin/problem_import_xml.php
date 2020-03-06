@@ -13,13 +13,12 @@ if (!HAS_PRI("inner_function")){
 	}
 require_once ("../include/db_info.inc.php");
 require_once ("../include/problem.php");
-
-ini_set('display_errors', 'On');
-ini_set('display_startup_errors', 'On');
-error_reporting(E_ALL);
+require_once("../include/setlang.php");
+require_once("../include/const.inc.php");
 
 
-function import_addSample($id,$sample_input,$sample_output,$spj){
+
+function import_addSample($id,$sample_id,$sample_input,$sample_output,$show_after,$spj){
 	
 	global $mysqli;
 
@@ -39,12 +38,12 @@ function import_addSample($id,$sample_input,$sample_output,$spj){
 			show_after
 		)
 		VALUES
-		($id, 0, "$sample_input", "$sample_output", "0")
+		($id, '$sample_id', "$sample_input", "$sample_output", '$show_after')
 SQL;
-    echo "$sql";
+    //echo "$sql";
     $mysqli->query($sql);
 	
-	echo "Sample data file Updated!<br>";
+	//echo "Sample data file Updated!<br>";
 }
 
 
@@ -52,26 +51,27 @@ SQL;
 
 
 
-function submitSolution($pid,$solution,$language)
+function getLang($language)
 {
-	global $mysqli;
-	require_once("../include/setlang.php");
-	require_once("../include/const.inc.php");
-
+	global $language_name;
 	for($i=0;$i<count($language_name);$i++){
 		//echo "$language=$language_name[$i]=".($language==$language_name[$i]);
 		if($language==$language_name[$i]){
-			$language=$i;
-			//echo $language;
-			break;
+			return $i;
 		}
-		
+
 	}
-	
+	return $i;
+}
+
+function submitSolution($pid,$solution,$language)
+{
+	global $mysqli, $OJ_DATA, $language_ext, $OJ_APPENDCODE;
+	$language = getLang($language);
 	$len=mb_strlen($solution,'utf-8');
-	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length)
-	VALUES('$pid','".$_SESSION['user_id']."',NOW(),'$language','127.0.0.1','$len')";
-	
+	$sql="INSERT INTO solution(problem_id,user_id,in_date,language,ip,code_length,result)
+	VALUES('$pid','".$_SESSION['user_id']."',NOW(),'$language','127.0.0.1','$len',14)";
+
 	$mysqli->query ( $sql );
 	$insert_id = $mysqli->insert_id;
 	$solution=$mysqli->real_escape_string($solution);
@@ -79,14 +79,25 @@ function submitSolution($pid,$solution,$language)
 	$sql = "INSERT INTO `source_code`(`solution_id`,`source`)VALUES('$insert_id','$solution')";
 	$mysqli->query ( $sql );
 
+	$sql = "INSERT INTO `source_code_user`(`solution_id`,`source`)VALUES('$insert_id','$solution')";
+	$mysqli->query($sql);
+	$sql = "UPDATE `solution` SET `result`=1 WHERE `solution_id`='$insert_id'";
+	$mysqli->query($sql);
 }
-?>
-Import Free Problem Set ... <br>
-
-<?php
+function fixData($value){
+	//去掉节点值<![CDATA[1]]>首尾位置上交错的换行符、tab，以及空格
+	while(substr($value,0,1)=="	" || substr($value,0,1)=="\r" || substr($value,0,1)=="\n" ||substr($value,0,1)==" "){
+		$value = trim($value, "	");//tab
+		$value = trim($value, " ");//space
+		$value = trim($value, "\r\n");
+		$value = trim($value, "\r");
+		$value = trim($value, "\n");		
+	}
+	return $value;
+}
 function getValue($Node, $TagName) {
-	
-	return $Node->$TagName;
+
+	return fixData($Node->$TagName);
 }
 function getAttribute($Node, $TagName,$attribute) {
 	return $Node->children()->$TagName->attributes()->$attribute;
@@ -95,51 +106,48 @@ function hasProblem($title){
 	// require_once("../include/db_info.inc.php");
 	global $mysqli;
 	$md5=md5($title);
-	$sql="select 1 from problem where md5(title)='$md5'";  
+	$sql="select 1 from problem where md5(title)='$md5'"; 
 	$result=$mysqli->query ( $sql );
-	$rows_cnt=$result->num_rows;		
+	$rows_cnt=$result->num_rows;
 	$result->free();
 	//echo "row->$rows_cnt";			
 	return  ($rows_cnt>0);
 
 }
 
-if ($_FILES ["fps"] ["error"] > 0) {
-	echo "Error: " . $_FILES ["fps"] ["error"] . "File size is too big, change in PHP.ini<br />";
-} else {
-	$tempfile = $_FILES ["fps"] ["tmp_name"];
-	echo "Upload: " . $_FILES ["fps"] ["name"] . "<br />";
-	echo "Type: " . $_FILES ["fps"] ["type"] . "<br />";
-	echo "Size: " . ($_FILES ["fps"] ["size"] / 1024) . " Kb<br />";
-	echo "Stored in: " . $tempfile;
-	
-	//$xmlDoc = new DOMDocument ();
-	//$xmlDoc->load ( $tempfile );
-	//$xmlcontent=file_get_contents($tempfile );
+function mkpta($pid, $pends, $node)
+{
+	global $language_ext, $OJ_DATA;
+	foreach ($pends as $pend) {
+		$language = $pend->attributes()->language;
+		$lang = getLang($language);
+		$file_ext = $language_ext[$lang];
+		$file_name = "$node.$file_ext";
+		mkdata($pid,$file_name,$pend,$OJ_DATA);
+	}
+}
+function import_fps($tempfile)
+{
+	global $mysqli, $OJ_DATA, $OJ_SAE, $MSG_IMPORTED;
 	$xmlDoc=simplexml_load_file($tempfile, 'SimpleXMLElement', LIBXML_PARSEHUGE);
 	$searchNodes = $xmlDoc->xpath ( "/fps/item" );
 	$spid=0;
 	foreach($searchNodes as $searchNode) {
-		echo $searchNode->title,"\n";
+		$title = getValue($searchNode, 'title');
+		echo "<b>$title</b>&nbsp;&nbsp;";
 
-		$title =$searchNode->title;
-		
-		$time_limit = $searchNode->time_limit;
+		$time_limit = getValue($searchNode, 'time_limit');
     	$unit=getAttribute($searchNode,'time_limit','unit');
     	//echo $unit;
-		if($unit=='ms') $time_limit/=1000;
+		if(strtolower($unit)=='ms') $time_limit/=1000;
 		
 		$memory_limit = getValue ( $searchNode, 'memory_limit' );
 		$unit=getAttribute($searchNode,'memory_limit','unit');
-		if($unit=='kb') $memory_limit/=1024;
+		if(strtolower($unit)=='kb') $memory_limit/=1024;
 		
 		$description = getValue ( $searchNode, 'description' );
 		$input = getValue ( $searchNode, 'input' );
 		$output = getValue ( $searchNode, 'output' );
-		$sample_input = getValue ( $searchNode, 'sample_input' );
-		$sample_output = getValue ( $searchNode, 'sample_output' );
-//		$test_input = getValue ( $searchNode, 'test_input' );
-//		$test_output = getValue ( $searchNode, 'test_output' );
 		$hint = getValue ( $searchNode, 'hint' );
 		$source = getValue ( $searchNode, 'source' );
 		
@@ -148,30 +156,47 @@ if ($_FILES ["fps"] ["error"] > 0) {
 		$spjcode = getValue ( $searchNode, 'spj' );
 		$spj = trim($spjcode)?1:0;
 		if(!hasProblem($title )){
-			$pid=addproblem ("default",$title, $time_limit, $memory_limit, $description, $input, $output, $hint,"", $source, $spj, $OJ_DATA );
+			$pid=addproblem($_POST["problemset"],$title, $time_limit, $memory_limit, $description, $input, $output, $hint, $MSG_IMPORTED, $source, $spj, $OJ_DATA);
 			if($spid==0) $spid=$pid;
 			echo $pid;
 			$basedir = "$OJ_DATA/$pid";
 			mkdir ( $basedir );
-			
-			import_addSample($pid,$sample_input,$sample_output,$spj);
-			
-			if(strlen($sample_input)) mkdata($pid,"sample.in",$sample_input,$OJ_DATA);
-			if(strlen($sample_output)) mkdata($pid,"sample.out",$sample_output,$OJ_DATA);
-        	
         //  	if(!isset($OJ_SAE)||!$OJ_SAE){
+				$sample_list = array();
+				$samples = $searchNode->children()->sample_input;
+				$testno = 0;
+				foreach ($samples as $Node) {
+					$sample_list[$testno]['show_after'] = $Node->attributes()['show_after'];
+					$sample_list[$testno]['input'] = fixData($Node);
+					$testno++;
+				}
+				$samples = $searchNode->children()->sample_output;
+				$testno = 0;
+				foreach ($samples as $Node) {
+					$sample_list[$testno]['output'] = fixData($Node);;
+					$testno++;
+				}
+				unset($samples);
+				$testno = 0;
+				foreach($sample_list as $sample){
+					if (!$sample['show_after']) $sample['show_after'] = 0;
+					import_addSample($pid, $testno, $sample['input'], $sample['output'], $sample['show_after'], $spj);
+					mkdata($pid, "sample" . $testno . ".in", $sample['input'], $OJ_DATA);
+					mkdata($pid, "sample" . $testno . ".out", $sample['output'], $OJ_DATA);
+					$testno++;
+				}
 				$testinputs=$searchNode->children()->test_input;
 				$testno=0;
 			
 				foreach($testinputs as $testNode){
 					//if($testNode->nodeValue)
-					mkdata($pid,"test".$testno++.".in",$testNode,$OJ_DATA);
+					mkdata($pid,"test".$testno++.".in",fixData($testNode),$OJ_DATA);
 				}
 				$testinputs=$searchNode->children()->test_output;
 				$testno=0;
 				foreach($testinputs as $testNode){
 					//if($testNode->nodeValue)
-					mkdata($pid,"test".$testno++.".out",$testNode,$OJ_DATA);
+					mkdata($pid,"test".$testno++.".out",fixData($testNode),$OJ_DATA);
 				}
        // }
 			$images=($searchNode->children()->img);
@@ -227,7 +252,7 @@ if ($_FILES ["fps"] ["error"] > 0) {
 							echo "you need to compile $basedir/spj.cc for spj[  g++ -o $basedir/spj $basedir/spj.cc   ]<br> and rejudge $pid";
 						
 						}else{
-							
+
 							unlink("$basedir/spj.cc");
 						}
 					
@@ -240,16 +265,64 @@ if ($_FILES ["fps"] ["error"] > 0) {
 				submitSolution($pid,$solution,$language);
 			
 			}
+			unset($solutions);
+			$pta = $searchNode->children()->prepend;
+			mkpta($pid, $pta, "prepend");
+			$pta = $searchNode->children()->template;
+			mkpta($pid, $pta, "template");
+			$pta = $searchNode->children()->append;
+			mkpta($pid, $pta, "append");
 		}else{
-			echo "<br><span class=red>$title is already in this OJ</span>";		
+			echo "<br><span class=red>$title is already in this OJ/题目重名</span>";		
 		}
 		
 	}
 	unlink ( $tempfile );
-	if($spid>0){
-		require_once("../include/set_get_key.php");
-		echo "<br><a class=blue href=contest_add.php?spid=$spid&getkey=".$_SESSION['getkey'].">Use these problems to create a contest.</a>";
-	 }
 }
-
+function get_extension($file)
+{
+	$info = pathinfo($file);
+	return $info['extension'];
+}
+?>
+<title><?php echo $html_title . $MSG_IMPORT . $MSG_PROBLEM ?></title>
+<h1><?php echo $MSG_IMPORT . $MSG_PROBLEM ?></h1>
+<h4><?php echo $MSG_HELP_IMPORT_PROBLEM ?></h4>
+<hr>
+<label><?php echo $MSG_IMPORT . $MSG_PROBLEM ?>...</label><br>
+<?php
+if ($_FILES["fps"]["error"] > 0) {
+	echo "Error: " . $_FILES["fps"]["error"] . "File size is too big, change in PHP.ini<br />";
+} else {
+	$tempfile = $_FILES["fps"]["tmp_name"];
+	// 	echo "Upload: " . $_FILES["fps"]["name"] . "<br />";
+	// 	echo "Type: " . $_FILES["fps"]["type"] . "<br />";
+	// 	echo "Size: " . ($_FILES["fps"]["size"] / 1024) . " KB<br />";
+	// 	echo "Stored in: " . $tempfile;
+	if(get_extension($_FILES["fps"]["name"])=="zip"){
+		echo "zip file , only fps/xml files in root dir are supported. / <b>只支持fps/xml文件存储在zip压缩包根目录下。</b><br>";
+		$resource = zip_open($tempfile);
+		$i = 1;
+		$tempfile=tempnam("/tmp", "fps");
+		while ($dir_resource = zip_read($resource)) {
+		   if (zip_entry_open($resource,$dir_resource)) {
+			$file_name = $path.zip_entry_name($dir_resource);
+			$file_path = substr($file_name,0,strrpos($file_name, "/"));
+			if(!is_dir($file_name)){
+			  $file_size = zip_entry_filesize($dir_resource);
+			  $file_content = zip_entry_read($dir_resource,$file_size);
+			  file_put_contents($tempfile,$file_content);
+			  import_fps($tempfile);
+			}
+			zip_entry_close($dir_resource);
+		   }
+	   }
+	   zip_close($resource);
+	   unlink($_FILES ["fps"]["tmp_name"]);
+	 }else{
+		import_fps($tempfile);
+	 }
+	 echo "<br><input type='button' name='submit' value='返回' onclick='javascript:history.go(-1);' style='margin-bottom: 20px;'>";
+}
+  require_once("admin-footer.php")
 ?>
