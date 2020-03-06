@@ -9,7 +9,7 @@
 <?php
 
   function addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj,$OJ_DATA) {
-    global $mysqli, $MSG_PROBLEMSET, $MSG_ADD, $OJ_SAE;
+    global $mysqli, $MSG_PROBLEMSET, $MSG_TestData, $MSG_ADD, $OJ_SAE;
     $title=$mysqli->real_escape_string($title);
     $problemset=$mysqli->real_escape_string($problemset);
     $time_limit=$mysqli->real_escape_string($time_limit);
@@ -34,7 +34,7 @@
     // echo $sql;
     echo $MSG_PROBLEMSET.':'.$problemset;
     //echo "<pre>".$sql."</pre>";
-    echo "<br>$MSG_ADD $pid  ";
+    echo "<br>$MSG_ADD $pid ";
     if (isset ( $_POST ['contest_id'] )) {
       $sql = "SELECT count(*) FROM `contest_problem` WHERE `contest_id`=" . strval ( intval ( $_POST ['contest_id'] ) );
       $result = @$mysqli->query ( $sql ) or die ( $mysqli->error );
@@ -49,7 +49,7 @@
 
     $basedir = "$OJ_DATA/$pid";
     if(!isset($OJ_SAE)||!$OJ_SAE){
-        echo "[$title]data in $basedir";
+        echo "[$title] $MSG_TestData in $basedir.<br>";
     }
     return $pid;
   }
