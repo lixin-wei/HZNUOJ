@@ -1,6 +1,11 @@
 <?php
 @session_start ();
 require_once("../include/db_info.inc.php");
+if (!HAS_PRI("inner_function")) {
+	echo "You are not allowed to view this page!";
+	exit(1);
+}
+require_once("../include/const.inc.php");
 require_once("../include/setlang.php");
 function getTestFileIn($pid, $testfile,$OJ_DATA) {
 	if ($testfile != "")
@@ -14,8 +19,20 @@ function getTestFileOut($pid, $testfile,$OJ_DATA) {
 	else
 		return "";
 }
-function printTestCases($pid,$OJ_DATA){
-
+function printSampleCases($pid)
+{
+	global $mysqli;
+	$sql = "SELECT * FROM `problem_samples` WHERE `problem_id`='$pid' ORDER BY `sample_id`";
+	$res = $mysqli->query($sql) or die($mysqli->error);
+	while ($sample_row = $res->fetch_object()) {
+		echo "<sample_input show_after=\"$sample_row->show_after\"><![CDATA[" . $sample_row->input . "]]></sample_input>\n";
+		echo "<sample_output><![CDATA[" .  $sample_row->output . "]]></sample_output>\n";
+		echo "\n";
+	}
+	$res->free();
+	return;
+}
+function printTestCases($pid, $OJ_DATA){
 if(strstr($OJ_DATA,"saestor:"))     {
   // echo "<debug>$pid</debug>";
        $store = new SaeStorage();
@@ -27,16 +44,16 @@ if(strstr($OJ_DATA,"saestor:"))     {
                     
                     $pinfo = pathinfo ( $file );
 		if (isset($pinfo ['extension'])
-			&&$pinfo ['extension'] == "in" 
-			&& $pinfo ['basename'] != "sample.in") {
-			$f = basename ( $pinfo ['basename'], "." . $pinfo ['extension'] );
+			&& strtolower($pinfo['extension']) == "in" 
+			&& strtolower(substr($pinfo['basename'],0,6)) != "sample") {
+			$f = basename($pinfo['basename'], "." . $pinfo['extension'] );
 			
 			$outfile="$pid/" . $f . ".out";
 			$infile="$pid/" . $f . ".in";
 			if( $store->fileExists ("data",$infile)){
-				echo "<test_input><![CDATA[".$store->read ("data",$infile)."]]></test_input>\n";
+				echo "<test_input><![CDATA[".fixcdata($store->read("data",$infile))."]]></test_input>\n";
 			}if($store->fileExists ("data",$outfile)){
-				echo "<test_output><![CDATA[".$store->read ("data",$outfile)."]]></test_output>\n";
+				echo "<test_output><![CDATA[".fixcdata($store->read("data",$outfile))."]]></test_output>\n";
 			}
 //			break;
 		}
@@ -55,18 +72,18 @@ if(strstr($OJ_DATA,"saestor:"))     {
 	while ( $file = readdir ( $pdir ) ) {
 		$pinfo = pathinfo ( $file );
 		if (isset($pinfo ['extension'])
-			&&$pinfo ['extension'] == "in" 
-			&& $pinfo ['basename'] != "sample.in") {
+			&&strtolower($pinfo['extension']) == "in" 
+			&& strtolower(substr($pinfo['basename'],0,6)) != "sample") {
 			$ret = basename ( $pinfo ['basename'], "." . $pinfo ['extension'] );
 			
 			$outfile="$OJ_DATA/$pid/" . $ret . ".out";
 			$infile="$OJ_DATA/$pid/" . $ret . ".in";
 			if(file_exists($infile)){
-				echo "<test_input><![CDATA[".file_get_contents ($infile)."]]></test_input>\n";
+				echo "<test_input><![CDATA[".fixcdata(file_get_contents ($infile))."]]></test_input>\n";
 			}if(file_exists($outfile)){
-				echo "<test_output><![CDATA[".file_get_contents ($outfile)."]]></test_output>\n";
+				echo "<test_output><![CDATA[".fixcdata(file_get_contents ($outfile))."]]></test_output>\n";
 			}
-//			break;
+			echo "\n";
 		}
 	}
 	closedir ( $pdir );
@@ -75,48 +92,28 @@ if(strstr($OJ_DATA,"saestor:"))     {
 }
 class Solution{
   var $language="";
-  var $source_code="";	
+  var $source_code=""; 
 }
 function getSolution($pid,$lang){
 	$ret=new Solution();
-	require("../include/db_info.inc.php");
-	require('../include/setlang.php');
-	require("../include/const.inc.php");
-         $con=false;
-	if($OJ_SAE)     {
-                $OJ_DATA="saestor://data/";
-        //  for sae.sina.com.cn
-               $con= mysql_connect(SAE_MYSQL_HOST_M.':'.SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-               
-        }else{
-                //for normal install
-                $con=mysql_pconnect($DB_HOST,$DB_USER,$DB_PASS);
-                        
-        }
-	if (!$con)
-    {
-      //  die('Could not connect: ' . $mysqli->error);
-    }
-	$mysqli->query("set names utf8",$con);
-	mysql_set_charset("utf8",$con);
-	mysql_select_db($DB_NAME,$con);
+	global $mysqli, $language_name;
+
 	$sql = "select `solution_id`,`language` from solution where problem_id=$pid and result=4 and language=$lang limit 1";
 //	echo $sql;
-	$result = $mysqli->query($sql,$con ) ;
-	if($result&&$row = mysql_fetch_row ( $result) ){
+	$result = $mysqli->query($sql);
+	if($result&&$row = $result->fetch_row()) {
 		$solution_id=$row[0];
 		$ret->language=$language_name[$row[1]];
-		
+
 		$result->free();
 		$sql = "select source from source_code where solution_id=$solution_id";
 		$result = $mysqli->query ( $sql ) or die ( $mysqli->error );
-		if($row = mysql_fetch_object ( $result) ){
+		if($row = $result->fetch_object()){
 			$ret->source_code=$row->source;
-			
+
 		}
 		$result->free();
 	}
-    mysql_close($con);
 	return $ret;
 }
 function fixurl($img_url){
@@ -136,6 +133,7 @@ function fixurl($img_url){
 } 
 function image_base64_encode($img_url){
     $img_url=fixurl($img_url);
+	if (substr($img_url, 0, 4) != "http") return false;
 	$handle = @fopen($img_url, "rb");
 	if($handle){
 		$contents = stream_get_contents($handle);
@@ -146,10 +144,11 @@ function image_base64_encode($img_url){
 		return false;
 }
 function getImages($content){
-    preg_match_all("/<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>/",$content,$images);
+    preg_match_all("<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>",$content,$images);
     return $images;
 }
 function fixcdata($content){
+	$content=str_replace("\x1a","",$content);// hustoj原版那边复制过来 remove some strange \x1a [SUB] char from datafile
     return str_replace("]]>","]]]]><![CDATA[>",$content);
 }
 function fixImageURL(&$html,&$did){
@@ -161,121 +160,134 @@ function fixImageURL(&$html,&$did){
 		  if(!in_array($img,$did)){
 			  $base64=image_base64_encode($img);
 			  if($base64){
-				  echo "<img><src><![CDATA[";
-				  echo fixurl($img);
-				  echo "]]></src><base64><![CDATA[";
-				  echo $base64;
-				  echo "]]></base64></img>";   
+				  echo "<img><src><![CDATA[".fixurl($img)."]]></src>";
+				  echo "<base64><![CDATA[". $base64 ."]]></base64></img>";
 			 }
 			 array_push($did,$img);
 		 }
    }   	
 }
 
-if (! isset ( $_SESSION ['administrator'] )) {
-	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">";
-	echo "<a href='../loginpage.php'>Please Login First!</a>";
-	exit ( 1 );
-}
-
-
-if (isset($_POST ['do'])||isset($_GET['cid'])) {
+if (isset($_POST ['download'])||isset($_GET['cid'])) {
+	$cid = isset($_GET['cid']) ? $_GET['cid'] : $_POST['cid'];
+	$sql = "";
    if(isset($_POST ['in'])&&strlen($_POST ['in'])>0){
-	require_once("../include/check_post_key.php");
-   	$in=mysqli_real_escape_string ( $_POST ['in'] );
-   	$sql = "select * from problem where problem_id in($in)";
-   	  $filename="-$in";
-   }else if (isset($_GET['cid'])){
-	  require_once("../include/check_get_key.php");
-	  $cid=intval( $_GET['cid'] );
-      $sql= "select title from contest where contest_id='$cid'";
-      $result = $mysqli->query ( $sql ) or die ( $mysqli->error );
-      $row = mysql_fetch_object ( $result );
-      $filename='-'.$row->title;
-      mysql_free_result ( $result );
-      $sql = "select * from problem where problem_id in(select problem_id from contest_problem where contest_id=$cid)";
-	  
-   }else{
-	   require_once("../include/check_post_key.php");
-	   $start = intval ( $_POST ['start'] );
-		$end = intval ( $_POST ['end'] );
-	 	$sql = "select * from problem where problem_id>=$start and problem_id<=$end";
-       $filename="-$start-$end";
-   }
-
-	
-	//echo $sql;
-	$result = $mysqli->query ( $sql ) or die ( $mysqli->error );
-	
-	if (isset($_POST ['submit'])&&$_POST ['submit'] == "Export")
-		header ( 'Content-Type:   text/xml' );
-	else {
-		header ( "content-type:   application/file" );
-		header ( "content-disposition:   attachment;   filename=\"fps-".$_SESSION['user_id'].$filename.".xml\"" );
+		require_once("../include/check_post_key.php");
+		$_POST['in'] = trim(str_replace("[", "", $_POST['in']));
+		$_POST['in'] = trim(str_replace("]", "", $_POST['in']));
+		$ins = explode(",", $_POST['in']);
+		$in="";
+		foreach ($ins as $pid) {
+			$pid = intval($pid);
+			if ($in) $in .= ",";
+			$in .= $mysqli->real_escape_string(trim($pid));
+		}
+		$sql = "SELECT * FROM problem WHERE problem_id IN ($in)";
+		$filename="-$in";
+	} else if (isset($_POST['start']) && strlen($_POST['start']) > 0){
+		require_once("../include/check_post_key.php");
+		$start = intval($_POST['start']);
+		$end = intval($_POST['end']);
+		$sql = "SELECT * FROM `problem` WHERE `problem_id`>='$start' AND problem_id<='$end'";
+		$filename = "-$start-$end";
+	} else if (isset($_GET['cid']) || isset($_POST['cid'])  && strlen($cid) > 0) {
+		if (isset($_GET['cid'])) {
+			require_once("../include/check_get_key.php");
+		} else {
+			require_once("../include/check_post_key.php");
+		}
+		$cid = intval($cid);
+		$sql= "SELECT `title` FROM `contest` WHERE `contest_id`='$cid'";
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		if ($row = $result->fetch_object()){
+			$filename='-'.$row->title;
+		} else {
+			echo "<script language=javascript>alert('查不到{$MSG_CONTEST}信息！');</script>";
+			echo "<script language=javascript>history.go(-1);</script>";
+			exit(0);
+		}
+		$result->free();
+		$sql = "SELECT * FROM `problem` WHERE `problem_id` IN (SELECT `problem_id` FROM `contest_problem` WHERE `contest_id`='$cid')";
 	}
+
+	$msg = "查不到{$MSG_PROBLEM}信息！";
+	if($sql){
+		//echo $sql;
+		$result = $mysqli->query($sql) or die($mysqli->error);
+		if ($result->num_rows!=0) $msg = "";
+	}
+	if ($msg){
+		echo "<script language=javascript>alert('$msg');</script>";
+		echo "<script language=javascript>history.go(-1);</script>";
+		exit(0);
+	}
+
+	//header('Content-Type:   text/xml');
+	header("content-type:   application/file");
+	header("content-disposition:   attachment;   filename=\"fps-" . $_SESSION['user_id'] . $filename . ".xml\"");
 	echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
   
-	?>
-   
-<fps version="1.1" url="http://code.google.com/p/freeproblemset/">
-	<generator name="HUSTOJ" url="http://code.google.com/p/hustoj/"/>
-	<?php
-	while ( $row = mysql_fetch_object ( $result ) ) {
-		
-		?>
-<item>
-<title><![CDATA[<?php echo $row->title?>]]></title>
-<time_limit unit="s"><![CDATA[<?php echo $row->time_limit?>]]></time_limit>
-<memory_limit unit="mb"><![CDATA[<?php echo $row->memory_limit?>]]></memory_limit>
-
-<?php
-	$did=array();
-	fixImageURL($row->description,$did);
-	fixImageURL($row->input,$did);
-	fixImageURL($row->output,$did);
-	fixImageURL($row->hint,$did);
-	
 ?>
-<description><![CDATA[<?php echo $row->description?>]]></description>
-<input><![CDATA[<?php echo $row->input?>]]></input> 
-<output><![CDATA[<?php echo $row->output?>]]></output>
-<sample_input><![CDATA[<?php echo $row->sample_input?>]]></sample_input>
-<sample_output><![CDATA[<?php echo $row->sample_output?>]]></sample_output>
-  <?php printTestCases($row->problem_id,$OJ_DATA)?>
-<hint><![CDATA[<?php echo $row->hint?>]]></hint>
-<source><![CDATA[<?php echo fixcdata($row->source)?>]]></source>
-<?php
-require("../include/const.inc.php");
-for ($lang=0;$lang<count($language_name);$lang++){
-
-	$solution=getSolution($row->problem_id,$lang);
-	if ($solution->language){?>
-	<solution language="<?php echo $solution->language?>"><![CDATA[<?php echo fixcdata($solution->source_code)?>]]></solution>
-	<?php }
-
-
-}
-?>
-<?php
- if($row->spj!=0){
- 	$filec="$OJ_DATA/".$row->problem_id."/spj.c";
- 	$filecc="$OJ_DATA/".$row->problem_id."/spj.cc";
- 	
- 	if(file_exists( $filec )){
-		echo "<spj language=\"C\"><![CDATA[";
- 		echo fixcdata(file_get_contents ($filec ));
- 		echo "]]></spj>";
-	}
- 	elseif(file_exists( $filecc )){
- 	    echo "<spj language=\"C++\"><![CDATA[";
- 		echo fixcdata(file_get_contents ($filecc ));
- 		echo "]]></spj>";
- 	}
- }
+<fps version="1.2" url="https://github.com/zhblue/freeproblemset/">
+	<generator name="HZNUOJ" url="https://github.com/wlx65003/HZNUOJ/" />
+		<?php while ($row = $result->fetch_object()) { ?>
+		<item>
+			<title><![CDATA[<?php echo $row->title ?>]]></title>
+			<time_limit unit="s"><![CDATA[<?php echo $row->time_limit ?>]]></time_limit>
+			<memory_limit unit="MB"><![CDATA[<?php echo $row->memory_limit ?>]]></memory_limit>
+			<?php
+			echo "\n";
+			$did=array();
+			fixImageURL($row->description, $did);
+			fixImageURL($row->input, $did);
+			fixImageURL($row->output, $did);
+			fixImageURL($row->hint, $did);
+			echo "\n";
+			?>
+			<description><![CDATA[<?php echo $row->description ?>]]></description>
+			<input><![CDATA[<?php echo $row->input ?>]]></input>
+			<output><![CDATA[<?php echo $row->output ?>]]></output>
+			<?php
+			echo "\n";
+			printSampleCases($row->problem_id);
+			printTestCases($row->problem_id, $OJ_DATA);
+			?>
+			<hint><![CDATA[<?php echo $row->hint ?>]]></hint>
+			<source><![CDATA[<?php echo fixcdata($row->source) ?>]]></source>
+			<?php
+			for ($lang = 0; $lang < count($language_name); $lang++) {
+				$solution = getSolution($row->problem_id, $lang);
+				if ($solution->language) { ?>
+<solution language="<?php echo $solution->language ?>"><![CDATA[<?php echo fixcdata($solution->source_code) ?>]]></solution>
+			<?php 
+				echo "\n";
+				}
+				$pta = array("prepend", "template", "append");
+				foreach ($pta as $pta_file) {
+					$append_file = "$OJ_DATA/$pid/$pta_file." . $language_ext[$lang];
+					if (file_exists($append_file)) { ?>
+			 <<?php echo $pta_file ?> language="<?php echo $language_name[$lang] ?>"><![CDATA[<?php echo fixcdata(file_get_contents($append_file)) ?>]]></<?php  echo $pta_file ?>>
+				<?php
+						echo "\n";
+					}
+				}
+			}
+			echo "\n";
+			if ($row->spj != 0) {
+				$filec = "$OJ_DATA/" . $row->problem_id . "/spj.c";
+				$filecc = "$OJ_DATA/" . $row->problem_id . "/spj.cc";
+				if (file_exists($filec)) {
+					echo "<spj language=\"C\"><![CDATA[";
+					echo fixcdata(file_get_contents($filec));
+					echo "]]></spj>";
+				} elseif (file_exists($filecc)) {
+					echo "<spj language=\"C++\"><![CDATA[".fixcdata(file_get_contents($filecc))."]]></spj>";
+				}
+			}
 ?>
 </item>
 <?php }
-	mysql_free_result ( $result );
+	$result->free();
 	
 	echo "</fps>";
 
