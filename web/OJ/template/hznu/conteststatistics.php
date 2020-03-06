@@ -26,8 +26,8 @@
 <?php include "contest_header.php" ?>
 <div class="am-container" style="margin-top:40px;">
  <!-- <h3 align="center">Contest Statistics</h3><hr/> -->
-  <div class="well" style="font-size: normal;">
-  <table class="am-table am-table-hover am-table-striped">
+  <div class="am-container well am-scrollable-horizontal" style="max-width: 98%;">
+  <table class="am-table am-table-hover am-table-striped" style="white-space: nowrap;">
     <thead>
       <tr>
         <th>#</th>
