@@ -255,6 +255,7 @@
   $MSG_TimeRemaining = "剩余时间";
   $MSG_ContestIsClosed = "竞赛&作业已关闭！";
   $MSG_Creator = "组织者";
+  $MSG_IMPORTED = "外部导入";
   
   $MSG_HELP_TeamAccount_forbid = $MSG_TEAM."不能访问此页！";
   $MSG_HELP_TeamAccount_login = "非".$MSG_TEAM."登录勿填！";

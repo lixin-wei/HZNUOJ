@@ -255,6 +255,7 @@
   $MSG_TimeRemaining = "Time remaining";
   $MSG_ContestIsClosed = "Contest is closed!";
   $MSG_Creator = "Creator";
+  $MSG_IMPORTED="Imported";
   
   $MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
   $MSG_HELP_TeamAccount_login = "Don't input if you are not team account!";
