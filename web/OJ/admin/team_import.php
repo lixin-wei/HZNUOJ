@@ -10,7 +10,7 @@ if (isset($_POST['add'])) {
 	$err_str = "";
 	$err_cnt = 0;
 	$cid = $_POST['contest_id'];
-	$sql = "SELECT `contest_id`, `title`, `defunct` FROM `contest` WHERE `contest_id`='$cid'";
+	$sql = "SELECT `contest_id`, `title`, `defunct` FROM `contest` WHERE `contest_id`='$cid' AND NOT `practice` AND `user_limit`='Y'";
 	$contest = $mysqli->query($sql)->fetch_object();
 	if (!$contest) {
 		$err_str = $err_str . "编号为{$contest_id}的{$MSG_CONTEST}不存在或不是{$MSG_Special}！\\n";
