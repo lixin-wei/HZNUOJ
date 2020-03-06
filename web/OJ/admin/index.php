@@ -29,6 +29,10 @@ require_once "../include/my_func.inc.php";
                 } else {
                   echo "<td>&nbsp;</td>\n</tr>\n";
                 }
+                if(HAS_PRI("inner_function")){
+                  echo "<tr>\n<td><a href='/OJ/admin/problem_import.php'>$MSG_IMPORT$MSG_PROBLEM</a></td>\n";
+                  echo "<td><a href='/OJ/admin/problem_export.php'>$MSG_EXPORT$MSG_PROBLEM</a></td>\n</tr>\n";
+                }
               ?>
             </table>
             </main>
