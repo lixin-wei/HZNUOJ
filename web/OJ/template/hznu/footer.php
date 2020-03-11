@@ -11,7 +11,7 @@
 
 <footer class="blog-footer">
   <hr />
-  <a href="https://github.com/wlx65003/HZNUOJ">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
+  <a href="https://github.com/lixin-wei/HZNUOJ">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
   <a href="/OJ/maintainer-list.php">--- Maintainer List ---</a><br>
   ★Server Time: <span id='footerdate'><?php echo date('20y-m-d h:i:s',time()); ?></span>★
   
