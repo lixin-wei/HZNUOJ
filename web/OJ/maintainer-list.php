@@ -47,9 +47,7 @@ require_once('template/hznu/header.php');
                 <tr>
                     <td>Blog</td>
                     <td>
-                        <a href="https://github.com/wlx65003">github.com/wlx65003</a><br>
-                        <a href="http://blog.csdn.net/wlx65003">blog.csdn.net/wlx65003</a><br>
-                        <a href="https://d-star.xyz">d-star.xyz</a>
+                        <a href="https://github.com/lixin-wei">github.com/lixin-wei</a><br>
                     </td>
                 </tr>
                 <tr>
