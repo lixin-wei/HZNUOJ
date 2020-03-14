@@ -16,8 +16,8 @@ $now=strftime("%Y-%m-%d %H:%M",time());
 if (isset($_GET['cid'])) $ucid="&cid=".intval($_GET['cid']);
 else $ucid="";
 require_once("./include/db_info.inc.php");
-require_once "./include/my_func.inc.php";
-require_once "./include/const.inc.php";
+require_once("./include/my_func.inc.php");
+require_once("./include/const.inc.php");
 
 /* 获取我的标签 start */
 $my_tag;
@@ -55,7 +55,6 @@ if (isset($_GET['id']) && !(isset($_GET['cid']) && isset($_GET['pid'])) ) { // �
       }
     $id=intval($_GET['id']);
     $real_id=$id;
-    //require("oj-header.php");
     $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
     $set_name = $res->fetch_array()[0];
     

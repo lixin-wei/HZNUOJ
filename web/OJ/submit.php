@@ -1,8 +1,8 @@
 <?php if(!session_id()) session_start();
 if (!isset($_SESSION['user_id'])){
-	require_once("oj-header.php");
+	require("template/".$OJ_TEMPLATE."/header.php");
 	echo "<a href='loginpage.php'>$MSG_Login</a>";
-	require_once("oj-footer.php");
+	require("template/".$OJ_TEMPLATE."/footer.php");
 	exit(0);
 }
 require_once("include/check_post_key.php");
@@ -68,7 +68,6 @@ if (isset($_POST['id'])) {
 	if ($rows_cnt!=1){
 		echo "You Can't Submit Now Because Your are not invited by the contest or the contest is not running!!";
 		$result->free();
-		require_once("oj-footer.php");
 		exit(0);
 	}else{
 		$row=$result->fetch_array();

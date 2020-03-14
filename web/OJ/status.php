@@ -81,7 +81,6 @@
     }
     //require_once("contest-header.php");
   } else {
-    //require_once("oj-header.php");
     //$sql="SELECT * FROM `solution` WHERE contest_id is null ";
     if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的排名
       $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";

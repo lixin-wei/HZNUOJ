@@ -19,7 +19,6 @@ $num=$result->num_rows;
 if ($num<1){
 	$result->free();
 	echo "No Such Problem!";
-	require_once("../oj-footer.php");
 	exit(0);
 }
 $row=$result->fetch_row();

@@ -21,7 +21,6 @@
   require_once("./include/const.inc.php");
   if (!isset($_GET['sid'])){
     echo "No such code!\n";
-  //  require_once("oj-footer.php");
     exit(0);
   }
   function is_valid($str2){
