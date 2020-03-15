@@ -163,8 +163,6 @@ BOT;
           }
           if ($show_tag) echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
           else echo "<li><a href='/OJ/changeTag.php'><span class='am-icon-toggle-off'></span> $MSG_SHOWTAG</a></li>";
-          if (isset($OJ_LANG) && $OJ_LANG=="cn") echo "<li><a href='/OJ/setlang.php?lang=en'><span class='am-icon-eye'></span> English</a></li>";
-          else echo "<li><a href='/OJ/setlang.php?lang=cn'><span class='am-icon-eye'></span> 简体中文</a></li>";
 		  
 		  echo "<li><a href='/OJ/logout.php'><span class='am-icon-reply'></span> $MSG_LOGOUT</a></li>";
           if(HAS_PRI('enter_admin_page')){
