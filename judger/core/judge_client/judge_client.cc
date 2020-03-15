@@ -45,6 +45,7 @@
 //#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <libexplain/execvp.h>
 #include <mysql/mysql.h>
 #include <assert.h>
 #include "okcalls.h"
@@ -131,7 +132,7 @@ static char lang_ext[19][8] = { "c", "cc", "pas", "java", "rb", "sh", "py",
 //static char buf[BUFFER_SIZE];
 int data_list_has(char * file){
    for(int i=0;i<data_list_len;i++){
-       if(strcmp(data_list[i],file)==0)
+	   if(strcmp(data_list[i],file)==0)
 		return 1;
    }
    return 0;
@@ -348,13 +349,13 @@ void init_mysql_conf() {
 //	fclose(fp);
 	
  	if(strcmp(http_username,"IP")==0){
-                  FILE * fjobs = read_cmd_output("ifconfig|grep 'inet'|awk -F: '{printf $2}'|awk  '{printf $1}'");
-                  fscanf(fjobs, "%s", http_username);
-                  pclose(fjobs);
-        }
+				  FILE * fjobs = read_cmd_output("ifconfig|grep 'inet'|awk -F: '{printf $2}'|awk  '{printf $1}'");
+				  fscanf(fjobs, "%s", http_username);
+				  pclose(fjobs);
+		}
 	if(strcmp(http_username,"HOSTNAME")==0){
-                  strcpy(http_username,getenv("HOSTNAME"));
-        }
+				  strcpy(http_username,getenv("HOSTNAME"));
+		}
 	if(turbo_mode==2) tbname="solution2";
 }
 
@@ -382,8 +383,8 @@ void find_next_nonspace(int & c1, int & c2, FILE *& f1, FILE *& f2, int & ret) {
 				continue;
 #ifdef IGNORE_ESOL
 			} else if (isspace(c1) && isspace(c2)) {
-                                  while(c2=='\n'&&isspace(c1)&&c1!='\n') c1 = fgetc(f1);
-                                  while(c1=='\n'&&isspace(c2)&&c2!='\n') c2 = fgetc(f2);
+								  while(c2=='\n'&&isspace(c1)&&c1!='\n') c1 = fgetc(f1);
+								  while(c1=='\n'&&isspace(c2)&&c2!='\n') c2 = fgetc(f2);
 	
 #else
 			} else if ((c1 == '\r' && c2 == '\n')) {
@@ -906,18 +907,18 @@ void update_problem(int pid) {
 	}
 }
 void umount(char * work_dir){
-        execute_cmd("/bin/umount -f %s/proc", work_dir);
-        execute_cmd("/bin/umount -f %s/dev ", work_dir);
-        execute_cmd("/bin/umount -f %s/lib ", work_dir);
-        execute_cmd("/bin/umount -f %s/lib64 ", work_dir);
-        execute_cmd("/bin/umount -f %s/etc/alternatives ", work_dir);
-        execute_cmd("/bin/umount -f %s/usr ", work_dir);
-        execute_cmd("/bin/umount -f %s/bin ", work_dir);
-        execute_cmd("/bin/umount -f %s/proc ", work_dir);
-        execute_cmd("/bin/umount -f bin usr lib lib64 etc/alternatives proc dev ");
-        execute_cmd("/bin/umount -f %s/* ",work_dir);
+		execute_cmd("/bin/umount -f %s/proc", work_dir);
+		execute_cmd("/bin/umount -f %s/dev ", work_dir);
+		execute_cmd("/bin/umount -f %s/lib ", work_dir);
+		execute_cmd("/bin/umount -f %s/lib64 ", work_dir);
+		execute_cmd("/bin/umount -f %s/etc/alternatives ", work_dir);
+		execute_cmd("/bin/umount -f %s/usr ", work_dir);
+		execute_cmd("/bin/umount -f %s/bin ", work_dir);
+		execute_cmd("/bin/umount -f %s/proc ", work_dir);
+		execute_cmd("/bin/umount -f bin usr lib lib64 etc/alternatives proc dev ");
+		execute_cmd("/bin/umount -f %s/* ",work_dir);
 	execute_cmd("/bin/umount -f %s/log/* ",work_dir);
-     	execute_cmd("/bin/umount -f %s/log/etc/alternatives ", work_dir);
+	 	execute_cmd("/bin/umount -f %s/log/etc/alternatives ", work_dir);
 }
 int compile(int lang,char * work_dir) {
 	int pid;
@@ -928,7 +929,7 @@ int compile(int lang,char * work_dir) {
 			"-lm", "--static", "-std=c++11", "-DONLINE_JUDGE", "-o", "Main", "Main.cc", NULL };
 	const char * CP_P[] =
 			{ "fpc", "Main.pas","-Cs32000000","-Sh", "-O2", "-Co", "-Ct", "-Ci", NULL };
-     // const char * CP_J[] = { "javac", "-J-Xms32m", "-J-Xmx256m","-encoding","UTF-8", "Main.java",NULL };
+	 // const char * CP_J[] = { "javac", "-J-Xms32m", "-J-Xmx256m","-encoding","UTF-8", "Main.java",NULL };
 
 	const char * CP_R[] = { "ruby", "-c", "Main.rb", NULL };
 	const char * CP_B[] = { "chmod", "+rx", "Main.sh", NULL };
@@ -943,9 +944,9 @@ int compile(int lang,char * work_dir) {
 			"-lobjc", "-lgnustep-base", NULL };
 	const char * CP_BS[] = { "fbc","-lang","qb", "Main.bas", NULL };
 	const char * CP_CLANG[]={"clang", "Main.c", "-o", "Main", "-fno-asm", "-Wall",
-	         		"-lm", "--static", "-std=c99", "-DONLINE_JUDGE", NULL };
+			 		"-lm", "--static", "-std=c99", "-DONLINE_JUDGE", NULL };
 	const char * CP_CLANG_CPP[]={"clang++", "Main.cc", "-o", "Main", "-fno-asm", "-Wall",
-	         		"-lm", "--static", "-std=c++0x",  "-DONLINE_JUDGE", NULL };
+			 		"-lm", "--static", "-std=c++0x",  "-DONLINE_JUDGE", NULL };
 	const char * CP_LUA[] = { "luac","-o","Main", "Main.lua", NULL };
 	//const char * CP_JS[] = { "js24","-c", "Main.js", NULL };
 	const char * CP_GO[] = { "go","build","-o","Main","Main.go", NULL };
@@ -978,7 +979,7 @@ int compile(int lang,char * work_dir) {
 		if(lang==3||lang==17){
 		   LIM.rlim_max = STD_MB <<11;
 		   LIM.rlim_cur = STD_MB <<11;	
-                }else{
+				}else{
 		   LIM.rlim_max = STD_MB *256 ;
 		   LIM.rlim_cur = STD_MB *256 ;
 		}
@@ -992,83 +993,120 @@ int compile(int lang,char * work_dir) {
 		if(compile_chroot&&lang != 3 && lang != 9 && lang != 6 && lang != 11){
 			execute_cmd("mkdir -p bin usr lib lib64 etc/alternatives proc tmp dev");
 			execute_cmd("chown judge *");
-                	execute_cmd("mount -o bind /bin bin");
-                	execute_cmd("mount -o bind /usr usr");
-                	execute_cmd("mount -o bind /lib lib");
+			execute_cmd("mount -o bind /bin bin");
+			execute_cmd("mount -o bind /usr usr");
+			execute_cmd("mount -o bind /lib lib");
 #ifndef __i386
-                	execute_cmd("mount -o bind /lib64 lib64");
+			execute_cmd("mount -o bind /lib64 lib64");
 #endif
-                	execute_cmd("mount -o bind /etc/alternatives etc/alternatives");
-                	execute_cmd("mount -o bind /proc proc");
-                	if(lang>2 && lang!=10 && lang!=13 && lang!=14)
+			execute_cmd("mount -o bind /etc/alternatives etc/alternatives");
+			execute_cmd("mount -o bind /proc proc");
+			if(lang>2 && lang!=10 && lang!=13 && lang!=14)
 				execute_cmd("mount -o bind /dev dev");
-                        chroot(work_dir);
+			printf("work_dir=%s\n", work_dir);
+			chroot(work_dir);
 		}
 		while(setgid(1536)!=0) sleep(1);
-                while(setuid(1536)!=0) sleep(1);
-                while(setresuid(1536, 1536, 1536)!=0) sleep(1);
+		while(setuid(1536)!=0) sleep(1);
+		while(setresuid(1536, 1536, 1536)!=0) sleep(1);
 
+		char ** compile_cmd = NULL;
+		int compile_execvp_res;
 		switch (lang) {
 		case 0:
-			execvp(CP_C[0], (char * const *) CP_C);
+			compile_execvp_res = execvp(CP_C[0], (char * const *) CP_C);
+			compile_cmd = (char**)CP_C;
 			break;
 		case 1:
-			execvp(CP_X[0], (char * const *) CP_X);
+			compile_execvp_res = execvp(CP_X[0], (char * const *) CP_X);
+			compile_cmd = (char**)CP_X;
 			break;
 		case 2:
-			execvp(CP_P[0], (char * const *) CP_P);
+			compile_execvp_res = execvp(CP_P[0], (char * const *) CP_P);
+			compile_cmd = (char**)CP_P;
 			break;
 		case 3:
-			execvp(CP_J[0], (char * const *) CP_J);
+			compile_execvp_res = execvp(CP_J[0], (char * const *) CP_J);
+			compile_cmd = (char**)CP_J;
 			break;
 		case 4:
-			execvp(CP_R[0], (char * const *) CP_R);
+			compile_execvp_res = execvp(CP_R[0], (char * const *) CP_R);
+			compile_cmd = (char**)CP_R;
 			break;
 		case 5:
-			execvp(CP_B[0], (char * const *) CP_B);
+			compile_execvp_res = execvp(CP_B[0], (char * const *) CP_B);
+			compile_cmd = (char**)CP_B;
 			break;
 		case 6:
-			execvp(CP_Y2[0], (char * const *) CP_Y2);
+			compile_execvp_res = execvp(CP_Y2[0], (char * const *) CP_Y2);
+			compile_cmd = (char**)CP_Y2;
 			break;
 		case 18:
-			execvp(CP_Y3[0], (char * const *) CP_Y3);
+			compile_execvp_res = execvp(CP_Y3[0], (char * const *) CP_Y3);
+			compile_cmd = (char**)CP_Y3;
 			break;
 		case 7:
-			execvp(CP_PH[0], (char * const *) CP_PH);
+			compile_execvp_res = execvp(CP_PH[0], (char * const *) CP_PH);
+			compile_cmd = (char**)CP_PH;
 			break;
 		case 8:
-			execvp(CP_PL[0], (char * const *) CP_PL);
+			compile_execvp_res = execvp(CP_PL[0], (char * const *) CP_PL);
+			compile_cmd = (char**)CP_PL;
 			break;
 		case 9:
-			execvp(CP_CS[0], (char * const *) CP_CS);
+			compile_execvp_res = execvp(CP_CS[0], (char * const *) CP_CS);
+			compile_cmd = (char**)CP_CS;
 			break;
 
 		case 10:
-			execvp(CP_OC[0], (char * const *) CP_OC);
+			compile_execvp_res = execvp(CP_OC[0], (char * const *) CP_OC);
+			compile_cmd = (char**)CP_OC;
 			break;
 		case 11:
-			execvp(CP_BS[0], (char * const *) CP_BS);
+			compile_execvp_res = execvp(CP_BS[0], (char * const *) CP_BS);
+			compile_cmd = (char**)CP_BS;
 			break;
 		case 13:
-			execvp(CP_CLANG[0], (char * const *) CP_CLANG);
+			compile_execvp_res = execvp(CP_CLANG[0], (char * const *) CP_CLANG);
+			compile_cmd = (char**)CP_CLANG;
 			break;
 		case 14:
-			execvp(CP_CLANG_CPP[0], (char * const *) CP_CLANG_CPP);
+			compile_execvp_res = execvp(CP_CLANG_CPP[0], (char * const *) CP_CLANG_CPP);
+			compile_cmd = (char**)CP_CLANG_CPP;
 			break;
 		case 15:
-			execvp(CP_LUA[0], (char * const *) CP_LUA);
+			compile_execvp_res = execvp(CP_LUA[0], (char * const *) CP_LUA);
+			compile_cmd = (char**)CP_LUA;
 			break;
 		//case 16:
 		//	execvp(CP_JS[0], (char * const *) CP_JS);
 		//	break;
 		case 17:
-			execvp(CP_GO[0], (char * const *) CP_GO);
+			compile_execvp_res = execvp(CP_GO[0], (char * const *) CP_GO);
+			compile_cmd = (char**)CP_GO;
 			break;
 		default:
 			printf("nothing to do!\n");
 		}
-		if (DEBUG)
-			printf("compile end!\n");
+		if (DEBUG) {
+			printf("compile end!!!");
+			if (compile_cmd != NULL) {
+				// print compile cmd in execvp
+				printf("compile_cmd = ");
+				for (int i = 0; compile_cmd[i] != NULL; ++i) {
+					printf("%s ", compile_cmd[i]);
+				}
+				printf("\n");
+
+				// explain execvp return value
+				printf("compile_execvp_res=%d\n", compile_execvp_res);
+				if (compile_execvp_res < 0) {
+					fprintf(stdout, "%s\n", explain_execvp(compile_cmd[0], (char * const *)compile_cmd));
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+
 		//exit(!system("cat ce.txt"));
 		exit(0);
 	} else {
@@ -1360,8 +1398,8 @@ void get_problem_info(int p_id, int & time_lmt, int & mem_lmt, int & isspj) {
 }
 char *escape(char s[], char t[])
 {
-    int i, j;
-    for(i = j = 0; t[i] != '\0'; ++i){
+	int i, j;
+	for(i = j = 0; t[i] != '\0'; ++i){
 	if(t[i]=='\'') {
 		s[j++]='\'';
 		s[j++]='\\';
@@ -1369,11 +1407,11 @@ char *escape(char s[], char t[])
 		s[j++]='\'';
 		continue;
 	}else{
-            s[j++] = t[i];
-        }
-    }
-    s[j] = '\0';
-    return s;
+			s[j++] = t[i];
+		}
+	}
+	s[j] = '\0';
+	return s;
 }
 
 void prepare_files(char * filename, int namelen, char * infile, int & p_id,
@@ -1403,9 +1441,9 @@ void copy_shell_runtime(char * work_dir) {
 	execute_cmd("/bin/mkdir %s/bin", work_dir);
 
 #ifdef __i386
-        execute_cmd("/bin/cp /lib/ld-linux* %s/lib/", work_dir);
-        execute_cmd("/bin/cp -a /lib/i386-linux-gnu  %s/lib/", work_dir);
-        execute_cmd("/bin/cp -a /usr/lib/i386-linux-gnu %s/lib/", work_dir);
+		execute_cmd("/bin/cp /lib/ld-linux* %s/lib/", work_dir);
+		execute_cmd("/bin/cp -a /lib/i386-linux-gnu  %s/lib/", work_dir);
+		execute_cmd("/bin/cp -a /usr/lib/i386-linux-gnu %s/lib/", work_dir);
 #endif
 
 	execute_cmd("/bin/cp -a /lib/x86_64-linux-gnu %s/lib/", work_dir);
@@ -1511,17 +1549,17 @@ void copy_bash_runtime(char * work_dir) {
 }
 void copy_ruby_runtime(char * work_dir) {
 
-        copy_shell_runtime(work_dir);
-        execute_cmd("mkdir -p %s/usr", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib64", work_dir);
-        execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
-        execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
-        execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
-        execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
-        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
-        execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
-        execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
+		copy_shell_runtime(work_dir);
+		execute_cmd("mkdir -p %s/usr", work_dir);
+		execute_cmd("mkdir -p %s/usr/lib", work_dir);
+		execute_cmd("mkdir -p %s/usr/lib64", work_dir);
+		execute_cmd("cp -a /usr/lib/libruby* %s/usr/lib/", work_dir);
+		execute_cmd("cp -a /usr/lib/ruby* %s/usr/lib/", work_dir);
+		execute_cmd("cp -a /usr/lib64/ruby* %s/usr/lib64/", work_dir);
+		execute_cmd("cp -a /usr/lib64/libruby* %s/usr/lib64/", work_dir);
+		execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libruby* %s/usr/lib/",work_dir);
+		execute_cmd("/bin/cp -a /usr/lib/x86_64-linux-gnu/libgmp* %s/usr/lib/",work_dir);
+		execute_cmd("cp -a /usr/bin/ruby* %s/", work_dir);
 
 }
 
@@ -1552,19 +1590,19 @@ void copy_guile_runtime(char * work_dir) {
 
 void copy_python_runtime(char * work_dir) {
 
-        copy_shell_runtime(work_dir);
-        execute_cmd("mkdir -p %s/usr/include", work_dir);
-        execute_cmd("mkdir -p %s/dev", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib", work_dir);
-        execute_cmd("mkdir -p %s/usr/lib64", work_dir);
-        execute_cmd("mkdir -p %s/usr/local/lib", work_dir);
-        execute_cmd("cp /usr/bin/python* %s/", work_dir);
-        execute_cmd("cp -a /usr/lib/python* %s/usr/lib/", work_dir);
-        execute_cmd("cp -a /usr/lib64/python* %s/usr/lib64/", work_dir);
-        execute_cmd("cp -a /usr/local/lib/python* %s/usr/local/lib/", work_dir);
-        execute_cmd("cp -a /usr/include/python* %s/usr/include/", work_dir);
-        execute_cmd("cp -a /usr/lib/libpython* %s/usr/lib/", work_dir);
-        execute_cmd("/bin/mkdir -p %s/home/judge", work_dir);
+		copy_shell_runtime(work_dir);
+		execute_cmd("mkdir -p %s/usr/include", work_dir);
+		execute_cmd("mkdir -p %s/dev", work_dir);
+		execute_cmd("mkdir -p %s/usr/lib", work_dir);
+		execute_cmd("mkdir -p %s/usr/lib64", work_dir);
+		execute_cmd("mkdir -p %s/usr/local/lib", work_dir);
+		execute_cmd("cp /usr/bin/python* %s/", work_dir);
+		execute_cmd("cp -a /usr/lib/python* %s/usr/lib/", work_dir);
+		execute_cmd("cp -a /usr/lib64/python* %s/usr/lib64/", work_dir);
+		execute_cmd("cp -a /usr/local/lib/python* %s/usr/local/lib/", work_dir);
+		execute_cmd("cp -a /usr/include/python* %s/usr/include/", work_dir);
+		execute_cmd("cp -a /usr/lib/libpython* %s/usr/lib/", work_dir);
+		execute_cmd("/bin/mkdir -p %s/home/judge", work_dir);
 	execute_cmd("/bin/chown judge %s", work_dir);
 	execute_cmd("/bin/mkdir -p %s/etc", work_dir);
 	execute_cmd("/bin/grep judge /etc/passwd>%s/etc/passwd", work_dir);
@@ -1657,35 +1695,35 @@ void copy_js_runtime(char * work_dir) {
 
 //	copy_shell_runtime(work_dir);
 	execute_cmd("/bin/mkdir -p %s/usr/lib /lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libz.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/i386-linux-gnu/libcares.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/libv8.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libssl.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libcrypto.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libdl.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/librt.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/i386-linux-gnu/libstdc++.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libpthread.so.*  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libc.so.6  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libm.so.6  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/i386-linux-gnu/libgcc_s.so.1  %s/lib/i386-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/ld-linux.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libz.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/i386-linux-gnu/libcares.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/libv8.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libssl.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libcrypto.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libdl.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/librt.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/i386-linux-gnu/libstdc++.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libpthread.so.*  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libc.so.6  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libm.so.6  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/i386-linux-gnu/libgcc_s.so.1  %s/lib/i386-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/ld-linux.so.*  %s/lib/i386-linux-gnu/", work_dir);
 
 	execute_cmd("/bin/mkdir -p %s/usr/lib /lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libz.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcares.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/libv8.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libssl.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libcrypto.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libdl.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/librt.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libstdc++.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libpthread.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libc.so.6  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libm.so.6  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libgcc_s.so.1  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /lib64/ld-linux-x86-64.so.2  %s/lib/x86_64-linux-gnu/", work_dir);
-        execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcares* %s/usr/lib/",work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libz.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcares.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/libv8.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libssl.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libcrypto.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libdl.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/librt.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libstdc++.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libpthread.so.*  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libc.so.6  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libm.so.6  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib/x86_64-linux-gnu/libgcc_s.so.1  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /lib64/ld-linux-x86-64.so.2  %s/lib/x86_64-linux-gnu/", work_dir);
+		execute_cmd("/bin/cp /usr/lib/x86_64-linux-gnu/libcares* %s/usr/lib/",work_dir);
 
 	execute_cmd("/bin/cp /usr/bin/nodejs %s/", work_dir);
 
@@ -1777,8 +1815,8 @@ void run_solution(int & lang, char * work_dir, int & time_lmt, int & usedtime,
 		execl("./Main", "./Main", (char *) NULL);
 		break;
 	case 3:
-              sprintf(java_xms, "-Xmx%dM", mem_lmt);
-              //sprintf(java_xmx, "-XX:MaxPermSize=%dM", mem_lmt);
+			  sprintf(java_xms, "-Xmx%dM", mem_lmt);
+			  //sprintf(java_xmx, "-XX:MaxPermSize=%dM", mem_lmt);
 
 		execl("/usr/bin/java", "/usr/bin/java", java_xms, java_xmx,
 				"-Djava.security.manager",
@@ -1822,19 +1860,19 @@ void run_solution(int & lang, char * work_dir, int & time_lmt, int & usedtime,
 	exit(0);
 }
 int fix_python_mis_judge(char *work_dir, int & ACflg, int & topmemory,
-                int mem_lmt) {
-        int comp_res = OJ_AC;
+				int mem_lmt) {
+		int comp_res = OJ_AC;
 
-        comp_res = execute_cmd(
-                        "/bin/grep 'MemoryError'  %s/error.out", work_dir);
+		comp_res = execute_cmd(
+						"/bin/grep 'MemoryError'  %s/error.out", work_dir);
 
-        if (!comp_res) {
-                printf("Python need more Memory!");
-                ACflg = OJ_ML;
-                topmemory = mem_lmt * STD_MB;
-        }
+		if (!comp_res) {
+				printf("Python need more Memory!");
+				ACflg = OJ_ML;
+				topmemory = mem_lmt * STD_MB;
+		}
 
-        return comp_res;
+		return comp_res;
 }
 
 int fix_java_mis_judge(char *work_dir, int & ACflg, int & topmemory,
@@ -2132,12 +2170,12 @@ void watch_solution(pid_t pidApp, char * infile, int & ACflg, int isspj,
 			ACflg = OJ_RE;
 			char error[BUFFER_SIZE];
 			sprintf(error,
-                                        "[ERROR] A Not allowed system call: runid:%d CALLID:%ld\n"
-                                        " TO FIX THIS , ask admin to add the CALLID into corresponding LANG_XXV[] located at okcalls32/64.h ,\n"
-                                        "and recompile judge_client. \n"
-                                        "if you are admin and you don't know what to do ,\n"
-                                        "chinese explaination can be found on https://zhuanlan.zhihu.com/p/24498599\n",
-                                        solution_id, (long)reg.REG_SYSCALL);
+										"[ERROR] A Not allowed system call: runid:%d CALLID:%ld\n"
+										" TO FIX THIS , ask admin to add the CALLID into corresponding LANG_XXV[] located at okcalls32/64.h ,\n"
+										"and recompile judge_client. \n"
+										"if you are admin and you don't know what to do ,\n"
+										"chinese explaination can be found on https://zhuanlan.zhihu.com/p/24498599\n",
+										solution_id, (long)reg.REG_SYSCALL);
  
 			write_log(error);
 			print_runtimeerror(error);
