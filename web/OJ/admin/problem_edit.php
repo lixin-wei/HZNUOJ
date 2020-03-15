@@ -45,35 +45,35 @@ if(!$add_problem_mod){
 <?php if (isset($_GET['id']) || $add_problem_mod): ?>
   <title><?php
       if($add_problem_mod){
-          echo "Add New Problem";
+          echo "$MSG_ADD$MSG_PROBLEM";
       }
       else{
-          echo "Edit Problem:".$pid;
+          echo "$MSG_EDIT$MSG_PROBLEM:".$pid;
       }
       ?></title>
-  <div class="container" style="width: 800px">
-    <h1>
+  <div style="width: 800px">    
         <?php
         if($add_problem_mod){
-            echo "Add New Problem";
+            echo "<h1>$MSG_ADD$MSG_PROBLEM</h1>";
+			echo "<h4>$MSG_HELP_ADD_PROBLEM</h4>";
         }
         else{
             echo<<<HTML
-        Edit problem:<a href="/OJ/problem.php?id=$pid">$pid</a>
+        <h1>$MSG_EDIT$MSG_PROBLEM:<a href="/OJ/problem.php?id=$pid">$pid</a></h1>
 HTML;
         }
-        ?></h1>
+        ?>
     <hr/>
     <form class="form-horizontal" method=POST action="problem_edit.php" id="problem_form">
       <input class="form-control" type=hidden name=problem_id value='<?php if(!$add_problem_mod)echo $row->problem_id?>'>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Title</label>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_TITLE ?></label>
         <div class="col-sm-10">
           <input class="form-control" type=text name=title value="<?php if(!$add_problem_mod)echo htmlentities($row->title,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Problemset</label>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_PROBLEMSET ?></label>
         <div class="col-sm-10">
           <select class="form-control selectpicker" name="problemset">
               <?php
@@ -95,10 +95,10 @@ HTML;
         </div>
       </div>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Limit</label>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_Limit ?></label>
         <div class="col-sm-5">
           <div class="input-group">
-            <div class="input-group-addon">Time</div>
+            <div class="input-group-addon"><?php echo $MSG_Times ?></div>
             <input class="form-control" type="text" name="time_limit" value=
             <?php
             if(!$add_problem_mod)echo $row->time_limit;
@@ -110,11 +110,11 @@ HTML;
         </div>
         <div class="col-sm-5">
           <div class=" input-group">
-            <div class="input-group-addon">Memory</div>
+            <div class="input-group-addon"><?php echo $MSG_MEMORY ?></div>
             <input class="form-control" type="text" name="memory_limit" value=
             <?php
             if(!$add_problem_mod)echo $row->memory_limit;
-            else echo "256";
+            else echo "128";
             ?>
             >
             <div class="input-group-addon">MB</div>
@@ -122,21 +122,21 @@ HTML;
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10"><textarea name="description" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->description,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <label class="col-sm-2 control-label"><?php echo $MSG_Description ?></label>
+        <div class="col-sm-10"><textarea name="description" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->description,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Input</label>
-        <div class="col-sm-10"><textarea name="input" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->input,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <label class="col-sm-2 control-label"><?php echo $MSG_Input ?></label>
+        <div class="col-sm-10"><textarea name="input" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->input,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Output</label>
-        <div class="col-sm-10"><textarea name="output" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->output,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <label class="col-sm-2 control-label"><?php echo $MSG_Output ?></label>
+        <div class="col-sm-10"><textarea name="output" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->output,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Samples</label>
+        <label class="col-sm-2 control-label"><?php echo $MSG_Samples ?></label>
         <div class="col-sm-10">
-          <button id="toggle_sample" class="btn btn-default btn-sm btn-block">Toggle samples</button>
+          <button id="toggle_sample" class="btn btn-default btn-sm btn-block"><?php echo $MSG_ToggleSamples ?></button>
           <div id="samples" style="padding: 10px; border: 1px solid #ccc; margin-top: 10px;">
             <div id="samples_without_button">
                 <?php
@@ -148,35 +148,74 @@ HTML;
                 <div>
                   <div class="form-inline" style="height: 35px;">
                     <div style="float: left; padding-top: 6px;">
-                      Input <sapn class="label label-primary">$key</sapn>
+                      $MSG_Sample_Input <sapn class="label label-primary">$key</sapn>
                     </div>
                     <div class="input-group input-group-sm" style="float: right;">
-                      <div class="input-group-addon">Show after trying: </div>
+                      <div class="input-group-addon">$MSG_ShowAfterTrying: </div>
                       <input name="show_after[]" class="form-control" style="width:50px; text-align: center;" value="{$sample['show_after']}">
-                      <div class="input-group-addon">times</div>
+                      <!-- <div class="input-group-addon">times</div> -->
                     </div>
                   </div>
                   <div><textarea name="sample_input[]" class="form-control" id="" rows="4">$text_input</textarea></div>
                   <div style="margin-bottom: 13px; margin-top: 13px;">
-                    Output <sapn class="label label-primary">$key</sapn>
+                    $MSG_Sample_Output <sapn class="label label-primary">$key</sapn>
                   </div>
                   <div><textarea name="sample_output[]" class="form-control" id="" rows="4">$text_output</textarea></div>
                   <hr/>
                 </div>
 HTML;
                     }
+                } else { //添加题目时，显示两组测试数据的输入框
+                        echo <<<HTML
+                <div>
+                  <div class="form-inline" style="height: 35px;">
+                    <div style="float: left; padding-top: 6px;">
+                      $MSG_Sample_Input <sapn class="label label-primary">0</sapn>
+                    </div>
+                    <div class="input-group input-group-sm" style="float: right;">
+                      <div class="input-group-addon">$MSG_ShowAfterTrying: </div>
+                      <input name="show_after[]" class="form-control" style="width:50px; text-align: center;" value="0">
+                      <!-- <div class="input-group-addon">times</div> -->
+                    </div>
+                  </div>
+                  <div><textarea name="sample_input[]" class="form-control" id="" rows="4">$text_input</textarea></div>
+                  <div style="margin-bottom: 13px; margin-top: 13px;">
+                    $MSG_Sample_Output <sapn class="label label-primary">0</sapn>
+                  </div>
+                  <div><textarea name="sample_output[]" class="form-control" id="" rows="4">$text_output</textarea></div>
+                  <hr/>
+                </div>
+				<div>
+                  <div class="form-inline" style="height: 35px;">
+                    <div style="float: left; padding-top: 6px;">
+                      $MSG_Sample_Input <sapn class="label label-primary">1</sapn>
+                    </div>
+                    <div class="input-group input-group-sm" style="float: right;">
+                      <div class="input-group-addon">$MSG_ShowAfterTrying: </div>
+                      <input name="show_after[]" class="form-control" style="width:50px; text-align: center;" value="0">
+                      <!-- <div class="input-group-addon">times</div> -->
+                    </div>
+                  </div>
+                  <div><textarea name="sample_input[]" class="form-control" id="" rows="4">$text_input</textarea></div>
+                  <div style="margin-bottom: 13px; margin-top: 13px;">
+                    $MSG_Sample_Output <sapn class="label label-primary">1</sapn>
+                  </div>
+                  <div><textarea name="sample_output[]" class="form-control" id="" rows="4">$text_output</textarea></div>
+                  <hr/>
+                </div>
+HTML;
                 }
                 ?>
             </div>
-            <button id="remove_sample" class="btn btn-danger btn-sm btn-block">Remove the last sample</button>
-            <button id="add_sample" class="btn btn-primary btn-sm btn-block">Add a sapmple</button>
+            <button id="remove_sample" class="btn btn-danger btn-sm btn-block"><?php echo $MSG_RemoveSample ?></button>
+            <button id="add_sample" class="btn btn-primary btn-sm btn-block"><?php echo $MSG_AddSapmple ?></button>
           </div>
         
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">Hint</label>
-        <div class="col-sm-10"><textarea name="hint" id="" rows="13" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->hint,ENT_QUOTES,"UTF-8")?></textarea></div>
+        <label class="col-sm-2 control-label"><?php echo $MSG_HINT ?></label>
+        <div class="col-sm-10"><textarea name="hint" id="" rows="7" class="kindeditor"><?php if(!$add_problem_mod)echo htmlentities($row->hint,ENT_QUOTES,"UTF-8")?></textarea></div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-2 control-label">Special judge</label>
@@ -192,45 +231,19 @@ HTML;
       </div>
       <hr/>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Author</label>
-          <?php
-          if(!$add_problem_mod){
-              $author = $row->author;
-              if ($author != "") {
-                  $xing = strstr($author, ", ", true);
-                  $ming = strstr($author, ", ");
-                  $ming = substr($ming, 2);
-                  if ($xing=="" && $ming=="") {
-                      if ($author[strlen($author)-1] >='A' && $author[strlen($author)-1] <='Z') {
-                          $xing = $author;
-                      } else {
-                          $ming = $author;
-                      }
-                  }
-              }
-          }
-          ?>
-        <div class="col-sm-5">
-          <div class="input-group">
-            <div class="input-group-addon">Last name(XING)</div>
-            <input class="form-control" type="text" name="xing" value="<?php if(!$add_problem_mod)echo htmlspecialchars($xing)?>">
-          </div>
-        </div>
-        <div class="col-sm-5">
-          <div class=" input-group">
-            <div class="input-group-addon">First name(MING)</div>
-            <input class="form-control" type="text" name="ming" value="<?php if(!$add_problem_mod)echo htmlspecialchars($ming)?>">
-          </div>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_AUTHOR ?></label>
+        <div class="col-sm-10">
+          <input class="form-control" type=text name=author value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Source</label>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_Source ?></label>
         <div class="col-sm-10">
           <input class="form-control" type=text name=source value="<?php if(!$add_problem_mod)echo htmlentities($row->source,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
-        <label for="" class="col-sm-2 control-label">contest</label>
+        <label for="" class="col-sm-2 control-label"><?php echo $MSG_CONTEST  ?></label>
         <div class="col-sm-10">
           <select class="form-control selectpicker" type=text name=contest_id>
               <?php
@@ -250,48 +263,50 @@ HTML;
         <?php endif ?>
         <?php require_once("../include/set_post_key.php");?>
       <div align=center>
-        <button type=submit value=submit class="btn btn-default">Submit</button>
+        <button type=submit value=submit class="btn btn-default" style="width:100px;"><?php echo $MSG_SUBMIT ?></button>
       </div>
     </form>
   </div>
 <?php endif ?>
 <?php
-if(isset($_POST['problem_id'])){
+if(isset($_POST['problem_id'])){ //写入数据库
+	if(isset($_POST['add_problem_mod'])){
+        echo "<title>$MSG_ADD$MSG_PROBLEM</title>";
+    }else{
+        echo "<title>$MSG_EDIT$MSG_PROBLEM</title>";
+    }
     require_once("../include/check_post_key.php");
     $id=intval($_POST['problem_id']);
-    $title=$_POST['title'];
-    $problemset=$_POST['problemset'];
-    $time_limit=$_POST['time_limit'];
-    $memory_limit=$_POST['memory_limit'];
-    $description=$_POST['description'];
-    $input=$_POST['input'];
-    $output=$_POST['output'];
+    $title=$mysqli->real_escape_string($_POST['title']);
+    $problemset=$mysqli->real_escape_string($_POST['problemset']);
+    $time_limit=$mysqli->real_escape_string($_POST['time_limit']);
+    $memory_limit=$mysqli->real_escape_string($_POST['memory_limit']);
+    $description=$mysqli->real_escape_string($_POST['description']);
+    $input=$mysqli->real_escape_string($_POST['input']);
+    $output=$mysqli->real_escape_string($_POST['output']);
     $sample_inputs=$_POST['sample_input'];
     $sample_outputs=$_POST['sample_output'];
     $sample_show_after=$_POST['show_after'];
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
-    $hint=$_POST['hint'];
-    $xing_tmp = $_POST['xing'];
-    $ming_tmp = $_POST['ming'];
-    $xing = $ming = "";
-    $strlen = strlen($xing_tmp);
-    for ($i=0; $i<$strlen; ++$i) {
-        if ($xing_tmp[$i]==' ' || $xing_tmp[$i]=='\n' || $xing_tmp[$i]=='\t' || $xing_tmp[$i]=='\r') continue;
-        $xing .= $xing_tmp[$i];
-    }
-    $xing = strtoupper($xing);
-    $strlen = strlen($ming_tmp);
-    for ($i=0; $i<$strlen; ++$i) {
-        if ($ming_tmp[$i]==' ' || $ming_tmp[$i]=='\n' || $ming_tmp[$i]=='\t' || $ming_tmp[$i]=='\r') continue;
-        $ming .= $ming_tmp[$i];
-    }
-    $ming = ucfirst($ming);
-    $author = $xing.", ".$ming;
-    if ($author[0] == ',') $author = "";
-    if (strlen($author)>=2 && $author[strlen($author)-2] == ',') $author = substr($author, 0, strlen($author)-2);
-    $source=$_POST['source'];
+    $hint=$mysqli->real_escape_string($_POST['hint']);
+    $source=$mysqli->real_escape_string($_POST['source']);
     $spj=$_POST['spj'];
+	  $author = "";
+    $author_tmp = $mysqli->real_escape_string($_POST['author']);
+    $strlen = strlen($author_tmp);
+    for ($i=0; $i<$strlen; ++$i) {
+        if ($author_tmp[$i]==' ' || $author_tmp[$i]=='\n' || $author_tmp[$i]=='\t' || $author_tmp[$i]=='\r') continue;
+        $author .= $author_tmp[$i];
+    }
+    //火狐浏览器73.0.1版本中kindeditor会在textarea内容的末尾加入<!---->
+    $description = str_replace("<!---->","",$description);
+    $input = str_replace("<!---->","",$input);
+    $output = str_replace("<!---->","",$output);
+    $hint = str_replace("<!---->","",$hint);
+
+	  if($author == "") $author = $_SESSION['user_id'];
+
     //remove original samples
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
     $original_sample_cnt=$mysqli->query($sql)->fetch_array()[0];
@@ -312,22 +327,14 @@ if(isset($_POST['problem_id'])){
     $mysqli->query($sql);
     if($sample_inputs){
         foreach ($sample_inputs as $key => $sample_input) {
-            $sample_input=preg_replace("/(\r\n)/","\n",$sample_input);
-            $sample_output=preg_replace("/(\r\n)/","\n",$sample_outputs[$key]);
+            $sample_output=$sample_outputs[$key];
             if($sample_input=="" && $sample_output=="")continue;
             
             //don't auto generate sample files if is SPJ
             if(!$spj) {
-                $fp=fopen($OJ_DATA."/$id/sample".$key.".in","w");
-                fputs($fp,$sample_input);
-                fclose($fp);
-                //echo "<pre>create: ".$OJ_DATA."/$id/sample".$key.".in"."</pre>";
-    
-                $fp=fopen($OJ_DATA."/$id/sample".$key.".out","w");
-                fputs($fp,preg_replace("/(\r\n)/","\n",$sample_output));
-                fclose($fp);
+                mkdata($id, "sample{$key}.in", $sample_input, $OJ_DATA);
+                mkdata($id, "sample{$key}.out", $sample_output, $OJ_DATA);
             }
-            
             $sample_input=$mysqli->real_escape_string($sample_input);
             $sample_output=$mysqli->real_escape_string($sample_output);
             $sql=<<<SQL
@@ -345,31 +352,21 @@ SQL;
             $mysqli->query($sql);
         }
     }
-    echo "Sample data file Updated!<br>";
-    $title=$mysqli->real_escape_string($title);
-    $time_limit=$mysqli->real_escape_string($time_limit);
-    $memory_limit=$mysqli->real_escape_string($memory_limit);
-    $description=$mysqli->real_escape_string($description);
-    $input=$mysqli->real_escape_string($input);
-    $output=$mysqli->real_escape_string($output);
-//  $test_input=($test_input);
-//  $test_output=($test_output);
-    $hint=$mysqli->real_escape_string($hint);
-    $author=$mysqli->real_escape_string($author);
-    $source=$mysqli->real_escape_string($source);
-//  $spj=($spj);
+    echo "&nbsp;".$MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
     if(isset($_POST['add_problem_mod'])){
         $_SESSION["p$id"]=true;
-        echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>Add More Test Data</a>";
+        echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
+        echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
     }
     else{
         $sql="UPDATE `problem` set `problemset`='$problemset',`title`='$title',`time_limit`='$time_limit',`memory_limit`='$memory_limit',
           `description`='$description',`input`='$input',`output`='$output',`hint`='$hint',author='$author',`source`='$source',`spj`=$spj,`in_date`=NOW()
           WHERE `problem_id`=$id";
         @$mysqli->query($sql) or die($mysqli->error);
-        echo "Edit OK!";
+        echo "$MSG_EditOK";
         //echo $sql;
-        echo "<a href='../problem.php?id=$id'>See The Problem!</a>";
+        echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
+        echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
     }
 }
 ?>
@@ -378,7 +375,7 @@ SQL;
 <!-- samples edit scripts START-->
 <script>
     var sample_cnt=<?php
-        if($add_problem_mod) echo "0";
+        if($add_problem_mod) echo "2";
         else echo count($samples);
         ?>;
     $("#add_sample").on("click",function(event){
@@ -388,17 +385,17 @@ SQL;
               <div>\
                 <div class='form-inline' style='height: 35px;'>\
                   <div style='float: left; padding-top: 6px;'>\
-                    Input <sapn class='label label-primary'>"+(sample_cnt-1)+"</sapn>\
+                    <?php echo $MSG_Sample_Input ?> <sapn class='label label-primary'>"+(sample_cnt-1)+"</sapn>\
                   </div>\
                   <div class='input-group input-group-sm' style='float: right;'>\
-                    <div class='input-group-addon'>Show after trying: </div>\
+                    <div class='input-group-addon'><?php echo $MSG_ShowAfterTrying?> : </div>\
                     <input name='show_after[]' class='form-control' style='width:50px; text-align: center;' value='0'>\
-                    <div class='input-group-addon'>times</div>\
+                    <!--<div class='input-group-addon'>times</div>-->\
                   </div>\
                 </div>\
                 <div><textarea name='sample_input[]' class='form-control' id='' rows='4'></textarea></div>\
                 <div style='margin-bottom: 13px; margin-top: 13px;'>\
-                  Output <sapn class='label label-primary'>"+(sample_cnt-1)+"</sapn>\
+                  <?php echo $MSG_Sample_Output ?> <sapn class='label label-primary'>"+(sample_cnt-1)+"</sapn>\
                 </div>\
                 <div><textarea name='sample_output[]' class='form-control' id='' rows='4'></textarea></div>\
                 <hr/>\

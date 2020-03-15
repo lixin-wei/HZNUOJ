@@ -110,6 +110,7 @@ $GLOBALS["messages"] = array(
 	"btnadd"		=> "Add",
 	"btnedit"		=> "Edit",
 	"btnremove"		=> "Remove",
+	"Random-data"	=> "Random-data Generator'",
 	
 	// actions
 	"actdir"		=> "Directory",

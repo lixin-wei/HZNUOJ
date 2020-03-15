@@ -11,9 +11,8 @@
 <?php 
   if (is_numeric($cid) && !isset($_GET['normal_mod'])) {
       $_GET['cid']=$cid;
-      require_once "contest_header.php";
-  }
-  else require_once "header.php";
+      require_once("contest_header.php");
+  }else require_once("header.php");
   require_once("include/const.inc.php");
 ?>
 <div class="am-container">
@@ -35,7 +34,7 @@
         if($sresult==4){//AC
           $res_class="success";
           $time=$stime."ms";
-          $memory=$smemory."kB";
+          $memory=$smemory."KB";
         }
         else if($sresult<=3){//pending or rejudging or compling or judging
           $res_class="default";
@@ -44,7 +43,7 @@
         echo "<hr>";
         echo "<div class='am-text-center'>";
         echo "<div class='solution-info'>";
-        echo "Problem_ID: ";
+        echo "$MSG_PROBLEM_ID: ";
         if (is_numeric($cid)){
           $p_lable=PID($num);
           echo "<span class='am-badge am-badge-secondary am-text-sm'><a href='problem.php?cid=$cid&pid=$num' style='color: white;'>$p_lable</a>";
@@ -55,40 +54,39 @@
         $html_sup = "";
         $html_link = "";
         if($is_temp_user) {
-          $html_sup = "<sup title='this is a temporary user in a special contest'><a href=\"/OJ/contest.php?cid=$cid\" style='color: white;'>$cid</a></sup>";
+          $html_sup = "<sup title='this is a temporary user in a special contest'><a href='/OJ/contest.php?cid=$cid' style='color: white;'>$cid</a></sup>";
         }
         else {
-          $html_link = "href=\"/OJ/userinfo.php?user=$suser_id\"";
+          $html_link = "href='/OJ/userinfo.php?user=$suser_id'";
         }
         echo <<<HTML
           <div class='solution-info'>
-            Result: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span>
+            $MSG_RESULT: <span class='am-badge am-badge-$res_class am-text-sm'>$judge_result[$sresult]</span>
           </div>
           <div class='solution-info'>
-            Time: <span class='am-badge am-badge-warning am-text-sm'>$time</span>
+            $MSG_TIME: <span class='am-badge am-badge-warning am-text-sm'>$time</span>
           </div>
           <div class='solution-info'>
-            Memory: <span class='am-badge am-badge-warning am-text-sm'>$memory</span>
+            $MSG_MEMORY: <span class='am-badge am-badge-warning am-text-sm'>$memory</span>
           </div>
           <div class='solution-info'>
-            Author: <span class='am-badge am-badge-primary am-text-sm'>
-            <a $html_link style='color: white;'>$suser_id</a>{$html_sup}
+            $MSG_AUTHOR: <span class='am-badge am-badge-primary am-text-sm'>
+            <a $html_link target='_blank' style='color: white;'>$suser_id</a>{$html_sup}
             </span>
           </div>
 HTML;
-        if($cid) {
+        if(isset($_GET['normal_mod']) && $cid) {
           echo <<<HTML
           <div class='solution-info'>
-            In contest: <span class='am-badge am-badge-primary am-text-sm'>
-            <a href="contest.php?cid=$cid" style='color: white;'>$cid</a>
-            </span>
-          </div>
+          $MSG_CONTEST: <span class='am-badge am-badge-primary am-text-sm'>
 HTML;
+          if($ctitle){
+            $ctitle = "【{$cid}】$ctitle";
+            echo "<a href='contest.php?cid=$cid' style='color: white;'>$ctitle</a>";
+          } else echo $cid;
+          echo "</span></div>\n";
         }
-        echo <<<HTML
-          </div>
-        <hr>
-HTML;
+        echo "</div><hr>\n";
 
           // ****mail function currently stashed
           // if($view_user_id!=$_SESSION['user_id'])
@@ -98,7 +96,7 @@ HTML;
         if ($brush=='obj-c') $brush='c';
         if ($brush=='freebasic') $brush='vb';
         if ($brush=='swift') $brush='csharp';
-        echo "<pre style='background-color: transparent;'><code style='background-color: transparent;'>";
+        echo "<pre style='font-size:14px; background-color: transparent;'><code style='background-color: transparent;'>";
         echo htmlentities(str_replace("\r\n","\n",$view_source),ENT_QUOTES,"utf-8");
         echo "</code></pre>";
 

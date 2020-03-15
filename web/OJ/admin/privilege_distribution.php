@@ -29,8 +29,8 @@ if($_POST['data']){
   }
 }
 ?>
-<title>Privilege Distribution</title>
-<h1>Privilege Distribution Edit</h1>
+<title><?php echo $html_title.$MSG_Distribution ?></title>
+<h1><?php echo $MSG_Distribution ?></h1>
 <hr/>
 <form method="post">
   <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
@@ -49,7 +49,7 @@ if($_POST['data']){
       </ul>
       <hr/>
       <?php if ($can_edit): ?>
-        <center><button type="submit" class="btn btn-default">Submit</button></center>
+        <center><button type="submit" class="btn btn-default"><?php echo $MSG_SUBMIT ?></button></center>
       <?php endif ?>
     </div><!--col-2-->
     <div class="col-sm-3">
@@ -67,7 +67,11 @@ if($_POST['data']){
             if($value)$html .= " checked ";
             if(!$can_edit) $html.="disabled";
             $html .= ">";
-            $html .= $key;
+            if(isset(${"MSG_".$key})){
+            $html .= ${"MSG_".$key};
+            } else {
+              $html .= $key;
+            }            
             $html .= "</label></div>";
           }
           $html .= "</div>";
@@ -76,63 +80,24 @@ if($_POST['data']){
         ?>
       </div>
     </div><!--col-3-->
-    <div class="col-sm-7">
-      <div class="well">
+    <div class="col-sm-7" >
+      <div class="well am-scrollable-vertical" style="height:515px">
       <ul>
         <li>
-          enter_admin_page
+          <?php echo $MSG_enter_admin_page ?>
         </li>
         <li>
-          rejudge
-        </li>
+          <?php echo $MSG_rejudge ?>
+          <ul><li>
+              <?php echo $MSG_HELP_REJUDGE ?>
+            </li>
+      </ul>
+       </li>
         <li>
-          edit_news
-        </li>
-        <li>
-          edit_contest:
-        </li>
-        <li>
+        <?php echo $MSG_edit_xx_problem ?>:        
           <ul>
             <li>
-              edit and add contest.
-            </li>
-            <li>
-              you can enter any contest in passing.
-            </li>
-            <li>
-              you can see problem ID even when contest is running.
-            </li>
-          </ul>
-        </li>
-        <li>
-          generate_team
-        </li>
-        <li>
-          edit_user_profile:
-        </li>
-        <li>
-          <ul>
-            <li>
-              change user ID, password.&nbsp;
-            </li>
-          </ul>
-        </li>
-        <li>
-          edit_privilege_group
-        </li>
-        <li>
-          edit_privilege_distribution
-        </li>
-        <li>
-          inner_function
-        </li>
-        <li>
-          edit_xx_problem:
-        </li>
-        <li>
-          <ul>
-            <li>
-              edit problems, see problems' data in corresponding problemset.
+              <?php echo $MSG_HELP_edit_xx_problem1 ?>
             </li>
             <li>
               note that you can edit hidden problems by typing url yourself even if you don't have privilege,
@@ -143,94 +108,129 @@ if($_POST['data']){
           </ul>
         </li>
         <li>
-          see_hidden_xx_problem:
-        </li>
+          <?php echo $MSG_edit_news ?>
+          <ul><li>
+              <?php echo $MSG_HELP_edit_news ?>
+            </li>
+      </ul></li>
         <li>
+          <?php echo $MSG_edit_contest ?>:
           <ul>
             <li>
-              see hidden problems in corresponding problemset at problemset page.
+            <?php echo $MSG_HELP_edit_contest1 ?>
             </li>
             <li>
-              including problems in running contest.
+            <?php echo $MSG_HELP_edit_contest2 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_edit_contest3 ?>
             </li>
           </ul>
         </li>
         <li>
-          upload_files
+          <?php echo $MSG_generate_team ?>
+          <ul><li>
+              <?php echo $MSG_HELP_generate_team ?>
+            </li>
+      </ul>
         </li>
         <li>
+          <?php echo $MSG_edit_user_profile ?>:
           <ul>
             <li>
-              checked when uploading files.
-            </li>
-            <li>
-              problem and contest editor need this privilege.
+            <?php echo $MSG_HELP_edit_user_profile ?>
             </li>
           </ul>
         </li>
         <li>
-          see_hidden_user_info:
+          <?php echo $MSG_edit_privilege_group ?>
+          <ul><li>
+              <?php echo $MSG_HELP_edit_privilege_group ?>
+            </li>
+      </ul></li>
         </li>
         <li>
+          <?php echo $MSG_edit_privilege_distribution ?>
+        </li>
+        <li>
+        <?php echo $MSG_inner_function ?>
+          <ul><li>
+              <?php echo $MSG_HELP_inner_function ?>
+            </li>
+      </ul></li>
+        <li>
+          <?php echo $MSG_see_hidden_xx_problem ?>:
           <ul>
             <li>
-              see the hidden information in userinfo page, including real name, class and recent login info.
+            <?php echo $MSG_HELP_see_hidden_xx_problem1 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_see_hidden_xx_problem2 ?>
             </li>
           </ul>
         </li>
         <li>
-          see_wa_info_out_of_contest:
-        </li>
-        <li>
+          <?php echo $MSG_see_hidden_user_info ?>:
           <ul>
             <li>
-              see WA,RE,PE,TEST_RUN and CE information of all users&nbsp;only in normal status.
+            <?php echo $MSG_HELP_see_hidden_user_info ?>
             </li>
           </ul>
         </li>
         <li>
-          see_wa_info_in_contest
-        </li>
-        <li>
+          <?php echo $MSG_see_wa_info_out_of_contest ?>:
           <ul>
             <li>
-              see WA,RE,PE,TEST_RUN and CE information of all users in contest status.
+            <?php echo $MSG_HELP_see_wa_info_out_of_contest ?>
             </li>
           </ul>
         </li>
         <li>
-          see_source_out_of_contest
-        </li>
-        <li>
+          <?php echo $MSG_see_wa_info_in_contest ?>
           <ul>
             <li>
-              see souce code of all subbmissions out of contest.
-            </li>
-            <li>
-              you will see the hidden time,memory,language info in conteset of all users in passing.
+            <?php echo $MSG_HELP_see_wa_info_in_contest ?>
             </li>
           </ul>
         </li>
         <li>
-          see_source_in_contest
-        </li>
-        <li>
+          <?php echo $MSG_see_source_out_of_contest ?>
           <ul>
             <li>
-              see souce code of all subbmissions in contest.
+            <?php echo $MSG_HELP_see_source_out_of_contest1 ?>
             </li>
             <li>
-              you will see the hidden time,memory,language info in conteset of all users in passing.
+            <?php echo $MSG_HELP_see_source_out_of_contest2 ?>
             </li>
           </ul>
         </li>
         <li>
-          see_compare
-        </li>
-        <li>
+          <?php echo $MSG_see_source_in_contest ?>
           <ul>
             <li>
-              view the compare source page.
+            <?php echo $MSG_HELP_see_source_in_contest1 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_see_source_in_contest2 ?>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <?php echo $MSG_see_compare ?>
+          <ul>
+            <li>
+            <?php echo $MSG_HELP_see_compare ?>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <?php echo $MSG_upload_files ?>
+          <ul>
+            <li>
+            <?php echo $MSG_HELP_upload_files1 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_upload_files2 ?>
             </li>
           </ul>
         </li>

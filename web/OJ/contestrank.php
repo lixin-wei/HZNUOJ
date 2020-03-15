@@ -32,7 +32,7 @@ class TM {
     var $stu_id;
     var $class;
     var $try_after_lock;
-    function TM(){
+    function TM__construct(){
         $this->score = 0;
         $this->solved=0;
         $this->time=0;
@@ -145,7 +145,7 @@ if ($start_time==0){
     exit(0);
 }
 if ($start_time>time()){
-    require_once "template/hznu/contest_header.php";
+    require_once "template/".$OJ_TEMPLATE."/contest_header.php";
     require("template/".$OJ_TEMPLATE."/footer.php");
     exit(0);
 }
@@ -161,28 +161,18 @@ $third_prize=$row['third_prize'];
 
 
 
-$sql="SELECT count(1) as pbc FROM `contest_problem` WHERE `contest_id`='$cid'";
-//$result=$mysqli->query($sql);
-if($OJ_MEMCACHE){
-    //        require("./include/memcache.php");
-    $result = $mysqli->query_cache($sql);// or die("Error! ".$mysqli->error);
-    if($result) $rows_cnt=count($result);
-    else $rows_cnt=0;
-}else{
-    $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
-    if($result) $rows_cnt=$result->num_rows;
-    else $rows_cnt=0;
-}
-
-if($OJ_MEMCACHE) $row=$result[0];
-else $row=$result->fetch_array();
-
-//$row=$result->fetch_array();
-$pid_cnt=intval($row['pbc']);
-if(!$OJ_MEMCACHE)$result->free();
+//跳过不存在题目的题号
+$sql = "SELECT `num` FROM contest_problem a 
+	        inner join (select problem_id from `problem`) b 
+			on a.problem_id = b.problem_id 
+			WHERE contest_id = $cid and num >=0 order by num" ;
+$result=$mysqli->query($sql) or die($mysqli->error);
+$pid_cnt=$result->num_rows;
+$pid_nums=$result->fetch_all(MYSQLI_BOTH);
 
 /* 获取班级列表 start */
 $classSet = Array();
+if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
 if (!$user_limit) {
     $sql = "SELECT
               DISTINCT(class)
@@ -206,6 +196,7 @@ else{
     $result = $mysqli->query($sql) or die($mysqli->error);
     while ($row=$result->fetch_object()) $classSet[] = $row->class;
     $result->free();
+}
 }
 /* 获取班级列表 end */
 
@@ -361,17 +352,17 @@ else{
 if(!$OJ_MEMCACHE) $result->free();
 usort($U,"s_cmp");
 
-////firstblood
+//firstblood 找每题第一个解决的人
 $first_blood=array();
-for($i=0;$i<$pid_cnt;$i++){
-    $sql="SELECT user_id from solution where contest_id=$cid and result=4 and num=$i order by in_date limit 1";
+foreach($pid_nums as $num){
+    $sql="SELECT user_id from solution where contest_id=$cid and result=4 and num=$num[0] order by in_date limit 1";
     $result=$mysqli->query($sql);
     $row_cnt=$result->num_rows;
     $row=$result->fetch_array();
     if($row_cnt==1){
-        $first_blood[$i]=$row['user_id'];
+        $first_blood[$num[0]]=$row['user_id'];
     }else{
-        $first_blood[$i]="";
+        $first_blood[$num[0]]="";
     }
     
 }
@@ -395,9 +386,11 @@ for($i=0;$i<$pid_cnt;$i++){
     header("Content-Disposition: attachment; filename=\"" . $title.".xls" . "\"");
     header("Content-Type: application/force-download");
     echo "<center><h3>Contest RankList -- $title</h3></center>";
-    echo "<table border=1 align='center' class='excel_table'><tr><td>Rank<td>User<td>Real Name<td>Student ID<td>Class<td>Nick<td>Score<td>Solved<td>Penalty";
-    for ($i=0;$i<$pid_cnt;$i++)
-        echo "<td>$PID[$i]";
+    echo "<table border=1 align='center' class='excel_table'><tr><td>$MSG_RANK<td>$MSG_USER";
+	if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE)  echo "<td>$MSG_REAL_NAME<td>Student ID<td>Class";
+	echo "<td>$MSG_NICK<td>$MSG_SCORE<td>$MSG_SOLVED<td>$MSG_PENALTY";
+	foreach($pid_nums as $num)
+	    echo "<td>".PID($num[0])."</td>";
     echo "</tr>";
     // getMark($U,$mark_start,$mark_end,$mark_sigma);
     $rank=1;
@@ -419,22 +412,24 @@ for($i=0;$i<$pid_cnt;$i++){
         if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
             $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
         }
-        echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->real_name."</td>";
-        echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
-        echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->class."</td>";
+		if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+			echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->real_name."</td>";
+			echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
+			echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->class."</td>";
+		}
         echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->nick."</td>";
         echo "<td>$uscore";
         echo "<td>$usolved";
         echo "<td>".$U[$i]->time."";
         
         //echo $U[$i]->mark>0?intval($U[$i]->mark):0;
-        for ($j=0;$j<$pid_cnt;$j++){
+		foreach($pid_nums as $num){
             echo "<td class='pcell'>";
             if(isset($U[$i])){
-                if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
-                    echo sec2str($U[$i]->p_ac_sec[$j]);
-                if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0)
-                    echo "(-".$U[$i]->p_wa_num[$j].")";
+                if (isset($U[$i]->p_ac_sec[$num[0]])&&$U[$i]->p_ac_sec[$num[0]]>0)
+                    echo sec2str($U[$i]->p_ac_sec[$num[0]]);
+                if (isset($U[$i]->p_wa_num[$num[0]])&&$U[$i]->p_wa_num[$num[0]]>0)
+                    echo "(-".$U[$i]->p_wa_num[$num[0]].")";
             }
         }
         echo "</tr>";

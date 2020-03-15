@@ -1,4 +1,4 @@
-<?php @session_start();
+<?php if(!session_id()) @session_start();
 
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = MD5(rand(0,999999)."asdjlkajs@@!#@!#");

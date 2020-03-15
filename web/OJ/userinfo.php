@@ -7,18 +7,25 @@
 ?>
 
 <?php
-ini_set('display_errors', 'On');
-ini_set('display_startup_errors', 'On');
-error_reporting(E_ALL);
+// ini_set('display_errors', 'On');
+// ini_set('display_startup_errors', 'On');
+// error_reporting(E_ALL);
   $cache_time=10; 
   $OJ_CACHE_SHARE=false;
   require_once('./include/cache_start.php');
   require_once('./include/db_info.inc.php');
   require_once('./include/setlang.php');
+  if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看普通用户信息
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+  }
   require_once("./include/const.inc.php");
   require_once("./include/my_func.inc.php");
-  require_once "include/classList.inc.php";
-
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+    require_once("./include/classList.inc.php");
+    $classList = get_classlist(true, "");
+  }
   // check user
   $user=$_GET['user'];
   if (!is_valid_user_name($user)){
@@ -29,7 +36,7 @@ error_reporting(E_ALL);
   $view_title=$user ."@".$OJ_NAME;
   $user_mysql=$mysqli->real_escape_string($user);
 
-  $sql="SELECT `school`,`email`,`nick`,level,color,strength,real_name,class,stu_id FROM `users` WHERE `user_id`='$user_mysql'";
+  $sql="SELECT `school`,`email`,`nick`,`level`,`color`,`strength`,`real_name`,`class`,`stu_id`,`defunct` FROM `users` WHERE `user_id`='$user_mysql'";
 
   $result=$mysqli->query($sql);
   $row_cnt=$result->num_rows;
@@ -43,24 +50,15 @@ error_reporting(E_ALL);
   $school=$row->school;
   $email=$row->email;
   $nick=$row->nick;
+  $defunct = "";
+  if($row->defunct=="Y"){
+    $defunct = "&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>【". $MSG_STATUS."：".$MSG_Reserved."】</font>";
+  }
   $real_name = $row->real_name;
   $stu_id=$row->stu_id;
-  $class = $row->class;
-            if ($class=="null") $class = "其它";
-            if ($class=="cs151") $class = "计算机151";
-            if ($class=="cs152") $class = "计算机152";
-            if ($class=="cs153") $class = "计算机153";
-            if ($class=="cs154") $class = "计算机154";
-            if ($class=="se151") $class = "软件工程151";
-            if ($class=="se152") $class = "软件工程152";
-            if ($class=="iot151") $class = "物联网151";
-            if ($class=="cs141") $class = "计算机141";
-            if ($class=="cs142") $class = "计算机142";
-            if ($class=="cs143") $class = "计算机143";
-            if ($class=="cs144") $class = "计算机144";
-            if ($class=="se141") $class = "软件工程141";
-            if ($class=="se142") $class = "软件工程142";
-            if ($class=="iot141") $class = "物联网141";
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+     $class = $row->class;
+  }
   $result->free();
  
   // 获取解题数大于10的用户数量存入user_cnt_divisor
@@ -167,7 +165,11 @@ error_reporting(E_ALL);
   $result = $mysqli->query($sql);
   $row = $result->fetch_array();
   $max_solved = intval($row[0]);
-  $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
+  if($max_solved==0){
+    $solved_score = 0;
+  } else {
+      $solved_score = round(100.0*$total_ac/$max_solved); // 解题分
+  }
   $result->free();
 
   // 计算平均难度分  
@@ -203,10 +205,10 @@ error_reporting(E_ALL);
   $result_num = $result->num_rows;
   $result->free();
   if ($result_num) { // 如果表中已存在该user的信息，直接更新
-    $sql = "UPDATE users_cache SET class='$stu->class', AC_day=$AC_day, sub_day=$sub_day WHERE user_id='$user_id'";
+    $sql = "UPDATE users_cache SET class='$class', AC_day=$AC_day, sub_day=$sub_day WHERE user_id='$user_id'";
     $mysqli->query($sql);
   } else { // 否则插入
-    $sql = "INSERT INTO users_cache(user_id, class, AC_day, sub_day) VALUES ('$user_id', '$stu->class', $AC_day, $sub_day)";
+    $sql = "INSERT INTO users_cache(user_id, class, AC_day, sub_day) VALUES ('$user_id', '$class', $AC_day, $sub_day)";
     $mysqli->query($sql);
   }
   // 查找最大活跃度
@@ -226,7 +228,7 @@ error_reporting(E_ALL);
               WHERE result=4 AND user_id='$user_mysql'
             ) AS s 
             ON sim.s_id=s.solution_id";
-  $result = $mysqli->query($sql, $conn);
+  $result = $mysqli->query($sql);
   $copy_sum = 0; // sim和
   $AC_num = $result->num_rows; // AC数
   // 逐个查看每个提交是否为抄袭

@@ -8,7 +8,7 @@
    * @2016.05.25
   **/
 ?>
-
+<?php $title = $MSG_RANKLIST;?>
 <?php include "contest_header.php" ?>
 
 <?php // 根据当前是否需要滚屏给予show不同的style
@@ -26,7 +26,7 @@
       //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
       // else 
       //   echo "[ <a href='contestrank.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
-    
+     if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
       if(HAS_PRI('see_hidden_user_info')) {
         if ($real_name_mode) {
             echo "[ <a href='contestrank.php?cid=$cid'>Normal mode</a> ]";
@@ -36,7 +36,7 @@
     ?>
     [ Choose Class
       <select id="class">
-        <option value="" <?php if ($_GET['class']=="") echo "selected"; ?> >显示全部</option>
+        <option value="" <?php if ($_GET['class']=="") echo "selected"; ?> ><?php echo $MSG_ALL ?></option>
         <option value="null" <?php if ($_GET['class']=="null") echo "selected"; ?> >其它</option>
         <!-- don't remove "其它" option to for loop, if both null and "null" exist, there will occur two options -->
         <?php 
@@ -65,6 +65,7 @@
       }
     </script>
     <!-- 选择班级后自动跳转页面的js代码 end -->
+    <?php } ?>
   </div>
   <!-- 工具栏 end --> 
 
@@ -95,9 +96,9 @@
       cursor: pointer;
     }
     .nick{
-      /*max-width: 900px;*/
+      /*max-width: 900px;
       width: 200px;
-      min-width: 120px;
+      min-width: 120px;*/
       height: 30px;
       white-space: nowrap;
       overflow: hidden;
@@ -120,29 +121,32 @@
       background: #ccc;
     }
     .wa-times{
-      font-size: 11px;
+      font-size: 12px;
     }
     .ac-time{
       font-size: 12px;
     }
   </style>
-  <table class="am-table" style='font-size:13px;' id="rank_table">
-    <thead align="center" style="height: 30px;">
-      <td style="width: 1%;" id="rank">Rank</td>
+<div class="am-container well am-scrollable-horizontal" style="max-width: 98%;">
+  <table class="am-table am-table-hover" id="rank_table" style="white-space: nowrap;">
+    <thead>
+      <tr>
+      <th id="rank" width=5%><?php echo $MSG_RANK ?></th>
       <?php if($real_name_mode):?>
-        <td style="width: 1%;" id="user">Stu. ID</td>
-        <td style="width: 90%;" id="nick">Name</td>
+        <th id="user" width=10%><?php echo $MSG_StudentID ?></th>
+        <th id="nick" width=10%><?php echo $MSG_REAL_NAME ?></th>
       <?php else: ?>
-        <td style="width: 1%;" id="user">User</td>
-        <td style="width: 90%;" id="nick">Nick</td>
+        <th id="user" width=10%><?php echo $MSG_USER ?></th>
+        <th id="nick" width=10%><?php echo $MSG_NICK ?></th>
       <?php endif; ?>
-      <td style="width: 1%;" id="solved">Score</td>
-      <td style="width: 1%;" id="solved">Solved</td>
-      <td style="width: 1%;" id="penalty">Penalty</td>
+      <th id="solved" width=5%><?php echo $MSG_SCORE ?></th>
+      <th id="score" width=5%><?php echo $MSG_SOLVED ?></th>
+      <th id="penalty" width=5%><?php echo $MSG_PENALTY ?></th>
       <?php
-        for ($i=0;$i<$pid_cnt;$i++)
-          echo "<td id='p-cell-$i' style='min-width: 40px;'><a href=problem.php?cid=$cid&pid=$i>".PID($i)."</a></td>";
+	   foreach($pid_nums as $num)
+          echo "<th id='p-cell-$i'><a href=problem.php?cid=$cid&pid=$num[0]>".PID($num[0])."</a></th>";	
       ?>
+      </tr>
     </thead>
     <tbody>
       <?php
@@ -151,7 +155,7 @@
         $num_silver=$second_prize;
         $num_bronze=$third_prize;
         for ($i=0;$i<$user_cnt;$i++){
-          echo "<tr align=center>";
+          echo "<tr>";
           $medal_class="";
           $medal_css="";
           if($rank==1){
@@ -197,68 +201,69 @@
           $uscore = $U[$i]->score;
           $usolved=$U[$i]->solved;
         echo "<td class='rankcell'>";
-          echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$col2</a>";
+          echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$col2</a>\n";
 
 
           echo "<td class='rankcell'><div class='nick'>";
           if(isset($is_excluded[$uuid])) echo "<span>*</span>";
-          echo "<a href=\"userinfo.php?user=$uuid\">".$col3."</a>";
-          echo "</div></td>";
-            echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$uscore</a>";
-          echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>";
+          echo $col3."</div></td>\n";
+          echo "<td class='rankcell'>$uscore\n";
+          echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>\n";
 
 
           echo "<td class='rankcell'>".floor($U[$i]->time/60);
-          for ($j=0;$j<$pid_cnt;$j++){
+		  foreach($pid_nums as $num){
             $cell_class="pcell ";
-            if($U[$i]->is_unknown[$j]){
+            if($U[$i]->is_unknown[$num[0]]){
               $cell_class.="pcell-pd";
             }
-            else if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0){
-              if($uuid==$first_blood[$j]){
+            else if (isset($U[$i]->p_ac_sec[$num[0]])&&$U[$i]->p_ac_sec[$num[0]]>0){
+              if($uuid==$first_blood[$num[0]]){
                 $cell_class.="pcell-fb";
               }
               else{
                 $cell_class.="pcell-ac";
               }
-            }else if(isset($U[$i]->p_wa_num[$j])&&isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) {
+            }else if(isset($U[$i]->p_wa_num[$num[0]])&&isset($U[$i]->p_wa_num[$num[0]])&&$U[$i]->p_wa_num[$num[0]]>0) {
               $cell_class.="pcell-wa";
             }
-            $probelm_lable=PID($j);
+            $probelm_lable=PID($num[0]);
             $data_toggle="";
             //echo "<pre>";
             
             //echo "</pre>";
-            if($U[$i]->p_wa_num[$j]>0 || $U[$i]->p_ac_sec[$j]>0 || $U[$i]->try_after_lock[$j]>0){
+            if($U[$i]->p_wa_num[$num[0]]>0 || $U[$i]->p_ac_sec[$num[0]]>0 || $U[$i]->try_after_lock[$num[0]]>0){
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
             echo "<td class='$cell_class' id='pcell $uuid $probelm_lable' $data_toggle>";
             if(isset($U[$i])){
-              if (isset($U[$i]->p_ac_sec[$j])&&$U[$i]->p_ac_sec[$j]>0)
-                echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$j]/60)."</span><br>";
+              if (isset($U[$i]->p_ac_sec[$num[0]])&&$U[$i]->p_ac_sec[$num[0]]>0)
+                echo "<span class='ac-time'>".floor($U[$i]->p_ac_sec[$num[0]]/60)."</span><br>";
 
-              if ($U[$i]->try_after_lock[$j]){
-                if(!isset($U[$i]->p_wa_num[$j])) $U[$i]->p_wa_num[$j]=0;
-                echo "<span class='wa-times'>(".$U[$i]->p_wa_num[$j]."+".$U[$i]->try_after_lock[$j].")</span>";
+              if ($U[$i]->try_after_lock[$num[0]]){
+                if(!isset($U[$i]->p_wa_num[$num[0]])) $U[$i]->p_wa_num[$num[0]]=0;
+                echo "<span class='wa-times'>(-".$U[$i]->p_wa_num[$num[0]]."+".$U[$i]->try_after_lock[$num[0]].")</span>";
               }
-              else if (isset($U[$i]->p_wa_num[$j])&&$U[$i]->p_wa_num[$j]>0) 
-                echo "<span class='wa-times'>(".$U[$i]->p_wa_num[$j].")</span>";
+              else if (isset($U[$i]->p_wa_num[$num[0]])&&$U[$i]->p_wa_num[$num[0]]>0) 
+                echo "<span class='wa-times'>(-".$U[$i]->p_wa_num[$num[0]].")</span>";
               else
                 echo "-";
             }
-            //echo "<br/>".$U[$i]->p_wa_num[$j]."-".$U[$i]->p_ac_sec[$j]."<br/>";
-            echo "</td>";
+            //echo "<br/>".$U[$i]->p_wa_num[$num[0]]."-".$U[$i]->p_ac_sec[$num[0]]."<br/>";
+            echo "</td>\n";
           }
-          echo "</tr>";
+          echo "</tr>\n";
         }       
       ?>
     </tbody>
   </table>
+  </div>
   <!-- 排名表格 END -->
+   <!-- ajax 显示对应题目提交代码div -->
   <div class="am-modal am-modal-no-btn" tabindex="-1" id="modal-submission">
     <div class="am-modal-dialog">
-      <div class="am-modal-hd">Submissions
+      <div class="am-modal-hd"><strong><?php echo $MSG_Codes ?></strong>
         <a class="am-close am-close-spin" data-am-modal-close>&times;</a>
       </div>
       <div class="am-modal-bd" id="modal-submission-bd">

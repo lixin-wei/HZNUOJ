@@ -43,18 +43,7 @@ function isOldPW($password)
 }
 
 function is_valid_user_name($user_name){
-    $len=strlen($user_name);
-    for ($i=0;$i<$len;$i++){
-        if (
-            ($user_name[$i]>='a' && $user_name[$i]<='z') ||
-            ($user_name[$i]>='A' && $user_name[$i]<='Z') ||
-            ($user_name[$i]>='0' && $user_name[$i]<='9') ||
-            $user_name[$i]=='_'||
-            $user_name[$i]=='-'
-        );
-        else return false;
-    }
-    return true;
+    return preg_match("/^[a-zA-Z0-9]+$/", $user_name);
 }
 
 function sec2str($sec){
@@ -302,7 +291,7 @@ function can_see_res_info($sid) {
 
 function get_problemset($pid){
     global $mysqli;
-    $sql="SELECT problemset FROM problem WHERE problem_id=$pid";
+    $sql="SELECT problemset FROM problem WHERE problem_id='$pid'";
     $res=$mysqli->query($sql);
     return $res->fetch_array()[0];
 }
@@ -322,7 +311,67 @@ function get_order($group_name){
 function get_group($uid){
     global $mysqli;
     if($uid=="")$uid=$_SESSION['user_id'];
-    $sql="SELECT rightstr FROM privilege WHERE user_id='$uid'";
+    $sql="SELECT a.rightstr, b.group_order FROM privilege a, privilege_groups b 
+	      WHERE a.rightstr = b.group_name and user_id='$uid' order by b.group_order";
     return ($mysqli->query($sql)->fetch_array()[0]);
 }
+function class_is_exist($class){
+    global $mysqli;
+    $sql = "SELECT COUNT(`class_name`) FROM `class_list` WHERE `class_name`='$class'";
+    return $mysqli->query($sql)->fetch_array()[0];
+}
+function get_class_regcode($class){
+    global $mysqli;
+    $sql = "SELECT r.* FROM `reg_code` AS r, `class_list` AS c WHERE r.`class_name`=c.`class_name` AND r.`class_name`='$class'";
+    return $mysqli->query($sql)->fetch_object();
+}
+function get_contests($type_list){ //返回一个二维数组给选择框等提供比赛场次数据
+    if(!$type_list) $type_list = array("Special" => true, "Private" => false, "Public" => false, "Practice" => false);
+    $view_contest = array();
+    global $mysqli, $MSG_Practice, $MSG_Special, $MSG_Private, $MSG_Public;
+    foreach ($type_list as $key => $value) {
+        switch($key){
+            case "Special":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='Y' ORDER BY contest_id DESC";//类型优先级2
+                $result=$mysqli->query($sql);
+                $view_contest['Special']['type'] = $MSG_Special;
+                $view_contest['Special']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Special']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Private":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND `private` ORDER BY contest_id DESC";//类型优先级3
+                $result=$mysqli->query($sql);
+                $view_contest['Private']['type'] = $MSG_Private;
+                $view_contest['Private']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Private']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Public":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE NOT `practice` AND `user_limit`='N' AND NOT `private` ORDER BY contest_id DESC";//类型优先级3
+                $result=$mysqli->query($sql);
+                $view_contest['Public']['type'] = $MSG_Public;
+                $view_contest['Public']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Public']['disabled'] = $value ? "" : "disabled";
+            break;
+            case "Practice":
+                $sql="SELECT `contest_id`,`title`,`defunct` FROM `contest` WHERE `practice` ORDER BY contest_id DESC";//类型优先级1
+                $result=$mysqli->query($sql);
+                $view_contest['Practice']['type'] = $MSG_Practice;
+                $view_contest['Practice']['data'] = $result->fetch_all(MYSQLI_ASSOC);
+                $view_contest['Practice']['disabled'] = $value ? "" : "disabled";
+            break;
+        }
+    };
+    $result->free();
+    return $view_contest;
+}
+function createPwd($seed, $len){
+    $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
+    while (is_numeric($password))  $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
+    str_replace("I", "X", $password);
+    str_replace("O", "Y", $password);
+    str_replace("0", "Z", $password);
+    str_replace("1", "W", $password);
+    return $password;
+}
+
 ?>

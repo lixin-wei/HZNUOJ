@@ -10,7 +10,7 @@
 ?>
 
 <?php
-  $title="Submit";
+  $title=$MSG_SUBMIT;
   if(isset($_GET['id']))
     require_once("header.php");
   else
@@ -20,21 +20,21 @@
 <div class="am-container" style="padding-top: 20px;">
   <?php
   if(isset($_GET['cid'])) {
-      $title = "Submit solution: Problem {$PID[$pid]}";
+      $title = "Problem <strong>".PID($pid)."</strong> of Contest <strong>".$_GET['cid']."</strong>";
   }
   else {
-      $title = "Submit solution: Problem $id";
+      $title = "Problem <strong>$id</strong>";
   }
-  echo "<h1>$title</h1>"
+ 
   ?>
-  <hr/>
   <div class="am-g">
     <form id="submit_form" action="/OJ/submit.php" method="post">
       <?php require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/set_post_key.php" ?>
-      <div class="am-u-md-10 am-u-md-centered">
+      <div class="am-u-md-10 am-u-md-centered" style="width:800px;">
+       <?php  echo "<h2>$title</h2>" ?>
         <div class="am-g am-text-center" style="margin-bottom: 20px;">
           <div class="am-u-md-6">
-            <label for="language">Language: </label>
+            <label for="language"><?php echo $MSG_LANG ?>: </label>
             <select id="language" name="language" data-am-selected="{searchBox: 1, maxHeight: 400}">
                 <?php
                 $lang_count=count($language_ext);
@@ -54,16 +54,16 @@
                 }
                 ?>
             </select>
-          </div>
+          </div>         
           <div class="m-u-md-6">
             <label for="language">Theme: </label>
             <select id="theme" name="theme" data-am-selected>
-              <option value="xcode">Bright</option>
-              <option value="monokai">Dark</option>
+              <option value="iplastic">Bright</option>
+              <option value="tomorrow_night_bright">Dark</option>
             </select>
           </div>
         </div>
-        <div id="editor" style="wdith:100%; height: 500px; border: 1px solid #F0F0F0;"><?php if(isset($view_src))echo htmlentities($view_src); ?></div>
+        <div id="editor" class="am-u-md-centered" style="width:100%; height: 400px; border: 1px solid #F0F0F0;"><?php if(isset($view_src))echo htmlentities($view_src); ?></div>
         <input type="hidden" id="source" name="source">
           <?php
           if(isset($_GET['cid'])) {
@@ -76,15 +76,15 @@
           ?>
       </div>
       <div class="am-g am-text-center" style="margin-top: 20px;">
-        <button class="am-btn am-btn-success">Submit</button>
+        <button class="am-btn am-btn-success"><?php echo $MSG_SUBMIT ?></button>
       </div>
     </form>
   </div>
 </div>
 <?php require_once("footer.php") ?>
 <script src="/OJ/plugins/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/theme-xcode.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+<script src="/OJ/plugins/ace/theme-iplastic.js" type="text/javascript" charset="utf-8"></script>
+<script src="/OJ/plugins/ace/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-c_cpp.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-pascal.js" type="text/javascript" charset="utf-8"></script>
 <script src="/OJ/plugins/ace/mode-java.js" type="text/javascript" charset="utf-8"></script>
@@ -104,8 +104,9 @@
     var editor = ace.edit("editor");
     var $obj_select_lang = $("#language");
     var lang = $obj_select_lang.val();
+	editor.setFontSize(16);
     editor.getSession().setMode("ace/mode/"+language_mod[lang]);
-    editor.setTheme("ace/theme/xcode");
+    editor.setTheme("ace/theme/iplastic");
     $("#submit_form").submit(function () {
         $("#source").val(editor.getValue());
         return true;

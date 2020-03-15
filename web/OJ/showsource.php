@@ -24,7 +24,7 @@
   }
   /* 获取solution信息 start */
   $sid=strval(intval($_GET['id']));
-  $sql="SELECT * FROM `solution` WHERE `solution_id`='".$sid."'";
+  $sql="SELECT s.*,c.`title` FROM `solution` AS s LEFT JOIN `contest` AS c ON s.`contest_id`=c.`contest_id` WHERE s.`solution_id`='".$sid."'";
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
   $slanguage=$row->language;
@@ -34,6 +34,7 @@
   $view_user_id=$suser_id=$row->user_id;
   $pid = $row->problem_id;
   $cid = $row->contest_id;
+  $ctitle = $row->title;
   $num = $row->num;
   $result->free();
   if($cid) {
@@ -47,7 +48,7 @@
 
   $view_source="No source code available!";
   
-  $sql="SELECT `source` FROM `source_code` WHERE `solution_id`=".$sid;
+  $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`=".$sid;
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
   if($row) $view_source=$row->source;

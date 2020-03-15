@@ -9,7 +9,7 @@
   **/
 ?>
 <?php
-$title="F.A.Qs";
+$title=$MSG_FAQ;
 require_once("header.php");
 require_once $_SERVER['DOCUMENT_ROOT']."/OJ/plugins/Parserdown.php";
 ?>

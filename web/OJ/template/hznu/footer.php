@@ -11,9 +11,16 @@
 
 <footer class="blog-footer">
   <hr />
-  <a href="https://github.com/lixin-wei/HZNUOJ">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
-  <a href="/OJ/maintainer-list.php">--- Maintainer List ---</a><br>
-  ★Server Time: <span id='footerdate'><?php echo date('20y-m-d h:i:s',time()); ?></span>★
+  <a href="https://github.com/lixin-wei/HZNUOJ" target="_blank">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
+  <a href="/OJ/maintainer-list.php" target="_blank">--- <?php echo $MSG_MAINTAINER ?> ---</a><br />
+  <div>
+  <span>-</span>
+  <a href='/OJ/setlang.php?lang=en'>English</a>
+  <span>-</span>
+  <a href='/OJ/setlang.php?lang=cn'>简体中文</a>
+  <span>-</span>
+  </div>
+  ★<?php echo $MSG_SERVERTIME ?>: <span id='footerdate'><?php echo date('Y-m-d H:i:s',time()); ?></span>★
   
   <!-- go to top btn START -->
   <div class="amz-toolbar" id="go-top" style="display: none; position: fixed; bottom: 15px; right: 15px;">
@@ -62,7 +69,7 @@
         m=x.getMinutes();
         s=x.getSeconds();
 
-        n=y+"-"+mon+"-"+d+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
+        n=y+"-"+(mon>=10?mon:"0"+mon)+"-"+(d>=10?d:"0"+d)+" "+(h>=10?h:"0"+h)+":"+(m>=10?m:"0"+m)+":"+(s>=10?s:"0"+s);
         //alert(n);
         document.getElementById('footerdate').innerHTML=n;
         setTimeout("clock_foot()",1000);
@@ -102,10 +109,10 @@
           if (bar_percent >= 100) {
               $("#contest-bar").removeClass("am-active");
               $("#contest-bar-progress").attr("class", "am-progress-bar am-progress-bar-secondary");
-              $("#contest-bar-progress").html("Contest has ended!");
+              $("#contest-bar-progress").html("<?php echo $MSG_Ended ?>");
           } else if (bar_percent >= warnning_percent) {
               $("#contest-bar-progress").attr("class", "am-progress-bar am-progress-bar-danger");
-              $("#contest-bar-progress").html("Contest is nearly the end!");
+              $("#contest-bar-progress").html("<?php echo $MSG_NearlyEnd ?>");
           }
           $("#contest-bar-progress").css({"width" : bar_percent+"%"});
           $("#time_elapsed").html(time_format(dur));

@@ -1,11 +1,11 @@
-<?php session_start();
+<?php if(!session_id()) session_start();
 if (!isset($_SESSION['user_id'])){
-	require_once("oj-header.php");
+	require("template/".$OJ_TEMPLATE."/header.php");
 	echo "<a href='loginpage.php'>$MSG_Login</a>";
-	require_once("oj-footer.php");
+	require("template/".$OJ_TEMPLATE."/footer.php");
 	exit(0);
 }
-require_once "include/check_post_key.php";
+require_once("include/check_post_key.php");
 require_once("include/db_info.inc.php");
 require_once("include/const.inc.php");
 require_once("include/my_func.inc.php");
@@ -68,7 +68,6 @@ if (isset($_POST['id'])) {
 	if ($rows_cnt!=1){
 		echo "You Can't Submit Now Because Your are not invited by the contest or the contest is not running!!";
 		$result->free();
-		require_once("oj-footer.php");
 		exit(0);
 	}else{
 		$row=$result->fetch_array();
@@ -130,14 +129,17 @@ $source_user=$source;
 if($test_run) $id=-$id;
 
 //use append Main code
+//上传文件的编码不一定是UTF-8，读取数据(包含中文的情况下)插入数据库会出错，因此先把文件编码转为UTF-8并返写
 $prepend_file="$OJ_DATA/$id/prepend.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($prepend_file)){
-     $source=$mysqli->real_escape_string(file_get_contents($prepend_file)."\n").$source;
+	require_once("./include/problem.php");
+    $source=$mysqli->real_escape_string(convert2UTF8($OJ_DATA,$id,pathinfo($prepend_file)['basename'])."\n").$source;
 }
 
 $append_file="$OJ_DATA/$id/append.$language_ext[$language]";
 if(isset($OJ_APPENDCODE)&&$OJ_APPENDCODE&&file_exists($append_file)){
-    $source.=$mysqli->real_escape_string("\n".file_get_contents($append_file));
+	require_once("./include/problem.php");
+    $source.=$mysqli->real_escape_string("\n".convert2UTF8($OJ_DATA,$id,pathinfo($append_file)['basename']));
 }
 //end of append 
 

@@ -5,11 +5,19 @@
 	require_once('./include/cache_start.php');
     require_once('./include/db_info.inc.php');
 	require_once('./include/setlang.php');
-	require_once('./include/classList.inc.php');
+	if (isset($OJ_REGISTER) && !$OJ_REGISTER) {
+		echo "<script language='javascript'>\n";
+		echo "alert('System do not allow register');\n history.go(-1);\n</script>";
+		exit(0);
+	}
+	if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+		require_once('./include/classList.inc.php');
+		$classList = get_classlist(true, "");
+	}
 	$view_title= "Welcome To Online Judge";
 	
 ///////////////////////////MAIN	
-	
+/*	
 	$view_news="";
 	$sql=	"SELECT * "
 			."FROM `news` "
@@ -37,7 +45,7 @@ if(function_exists('apc_cache_info')){
 	 $_apc_cache_info = apc_cache_info(); 
 		$view_apc_info =_apc_cache_info;
 }
-
+*/
 /////////////////////////Template
 require("template/".$OJ_TEMPLATE."/registerpage.php");
 /////////////////////////Common foot

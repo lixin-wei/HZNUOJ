@@ -114,7 +114,7 @@ WHERE
   $sid=intval($_GET['sid']);
   $ok = canSeeSource($sid);
   if ($ok==true){
-    $sql="SELECT `source` FROM `source_code` WHERE `solution_id`='".$sid."'";
+    $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`='".$sid."'";
     $result=$mysqli->query($sql);
     $row=$result->fetch_object();
     if($row)
@@ -143,9 +143,11 @@ if(!$view_src){
     $lastlang=intval($_COOKIE['lastlang']);
   else 
     $lastlang=0;
-   $template_file="$OJ_DATA/$problem_id/template.".$language_ext[$lastlang];
+    $template_file="$OJ_DATA/$problem_id/template.".$language_ext[$lastlang];
    if(file_exists($template_file)){
-  $view_src=file_get_contents($template_file);
+     //上传文件的编码不一定是UTF-8，此时包含中文的情况下htmlentities($view_src)就显示不了内容，因此先把文件内容编码转为UTF-8并返写
+     require_once("./include/problem.php");
+     $view_src=convert2UTF8($OJ_DATA,$problem_id,pathinfo($template_file)['basename']);
    }
 }
 

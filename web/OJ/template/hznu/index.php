@@ -12,7 +12,7 @@
  **/
 ?>
 
-<?php $title="Home";?>
+<?php $title=$MSG_HOME;?>
 <?php
 require_once("header.php");
 require_once('./include/db_info.inc.php');
@@ -39,9 +39,9 @@ require_once('./include/db_info.inc.php');
   <div class="am-g ill" style="height: 30px;"></div>
   <div class='am-g'>
     <!-- 公告模块 start -->
-    <div class="am-u-md-8">
+    <div class="am-u-md-6">
       <div class="am-panel am-panel-primary" id="accordion0">
-        <div class="am-panel-hd" class="am-panel-title">News</div>
+        <div class="am-panel-hd" class="am-panel-title"><?php echo $MSG_NEWS ?></div>
         <div class="am-panel-collapse am-collapse am-in">
           <div class="am-panel-bd">
             <div class="am-panel-group" id="accordion">
@@ -77,14 +77,14 @@ HTML;
     
     
     <!--Submission Statics START-->
-    <div class="am-u-md-4">
+    <div class="am-u-md-6">
         <?php
         $sql="SELECT count(*) FROM solution WHERE in_date<=NOW() AND in_date>date_add(NOW(), interval -1 day)";
         $res=$mysqli->query($sql);
         $cnt=$res->fetch_array()[0];
         ?>
       <div class="am-panel am-panel-primary">
-        <div class="am-panel-hd">Statics</div>
+        <div class="am-panel-hd"><?php echo $MSG_STATISTICS ?></div>
         <div id="submission_chart" style="width: 100%;height: 250px;"></div>
       </div>
     </div>
@@ -96,14 +96,6 @@ HTML;
 
 </div>
 <?php require_once("footer.php") ?>
-
-<script type="text/javascript">
-    $('div.link').click(function(){
-        window.open('http://www.pixiv.net/member_illust.php?mode=medium&illust_id=13212258');
-        //window.location.href="http://pixiv.net/member.php?id=430651";
-    });
-</script>
-
 
 
 <script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
@@ -122,9 +114,10 @@ $series_not_ac_data="";
 $series_ac_data="";
 $series_hits_data="";
 $xAxis_data="";
+$series_total_submit="";
 for($i=$tot_days-1 ; $i>=0 ; --$i){
     
-    
+	
     $sql="SELECT count(1) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result != 4";
     $res=$mysqli->query($sql);
     $cnt=$res->fetch_array()[0];
@@ -132,17 +125,16 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
     
     $sql="SELECT count(1) FROM solution WHERE in_date<=date_add(date(NOW()), interval -$i+1 day) AND in_date>date_add(date(NOW()), interval -$i day) AND result = 4";
     $res=$mysqli->query($sql);
-    $cnt=$res->fetch_array()[0];
-    $series_ac_data.="$cnt,";
+    $cnt2=$res->fetch_array()[0];
+    $series_ac_data.="$cnt2,";	
+	  $series_total_submit.="$cnt+$cnt2,";
     
     $sql="SELECT count(1) FROM hit_log WHERE time<=date_add(date(NOW()), interval -$i+1 day) AND time>date_add(date(NOW()), interval -$i day)";
     $res=$mysqli->query($sql);
     $cnt=$res->fetch_array()[0];
     $series_hits_data.="$cnt,";
-    
-    if($i==0)$xAxis_data.="'today',";
-    else if($i==1) $xAxis_data.="'yesterday',";
-    else $xAxis_data.="'".(-$i+1)." days',";
+	
+  	$xAxis_data .="'".date('m/d',strtotime("-$i day"))."',";    
 }
 ?>
 <!--get charts json END-->
@@ -153,25 +145,19 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
         // 指定图表的配置项和数据
         var option_submission = {
             grid: {
-                x: 65,
-                x2: 70
+                x: 50,
+                x2: 50, y2: 50
             },
-            color: ['#3398DB','#5EB95E','grey'],
+            color: ['#3398DB','#dd514c','#5eb95e','grey'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
-                },
-                formatter : function(params){
-                    var tot=params[0].data+params[1].data;
-                    var ac=params[1].data;
-                    var hits=params[2].data;
-                    return "AC: "+ac+"<br>Total: "+tot+"<br/>Hits: "+hits;
                 }
             },
             legend: {
-                show: false,
-                data:['submissions']
+                show: true,
+                data:['<?php echo $MSG_SUNMITTOTAL ?>','<?php echo $MSG_Wrong ?>','<?php echo $MSG_Accepted ?>']
             },
             xAxis: {
                 type: 'category',
@@ -180,29 +166,38 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
             yAxis: [
                 {
                     type : "value",
-                    name : "Submissions"
+                    name : "<?php echo $MSG_SUBMISSIONS ?>"
                 },
                 {
                     splitLine: false,
                     type : "value",
-                    name : "Hits"
+                    name : "<?php echo  $MSG_HINTS ?>"
                 }
             ],
             series: [
                 {
-                    name: 'Submissions',
-                    type: 'bar',
+                    name: '<?php echo $MSG_SUNMITTOTAL ?>',
+                    barWidth : 8,
+                    type: 'bar',				          	
                     stack: 'total',
+				          	data: [<?php echo $series_total_submit; ?>]
+                },
+				        {
+                    name: '<?php echo $MSG_Wrong ?>',
+                    type: 'bar',
+					          barWidth : 8,
+                    stack: 'sub',
                     data: [<?php echo $series_not_ac_data; ?>]
                 },
                 {
-                    name: 'AC',
+                    name: '<?php echo $MSG_Accepted ?>',
                     type: 'bar',
-                    stack: 'total',
-                    data: [<?php echo $series_ac_data; ?>]
+                    stack: 'sub',
+					          barWidth : 8,                    
+					data: [<?php echo $series_ac_data; ?>]
                 },
                 {
-                    name: 'Hits',
+                    name: '<?php echo $MSG_HINTS ?>',
                     type: 'line',
                     yAxisIndex: 1,
                     data: [<?php echo $series_hits_data; ?>]

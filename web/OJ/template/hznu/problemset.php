@@ -10,7 +10,7 @@
 ?>
 
 <?php
-$title="ProblemSet";
+$title=$MSG_PROBLEMSET;
 require_once("header.php");
 $args=Array();
 
@@ -41,11 +41,13 @@ function generate_url($data){
 
 <div class="am-container">
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
+    <?php 	/*把题库、状态、排名分开	
     <ul class="am-nav am-nav-tabs">
-      <li class="am-active"><a href="/OJ/problemset.php">Problems</a></li>
-      <li><a href="/OJ/status.php">Status</a></li>
-      <li><a href="/OJ/ranklist.php">Standings</a></li>
+      <li class="am-active"><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEM ?></a></li>
+      <li><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
+      <li><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
     </ul>
+	*/ ?>
   </div>
   <!-- 题目查找 start -->
   <div class="am-g">
@@ -56,10 +58,10 @@ function generate_url($data){
         <div class="am-u-sm-7">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-search"></i>
-            <input type="text" class="am-form-field" placeholder="  &nbsp;Problem ID" name="id">
+            <input type="text" class="am-form-field" placeholder="  &nbsp;<?php echo $MSG_PROBLEM_ID ?>" name="id">
           </div>
         </div>
-        <button type="submit" class="am-u-sm-2 am-btn am-btn-warning ">Go</button>
+        <button type="submit" class="am-u-sm-2 am-btn am-btn-warning "><?php echo $MSG_GO ?></button>
         <a class="am-u-sm-3 am-btn am-btn-success" id="random_choose">Lucky?</a>
       </form>
     </div>
@@ -71,11 +73,11 @@ function generate_url($data){
         <div class="am-u-sm-9">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>
-            <input type="text" class="am-form-field" placeholder=" &nbsp;Keywords" name="search" value="<?php echo $args['search'] ?>">
+            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $args['search'] ?>">
             <input type="hidden" name="OJ" value="<?php echo $args['OJ'] ?>">
           </div>
         </div>
-        <button type="submit" class="am-u-sm-3 am-btn am-btn-secondary ">Search</button>
+        <button type="submit" class="am-u-sm-3 am-btn am-btn-secondary "><?php echo $MSG_SEARCH ?></button>
       </form>
     </div>
     <!-- 通过关键词查找 end -->
@@ -84,10 +86,10 @@ function generate_url($data){
       <form class="am-form am-form-horizontal">
         <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-form-group">
-          <label class="am-u-sm-4 am-form-label">ProblemSet:</label>
+          <label class="am-u-sm-4 am-form-label"><?php echo $MSG_PROBLEMSET ?>:</label>
           <div class="am-u-sm-8">
             <select data-am-selected class='select-problemset' type='text'>
-              <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> >All</option>
+              <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> ><?php echo $MSG_ALL ?></option>
                 <?php
                 $res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
                 while($row = $res->fetch_array()){
@@ -137,17 +139,17 @@ function generate_url($data){
       table-layout: fixed;
     }
   </style>
-  <div class="am-avg-md-1">
-    <table class="am-table am-table-hover am-table-striped am-text-nowrap table-problem">
+  <div class="am-avg-md-1 well">
+    <table class="am-table am-table-hover am-table-striped am-text-nowrap">
       <thead>
       <tr>
         <th style='width:3%;'></th>
-        <th class='am-text-center' style='width:7%;'>Prob.ID</th>
-        <th class='am-text-center' style='width:35%;'>Title</th>
-        <th class='am-text-center' style='width:18%;'>Tags</th>
-        <th class='am-text-center' style='width:10%;'>Author</th>
-        <th class='am-text-center' style='width:25%;'>Source</th>
-        <th class='am-text-center' style='width:8%;'>AC/Sub</th>
+        <th class='am-text-center' style='width:7%;'><?php echo $MSG_PROBLEM_ID ?></th>
+        <th class='am-text-center' style='width:35%;'><?php echo $MSG_TITLE ?></th>
+        <th class='am-text-center' style='width:18%;'><?php echo $MSG_TAGS ?></th>
+        <th class='am-text-center' style='width:10%;'><?php echo $MSG_AUTHOR ?></th>
+        <th class='am-text-center' style='width:25%;'><?php echo $MSG_Source ?></th>
+        <th class='am-text-center' style='width:8%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
           <?php
           switch ($args['sort_method']) {
               case 'SCORE_DESC':
@@ -166,7 +168,7 @@ function generate_url($data){
             cursor: pointer;
           }
         </style>
-        <th id="score" class='am-text-center' style='width:8%;'>Score <span class="<?php echo $score_icon ?>"></span></th>
+        <th id="score" class='am-text-center' style='width:8%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
       </thead>
       <tbody>

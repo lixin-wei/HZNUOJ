@@ -14,7 +14,7 @@
  * 如果您确定直接使用本程序，使用之前请仔细确认相关安全设置。
  *
  */
-@session_start();
+if(!session_id()) @session_start();
 
 require_once("../../include/db_info.inc.php");
 if (!HAS_PRI("upload_files")){

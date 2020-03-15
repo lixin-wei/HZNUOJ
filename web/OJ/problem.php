@@ -16,10 +16,9 @@ $now=strftime("%Y-%m-%d %H:%M",time());
 if (isset($_GET['cid'])) $ucid="&cid=".intval($_GET['cid']);
 else $ucid="";
 require_once("./include/db_info.inc.php");
-require_once "./include/my_func.inc.php";
-require_once "./include/const.inc.php";
+require_once("./include/my_func.inc.php");
+require_once("./include/const.inc.php");
 
-if(isset($OJ_LANG)) require_once("./lang/$OJ_LANG.php");
 /* 获取我的标签 start */
 $my_tag;
 if(isset($_SESSION['user_id'])){
@@ -48,10 +47,14 @@ if (isset($_SESSION['user_id']) && isset($_GET['id'])) {
 $real_id=0;
 $pr_flag=false;
 $co_flag=false;
-if (isset($_GET['id'])) { // 如果是比赛外的题目
+if (isset($_GET['id']) && !(isset($_GET['cid']) && isset($_GET['pid'])) ) { // 如果是比赛外的题目
+    if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的题目
+        $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+      }
     $id=intval($_GET['id']);
     $real_id=$id;
-    //require("oj-header.php");
     $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
     $set_name = $res->fetch_array()[0];
     
@@ -101,8 +104,12 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
 
     
     //get problem count
-    $sql = "SELECT COUNT(*) FROM contest_problem WHERE contest_id = $cid";
-    $problem_cnt = $mysqli->query($sql)->fetch_array()[0];
+    //$sql = "SELECT COUNT(*) FROM contest_problem WHERE contest_id = $cid";
+    $sql = "SELECT `num` FROM contest_problem a 
+	        inner join (select problem_id from `problem`) b 
+			on a.problem_id = b.problem_id 
+			WHERE contest_id = $cid order by num" ;
+	$problem_num = $mysqli->query($sql)->fetch_all(MYSQLI_BOTH);
     
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
         $view_errors = "<span class='am-text-danger'>You can only enter the correspond contest!</span>";
@@ -199,12 +206,12 @@ ORDER BY `num`
                 $view_errors.= "<a href=problem.php?cid=$row[0]&pid=$row[2]>Contest $row[0]: $row[1]</a><br>";
             }
         }else{
-            $view_title= "<title>$MSG_NO_SUCH_PROBLEM!</title>";
-            $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM!</h2>";
+            $view_title= "<title>$MSG_NO_SUCH_PROBLEM</title>";
+            $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM</h2>";
         }
     }else{
-        $view_title= "<title>$MSG_NO_SUCH_PROBLEM!</title>";
-        $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM!</h2>";
+        $view_title= "<title>$MSG_NO_SUCH_PROBLEM</title>";
+        $view_errors.= "<h2>$MSG_NO_SUCH_PROBLEM</h2>";
     }
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);

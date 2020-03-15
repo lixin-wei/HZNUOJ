@@ -12,7 +12,11 @@ $cache_time=60;
 require_once('./include/cache_start.php');
 require_once('./include/setlang.php');
 $view_title= "Problem Set";
-
+if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的题库
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
+    require("template/".$OJ_TEMPLATE."/error.php");
+    exit(0);
+  }
 //get all problemsets START
 
 //get all problemsets END
@@ -176,7 +180,7 @@ while ($row=$result->fetch_object()) {
     }
     $view_problemset[$i][1] = "<td>".$p_id."</td>";
     if(!$row->locked)
-        $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."'>".$row->title."</a></td>";
+        $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a></td>";
     else
         $view_problemset[$i][2] = "<td style='color: dimgrey;'>"."<span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
     $view_problemset[$i][3] = "<td >";

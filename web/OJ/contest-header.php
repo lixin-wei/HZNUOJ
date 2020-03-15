@@ -1,12 +1,7 @@
 <?php  
-    require_once('./include/cache_start.php');
-
-  
+    require_once('./include/cache_start.php');  
 	require_once('./include/db_info.inc.php');
-
-  if(isset($OJ_LANG)){
-		require_once("./lang/$OJ_LANG.php");
-	}
+	require_once('./include/setlang.php');
 ?>
 <html>
 <head>

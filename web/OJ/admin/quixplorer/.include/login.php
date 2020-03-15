@@ -41,7 +41,7 @@ Comment:
 require "./.include/user.php";
 user_load();
 //------------------------------------------------------------------------------
-session_start();
+if(!session_id()) session_start();
 if(isset($_SESSION)) 			$GLOBALS['__SESSION']=&$_SESSION;
 elseif(isset($HTTP_SESSION_VARS))	$GLOBALS['__SESSION']=&$HTTP_SESSION_VARS;
 else logout();

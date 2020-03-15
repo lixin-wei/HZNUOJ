@@ -22,15 +22,53 @@ if(!can_see_problem($pid)) {
     exit(0);
 }
 
+$view_problem=array();
+$view_echart;
+// total submit ;
+$sql="SELECT count(*) FROM solution WHERE problem_id=".$pid;
+$result = $mysqli->query($sql)->fetch_all() or die("Error! ".$mysqli->error);
+$row=$result[0];
+$view_problem[0][0]=$MSG_SUBMISSIONS;
+$view_problem[0][1]=$row[0];
+$total=intval($row[0]);
+
+// total users
+$sql="SELECT count(DISTINCT user_id) FROM solution WHERE problem_id=".$pid;
+$result = $mysqli->query($sql)->fetch_all() or die("Error! ".$mysqli->error);
+$row=$result[0];
+$view_problem[1][0]="($MSG_SUBMIT)$MSG_USER";
+$view_problem[1][1]=$row[0];
+
+// ac users
+$sql="SELECT count(DISTINCT user_id) FROM solution WHERE problem_id=".$pid." AND result='4'";
+$result = $mysqli->query($sql)->fetch_all() or die("Error! ".$mysqli->error);
+$row=$result[0];
+$acuser=intval($row[0]);
+$view_problem[2][0]="($MSG_SOLVED)$MSG_USER";
+$view_problem[2][1]=$row[0];
+
+// submit results
+$sql="SELECT result,count(1) FROM solution WHERE problem_id=".$pid." AND result>=4 group by result order by result";
+$result = $mysqli->query($sql)->fetch_all();
+$i=3;
+foreach($result as $row){
+    $view_problem[$i][0] =$jresult[$row[0]];
+    $view_problem[$i][1] ="<a href=status.php?problem_id=$id&jresult=".$row[0]." >".$row[1]."</a>";
+    $view_echart[$i][0] =$jresult[$row[0]];
+    $view_echart[$i][1] =$row[1];
+    $i++;
+}
+
 $page_cnt = 30;
 $language = -1;
 $result = 4;
-$page = max(intval($_GET['page']), 0);
+$page = max(intval($_GET['page']), 1);
 $order_method = "length";
 if(isset($_GET['language'])) $language = intval($_GET['language']);
 if(isset($_GET['result'])) $result = intval($_GET['result']);
 if(isset($_GET['order'])) $order_method = $_GET['order'];
-$left_bound = $page*$page_cnt;
+$left_bound = $page_cnt*($page-1);
+$rank = $left_bound;
 $filter_sql = "";
 $sql = <<<SQL
     SELECT

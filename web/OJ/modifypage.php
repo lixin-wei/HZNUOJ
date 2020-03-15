@@ -11,7 +11,9 @@
   require_once('./include/cache_start.php');
   require_once('./include/db_info.inc.php');
   require_once('./include/setlang.php');
-  require_once('./include/classList.inc.php');
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
+  	require_once "./include/classList.inc.php";
+  }
   $view_title= "Welcome To Online Judge";
   if (!isset($_SESSION['user_id'])){
     $view_errors= "<a href=./loginpage.php>$MSG_Login</a>";
@@ -19,7 +21,7 @@
     exit(0);
   }
   if (isset($_SESSION['contest_id'])){
-    $view_errors= "<font color='red'>Team account can not use this page!</font>";
+    $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }

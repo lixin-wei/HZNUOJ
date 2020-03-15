@@ -52,13 +52,12 @@
   }
 ?>
 <?php include("kindeditor.php"); ?>
-
+<title><?php echo $html_title.$MSG_EDIT.$MSG_NEWS ?></title>
 <form class="form-inline" method=POST action='news_edit.php'>
-  <h1>Edit a Contest</h1><hr/>
+  <h1><?php echo $MSG_EDIT.$MSG_NEWS ?></h1><hr/>
   <input type=hidden name='news_id' value=<?php echo $news_id?>>
-  <p align=left>Title:<input class="form-control" type=text name=title size=71 value='<?php echo $title?>'></p>
-  <p align='left'>
-    Importance:
+  <p align=left><?php echo $MSG_TITLE ?>:<input class="form-control" type=text name=title size=71 value='<?php echo $title?>'></p>
+  <p align='left'><?php echo $MSG_Importance ?>:
     <select class="selectpicker" name='importance' style='width:70px'>
       <option value='10' <?php if ($importance==10) echo "selected" ?> >Top</option>
       <option value='3' <?php if ($importance==3) echo "selected" ?> >3</option>
@@ -67,11 +66,13 @@
       <option value='0' <?php if ($importance==0) echo "selected" ?> >0</option>
     </select>
   </p>
-  <p align=left>Content:<br>
+  <p align=left><?php echo $MSG_Content ?>:<br>
     <textarea class=kindeditor name=content ><?php echo htmlentities($content,ENT_QUOTES,"UTF-8")?></textarea>
   </p>
   <?php require_once("../include/set_post_key.php");?>
-  <button type=submit class="btn btn-default">Submit</button>
+  <input class="btn btn-default" type="submit" value="<?php echo $MSG_SUBMIT ?>" name="submit" />
+&nbsp;
+<input class="btn btn-default" type="reset" value="<?php echo $MSG_RESET ?>" name="reset" />
 </form>
 <?php 
   require_once("admin-footer.php")

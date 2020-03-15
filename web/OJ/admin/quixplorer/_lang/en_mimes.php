@@ -10,6 +10,8 @@ $GLOBALS["mimes"]=array(
 
 	// text
 	"text"	=> "Text File",
+	"in"	=> "Input Data",
+	"out"	=> "Output Result",
 	
 	// programming
 	"php"	=> "PHP Script",

@@ -18,17 +18,11 @@ if (isset($_GET['title'])){
 
 if (!isset($_SESSION['user_id'])){
     echo "<a href=loginpage.php>$MSG_Login</a>";
-    require_once("oj-footer.php");
     exit(0);
 }
 require_once("./include/db_info.inc.php");
 require_once("./include/const.inc.php");
-if(isset($OJ_LANG)){
-    require_once("./lang/$OJ_LANG.php");
-    if(file_exists("./faqs.$OJ_LANG.php")){
-        $OJ_FAQ_LINK="faqs.$OJ_LANG.php";
-    }
-}
+require_once("./include/setlang.php");
 echo "<title>$MSG_MAIL</title>";
 
 

@@ -8,15 +8,17 @@
 
 <?php require_once("admin-header.php");
 require_once("../include/check_get_key.php");
-$cid=intval($_GET['cid']);
-	if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))) exit();
+$cid=intval($mysqli->real_escape_string($_GET['cid']));
+if(!(isset($_SESSION["m$cid"])||HAS_PRI("edit_contest"))){
+	echo "Permission denied!";
+	exit(1);
+}
 $sql="select `private` FROM `contest` WHERE `contest_id`=$cid";
 $result=$mysqli->query($sql);
 $num=$result->num_rows;
 if ($num<1){
 	$result->free();
 	echo "No Such Problem!";
-	require_once("../oj-footer.php");
 	exit(0);
 }
 $row=$result->fetch_row();

@@ -25,6 +25,34 @@
       ;//need more code to delete files
     else
       system("rm -rf $basedir");
+        // delete images start
+        function getImages($content){
+          preg_match_all("<[iI][mM][gG][^<>]+[sS][rR][cC]=\"?([^ \"\>]+)/?>",$content,$images);
+          return $images;
+        }
+        function delImages($html,&$did){
+          $images=getImages($html);
+          $imgs=array_unique($images[1]);
+          foreach($imgs as $img){
+            if(!in_array($img,$did)){
+              $file = $_SERVER['DOCUMENT_ROOT'].$img;
+              if(file_exists($file)){
+                unlink($file);
+              }
+              array_push($did,$img);
+            }
+          }
+        }
+        $did = array();
+        $sql = "SELECT * FROM `problem` WHERE `problem_id`='$id'";
+        $result = $mysqli->query($sql);
+        if($row = $result->fetch_object()){
+          delImages($row->description, $did);
+          delImages($row->input, $did);
+          delImages($row->output, $did);
+          delImages($row->hint, $did);
+        }
+        // delete images end
         $sql="delete FROM `problem` WHERE `problem_id`=$id";
         $mysqli->query($sql) or die($mysqli->error);
         $sql="UPDATE solution SET problem_id=NULL WHERE problem_id=$id";

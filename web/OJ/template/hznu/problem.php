@@ -67,26 +67,34 @@ function sss($str){
 <div class="am-container">
   <?php
   //the header of problem page
-  if(!isset($_GET['cid'])) {
+  /*if(!isset($_GET['cid'])) {
     echo <<<HTML
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
-      <li class="am-active"><a href="/OJ/problemset.php">Problems</a></li>
-      <li><a href="/OJ/status.php">Status</a></li>
-      <li><a href="/OJ/ranklist.php">Standings</a></li>
+      <li class="am-active"><a href="/OJ/problemset.php">$MSG_PROBLEM</a></li>
+      <li><a href="/OJ/status.php">$MSG_STATUS</a></li>
+      <li><a href="/OJ/ranklist.php">$MSG_RANKLIST</a></li>
     </ul>
   </div>
 HTML;
   }
-  else {
+  else */
+  if(isset($_GET['cid'])){
     echo "<ul class=\"am-nav am-nav-tabs\" style='margin-top: 30px;'>";
-    for($i = 0 ; $i<$problem_cnt ; ++$i) {
+	foreach($pid_nums as $num){
+		$label = PID($num[0]);
+        $class = ($num[0] == $pid)? "am-active": "";
+		echo <<<HTML
+  <li class="$class"><a href="problem.php?cid=$cid&pid=$num[0]">$label</a></li>
+HTML;
+	}
+    /*for($i = 0 ; $i<$problem_cnt ; ++$i) {
       $label = PID($i);
       $class = $i == $pid? "am-active": "";
       echo <<<HTML
   <li class="$class"><a href="problem.php?cid=$cid&pid=$i">$label</a></li>
 HTML;
-    }
+    } */
     echo "</ul>";
   }
   ?>
@@ -97,7 +105,7 @@ HTML;
     <!-- is contest problem -->
       <?php
       if($has_accepted) {
-          echo "<span class='am-badge am-badge-success am-text-lg'><i class='am-icon-check'></i>AC</span>";
+          echo "<span class='am-badge am-badge-success am-text-lg'><i class='am-icon-check'></i>$MSG_AC</span>";
       }
       $now=time();
       ?>
@@ -115,7 +123,7 @@ HTML;
   <form id='tagForm' class='am-form am-form-inline' style="text-align:center" action=''>
     <div class="am-form-group">
         <?php
-        echo "<span><i class='am-icon-tag'></i> Tags: </span>";
+        echo "<span><i class='am-icon-tag'></i> $MSG_TAGS: </span>";
         for ($i=0; $i<count($tag); ++$i) {
             if ($i == 0) echo "&nbsp;&nbsp;<span class='am-badge am-badge-danger'>".$tag[$i]."</span>";
             else if ($i == 1) echo "&nbsp;&nbsp;<span class='am-badge am-badge-warning'>".$tag[$i]."</span>";
@@ -130,7 +138,7 @@ HTML;
       if ($is_solved) {
           ?>
         &nbsp;&nbsp;
-        <div class='am-form-group'><span> My tag: &nbsp;</span></div>
+        <div class='am-form-group'><span><?php echo  $MSG_MY.$MSG_TAGS ?>: &nbsp;</span></div>
         <div class='am-form-group'>
           <input class='col-sm-9' type='text' style="width:80px;height:20px;font-size:10px" value='<?php echo $my_tag; ?>' name='myTag'></input>
         </div>
@@ -146,13 +154,13 @@ HTML;
     
     
     <div style="text-align:center;">
-      Time Limit:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span>
-      &nbsp;&nbsp;&nbsp;&nbsp; Memory Limit: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
+      <?php echo $MSG_Time_Limit ?>:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span>
+      &nbsp;&nbsp;&nbsp;&nbsp; <?php echo $MSG_Memory_Limit ?>: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
         <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
     </div>
     <div style="text-align:center;">
-      Submission：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
-      AC：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <?php echo $MSG_SUBMISSION ?>：<span class="am-badge am-badge-secondary"><?php echo $submit_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <?php echo $MSG_Accepted ?>：<span class="am-badge am-badge-success"><?php echo $ac_num?></span>&nbsp;&nbsp;&nbsp;&nbsp;
       <?php if(!isset($contest_score)):?>
         <?php
         $score_class = "am-badge-default";
@@ -161,9 +169,9 @@ HTML;
         else if ($row->score >= 46) $score_class='am-badge-primary';
         else if ($row->score >= 28) $score_class='am-badge-secondary';
         ?>
-        Score：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
+        <?php echo $MSG_SCORE ?>：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
       <?php else:?>
-        Score：<span class='am-badge am-badge-success'><?php echo $contest_score?></span>
+        <?php echo $MSG_SCORE ?>：<span class='am-badge am-badge-success'><?php echo $contest_score?></span>
       <?php endif;?>
       
     </div>
@@ -179,14 +187,14 @@ HTML;
       }
       ?>
     " style="color:white">
-        <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
+        <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
         if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
-            <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
+            <a href="problemstatus.php?id={$row->problem_id}" style="color:white" target="_blank">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
-                Codes
+                $MSG_Codes
               </button>
             </a>
 HTML;
@@ -195,12 +203,12 @@ HTML;
             echo<<<HTML
           <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
-              Edit
+              $MSG_EDIT
             </button>
           </a>
-          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white' target="_blank">
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
-              Test Data
+              $MSG_TestData
             </button>
           </a>
 
@@ -215,7 +223,7 @@ HTML;
         //编码转义未解决！
           //$tt=htmlspecialchars($row->description);
           echo <<<HTML
-          <h2>Description</h2>
+          <h2>$MSG_Description</h2>
           <p>
           $str
           </p>
@@ -226,7 +234,7 @@ HTML;
       $str=sss($row->input);
       if($str) {
           echo <<<HTML
-          <h2>Input</h2>
+          <h2>$MSG_Input</h2>
           <p>
           $str
           </p>
@@ -238,7 +246,7 @@ HTML;
       $str=sss($row->output);
       if($str) {
           echo <<<HTML
-          <h2>Output</h2>
+          <h2>$MSG_Output</h2>
           <p>
           $str
           </p>
@@ -261,9 +269,9 @@ HTML;
           if($text_input || $text_output) {
               $html_samples.= <<<HTML
                 <div class="sample-outer">
-                  <div class="sample-title">input:</div>
+                  <div class="sample-title">$MSG_Sample_Input:</div>
                   <div class="sample-bg"><span class="sampledata">$text_input</span></div>
-                  <div class="sample-title">output:</div>
+                  <div class="sample-title">$MSG_Sample_Output:</div>
                   <div class="sample-bg"><span class="sampledata">$text_output</span></div>
                 </div>
 HTML;
@@ -272,7 +280,7 @@ HTML;
       $str=sss($html_samples);
       if($str) {
           echo <<<HTML
-          <h2>Samples</h2>
+          <h2>$MSG_Samples</h2>
           <p>
           $str
           </p>
@@ -285,7 +293,7 @@ HTML;
       $str=sss($row->hint);
       if($str) {
           echo <<<HTML
-          <h2>Hint</h2>
+          <h2>$MSG_HINT</h2>
           <p>
           $str
           </p>
@@ -297,7 +305,7 @@ HTML;
       $str=sss($row->author);
       if($str) {
           echo <<<HTML
-          <h2>Author</h2>
+          <h2>$MSG_AUTHOR</h2>
             <div><p>
               <a href='problemset.php?search=$row->author'>$str</a>
             </p></div>
@@ -310,7 +318,7 @@ HTML;
           $str=sss($row->source);
           if($str) {
               echo <<<HTML
-                <h2>Source</h2>
+                <h2>$MSG_Source</h2>
                 <div><p>
                   <a href='problemset.php?search=$row->source'>$str</a>
                 </p></div>
@@ -320,14 +328,14 @@ HTML;
       ?>
     
       <?php if ($can_see_video || HAS_PRI("watch_solution_video")): ?>
-        <h2>Solution Video</h2>
+        <h2><?php echo $MSG_SolutionVideo ?></h2>
           <?php if (file_exists("upload/video/".md5($real_id)."pfb.mp4")): ?>
           <form action="solution_video.php" method="POST">
             <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
-            <button class="am-btn am-btn-success am-btn-lg">Click To Watch The Video</button>
+            <button class="am-btn am-btn-success am-btn-lg"><?php echo $MSG_WatchVideo ?></button>
           </form>
           <?php else: ?>
-          <button disabled="1" class="am-btn am-btn-default am-btn-lg">No Solution Video</button>
+          <button disabled="1" class="am-btn am-btn-default am-btn-lg"><?php echo $MSG_NO.$MSG_SolutionVideo ?></button>
           <?php endif ?>
         <div style="display: block; color: grey; padding-bottom: 20px;">
           *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
@@ -345,14 +353,14 @@ HTML;
       }
       ?>
     " style="color:white">
-        <button type="button" class="am-btn am-btn-sm am-btn-success ">Submit</button>
+        <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
         if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
-                Codes
+                $MSG_Codes
               </button>
             </a>
 HTML;
@@ -361,12 +369,12 @@ HTML;
             echo<<<HTML
           <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
-              Edit
+              $MSG_EDIT
             </button>
           </a>
           <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
-              Test Data
+              $MSG_TestData
             </button>
           </a>
 
