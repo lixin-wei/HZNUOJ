@@ -1,8 +1,10 @@
 <?php
 $title="Maintainer List";
 require_once('include/static.php'); 
+if (!session_id()) @session_start();
+if (isset($_SESSION['OJ_LANG'])) $OJ_LANG=$_SESSION['OJ_LANG'];
 require_once('include/setlang.php'); 
-require_once('template/hznu/header.php'); 
+require("template/".$OJ_TEMPLATE."/header.php");
 ?>
     <style>
         .box{
@@ -174,7 +176,8 @@ require_once('template/hznu/header.php');
             </table>
         </div>
     </div>
-<?php include "template/hznu/footer.php" ?>
+
+<?php require("template/".$OJ_TEMPLATE."/footer.php"); ?>
 
 
 
