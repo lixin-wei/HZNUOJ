@@ -22,7 +22,7 @@
   static  $OJ_ADMIN="root@localhost";//管理员email
   static  $OJ_DATA = "/home/judge/data";//测试数据所在目录，实际位置。
   static  $OJ_ONLINE=false;//是否使用在线监控，需要消耗一定的内存和计算，因此如果并发大建议关闭
-  static  $OJ_LANG="en";//设置默认显示的语言，中文为cn，英文为cn
+  static  $OJ_LANG="en";//设置默认显示的语言，中文为cn，英文为en
   static  $OJ_SIM=true;//是否显示相似度检测的结果。
   static  $OJ_DICT=true;//是否启用在线英字典
   static  $OJ_LANGMASK=979967; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
@@ -37,7 +37,7 @@
   static  $OJ_SAE=false; //是否是在新浪的云平台运行web部分
   static  $OJ_VCODE = true; // 是否开启验证码
   static  $OJ_APPENDCODE = true; // 是否启用自动添加代码，启用的话，提交时会参考$OJ_DATA对应题目的目录里是否有append.c、prepend.c一类的文件，
-                                 //有的话会把其中代码附加到对应语言的答案之前（prepend.c加到C语言代码之前）或之后（append.c加到C语言代码之后），
+                                 //有的话会把其中代码附加到对应语言的提交代码之前（prepend.c加到C语言代码之前）或之后（append.c加到C语言代码之后），
                                  //C++代码是append.cc、append.cc等，对应的后缀名见/include/const.inc.php的$language_ext数组，
                                  //巧妙使用可以指定main函数而要求学生编写main部分调用的函数。
   static  $OJ_MEMCACHE=false;//是否使用memcache作为页面缓存，如果不启用则用/cache目录
@@ -64,7 +64,7 @@
                                    //开放模式，值为"off"，注册无限制，账号注册后立即激活
                                    //审核模式，值为"on"，注册无限制，账号注册后需要管理员后台审核激活
                                    //密码模式，值为"pwd"，凭后台设置的班级+注册码进行注册（注册码可设定注册次数），账号注册后立即激活
-                                   //密码+审核模式，值为"pwd+confirm"，基础功能同密码模式，但是账号注册后并立即激活，而是还需管理员后台审核激活
+                                   //密码+审核模式，值为"pwd+confirm"，基础功能同密码模式，但是账号注册后并不是立即激活，而是还需管理员后台审核激活
   static  $OJ_NEED_CLASSMODE=true;//是否开启班级模式，包括显示班级、学号、真名
 
   /* Email configuration */
