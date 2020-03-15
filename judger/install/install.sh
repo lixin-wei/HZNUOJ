@@ -14,7 +14,7 @@ DBPASS=root
 
 
 #try install tools
-deps="make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli php-xml mono-mcs subversion"
+deps="make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli php-xml mono-mcs subversion libexplain-dev"
 apt-get update
 apt-get -y install $deps
 apt-get purge -y --auto-remove $buildDeps

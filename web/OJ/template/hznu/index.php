@@ -97,6 +97,14 @@ HTML;
 </div>
 <?php require_once("footer.php") ?>
 
+<script type="text/javascript">
+    $('div.link').click(function(){
+        window.open('http://www.pixiv.net/member_illust.php?mode=medium&illust_id=13212258');
+        //window.location.href="http://pixiv.net/member.php?id=430651";
+    });
+</script>
+
+
 
 <script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
 <!-- <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script> -->
