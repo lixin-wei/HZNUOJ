@@ -12,7 +12,10 @@
 <?php
 
 require_once('../include/db_info.inc.php');
-
+if (!HAS_PRI("inner_function")) {
+  echo "Permission denied!";
+  exit(1);
+}
 // 获取解题数大于10的用户数量存入user_cnt_divisor
 $sql = "SELECT user_id FROM users WHERE solved>10";
 $result  = $mysqli->query($sql) or die($mysqli->error);
