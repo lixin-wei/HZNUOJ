@@ -1,7 +1,9 @@
 <?php 
-
-require_once "../include/db_info.inc.php";
-
+require_once("../include/db_info.inc.php");
+if (!HAS_PRI("inner_function")) {
+  echo "Permission denied!";
+  exit(1);
+}
 ?>
 
 
