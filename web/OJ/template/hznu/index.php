@@ -177,7 +177,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
             series: [
                 {
                     name: '<?php echo $MSG_SUNMITTOTAL ?>',
-                    barWidth : 5,
+                    barWidth : 8,
                     type: 'bar',				          	
                     stack: 'total',
 				          	data: [<?php echo $series_total_submit; ?>]
