@@ -22,7 +22,7 @@
   static  $OJ_ADMIN="root@localhost";//管理员email
   static  $OJ_DATA = "/home/judge/data";//测试数据所在目录，实际位置。
   static  $OJ_ONLINE=false;//是否使用在线监控，需要消耗一定的内存和计算，因此如果并发大建议关闭
-  static  $OJ_LANG="cn";//设置默认显示的语言，中文为cn，英文为cn
+  static  $OJ_LANG="en";//设置默认显示的语言，中文为cn，英文为cn
   static  $OJ_SIM=true;//是否显示相似度检测的结果。
   static  $OJ_DICT=true;//是否启用在线英字典
   static  $OJ_LANGMASK=979967; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
