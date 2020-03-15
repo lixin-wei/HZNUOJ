@@ -12,11 +12,13 @@
 <footer class="blog-footer">
   <hr />
   <a href="https://github.com/lixin-wei/HZNUOJ" target="_blank">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
-  <a href="/OJ/maintainer-list.php" target="_blank">--- <?php echo $MSG_MAINTAINER ?> ---</a>
-  <?php 
-  if (isset($OJ_LANG) && $OJ_LANG=="cn") echo "<a href='/OJ/setlang.php?lang=en'><span class='am-icon-eye'></span> English</a>";
-  else echo "<a href='/OJ/setlang.php?lang=cn'><span class='am-icon-eye'></span> 简体中文</a>";
-  ?><br>
+  <div>
+  <span>-</span>
+  <a href='/OJ/setlang.php?lang=en'>English</a>
+  <span>-</span>
+  <a href='/OJ/setlang.php?lang=cn'>简体中文</a>
+  <span>-</span>
+  </div>
   ★<?php echo $MSG_SERVERTIME ?>: <span id='footerdate'><?php echo date('Y-m-d H:i:s',time()); ?></span>★
   
   <!-- go to top btn START -->
