@@ -184,9 +184,11 @@ if(isset($_POST['classList'])) {
             /* 计算图表相关信息 end */
             if($first){
                 $first=0;
-                echo "<td>".$user."</td><td>".$class."</td><td>".$real_name."</td><td>".$stu_id."</td>";
+                echo "<td>".htmlentities($user)."</td><td>".htmlentities($class)."</td><td>".htmlentities($real_name)."</td><td>".htmlentities($stu_id)."</td>";
             }
-            echo "<td>".$total_ac."</td><td>".$solved_score."</td><td>"."$dif_score"."</td><td>".$act_score."</td><td>".$idp_score."</td><td>".$avg_score."</td>";
+            echo "<td>".htmlentities($total_ac)."</td><td>".htmlentities($solved_score)."</td><td>"
+            .htmlentities($dif_score)."</td><td>".htmlentities($act_score)."</td><td>"
+            .htmlentities($idp_score)."</td><td>".htmlentities($avg_score)."</td>";
         }
         echo "</tr>";
     }
