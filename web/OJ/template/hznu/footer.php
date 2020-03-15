@@ -12,6 +12,7 @@
 <footer class="blog-footer">
   <hr />
   <a href="https://github.com/lixin-wei/HZNUOJ" target="_blank">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
+  <a href="/OJ/maintainer-list.php" target="_blank">--- <?php echo $MSG_MAINTAINER ?> ---</a><br />
   <div>
   <span>-</span>
   <a href='/OJ/setlang.php?lang=en'>English</a>
