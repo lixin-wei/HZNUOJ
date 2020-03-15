@@ -254,9 +254,9 @@
       $view_status[$i][3] = "----";//Unknown
     } else if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
       //only user himself and admin can see CE info.
-        $view_status[$i][3] .= "<a target='_blank'  href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."&lt;</a>";
+        $view_status[$i][3] .= "<a target='_blank'  href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
     } else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others WA/PE/RE/TE
-      $view_status[$i][3] .= "<a target='_blank'  href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."&lt;</a>";
+      $view_status[$i][3] .= "<a target='_blank'  href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
     } else if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
         $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>*".$judge_result[$row['result']].$mark."</span>";
         if(HAS_PRI("see_compare")){

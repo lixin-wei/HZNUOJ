@@ -148,7 +148,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
                 x: 50,
                 x2: 50, y2: 50
             },
-            color: ['#3398DB','red','#7FFF00','grey'],
+            color: ['#3398DB','#dd514c','#5eb95e','grey'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -177,7 +177,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
             series: [
                 {
                     name: '<?php echo $MSG_SUNMITTOTAL ?>',
-                    barWidth : 5,
+                    barWidth : 8,
                     type: 'bar',				          	
                     stack: 'total',
 				          	data: [<?php echo $series_total_submit; ?>]

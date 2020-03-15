@@ -40,7 +40,14 @@ cp -R HZNUOJ $WEBBASE
 #create work dir set default conf
 mkdir -p /home/judge
 mkdir -p /home/judge/etc
+
+#make data for problem 1000
 mkdir -p /home/judge/data/1000
+pushd /home/judge/data/1000
+    echo "1 2" > sample0.in
+    echo "3" > sample0.out
+popd
+
 mkdir -p /home/judge/log
 mkdir -p /home/judge/run0
 mkdir -p /home/judge/run1
@@ -51,7 +58,7 @@ cp java0.policy  judge.conf /home/judge/etc
 chown -R judge /home/judge
 chgrp -R $APACHEUSER /home/judge/data
 chgrp -R root /home/judge/etc /home/judge/run?
-chmod 775 /home/judge /home/judge/data /home/judge/etc /home/judge/run?
+chmod 775 -R /home/judge /home/judge/data /home/judge/etc /home/judge/run?
 
 #boot up judged
 cp judged /etc/init.d/judged

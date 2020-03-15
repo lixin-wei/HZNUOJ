@@ -55,7 +55,7 @@
   $MSG_LEVEL = "Level";
   $MSG_STRENGTH = "Strength";
   $MSG_RANKTIPS = "Standings won't update automatically, Please visit your user info page to update your information.";
-  $MSG_Wrong = " Wrong";
+  $MSG_Wrong = "Wrong";
   
   // contestRank.php
   $MSG_USER = "User";
