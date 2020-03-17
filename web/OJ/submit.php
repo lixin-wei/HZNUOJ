@@ -166,7 +166,7 @@ if ($len>65536){
 }
 
 // last submit
-$submit_interval_limit=30;
+$submit_interval_limit=3;
 $now=strftime("%Y-%m-%d %X",time()-$submit_interval_limit);
 $sql="SELECT `in_date` from `solution` where `user_id`='$user_id' and in_date>'$now' order by `in_date` desc limit 1";
 $res=$mysqli->query($sql);
