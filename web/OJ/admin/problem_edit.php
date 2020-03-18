@@ -43,7 +43,7 @@ if(!$add_problem_mod){
 }
 ?>
 <?php if (isset($_GET['id']) || $add_problem_mod): ?>
-  <title><?php
+  <title><?php echo $html_title;
       if($add_problem_mod){
           echo "$MSG_ADD$MSG_PROBLEM";
       }
