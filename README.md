@@ -73,14 +73,14 @@ docker pull wlx65003/hznuoj
 ### 启动容器
 
 ```
-docker run -it --rm -p 90:80 --cap-add=SYS_ADMIN hznuoj:latest
+docker run -it --rm -p 90:80 --privileged hznuoj:latest
 ```
 
 其中`-p 90:80`表示把容器的80端口映射到宿主机的90端口，可自行修改，可以直接改成http默认的80端口以省去网址里的端口号。
 
 `--rm` 表示运行一次就删除容器，如果你想长期运行，当虚拟机用，需要去掉。
 
-`--cap-add=SYS_ADMIN` 不能省略，否则判题机会权限不足，判题功能无法正常运作。
+`--privileged` 不能省略，否则判题机会权限不足，判题功能无法正常运作。
 
 然后访问localhost:90即可。
 
