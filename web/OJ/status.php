@@ -248,19 +248,19 @@
     }
     $info_can_be_read = ( $WA_or_PE || $row['result']==10 || $row['result']==13); // 属于可看类型且
 
-
+    $contest = $cid  ? "&cid=$cid" : "";
     $view_status[$i][3]="<span class='hidden' style='display:none' result='".$row['result']."' ></span>";
     if($lock&&$lock_t<=strtotime($row['in_date'])&&$row['user_id']!=$_SESSION['user_id'] && !HAS_PRI("edit_contest")){
       $view_status[$i][3] = "----";//Unknown
     } else if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
       //only user himself and admin can see CE info.
-        $view_status[$i][3] .= "<a target='_blank'  href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
+        $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
     } else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others WA/PE/RE/TE
-      $view_status[$i][3] .= "<a target='_blank'  href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
+      $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
     } else if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
         $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>*".$judge_result[$row['result']].$mark."</span>";
         if(HAS_PRI("see_compare")){
-          $view_status[$i][3].= "<a target='_blank' href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
+          $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
 		} else {
           $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."(".$row['sim']."%)</span>";
 		}
@@ -296,9 +296,9 @@
         $view_status[$i][6]= "<a target='_blank' href=showsource.php?id=".$row['solution_id'].">".$language_name[$row['language']]."</a>";
         if($row["problem_id"]>0){
           if (isset($cid)) {
-            $view_status[$i][6].= "/<a target='_blank' href=\"submitpage.php?cid=".$cid."&pid=".$row['num']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
+            $view_status[$i][6].= "/<a href=\"submitpage.php?cid=".$cid."&pid=".$row['num']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
           }else{
-            $view_status[$i][6].= "/<a target='_blank' href=\"submitpage.php?id=".$row['problem_id']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
+            $view_status[$i][6].= "/<a href=\"submitpage.php?id=".$row['problem_id']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
           }
         }
       } else { // 不能查看代码的情况
