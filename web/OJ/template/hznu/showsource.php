@@ -91,14 +91,21 @@ HTML;
           // ****mail function currently stashed
           // if($view_user_id!=$_SESSION['user_id'])
           //   echo "<a href='mail.php?to_user=$view_user_id&title=$MSG_SUBMIT $id'>Mail the auther</a>";
-          $brush=strtolower($language_name[$slanguage]);
-        if ($brush=='pascal') $brush='delphi';
-        if ($brush=='obj-c') $brush='c';
-        if ($brush=='freebasic') $brush='vb';
-        if ($brush=='swift') $brush='csharp';
-        echo "<pre style='font-size:14px; background-color: transparent;'><code style='background-color: transparent;'>";
+        echo "<pre class=\"brush:".$language_brush[$slanguage].";\">";
         echo htmlentities(str_replace("\r\n","\n",$view_source),ENT_QUOTES,"utf-8");
-        echo "</code></pre>";
+        echo "\n/**************************************************************\n";
+        $nick = $is_temp_user ? $tuser_nick : $user_nick;
+        $nick = $nick ? "($nick)" : "";
+        $ptitle = $ptitle ? "($ptitle)" : "";
+        echo "\tProblem: $pid $ptitle\n\tUser: $suser_id $nick\n";
+        echo "\tLanguage: ".$language_name[$slanguage]."\n\tResult: ".$judge_result[$sresult]."\n";
+        echo "\tDate:".$sindate."\n";
+        if ($sresult==4){
+        echo "\tTime:".$stime." ms\n";
+        echo "\tMemory:".$smemory." KB\n";
+        }
+        echo "****************************************************************/\n";
+        echo "</pre>";
 
       } else {
         echo "<div am-text-center><h2>I am sorry, You could not view this code!</h2></div>";
@@ -112,29 +119,24 @@ HTML;
 <!-- Placed at the end of the document so the pages load faster -->
 
 <?php include "footer.php" ?>
-<!-- highlight.js START-->
-<!-- <link href='highlight/styles/github-gist.css' rel='stylesheet' type='text/css'/> -->
-<!-- <script src='highlight/highlight.pack.js' type='text/javascript'></script> -->
-<!-- <script src='highlight/highlightjs-line-numbers.min.js' type='text/javascript'></script> -->
-
-<link href="/OJ/plugins/highlight/styles/github-gist.css" rel="stylesheet">
-<script src="/OJ/plugins/highlight/highlight.pack.js"></script>
-<script src="/OJ/plugins/highlight/highlightjs-line-numbers.min.js"></script>
-<style type="text/css">
-  .hljs-line-numbers {
-      text-align: right;
-      border-right: 1px solid #ccc;
-      color: #999;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-  }
-</style>
-<script>
-  hljs.initHighlightingOnLoad();
-  hljs.initLineNumbersOnLoad();
+<!-- SyntaxHighlighter START-->
+<link href='/OJ/plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='/OJ/plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script src='/OJ/plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushJava.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushJScript.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushPython.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
+<script src='/OJ/plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<script language='javascript'>
+SyntaxHighlighter.config.bloggerMode = false;
+SyntaxHighlighter.defaults['quick-code'] = true;//启用“双击”快速代码复制和粘贴。
+SyntaxHighlighter.all();
 </script>
-<!-- highlight.js END-->
+<!-- SyntaxHighlighter END-->

@@ -24,7 +24,12 @@
   }
   /* 获取solution信息 start */
   $sid=strval(intval($_GET['id']));
-  $sql="SELECT s.*,c.`title` FROM `solution` AS s LEFT JOIN `contest` AS c ON s.`contest_id`=c.`contest_id` WHERE s.`solution_id`='".$sid."'";
+  $sql="SELECT s.*,c.`title` AS ctitle, p.`title` AS ptitle,u.`nick` AS unick, t.`nick` AS tnick FROM `solution` AS s 
+  LEFT JOIN `contest` AS c ON s.`contest_id`=c.`contest_id` 
+  LEFT JOIN `problem` AS p ON s.`problem_id`=p.`problem_id` 
+  LEFT JOIN `users` AS u ON s.`user_id`=u.`user_id` 
+  LEFT JOIN `team` AS t ON s.`user_id`=t.`user_id` 
+  WHERE s.`solution_id`='".$sid."'";
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
   $slanguage=$row->language;
@@ -34,11 +39,16 @@
   $view_user_id=$suser_id=$row->user_id;
   $pid = $row->problem_id;
   $cid = $row->contest_id;
-  $ctitle = $row->title;
+  $ctitle = $row->ctitle;
+  $ptitle = $row->ptitle;
+  $user_nick = $row->unick;
+  $tuser_nick = $row->tnick;
+  $sindate=$row->in_date;
   $num = $row->num;
   $result->free();
+  $is_temp_user = false;
   if($cid) {
-      $sql = "SELECT COUNT(1) FROM team WHERE contest_id=$cid AND user_id='$suser_id'";
+      $sql = "SELECT COUNT(1) FROM team WHERE contest_id='$cid' AND user_id='$suser_id'";
       $is_temp_user = $mysqli->query($sql)->fetch_array()[0];
   }
 
@@ -48,7 +58,7 @@
 
   $view_source="No source code available!";
   
-  $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`=".$sid;
+  $sql="SELECT `source` FROM `source_code_user` WHERE `solution_id`='$sid'";
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
   if($row) $view_source=$row->source;
