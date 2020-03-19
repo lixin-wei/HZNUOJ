@@ -236,8 +236,8 @@ function list_dir($dir)
 	echo "<BR>";
 	
 	// PARENT DIR
-	// echo "<A style='margin:2px' HREF=\"".make_link("list",$dir_up,NULL)."\" title=\"".$GLOBALS["messages"]["uplink"]."\">";
-	// echo "<span class='glyphicon glyphicon-arrow-up' style='font-size: 18px;'></span>";
+	echo "<A style='margin:2px' HREF=\"".make_link("list",$dir_up,NULL)."\" title=\"".$GLOBALS["messages"]["uplink"]."\">";
+	echo "<span class='glyphicon glyphicon-arrow-up' style='font-size: 18px;'></span>";
 	// echo "</A>";
 	// HOME DIR
 	// echo "<A style='margin:2px' HREF=\"".make_link("list",NULL,NULL)."\" title=\"".$GLOBALS["messages"]["homelink"]."\">";
