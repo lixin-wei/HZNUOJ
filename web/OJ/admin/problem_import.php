@@ -32,10 +32,10 @@ if (!isset($OJ_SAE) || !$OJ_SAE) {
           you can't use import function at this time.<br></font>";
     $show_form = false;
   }
-  mkdir("../upload");
+  //mkdir("../upload");
   if (!writable("../upload")) {
 
-    echo "<font color='red'>../upload is not writable, <b>chmod 770</b> to it.<br></font>";
+    echo "<font color='red'>../upload is not writable, <b>chmod 770 && chgrp -R www-data </b> to it.<br></font>";
     $show_form = false;
   }
 }
