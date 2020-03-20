@@ -43,7 +43,6 @@ function generate_url($data){
         <?php if(isset($_GET['my'])){
 			echo "<input type='hidden' name='my' value=''>";
 		}?>
-        <!-- <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">-->
         <div class="am-u-sm-9">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>

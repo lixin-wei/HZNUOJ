@@ -47,7 +47,6 @@ function generate_url($data){
     <div class="am-g">
       <div class="am-u-md-12">
         <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
-          <!-- <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">-->
           <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_PROBLEM_ID ?>" name="problem_id" value="<?php echo $args['problem_id']?>"></div>
           <div class="am-form-group">
             <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_USER_ID ?>" name="user_id" value="<?php echo $args['user_id']?>">

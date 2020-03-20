@@ -55,7 +55,6 @@ function generate_url($data){
     <!-- 用户查找 start -->
     <div class='am-u-md-6'>
       <form class="am-form am-form-inline">
-        <!-- <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">-->
         <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
         <div class='am-form-group'>
           <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' name='class' style='width:110px'>
