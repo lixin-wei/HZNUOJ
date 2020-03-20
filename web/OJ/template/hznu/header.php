@@ -82,7 +82,7 @@
       }
     </style>
   </head>
-  <body class='am-with-topbar-fixed-top bg'>
+  <body class='am-with-topbar-fixed-top bg' style="padding-top: 40px;">
   <header class="am-topbar-inverse am-topbar-fixed-top">
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-primary am-show-sm-only" data-am-collapse="{target: '#collapse-head'}">
       <span class="am-sr-only">导航切换</span>

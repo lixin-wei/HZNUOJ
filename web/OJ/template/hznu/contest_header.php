@@ -102,7 +102,7 @@ if(isset($_GET['cid'])){
       }
     </style>
   </head>
-<body style="padding-top: 51px;">
+<body style="padding-top: 50px;">
 <?php 
     if(isset($_GET['cid']))
       $cid=intval($_GET['cid']);
@@ -192,7 +192,6 @@ BOT;
     font-weight: bold;
   }
 </style>
-<hr/>
 <div class="am-container" style="margin-top: 20px;">
   <div class="am-g" style="padding-bottom: 7px;">
     <div class="am-u-sm-3">
