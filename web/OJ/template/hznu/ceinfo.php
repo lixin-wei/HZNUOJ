@@ -53,7 +53,7 @@
     pats[14]=/warning.*declaration of ‘main’ with no type/;
     exps[14]="C++标准中，main函数必须有返回值。";
     pats[15]=/‘.*’ was not declared in this scope/;
-    exps[15]="变量或函数没有声明过，检查下是否拼写错误，或者忘记include正确的头文件！<br>另外C++代码不要忘记using namespace std;";
+    exps[15]="变量或函数没有声明过，检查下是否拼写错误，或者忘记include正确的头文件！另外C++代码不要忘记“using namespace std;”。";
     pats[16]=/main’ must return ‘int’/;
     exps[16]="在标准C语言中，main函数返回值类型必须是int，教材和VC中使用void是非标准的用法。";
     pats[17]=/printf.*was not declared in this scope/;
@@ -156,6 +156,47 @@
     exps[65]="include语句需要给出文件名，从百度结果中复制来的代码很可能缺少正确的文件名，因为<>被识别为HTML标记";
     pats[66]=/No such file or directory/;
     exps[66]="请include正确的头文件。";
+    //针对不同版本OJ的CE错误信息中单引号‘’和''不一致导致原先正则pats[]匹配不到的情况，补充将‘’换成''后的正则表达式pats2[]，以适配不同版本
+    var pats2=new Array();
+    var exps2=new Array();
+    pats2[0]=/';' expected/;   //pats[10]
+    exps2[0]=exps[10];
+    pats2[1]=/expected '.*' at end of input/;   //pats[12]
+    exps2[1]=exps[12];
+    pats2[2]=/invalid conversion from '.*' to '.*'/;   //pats[13]
+    exps2[2]=exps[13];
+    pats2[3]=/warning.*declaration of 'main' with no type/;   //pats[14]
+    exps2[3]=exps[14];
+    pats2[4]=/'.*' was not declared in this scope/;   //pats[15]
+    exps2[4]=exps[15];
+    pats2[5]=/main' must return 'int'/; //pats[16]
+    exps2[5]=exps[16];
+    pats2[6]=/:.*__int64' undeclared/;   //pats[19]
+    exps2[6]=exps[19];
+    pats2[7]=/:.*expected ';' before/;   //pats[20]
+    exps2[7]=exps[20];
+    pats2[8]=/'import' does not name a type/;   //pats[28]
+    exps2[8]=exps[28];
+    pats2[9]=/asm' undeclared/;   //pats[29]
+    exps2[9]=exps[29];
+    pats2[10]=/expected '=', ',', ';', 'asm' or '__attribute__' before 'namespace'/;   //pats[35]
+    exps2[10]=exps[35];
+    pats2[11]=/stray '\\[0123456789]*' in program/; //pats[36]
+    exps2[11]=exps[36];
+    pats2[12]=/expected '\)' before '.*' token/;   //pats[41]
+    exps2[12]=exps[41];
+    pats2[13]=/需要 ';'/;   //pats[48]
+    exps2[13]=exps[48];
+    pats2[14]=/expected '=', ',', ';', 'asm' or '__attribute__' before '{' token/;   //pats[52]
+    exps2[14]=exps[52];
+    pats2[15]=/expected expression before '%' token/;   //pats[55]
+    exps2[15]=exps[55];
+    pats2[16]=/ expected expression before '.*' token/;   //pats[56]
+    exps2[16]=exps[56];
+    pats2[17]=/redefinition of '.*main(.*)'/;   //pats[58]
+    exps2[17]=exps[58];
+    pats2[18]=/expected unqualified-id before '\[' token/;   //pats[60]
+    exps2[18]=exps[60];
 
     function explain(){ 
     //alert("asdf");
@@ -169,6 +210,14 @@
     expmsg+=ret+"："+exp+"<br>";
     }
     }
+    for(var i=0;i<pats2.length;i++){
+        var pat=pats2[i];
+        var exp=exps2[i];
+        var ret=pat.exec(errmsg);
+        if(ret){
+            expmsg+=ret+"："+exp+"<br>";
+        }
+      }
     document.getElementById("errexp").innerHTML=expmsg;
     //alert(expmsg);
     }
