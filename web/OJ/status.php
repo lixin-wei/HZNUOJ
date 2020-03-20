@@ -93,9 +93,9 @@
   $order_str=" ORDER BY `solution_id` DESC ";
   //check the cid arg end
   // check the top arg
-  if (isset($_GET['top'])&&$_GET['problem_id']!=""){
+  if (isset($_GET['top'])){
     $top=strval(intval($_GET['top']));
-    if ($top!=-1) $sql=$sql."AND `solution_id`<='".$top."' ";
+    if ($top>0) $sql=$sql."AND `solution_id`<='".$top."' ";
   }
 
   // check the problem arg
