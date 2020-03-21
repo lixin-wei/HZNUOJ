@@ -9,33 +9,32 @@ if (!HAS_PRI("rejudge")) {
 	require_once("../include/check_post_key.php");
 	if (isset($_POST['rjpid'])){
 		$rjpid=intval($_POST['rjpid']);
-		$sql="UPDATE `solution` SET `result`=1 WHERE `problem_id`=".$rjpid;
+		$sql="UPDATE `solution` SET `result`=1 WHERE `problem_id`='$rjpid'";
 		$mysqli->query($sql) or die($mysqli->error);
-		$sql="delete from `sim` WHERE `s_id` in (select solution_id from solution where `problem_id`=".$rjpid.")";
+		$sql="delete from `sim` WHERE `s_id` in (select solution_id from solution where `problem_id`='$rjpid')";
 		$mysqli->query($sql) or die($mysqli->error);
 		$url="../status.php?problem_id=".$rjpid;
 		echo $MSG_REJUDGE.$MSG_PROBLEM_ID.":".$rjpid;
 		echo "<script>location.href='$url';</script>";
-	}
-	else if (isset($_POST['rjsid'])){
+	} else if (isset($_POST['rjsid'])){
 		$rjsid=intval($_POST['rjsid']);
-		$sql="UPDATE `solution` SET `result`=1 WHERE `solution_id`=".$rjsid;
+		$sql="UPDATE `solution` SET `result`=1 WHERE `solution_id`='$rjsid'";
 		$mysqli->query($sql) or die($mysqli->error);
-		$sql="delete from `sim` WHERE `s_id`=".$rjsid;
+		$sql="delete from `sim` WHERE `s_id`='$rjsid'";
 		$mysqli->query($sql) or die($mysqli->error);
-		$sql="select contest_id from `solution` WHERE `solution_id`=".$rjsid;
+		$sql="select contest_id from `solution` WHERE `solution_id`='$rjsid'";
 		$data=$mysqli->query($sql);
 		$cid=intval($data->fetch_row()[0]);
 		if ($cid>0)
-			$url="../status.php?cid=".$cid."&top=".($rjsid+1);
+			$url="../status.php?cid=".$cid."&top=".($rjsid);
 		else
-			$url="../status.php?top=".($rjsid+1);
+			$url="../status.php?top=".($rjsid);
 		echo $MSG_REJUDGE.$MSG_RUNID.":".$rjsid;
 		$data->free();
 		echo "<script>location.href='$url';</script>";
-	}else if (isset($_POST['rjcid'])){
+	} else if (isset($_POST['rjcid'])){
 		$rjcid=intval($_POST['rjcid']);
-		$sql="UPDATE `solution` SET `result`=1 WHERE `contest_id`=".$rjcid;
+		$sql="UPDATE `solution` SET `result`=1 WHERE `contest_id`='$rjcid'";
 		$mysqli->query($sql) or die($mysqli->error);
 		$url="../status.php?cid=".($rjcid);
 		echo $MSG_REJUDGE.$MSG_CONTEST.$MSG_ID.":".$rjcid;
@@ -53,21 +52,21 @@ if (!HAS_PRI("rejudge")) {
 	<form class="form-inline" action='rejudge.php' method=post>
 		<input class="form-control" type=input name='rjpid' placeholder="<?php echo $MSG_PROBLEM_ID ?>" >	<input type='hidden' name='do' value='do'>
 		<button type=submit class="btn btn-default"><?php echo $MSG_SUBMIT ?></button>
-		<?php require_once("../include/set_post_key.php");?>
+		<?php require("../include/set_post_key.php");?>
 	</form>
     </li>
 	<li><?php echo $MSG_Solution ?>
 	<form class="form-inline" action='rejudge.php' method=post>
 		<input class="form-control" type=input name='rjsid' placeholder="<?php echo $MSG_RUNID ?>">	<input type='hidden' name='do' value='do'>
 		<button type=submit class="btn btn-default"><?php echo $MSG_SUBMIT ?></button>
-    <?php require_once("../include/set_post_key.php");?>
+		<?php require("../include/set_post_key.php");?>
 	</form>
     </li>
 	<li><?php echo $MSG_CONTEST  ?>
 	<form class="form-inline" action='rejudge.php' method=post>
 		<input class="form-control" type=input name='rjcid' placeholder="<?php echo $MSG_CONTEST.$MSG_ID ?>" >	<input type='hidden' name='do' value='do'>
 		<button type=submit class="btn btn-default"><?php echo $MSG_SUBMIT ?></button>
-    <?php require_once("../include/set_post_key.php");?>
+		<?php require("../include/set_post_key.php");?>
 	</form>
     </li>
     </ol>
