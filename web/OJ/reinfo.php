@@ -36,8 +36,9 @@
 
   $id=strval(intval($_GET['sid']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
-  $result=$mysqli->query($sql)->fetch_object();
-  if($result->contest_id) $cid = $result->contest_id;
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
+  if($row->contest_id) $cid = $row->contest_id;
   $ok = can_see_res_info($id);
   if ($ok==true){
     if($row->user_id!=$_SESSION['user_id'])
@@ -54,7 +55,7 @@
     $result->free();
   } else {
     $result->free();
-    $view_errors= "I am sorry, You could not view this message!";
+    $view_errors= "<div style='padding-top: 40px;'>I am sorry, You could not view this message!</div>";
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }

@@ -1,5 +1,5 @@
 <?php require_once("../include/db_info.inc.php");
-if (!(isset($_SESSION['http_judge']))){
+if (!HAS_PRI("rejudge")){
 	echo "0";
 	exit(1);
 }?>
