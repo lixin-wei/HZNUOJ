@@ -104,7 +104,7 @@
   $MSG_Enrollment_Year = "Enroll Year";
   $MSG_Class_Name = "Class Name";
   $MSG_Stu_List = "Student List";
-  $MSG_Grade = "Grade/Specialty/Prefix";
+  $MSG_Prefix = "Specialty/Prefix";
   $MSG_Amount = " Amount";
   $MSG_Mode = "Mode";
   $MSG_Not_Empty_Class = "Not Empty Class";

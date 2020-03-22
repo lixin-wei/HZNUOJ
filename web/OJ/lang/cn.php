@@ -51,7 +51,7 @@
   $MSG_RANK = "名次";
   $MSG_NICK = "昵称";
   $MSG_SOLVED = "解决";
-  $MSG_RATIO = "比率";
+  $MSG_RATIO = "通过率";
   $MSG_LEVEL = "等级";
   $MSG_STRENGTH = "实力";
   $MSG_RANKTIPS = "此排名非实时数据排名，请访问自己的用户信息页更新数据。";
@@ -104,7 +104,7 @@
   $MSG_Enrollment_Year = "入学年份";
   $MSG_Class_Name = "班级名称";
   $MSG_Stu_List = "学生名单";
-  $MSG_Grade = "年级/专业/前缀";
+  $MSG_Prefix = "专业/前缀";
   $MSG_Amount = "数量";
   $MSG_Mode = "模式";
   $MSG_Not_Empty_Class = "有人班级";

@@ -32,7 +32,7 @@ if (isset($_POST['add'])) {
     $err_cnt++;
   }
   if($prefix == "all"){ //前缀不能是all，会影响用户列表页面的筛选
-    $err_str = $err_str . "{$MSG_Grade}不能设定为“all”！\\n";
+    $err_str = $err_str . "{$MSG_Prefix}不能设定为“all”！\\n";
     $err_cnt++;
   }
   if (!$class) $class = "其它";
@@ -47,7 +47,7 @@ if (isset($_POST['add'])) {
     $err_cnt++;
   }
   if (!preg_match("/^[a-zA-Z0-9]{1,20}$/", $prefix)) {
-    $err_str = $err_str . "{$MSG_Grade}不合规，限20个以内的字母、数字！\\n";
+    $err_str = $err_str . "{$MSG_Prefix}不合规，限20个以内的字母、数字！\\n";
     $err_cnt++;
   }
   if (!preg_match("/^[1-9][0-9]{0,1}$/", $user_num)) {
@@ -194,7 +194,7 @@ if (isset($_POST['add'])) {
       </div>
       <div class=" am-form-group">
         <label class="am-u-sm-4 am-form-label" style="white-space: nowrap;">
-          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Grade ?>:
+          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Prefix ?>:
         </label>
         <input type="text" value="" name="prefix" style="width:250px;" maxlength="20" placeholder="20位以内的前缀，只能字母/数字" pattern="^[a-zA-Z0-9]{1,20}$" required />
       </div>

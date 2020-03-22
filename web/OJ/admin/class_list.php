@@ -310,8 +310,8 @@ while ($row = $result->fetch_object()) {
                         </select>
                     </div>
                     <div class="am-form-group" style="white-space: nowrap;" id="A">
-                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Grade ?>:</label>
-                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" id="prefix" name="prefix" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required/>
+                        <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Prefix ?>:</label>
+                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" id="prefix" name="prefix" placeholder="填入统一的班级名称前缀" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required/>
                     </div>
                     <div class="am-form-group" style="white-space: nowrap;" id="B">
                         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Amount ?>:</label>
@@ -328,7 +328,7 @@ while ($row = $result->fetch_object()) {
                     </div>
                 </form>
             </main>
-            <footer class="am-panel-footer"><b><?php echo $MSG_Grade."/".$MSG_Class ?></b>限20个以内汉字、字母、数字、下划线</footer>
+            <footer class="am-panel-footer"><b><?php echo $MSG_Prefix ?></b>限20个以内汉字、字母、数字、下划线</footer>
         </section>
     </div>
 </div>
