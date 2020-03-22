@@ -139,7 +139,7 @@ function generate_url($data){
 <!-- 页标签 end -->
 <!-- 数据表格显示 start -->
     <div class="am-avg-md-1 well">
-      <table class="am-table am-table-hover  am-table-striped">
+      <table id="result-tab" class="am-table am-table-hover  am-table-striped">
         <thead>
         <tr>
           <th><?php echo $MSG_RUNID ?></th>
@@ -151,7 +151,7 @@ function generate_url($data){
           <th><?php echo $MSG_LANG ?></th>
           <th><?php echo $MSG_CODE_LENGTH ?></th>
           <th><?php echo $MSG_SUBMIT_TIME ?></th>
-          <!--<th><?php echo $MSG_JUDGER ?></th> -->
+          <th><?php echo $MSG_JUDGER ?></th>
         </tr>
         </thead>
         <tbody>
@@ -193,3 +193,18 @@ function generate_url($data){
 <!-- 页标签 end -->
   </div>
 <?php include "footer.php" ?>
+<script>
+	var i = 0;
+	var judge_result = [<?php
+	foreach ($judge_result as $result) {
+		echo "'$result',";
+	} ?>
+	''];
+
+	var judge_color = [<?php
+	foreach ($judge_color as $result) {
+		echo "'$result',";
+	} ?>
+	''];
+</script>
+<script src="template/<?php echo $OJ_TEMPLATE?>/auto_refresh.js?v=0.38"></script>

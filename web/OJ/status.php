@@ -261,17 +261,17 @@
         $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>*".$judge_result[$row['result']].$mark."</span>";
         if(HAS_PRI("see_compare")){
           $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
-		} else {
+        } else {
           $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."(".$row['sim']."%)</span>";
-		}
+        }
         if(isset($_GET['showsim'])&&isset($row['sim_s_id'])) 
 		    $view_status[$i][3].= "<span sid='".$row['sim_s_id']."' class='original'></span>";
-      } else {
+    } else {
         //echo $row['result']." ".$judge_result[1]."<br>";
         $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</span>";
-      }
-    if(isset($_SESSION['http_judge'])) {
-      $view_status[$i][3].="<form class='http_judge_form form-inline'><input type=hidden name=sid value='".$row['solution_id']."'>";
+    }
+    if(HAS_PRI("rejudge")) {
+      $view_status[$i][3].="<form class='http_judge_form form-inline'><input type='hidden' name='sid' value='".$row['solution_id']."'>";
       $view_status[$i][3].="</form>";
     }
           
@@ -312,7 +312,7 @@
       $view_status[$i][7]="----";
     }
     $view_status[$i][8]= $row['in_date'];
-    //$view_status[$i][9]= $row['judger'];
+    $view_status[$i][9]= $row['judger'];
   }
   if(!$OJ_MEMCACHE) $result->free();
 
