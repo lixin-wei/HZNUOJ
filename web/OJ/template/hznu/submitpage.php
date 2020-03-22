@@ -30,7 +30,7 @@
   <div class="am-g">
     <form id="submit_form" action="/OJ/submit.php" method="post">
       <?php require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/set_post_key.php" ?>
-      <div class="am-u-md-10 am-u-md-centered" style="width:800px;">
+      <div class="am-u-md-10 am-u-md-centered" style="width:1000px;">
        <?php  echo "<h2>$title</h2>" ?>
         <div class="am-g am-text-center" style="margin-bottom: 20px;">
           <div class="am-u-md-6">
