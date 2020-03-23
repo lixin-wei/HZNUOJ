@@ -51,7 +51,8 @@
   );
   $language_order = [0,1,13,14,2,3,4,5,6,18,7,8,9,10,11,12,15,16,17];
   $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","js", "go", "py");
-  $language_brush=Array( "c", "c++", "delphi", "java", "ruby", "bash", "python", "php","perl", "c#","c","vb","scheme","c","c++","lua","javascript", "go", "python");
+  //scheme、Lua和Go语言没有对应的格式刷，先用c的刷子替代，不然显示scheme、Lua和Go语言代码时JavaScript会报错
+  $language_brush=Array( "c", "c++", "delphi", "java", "ruby", "bash", "python", "php","perl", "c#","c","vb","c","c","c++","c","javascript", "c", "python");
   function PID($id) {
     $id++;
     $res = "";
