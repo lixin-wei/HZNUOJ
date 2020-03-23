@@ -17,9 +17,6 @@
 ?>
 <div class="am-container">
   <!-- Main component for a primary marketing message or call to action -->
-  <div class="jumbotron">
-
-
   <style type="text/css">
     .solution-info {
       display: inline-block;
@@ -111,15 +108,9 @@ HTML;
         echo "<div am-text-center><h2>I am sorry, You could not view this code!</h2></div>";
       }
     ?>
-  </div>
 </div> <!-- /container -->
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-
-<?php include "footer.php" ?>
-<!-- SyntaxHighlighter START-->
+<!-- SyntaxHighlighter START -->
 <link href='/OJ/plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
 <link href='/OJ/plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
 <script src='/OJ/plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
@@ -139,4 +130,5 @@ SyntaxHighlighter.config.bloggerMode = false;
 SyntaxHighlighter.defaults['quick-code'] = true;//启用“双击”快速代码复制和粘贴。
 SyntaxHighlighter.all();
 </script>
-<!-- SyntaxHighlighter END-->
+<!-- SyntaxHighlighter END -->
+<?php include "footer.php" ?>
