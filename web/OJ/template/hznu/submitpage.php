@@ -104,19 +104,19 @@
     var editor = ace.edit("editor");
     var $obj_select_lang = $("#language");
     var lang = $obj_select_lang.val();
-	editor.setFontSize(16);
+	  editor.setFontSize(16);    
+    <?php if($OJ_EDITE_AREA){ ?>
     editor.getSession().setMode("ace/mode/"+language_mod[lang]);
-    editor.setTheme("ace/theme/iplastic");
     $("#submit_form").submit(function () {
         $("#source").val(editor.getValue());
         return true;
-    });
-    
+    });    
     $obj_select_lang.change(function () {
         lang = $(this).val();
         editor.getSession().setMode("ace/mode/"+language_mod[lang]);
     });
-    
+    <?php } ?>
+    editor.setTheme("ace/theme/iplastic");
     $("#theme").change(function () {
         editor.setTheme("ace/theme/"+$(this).val());
     });
