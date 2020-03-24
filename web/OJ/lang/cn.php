@@ -112,6 +112,8 @@
   $MSG_Back = "返回";
   $MSG_Customiz = "自定义";
   $MSG_Download = "下载";
+  $MSG_IgnoreWS = "忽略空白";
+  $MSG_SIM = "相似度";
   
   /*
   下面的代码请不要乱动，以免出问题！！！

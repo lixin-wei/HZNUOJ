@@ -112,6 +112,8 @@
   $MSG_Back = "Back";
   $MSG_Customiz = "Customiz ";
   $MSG_Download = "Download";
+  $MSG_IgnoreWS = "Ignore Whitespaces";
+  $MSG_SIM = "SIM";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
