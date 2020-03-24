@@ -21,7 +21,11 @@
   if (isset($_GET['solution_id'])){
     $solution_id=intval($_GET['solution_id']);
   }
-  $sql="SELECT * FROM `solution` WHERE solution_id='$solution_id' LIMIT 1";
+  if($OJ_SIM){
+    $sql="SELECT s.*,sim.*,u.`nick` FROM solution AS s LEFT JOIN `sim` AS sim ON s.solution_id=sim.s_id LEFT JOIN `users` AS u ON s.`user_id`=u.`user_id` WHERE s.solution_id='$solution_id' LIMIT 1";
+  } else {
+    $sql="SELECT s.*, u.`nick` FROM `solution` AS s LEFT JOIN `users` AS u ON s.`user_id`=u.`user_id` WHERE solution_id='$solution_id' LIMIT 1";
+  }
   //echo $sql;
   $result = $mysqli->query($sql);// or die("Error! ".$mysqli->error);
   if ($result) {
@@ -43,7 +47,7 @@
       //echo $sql.$res;
     }else{
       if (isset($_GET['q']) && "user_id"==$_GET['q']) {
-        echo $row['user_id'];
+        echo $row['nick'] ? $row['user_id']."(".$row['nick'].")" : $row['user_id'];
       } else {
         $contest_id = $row['contest_id'];
         if ($contest_id>0) {
@@ -57,9 +61,23 @@
         if (isset($_GET['t']) && "json"==$_GET['t']) {
           echo json_encode($row);
         } else {
-          echo $row['result'].",".$row['memory']."KB,".$row['time']."ms,".$row['judger'].",".($row['pass_rate']*100);
+          $http_judge_form = "";
+          if(HAS_PRI("rejudge")) {
+            $http_judge_form = "<form class='http_judge_form form-inline'><input type='hidden' name='sid' value='".$row['solution_id']."'>";
+          }
+          if($OJ_SIM && $row['sim']>=70 && $row['sim_s_id'] != $row['s_id']){
+            if(HAS_PRI("see_compare")){
+              $append = "<a href='comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."'  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
+            } else {
+              $append = "<span class='am-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."(".$row['sim']."%)</span>";
+            }
+            if($row['sim_s_id']) $append .= "<span sid='".$row['sim_s_id']."' class='original'></span>";
+            echo $row['result'].",".$row['memory']." KB,".$row['time']." ms,".$row['judger'].",".($row['pass_rate']*100).",".$row['sim_s_id'].",".$append.",".$http_judge_form;
+          } else {
+            echo $row['result'].",".$row['memory']." KB,".$row['time']." ms,".$row['judger'].",".($row['pass_rate']*100).",none,0,".$http_judge_form;
+          }
         }
      }
    }
-} else echo "0, 0, 0, unknown, 0";
+} else echo "0, 0, 0, unknown, 0, none, 0,";
 ?>

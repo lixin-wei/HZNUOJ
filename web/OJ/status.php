@@ -87,9 +87,10 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql=" WHERE contest_id is null ";
+    $sql=" WHERE contest_id is null ";//若要在主状态页面中显示contest中提交的代码，注释本行代码，并启用下一行代码
+    //$sql=" WHERE 1 ";
   }
-  //若要在主状态页面中不显示contest中提交的代码，注释掉else段代码
+  
   $order_str=" ORDER BY `solution_id` DESC ";
   //check the cid arg end
   // check the top arg
@@ -246,7 +247,7 @@
                 !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")// if he can see souce code , he can see these info in passing
               ); 
     }
-    $info_can_be_read = ( $WA_or_PE || $row['result']==10 || $row['result']==13); // 属于可看类型且
+    $info_can_be_read = ( $WA_or_PE || $row['result']==7 || $row['result']==8 || $row['result']==10 || $row['result']==13); // 属于可看类型且
 
     $contest = $cid  ? "&cid=$cid" : "";
     $view_status[$i][3]="<span class='hidden' style='display:none' result='".$row['result']."' ></span>";
@@ -264,8 +265,7 @@
         } else {
           $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."(".$row['sim']."%)</span>";
         }
-        if(isset($_GET['showsim'])&&isset($row['sim_s_id'])) 
-		    $view_status[$i][3].= "<span sid='".$row['sim_s_id']."' class='original'></span>";
+        if(isset($row['sim_s_id']))  $view_status[$i][3].= "<span sid='".$row['sim_s_id']."' class='original'></span>";
     } else {
         //echo $row['result']." ".$judge_result[1]."<br>";
         $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</span>";

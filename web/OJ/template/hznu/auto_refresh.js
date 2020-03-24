@@ -51,7 +51,9 @@ function fresh_result(solution_id) {
 			row.cells[4].innerHTML = ra[1];
 			row.cells[5].innerHTML = ra[2];
 			row.cells[9].innerHTML = ra[3];
-			
+			// alert(ra[5]);
+			// alert(ra[6]);
+			// alert(ra[7]);
 			if (ra[0]<4) {
 				//console.log(loader);
 				if (-1==row.cells[3].innerHTML.indexOf("loader")) {
@@ -65,20 +67,32 @@ function fresh_result(solution_id) {
 			else {
 				console.log(ra[0]);
 				ra[4] = (ra[4]>0 && ra[4]<98) ? `${100 - ra[4]}%` : "";
+				prepend = "<span class='hidden' style='display:none' result='"+ ra[0] +"' ></span>";
 				switch (ra[0]) {
-					case 4:
-					case 6:
-				  case 7:
-				  case 10:
-						row.cells[3].innerHTML="<a href='reinfo.php?sid="+solution_id+"' class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</a>";
+					case 5: case 6: case 7: case 8: case 10: case 13:
+						row.cells[3].innerHTML= prepend + "<a href='reinfo.php?sid="+solution_id+"' class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</a>";
 						break;
 				 	case 11:
-						row.cells[3].innerHTML="<a href='ceinfo.php?sid="+solution_id+"' class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</a>";
+						row.cells[3].innerHTML= prepend + "<a href='ceinfo.php?sid="+solution_id+"' class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</a>";
 						break;
 				  default:
-						row.cells[3].innerHTML="<span class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</span>";
+					  	if (ra[5] == "none"){
+							row.cells[3].innerHTML= prepend + "<span class='"+judge_color[ra[0]]+"'>"+judge_result[ra[0]]+ra[4]+"</span>";
+						} else {
+							row.cells[3].innerHTML= prepend + "<span class='"+judge_color[ra[0]]+"'>*"+judge_result[ra[0]]+ra[4]+"</span>"+ra[6];
+						}
 				}
-
+				if(ra[7]!=""){
+					var tmp = "<select class='http_judge form-control' length='2' name='result'>";
+					for (var i=0; i<10; i++) {
+						tmp += "	<option value='"+i+"'>"+judge_result[i]+" </option>";
+					}
+					tmp += "</select>";
+					tmp += "<input name='manual' type='hidden'>";
+					tmp += "<input class='http_judge form-control' size='15' placeholder='输入判定原因与提示' name='explain' type='text'>";
+					tmp += "<input type='button' class='http_judge btn' name='manual' value='确定' onclick='http_judge(this)' >";
+					row.cells[3].innerHTML += (ra[7]+tmp+"</form>");
+				}
 				auto_refresh();
 			}
 		}
@@ -95,7 +109,7 @@ for (var i=0; i<10; i++) {
 
 hj_ss += "</select>";
 hj_ss += "<input name='manual' type='hidden'>";
-hj_ss += "<input class='http_judge form-control' size=5 title='输入判定原因与提示' name='explain' type='text'>";
+hj_ss += "<input class='http_judge form-control' size='15' placeholder='输入判定原因与提示' name='explain' type='text'>";
 hj_ss += "<input type='button' class='http_judge btn' name='manual' value='确定' onclick='http_judge(this)' >";
 
 $(".http_judge_form").append(hj_ss);
