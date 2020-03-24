@@ -64,8 +64,7 @@
   if($row) $view_source=$row->source;
 
  if ($ok==true) {
-    echo "<pre class=\"brush:".$language_brush[$slanguage].";\">";
-    echo htmlentities(str_replace("\n\r","\n",$view_source),ENT_QUOTES,"utf-8")."\n";
+    echo str_replace("\n\r","\n",$view_source)."\n";
     echo "\n/**************************************************************\n";
     $nick = $is_temp_user ? $tuser_nick : $user_nick;
     $nick = $nick ? "($nick)" : "";
@@ -78,7 +77,6 @@
         echo "\tMemory:".$smemory." KB\n";
     }
     echo "****************************************************************/\n";
-    echo "</pre>";
   } else {
     echo "I am sorry, You could not view this code!";
   }
