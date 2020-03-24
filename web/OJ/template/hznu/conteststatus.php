@@ -101,6 +101,7 @@ function generate_url($data){
               </select>
               <span class="am-form-caret"></span>
             </div>
+            <?php if ($OJ_SIM) { ?>
             <div class="am-form-group">
             <label for="sim"><?php echo $MSG_SIM ?>:</label>
             <select class="am-round" id="showsim" name="showsim" data-am-selected="{btnWidth: '100px'}" onchange="document.getElementById('statusform').submit();">
@@ -118,6 +119,7 @@ function generate_url($data){
             </select>
             <span class="am-form-caret"></span>
           </div>
+          <?php } ?>
           <button type="submit" class="am-btn am-btn-secondary"><span class='am-icon-filter'></span> <?php echo $MSG_FILTER ?></button>
           <?php if (isset($cid)) echo "<input type='hidden' name='cid' value='$cid'>";?>
           &nbsp;&nbsp;<button type="submit" class="am-btn am-btn-default"><?php echo $MSG_RESET ?></button>
