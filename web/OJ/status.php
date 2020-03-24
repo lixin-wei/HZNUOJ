@@ -257,7 +257,7 @@
         $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
     } else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others WA/PE/RE/TE
       $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
-    } else if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
+    } else if($OJ_SIM&&$row['sim']>=70&&$row['sim_s_id']!=$row['s_id']) {
         $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>*".$judge_result[$row['result']].$mark."</span>";
         if(HAS_PRI("see_compare")){
           $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";

@@ -56,7 +56,7 @@ function generate_url($data){
       <!-- 搜索框 start -->
     <div class="am-g">
       <div class="am-u-md-12">
-        <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
+        <form action="status.php" id="statusform" method="get" class="am-form am-form-inline" role="form" style="float: left;">
           <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_PROBLEM_ID ?>" name="problem_id" value="<?php echo $args['problem_id']?>"></div>
           <div class="am-form-group">
             <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_USER_ID ?>" name="user_id" value="<?php echo $args['user_id']?>">
@@ -107,6 +107,23 @@ function generate_url($data){
                     if ($i==$jresult_get) echo "<option value='".strval($jresult_get)."' selected>".$jresult[$i]."</option>";
                     else echo "<option value='".strval($i)."'>".$jresult[$i]."</option>";
                 }
+                ?>
+            </select>
+            <span class="am-form-caret"></span>
+          </div>
+          <div class="am-form-group">
+            <label for="sim"><?php echo $MSG_SIM ?>:</label>
+            <select class="am-round" id="showsim" name="showsim" data-am-selected="{btnWidth: '100px'}" onchange="document.getElementById('statusform').submit();">
+                <?php
+                echo "
+                <option value=0 ".($showsim==0?'selected':'').">All</option>
+                <option value=50 ".($showsim==50?'selected':'').">&gt;=50%</option>
+                <option value=60 ".($showsim==60?'selected':'').">&gt;=60%</option>
+                <option value=70 ".($showsim==70?'selected':'').">&gt;=70%</option>
+                <option value=80 ".($showsim==80?'selected':'').">&gt;=80%</option>
+                <option value=90 ".($showsim==90?'selected':'').">&gt;=90%</option>
+                <option value=100 ".($showsim==100?'selected':'').">100%</option>
+                ";
                 ?>
             </select>
             <span class="am-form-caret"></span>
