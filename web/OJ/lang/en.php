@@ -42,7 +42,7 @@
   $MSG_PROBLEM_ID = "Prob ID";
   $MSG_TITLE = " Title";
   $MSG_SUBMIT = "Submit";
-  $MSG_SCORES = "Scores";
+  $MSG_SCORE = "Scores";
   $MSG_KEYWORDS = "Keywords";
   $MSG_TAGS = "Tag";
   $MSG_AUTHOR = "Author";
