@@ -373,5 +373,10 @@ function createPwd($seed, $len){
     str_replace("1", "W", $password);
     return $password;
 }
-
+function get_set_name($pid) {
+    global $mysqli;
+    $pid = intval($pid);
+    $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
+    return ($mysqli->query($sql)->fetch_array()[0]);
+}
 ?>
