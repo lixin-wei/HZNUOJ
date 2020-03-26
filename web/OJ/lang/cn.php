@@ -185,7 +185,7 @@
   $MSG_Sample_Input= "样例输入" ;
   $MSG_Sample_Output= "样例输出" ;
   $MSG_HINT= "提示" ;
-  $MSG_Source= "来源" ;
+  $MSG_Source= "来源/分类" ;
   $MSG_Limit = "限制";
   $MSG_Times = "时间";
   $MSG_Time_Limit="时间限制";
