@@ -379,4 +379,20 @@ function get_set_name($pid) {
     $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
     return ($mysqli->query($sql)->fetch_array()[0]);
 }
+function show_category($source,$size) {
+    //$size的值有 default、sm、lg、xl
+    $color_theme=Array("primary","secondary","success","warning","danger");
+    $category = array_unique(explode(" ",$source));
+    $html="";
+    foreach ($category as $cat) {
+        if(trim($cat)=="") continue;
+        $hash_num = hexdec(substr(md5($cat),0,7));
+        $source_theme = $color_theme[$hash_num%count($color_theme)];
+        if ($source_theme=="") $source_theme = $color_theme[0];
+        $temp = htmlentities($cat,ENT_QUOTES,'UTF-8');
+        $html .= "<a title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='problemset.php?search=".$temp."'>".(strlen($temp)>30?mb_substr($temp,0,10,'utf8')."…":$temp)."</a>&nbsp;";
+    }
+    return $html;
+}
+
 ?>
