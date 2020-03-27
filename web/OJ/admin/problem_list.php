@@ -45,7 +45,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
   foreach ($problem_sets as $key => $val){
     $set_name=$val["set_name"];
     if($_GET['OJ']=='' || $_GET['OJ']==$set_name){
-      if(HAS_PRI("see_hidden_".$set_name."_problem")){
+      if(HAS_PRI("edit_".$set_name."_problem")){
         $t_sql=" FROM `problem` WHERE $filter_sql AND problemset='$set_name'";
       
         //count the number of problem START
