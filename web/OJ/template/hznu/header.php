@@ -105,6 +105,15 @@
           ?>><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
           <!-- ProblemSet部分 end -->
           
+          <!-- category部分 start -->
+          <li <?php
+          $page_name=basename($_SERVER['SCRIPT_NAME']);
+          if($page_name=="category.php") {
+            echo "class='am-active'";
+          }
+          ?>><a href="/OJ/category.php"><?php echo $MSG_Source ?></a></li>
+          <!-- category部分 end -->
+
           <!-- status部分 start -->
           <li <?php
           $page_name=basename($_SERVER['SCRIPT_NAME']);
