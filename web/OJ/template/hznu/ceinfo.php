@@ -241,7 +241,7 @@
 <script src='/OJ/plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
 <script language='javascript'>
 $(document).ready(function(){
-	$("#source").load("getsource.php?id=<?php echo $id?>",function(response,status,xhr){
+	$("#source").load("getsource.php?ce&id=<?php echo $id?>",function(response,status,xhr){
    	if(status=="success"){      
       explain();
       SyntaxHighlighter.config.bloggerMode = false;

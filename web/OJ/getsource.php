@@ -8,7 +8,6 @@
    * @2016.06.27
   **/
 ?>
-
 <?php
   $cache_time=90;
   $OJ_CACHE_SHARE=false;
@@ -64,7 +63,12 @@
   if($row) $view_source=$row->source;
 
  if ($ok==true) {
-    echo str_replace("\n\r","\n",$view_source)."\n";
+    if(isset($_GET['ce'])){
+      echo "<pre class=\"brush:".$language_brush[$slanguage].";\">";
+      echo htmlentities(str_replace("\n\r","\n",$view_source),ENT_QUOTES,"utf-8")."\n";
+    } else {
+      echo str_replace("\n\r","\n",$view_source)."\n";
+    }
     echo "\n/**************************************************************\n";
     $nick = $is_temp_user ? $tuser_nick : $user_nick;
     $nick = $nick ? "($nick)" : "";
@@ -77,10 +81,10 @@
         echo "\tMemory:".$smemory." KB\n";
     }
     echo "****************************************************************/\n";
+    if(isset($_GET['ce'])) echo "</pre>";
   } else {
     echo "I am sorry, You could not view this code!";
   }
 if(file_exists('./include/cache_end.php'))
   require_once('./include/cache_end.php');
 ?>
-
