@@ -375,9 +375,14 @@ function createPwd($seed, $len){
 }
 function get_set_name($pid) {
     global $mysqli;
-    $pid = intval($pid);
-    $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
-    return ($mysqli->query($sql)->fetch_array()[0]);
+    if(trim($pid)!=""){
+        $pid = intval($pid);
+        $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
+        return ($mysqli->query($sql)->fetch_array()[0]);
+    } else {
+        $sql="SELECT `set_name` FROM `problemset`";
+        return ($mysqli->query($sql)->fetch_all());
+    }
 }
 function show_category($source,$size) {
     //$size的值有 default、sm、lg、xl
