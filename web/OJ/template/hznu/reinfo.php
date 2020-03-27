@@ -14,9 +14,11 @@
   if (isset($cid)) require_once("contest_header.php");
   else require_once("header.php");
 ?>
-<div class="am-container">  
+<div class="am-container">
+  <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <pre id='errtxt' class="alert alert-error"><?php echo $view_reinfo?></pre>
     <div id='errexp'>Explain:</div>
+  </div>
     <script>
       var pats=new Array();
       var exps=new Array();

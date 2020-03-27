@@ -173,9 +173,9 @@ while ($row=$result->fetch_object()) {
     // 将信息放入表格
     if (isset($sub_arr[$p_id])) {
         if (isset($acc_arr[$p_id]))
-            $view_problemset[$i][0] = "<td style='width:30px'><font color='green'>Y</font></td>";
+            $view_problemset[$i][0] = "<th style='width:30px'><font color='green'>Y</font></th>";
         else
-            $view_problemset[$i][0] = "<td style='width:30px'><font color='red'>N</font></td>";
+            $view_problemset[$i][0] = "<th style='width:30px'><font color='red'>N</font></th>";
     } else {
         $view_problemset[$i][0] = "<td style='width:30px'></td>";
     }
@@ -193,7 +193,7 @@ while ($row=$result->fetch_object()) {
     $view_problemset[$i][3] .= "</td>";
     $view_problemset[$i][4] = "<td><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";
     // 题目来源 ajax html代码 start
-    $view_problemset[$i][5] = "<td style='text-align:left;'><div pid='".$row->problem_id."' fd='source' class='center'>\n";
+    $view_problemset[$i][5] = "<td style='text-align:left;white-space:normal;'><div pid='".$row->problem_id."' fd='source' class='center' >\n";
     if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
         $view_problemset[$i][5] .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
     }  

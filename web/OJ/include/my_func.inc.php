@@ -382,7 +382,7 @@ function get_set_name($pid) {
 function show_category($source,$size) {
     //$size的值有 default、sm、lg、xl
     $color_theme=Array("primary","secondary","success","warning","danger");
-    $category = array_unique(explode(" ",$source));
+    $category = array_unique(explode(" ",trim($source)));
     $html="";
     foreach ($category as $cat) {
         if(trim($cat)=="") continue;
@@ -390,7 +390,7 @@ function show_category($source,$size) {
         $source_theme = $color_theme[$hash_num%count($color_theme)];
         if ($source_theme=="") $source_theme = $color_theme[0];
         $temp = htmlentities($cat,ENT_QUOTES,'UTF-8');
-        $html .= "<a title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='problemset.php?search=".$temp."'>".(strlen($temp)>30?mb_substr($temp,0,10,'utf8')."…":$temp)."</a>&nbsp;";
+        $html .= "<a style='margin-top: 2px; margin-bottom: 2px;' title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='problemset.php?search=".$temp."'>".(strlen($temp)>30?mb_substr($temp,0,10,'utf8')."…":$temp)."</a>&nbsp;";
     }
     return $html;
 }

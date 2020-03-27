@@ -121,7 +121,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
   
-<form id="form1" action="contest_add.php" method='post' >
+<form id="form1" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
     	<td colspan=13>
@@ -132,7 +132,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
         </td>
     </tr>
     <tr>
-    	<th width=60px><?php echo $MSG_PROBLEM_ID ?>&nbsp;<input type=checkbox style='vertical-align:2px;' onchange='$("input[type=checkbox]").prop("checked", this.checked)'></th>
+    	  <th width=60px><?php echo $MSG_PROBLEM_ID ?>&nbsp;<input type=checkbox style='vertical-align:2px;' onchange='$("input[type=checkbox]").prop("checked", this.checked)'></th>
         <th><?php echo $MSG_TITLE ?></th>
         <th><?php echo $MSG_Accepted."&nbsp;/&nbsp;".$MSG_SUBMIT ?></th>  
         <th><?php echo $MSG_SCORE ?></th>   
@@ -165,7 +165,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
 <td><a href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
 <td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
 	
-          <td><?php echo $row->author ?></td>         
+          <td><?php echo $row->author ?></td>
           <?php
           $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
           if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
@@ -174,7 +174,7 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
           $view_source .= show_category($row->source,"sm");
           $view_source .= "</div>";
           ?>
-          <td><?php echo $view_source ?></td>
+          <td style='white-space:normal;'><?php echo $view_source ?></td>
           <td><?php echo $set_name_show[$row->problemset] ?></td>
           <td><?php echo $row->in_date ?></td>
 </tr>

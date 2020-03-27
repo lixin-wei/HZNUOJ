@@ -136,17 +136,17 @@ function generate_url($data){
       table-layout: fixed;
     }
   </style>
-  <div class="am-avg-md-1 well am-scrollable-horizontal">
+  <div class="am-avg-md-1 well">
     <table class="am-table am-table-hover am-table-striped am-text-nowrap">
       <thead>
       <tr>
-        <th style='width:3%;'></th>
-        <th class='am-text-center' style='width:7%;'><?php echo $MSG_PROBLEM_ID ?></th>
-        <th class='am-text-center' style='width:25%;'><?php echo $MSG_TITLE ?></th>
-        <th class='am-text-center' style='width:10%;'><?php echo $MSG_TAGS ?></th>
-        <th class='am-text-center' style='width:10%;'><?php echo $MSG_AUTHOR ?></th>
-        <th class='am-text-center' style='width:25%;'><?php echo $MSG_Source ?></th>
-        <th class='am-text-center' style='width:10%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
+        <th style='width:1%;'>&nbsp;</th>
+        <th class='am-text-center' style='width:1%;'><?php echo $MSG_PROBLEM_ID ?></th>
+        <th class='am-text-center'><?php echo $MSG_TITLE ?></th>
+        <th class='am-text-center'><?php echo $MSG_TAGS ?></th>
+        <th class='am-text-center' style='width:1%;'><?php echo $MSG_AUTHOR ?></th>
+        <th class='am-text-center'><?php echo $MSG_Source ?></th>
+        <th class='am-text-center' style='width:1%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
           <?php
           switch ($args['sort_method']) {
               case 'SCORE_DESC':
@@ -165,7 +165,7 @@ function generate_url($data){
             cursor: pointer;
           }
         </style>
-        <th id="score" class='am-text-center' style='width:10%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
+        <th id="score" class='am-text-center' style='width:1%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
       </thead>
       <tbody>

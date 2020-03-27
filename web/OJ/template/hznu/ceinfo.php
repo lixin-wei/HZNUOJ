@@ -15,9 +15,11 @@
 ?>
 
 <div class="am-container">
-  <div id='source'></div>
-  <pre id='errtxt' class="<?php echo "brush:{$language_brush[$slanguage]};" ?> alert alert-error"><?php echo $view_reinfo?></pre>
-  <div id='errexp'>Explain:</div>
+  <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
+    <div id='source'></div>
+    <pre id='errtxt' class="<?php echo "brush:{$language_brush[$slanguage]};" ?> alert alert-error"><?php echo $view_reinfo?></pre>
+    <div id='errexp'>Explain:</div>
+  </div>
   <script>
     var i=0;
     var pats=new Array();
