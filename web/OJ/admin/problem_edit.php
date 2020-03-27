@@ -233,13 +233,13 @@ HTML;
       <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?php echo $MSG_AUTHOR ?></label>
         <div class="col-sm-10">
-          <input class="form-control" type=text name=author value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
+          <input class="form-control" type=text name=author placeholder="留空则自动填入您的用户名" value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?php echo $MSG_Source ?></label>
         <div class="col-sm-10">
-          <input class="form-control" type=text name=source value="<?php if(!$add_problem_mod)echo htmlentities($row->source,ENT_QUOTES,"UTF-8")?>">
+          <input class="form-control" type=text name=source placeholder="多个关键字请以空格分隔" value="<?php if(!$add_problem_mod)echo htmlentities($row->source,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
@@ -277,20 +277,21 @@ if(isset($_POST['problem_id'])){ //写入数据库
     }
     require_once("../include/check_post_key.php");
     $id=intval($_POST['problem_id']);
-    $title=$mysqli->real_escape_string($_POST['title']);
-    $problemset=$mysqli->real_escape_string($_POST['problemset']);
-    $time_limit=$mysqli->real_escape_string($_POST['time_limit']);
-    $memory_limit=$mysqli->real_escape_string($_POST['memory_limit']);
-    $description=$mysqli->real_escape_string($_POST['description']);
-    $input=$mysqli->real_escape_string($_POST['input']);
-    $output=$mysqli->real_escape_string($_POST['output']);
+    $title=$mysqli->real_escape_string(trim($_POST['title']));
+    $problemset=$mysqli->real_escape_string(trim($_POST['problemset']));
+    $time_limit=$mysqli->real_escape_string(trim($_POST['time_limit']));
+    $memory_limit=$mysqli->real_escape_string(trim($_POST['memory_limit']));
+    $description=$mysqli->real_escape_string(trim($_POST['description']));
+    $input=$mysqli->real_escape_string(trim($_POST['input']));
+    $output=$mysqli->real_escape_string(trim($_POST['output']));
     $sample_inputs=$_POST['sample_input'];
     $sample_outputs=$_POST['sample_output'];
     $sample_show_after=$_POST['show_after'];
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
-    $hint=$mysqli->real_escape_string($_POST['hint']);
-    $source=$mysqli->real_escape_string($_POST['source']);
+    $hint=$mysqli->real_escape_string(trim($_POST['hint']));
+    $source=$mysqli->real_escape_string(trim($_POST['source']));
+    $source=implode(' ', array_unique(explode(" ",$source)) );//关键字去重
     $spj=$_POST['spj'];
 	  $author = "";
     $author_tmp = $mysqli->real_escape_string($_POST['author']);
