@@ -136,17 +136,17 @@ function generate_url($data){
       table-layout: fixed;
     }
   </style>
-  <div class="am-avg-md-1 well">
+  <div class="am-avg-md-1 well am-scrollable-horizontal">
     <table class="am-table am-table-hover am-table-striped am-text-nowrap">
       <thead>
       <tr>
         <th style='width:3%;'></th>
         <th class='am-text-center' style='width:7%;'><?php echo $MSG_PROBLEM_ID ?></th>
-        <th class='am-text-center' style='width:35%;'><?php echo $MSG_TITLE ?></th>
-        <th class='am-text-center' style='width:18%;'><?php echo $MSG_TAGS ?></th>
+        <th class='am-text-center' style='width:25%;'><?php echo $MSG_TITLE ?></th>
+        <th class='am-text-center' style='width:10%;'><?php echo $MSG_TAGS ?></th>
         <th class='am-text-center' style='width:10%;'><?php echo $MSG_AUTHOR ?></th>
         <th class='am-text-center' style='width:25%;'><?php echo $MSG_Source ?></th>
-        <th class='am-text-center' style='width:8%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
+        <th class='am-text-center' style='width:10%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
           <?php
           switch ($args['sort_method']) {
               case 'SCORE_DESC':
@@ -165,7 +165,7 @@ function generate_url($data){
             cursor: pointer;
           }
         </style>
-        <th id="score" class='am-text-center' style='width:8%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
+        <th id="score" class='am-text-center' style='width:10%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
       </thead>
       <tbody>
@@ -230,6 +230,26 @@ function generate_url($data){
   //echo "<pre>$id</pre>";
 ?>
 <script type="text/javascript">
+var color_theme=["primary","secondary","success","warning","danger"];
+function problem_add_source(sp,pid){
+  //console.log("pid:"+pid);
+  let p=$(sp).parent();
+  p.html("<form onsubmit='return false;'><input type='hidden' name='m' value='problem_add_source'><input type='hidden' name='ppid' value='"+pid+"'><input type='text' class='input input-large' name='ns' maxlength='20'><input type='button' value='<?php echo $MSG_ADD ?>'></form>");
+  p.find("input[name=ns]").focus();
+  p.find("input[name=ns]").change(function(){
+    //console.log(p.find("form").serialize());
+    let ns=p.find("input[name=ns]").val();
+    //console.log("new source:"+ns);
+    $.post("admin/ajax.php",p.find("form").serialize(),function(data,textStatus) {
+      if(textStatus=="success") {
+        if(data!=0) {
+          p.parent().append("<a title='"+ns+"' class='am-badge am-badge-"+color_theme[Math.floor(Math.random()*5)]+" am-text-default am-radius' href='problemset.php?search=" +ns+ "'>" +(ns.length>10 ? ns.substr(0,10)+"…" : ns) + "</a>&nbsp;");
+        } else alert("‘"+ns+"’已存在！");
+        p.html("<span class='am-icon-plus' pid='"+pid+"' style='cursor: pointer;' onclick='problem_add_source(this,"+pid+");'></span>");
+      }
+    });
+  });
+}
   $("#random_choose").click(function(){
     window.location.href="problem.php?id=<?php echo $id; ?>";
   });

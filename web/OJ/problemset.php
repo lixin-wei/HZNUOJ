@@ -11,6 +11,7 @@ $OJ_CACHE_SHARE=false;
 $cache_time=60;
 require_once('./include/cache_start.php');
 require_once('./include/setlang.php');
+require_once('./include/my_func.inc.php');
 $view_title= "Problem Set";
 if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的题库
     $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
@@ -180,18 +181,25 @@ while ($row=$result->fetch_object()) {
     }
     $view_problemset[$i][1] = "<td>".$p_id."</td>";
     if(!$row->locked)
-        $view_problemset[$i][2] = "<td><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a></td>";
+        $view_problemset[$i][2] = "<td style='text-align:left;'><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a></td>";
     else
-        $view_problemset[$i][2] = "<td style='color: dimgrey;'>"."<span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
+        $view_problemset[$i][2] = "<td style='text-align:left;color: dimgrey;'><span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
     $view_problemset[$i][3] = "<td >";
     if ($show_tag) {
-        $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>";
-        $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>";
-        $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>";
+        if($row->tag1) $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>\n";
+        if($row->tag2) $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>\n";
+        if($row->tag3) $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>\n";
     }
     $view_problemset[$i][3] .= "</td>";
     $view_problemset[$i][4] = "<td><nobr>".mb_substr($row->author,0,40,'utf8')."</nobr></td >";
-    $view_problemset[$i][5] = "<td><nobr>".mb_substr($row->source,0,40,'utf8')."</nobr></td >";
+    // 题目来源 ajax html代码 start
+    $view_problemset[$i][5] = "<td style='text-align:left;'><div pid='".$row->problem_id."' fd='source' class='center'>\n";
+    if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
+        $view_problemset[$i][5] .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
+    }  
+    $view_problemset[$i][5] .= show_category($row->source,"default");
+    $view_problemset[$i][5] .= "</div></td>";
+    // 题目来源 ajax html代码 end
     $view_problemset[$i][6]="<td><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
     $view_problemset[$i][7]="<td >".$row->score."</td>";
     $i++;

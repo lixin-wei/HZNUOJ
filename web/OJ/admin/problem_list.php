@@ -10,6 +10,7 @@
   require("admin-header.php");
   require_once('../include/setlang.php');
   require_once("../include/set_get_key.php");
+  require_once('../include/my_func.inc.php');
   if (!$can_see_problem) {
     require_once("error.php");
     exit(1);
@@ -120,11 +121,11 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
   
-<form action="contest_add.php" method='post' >
+<form id="form1" action="contest_add.php" method='post' >
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
     	<td colspan=13>
-        <button type=submit name='problem2contest' class='btn btn-default'>CheckToNewContest</button>&nbsp;
+        <input type=submit name='problem2contest' class='btn btn-default' value='CheckToNewContest' >&nbsp;
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_PROBLEM ?>' onclick='$("form").attr("action","problem_edit.php?new_problem")'>
@@ -165,7 +166,15 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
 <td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
 	
           <td><?php echo $row->author ?></td>         
-          <td><?php echo $row->source ?></td>
+          <?php
+          $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
+          if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
+              $view_source .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
+          }
+          $view_source .= show_category($row->source,"sm");
+          $view_source .= "</div>";
+          ?>
+          <td><?php echo $view_source ?></td>
           <td><?php echo $set_name_show[$row->problemset] ?></td>
           <td><?php echo $row->in_date ?></td>
 </tr>
@@ -179,3 +188,25 @@ if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="") {
 <?php
   require_once("admin-footer.php")
 ?>
+<script type="text/javascript">
+var color_theme=["primary","secondary","success","warning","danger"];
+function problem_add_source(sp,pid){
+  //console.log("pid:"+pid);
+  let p=$(sp).parent();
+  p.html("<form onsubmit='return false;'><input type='hidden' name='m' value='problem_add_source'><input type='hidden' name='ppid' value='"+pid+"'><input type='text' name='ns' maxlength='20'><input type='button' value='<?php echo $MSG_ADD ?>'></form>");
+  p.find("input[name=ns]").focus();
+  p.find("input[name=ns]").change(function(){
+    //console.log($("#form1").serialize());
+    let ns=p.find("input[name=ns]").val();
+    //console.log("new source:"+ns);
+    $.post("./ajax.php",$("#form1").serialize(),function(data,textStatus) {
+      if(textStatus=="success") {
+        if(data!=0) {
+          p.parent().append("<a title='"+ns+"' class='am-badge am-badge-"+color_theme[Math.floor(Math.random()*5)]+" am-text-sm am-radius' href='problemset.php?search=" +ns+ "'>" +(ns.length>10 ? ns.substr(0,10)+"…" : ns) + "</a>&nbsp;");
+        } else alert("‘"+ns+"’已存在！");
+        p.html("<span class='am-icon-plus' pid='"+pid+"' style='cursor: pointer;' onclick='problem_add_source(this,"+pid+");'></span>");
+      }
+    });
+  });
+}
+</script>
