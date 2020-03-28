@@ -64,6 +64,7 @@
         $row=$result->fetch_row();
         $max_id=$row[0];
         $max_id++;
+        if($max_id<1000)$max_id=1000;
         $result->free();
         $sql="ALTER TABLE problem AUTO_INCREMENT = $max_id;";
         $mysqli->query($sql);
