@@ -36,7 +36,7 @@
                 $category .= trim($cat)." ";
             }
 		}
-		$view_category[0] = count(array_unique(explode(" ",trim($category))));
+		$view_category[0] = trim($category) ? count(array_unique(explode(" ",trim($category)))) : 0;
         $view_category[1] .= "<div style='word-wrap:break-word;'>";
         $view_category[1] .= show_category($category,"lg");
         $view_category[1] .= "</div>";
