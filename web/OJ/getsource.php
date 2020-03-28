@@ -65,9 +65,9 @@
  if ($ok==true) {
     if(isset($_GET['ce'])){
       echo "<pre class=\"brush:".$language_brush[$slanguage].";\">";
-      echo htmlentities(str_replace("\n\r","\n",$view_source),ENT_QUOTES,"utf-8")."\n";
+      echo htmlentities(str_replace("\n\r","\n",$view_source),ENT_QUOTES,"utf-8");
     } else {
-      echo str_replace("\n\r","\n",$view_source)."\n";
+      echo str_replace("\n\r","\n",$view_source);
     }
     echo "\n/**************************************************************\n";
     $nick = $is_temp_user ? $tuser_nick : $user_nick;
