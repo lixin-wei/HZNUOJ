@@ -545,7 +545,8 @@ CREATE TABLE `problem` (
 
 LOCK TABLES `problem` WRITE;
 /*!40000 ALTER TABLE `problem` DISABLE KEYS */;
-INSERT INTO `problem` VALUES (1000,'A+B','1','1','1',NULL,NULL,'0','','','','2019-03-13 16:10:36',1,256,'Y',1,1,0,NULL,100.00,NULL,NULL,NULL,'default');
+INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `spj`, `hint`, `author`, `source`, `in_date`, `time_limit`, `memory_limit`, `defunct`, `accepted`, `submit`, `solved_user`, `submit_user`, `score`, `tag1`, `tag2`, `tag3`, `problemset`) VALUES
+(1000, 'A+B', '<p>\n	Calculate a+b\n</p>', '<p>\n	Two integer a,b (0&lt;=a,b&lt;=10)\n</p>', '<p>\n	Output a+b\n</p>', NULL, NULL, '0', '<p>\n	Q: Where are the input and the output?  A: Your program shall always <span>read input from stdin (Standard Input) and write output to stdout (Standard Output)</span>. For example, you can use \"scanf\" in C or \"cin\" in C++ to read from stdin, and use \"printf\" in C or \"cout\" in C++ to write to stdout.  You <span>shall not output any extra data</span> to standard output other than that required by the problem, otherwise you will get a \"Wrong Answer\".  User programs are not allowed to open and read from/write to files. You will get a \"Runtime Error\" or a \"Wrong Answer\" if you try to do so.   Here is a sample solution for problem 1000 using C++/G++:\n</p>\n<pre>#include &lt;iostream&gt;\nusing namespace std;\nint main(){\n    int a, b, sum;\n    cin &gt;&gt; a &gt;&gt; b;\n	sum = a + b;\n    cout &lt;&lt; sum;\n    return 0;\n}</pre>\n<p>\n	It\"s important that the return type of main() must be int when you use G++/GCC,or you may get compile error.  Here is a sample solution for problem 1000 using C/GCC:\n</p>\n<pre>#include &lt;stdio.h&gt;\nint main()\n{\n    int a, b, sum;\n    scanf(\"%d%d\", &amp;a, &amp;b);\n	sum = a + b;\n    printf(\"%d\\n\", sum);\n    return 0;\n}</pre>\n<p>\n	Here is a sample solution for problem 1000 using PASCAL:\n</p>\n<pre>program p1000(Input,Output); \nvar \n  a,b:Integer; \nbegin \n   Readln(a,b); \n   Writeln(a+b); \nend.</pre>\n<p>\n	Here is a sample solution for problem 1000 using JAVA:  Now java compiler is jdk 1.5, next is program for 1000\n</p>\n<pre>import java.io.*;\nimport java.util.*;\npublic class Main\n{\n    public static void main(String args[]) throws Exception\n    {\n        Scanner cin=new Scanner(System.in);\n        int a=cin.nextInt();int b=cin.nextInt();\n        System.out.println(a+b);\n    }\n}</pre>\n<p>\n	Old program for jdk 1.4\n</p>\n<pre>import java.io.*;\nimport java.util.*;\npublic class Main\n{\n    public static void main (String args[]) throws Exception\n    {\n        BufferedReader stdin = \n            new BufferedReader(\n                new InputStreamReader(System.in));\n        String line = stdin.readLine();\n        StringTokenizer st = new StringTokenizer(line);\n        int a = Integer.parseInt(st.nextToken());\n        int b = Integer.parseInt(st.nextToken());\n        System.out.println(a+b);\n    }\n}</pre>', '', '', '2019-03-13 16:10:36', 1, 256, 'Y', 2, 2, 0, NULL, '100.00', NULL, NULL, NULL, 'default');
 /*!40000 ALTER TABLE `problem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -742,7 +743,9 @@ CREATE TABLE `solution` (
 
 LOCK TABLES `solution` WRITE;
 /*!40000 ALTER TABLE `solution` DISABLE KEYS */;
-INSERT INTO `solution` VALUES (1,1000,'admin',0,1120,'2019-03-13 16:10:55',4,1,'127.0.0.1',NULL,1,-1,75,'2019-03-13 16:10:56',0.00,'172.17.0.1');
+INSERT INTO `solution` (`solution_id`, `problem_id`, `user_id`, `time`, `memory`, `in_date`, `result`, `language`, `ip`, `contest_id`, `valid`, `num`, `code_length`, `judgetime`, `pass_rate`, `judger`) VALUES
+(1, 1000, 'admin', 0, 1120, '2019-03-13 16:10:55', 4, 0, '127.0.0.1', NULL, 1, -1, 124, '2019-03-13 16:10:56', '0.00', '172.17.0.1'),
+(2, 1000, 'admin', 0, 2020, '2019-03-13 16:10:56', 4, 1, '127.0.0.1', NULL, 1, -1, 135, '2019-03-13 16:10:57', '0.00', '172.17.0.1');
 /*!40000 ALTER TABLE `solution` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -792,7 +795,9 @@ CREATE TABLE `source_code` (
 
 LOCK TABLES `source_code` WRITE;
 /*!40000 ALTER TABLE `source_code` DISABLE KEYS */;
-INSERT INTO `source_code` VALUES (1,'#include <stdio.h>\r\nint main(){\r\n    puts(\"3\");\r\n    return 0;\r\n}');
+INSERT INTO `source_code` (`solution_id`, `source`) VALUES
+(1, '#include <stdio.h>\nvoid main()\n{\n    int a, b, sum;\n    scanf(\"%d%d\", &a, &b);\n    sum = a + b;\n    printf(\"%d\", sum);\n}\n   '),
+(2, '#include <iostream>\nusing namespace std;\nint main(){\n    int a, b, sum;\n    cin >> a >> b;\n	sum = a + b;\n    cout << sum;\n	return 0;\n}\n');
 /*!40000 ALTER TABLE `source_code` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -816,7 +821,9 @@ CREATE TABLE `source_code_user` (
 
 LOCK TABLES `source_code_user` WRITE;
 /*!40000 ALTER TABLE `source_code_user` DISABLE KEYS */;
-INSERT INTO `source_code_user` VALUES (1,'#include <stdio.h>\r\nint main(){\r\n    puts(\"3\");\r\n    return 0;\r\n}');
+INSERT INTO `source_code_user` (`solution_id`, `source`) VALUES
+(1, '#include <stdio.h>\nvoid main()\n{\n    int a, b, sum;\n    scanf(\"%d%d\", &a, &b);\n    sum = a + b;\n    printf(\"%d\", sum);\n}\n   '),
+(2, '#include <iostream>\nusing namespace std;\nint main(){\n    int a, b, sum;\n    cin >> a >> b;\n	sum = a + b;\n    cout << sum;\n	return 0;\n}\n');
 /*!40000 ALTER TABLE `source_code_user` ENABLE KEYS */;
 UNLOCK TABLES;
 

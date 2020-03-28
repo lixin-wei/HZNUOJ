@@ -46,6 +46,12 @@ mkdir -p /home/judge/data/1000
 pushd /home/judge/data/1000
     echo "1 2" > sample0.in
     echo "3" > sample0.out
+    echo "6 10" > test0.in
+    echo "16" > test0.out
+    echo "6 9" > test1.in
+    echo "15" > test1.out
+    echo "0 0" > test2.in
+    echo "0" > test2.out
 popd
 
 mkdir -p /home/judge/log
