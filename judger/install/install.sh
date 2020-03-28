@@ -37,6 +37,11 @@ cd ../../..
 rm -R $WEBBASE
 cp -R HZNUOJ $WEBBASE
 
+#create upload dir
+mkdir -p $WEBBASE/web/OJ/upload
+chmod 770 $WEBBASE/web/OJ/upload
+chgrp -R $APACHEUSER $WEBBASE/web/OJ/upload
+
 #create work dir set default conf
 mkdir -p /home/judge
 mkdir -p /home/judge/etc
