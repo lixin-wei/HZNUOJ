@@ -99,12 +99,12 @@ while($set_name=$res_set->fetch_array()[0]){
     if($OJ=='all' || $OJ==$set_name){
         if(HAS_PRI("see_hidden_".$set_name."_problem")){
             $t_sql="
-SELECT problem.problem_id,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3, 0 as locked
+SELECT problem.problem_id,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3, 0 as locked, `defunct`
 FROM `problem` WHERE $filter_sql AND problemset='$set_name'";
         }
         else{
             $t_sql=<<<SQL
-SELECT problem.problem_id,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3, COUNT(running_problem.problem_id) > 0 AS locked  
+SELECT problem.problem_id,`title`,author,`source`,`submit`,`accepted`,score, tag1, tag2, tag3, COUNT(running_problem.problem_id) > 0 AS locked, `defunct`
 FROM problem
 LEFT JOIN (
     SELECT problem_id FROM contest_problem
@@ -180,10 +180,13 @@ while ($row=$result->fetch_object()) {
         $view_problemset[$i][0] = "<td style='width:30px'></td>";
     }
     $view_problemset[$i][1] = "<td>".$p_id."</td>";
+    $view_problemset[$i][2] = "<td style='text-align:left;";
     if(!$row->locked)
-        $view_problemset[$i][2] = "<td style='text-align:left;'><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a></td>";
+        $view_problemset[$i][2] .= "'><a href='problem.php?id=".$p_id."' target='_blank'>".$row->title."</a>";
     else
-        $view_problemset[$i][2] = "<td style='text-align:left;color: dimgrey;'><span title='this problem is locked because they are in running contest.'>{$row->title}</span>"." <i class='am-icon-lock'></i></td>";
+        $view_problemset[$i][2] .= "color: dimgrey;'><span title='this problem is locked because they are in running contest.'>{$row->title}</span> <i class='am-icon-lock'></i>";
+    if(strtolower($row->defunct)=="y") $view_problemset[$i][2] .= " <i class='am-icon-eye-slash'></i>";
+    $view_problemset[$i][2] .= "</td>";
     $view_problemset[$i][3] = "<td >";
     if ($show_tag) {
         if($row->tag1) $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>\n";
