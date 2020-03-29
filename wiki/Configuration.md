@@ -9,39 +9,6 @@ and
 
 
 = judge.conf =
-DON'T COPY THIS TO YOUR judge.conf, judged/judge_client CAN'T process these comments.
-
-OJ_HOST_NAME=127.0.0.1     #mysql host ip
-OJ_USER_NAME=root          #mysql host username
-OJ_PASSWORD=root           #mysql host password
-OJ_DB_NAME=jol             #mysql DB name
-OJ_PORT_NUMBER=3306        #mysql port
-OJ_RUNNING=2               #max concurrent threads number of judge_client
-OJ_SLEEP_TIME=1            #judged work interval
-OJ_TOTAL=1                 #Deprecated: total number of judged (hosts/processes)
-OJ_MOD=0                   #Deprecated: the number of this judged(host)
-OJ_JAVA_TIME_BONUS=2       #java's extral time
-OJ_JAVA_MEMORY_BONUS=64   #java's extral memory
-OJ_JAVA_XMS=-Xms64M
-OJ_JAVA_XMX=-Xmx128M
-OJ_SIM_ENABLE=1            #using sim
-OJ_HTTP_JUDGE=0            #using http link to database(if enabled,mysql is not used anymore)
-OJ_HTTP_BASEURL=http://127.0.0.1/JudgeOnline   #http link basedir
-OJ_HTTP_USERNAME=IP     #account in db that has http_judge privilege
-OJ_HTTP_PASSWORD=admin      #password of this account
-OJ_REDISENABLE=0
-OJ_REDISSERVER=127.0.0.1
-OJ_REDISPORT=6379
-OJ_REDISAUTH=123456
-OJ_REDISQNAME=hustoj
-OJ_OI_MODE=0               #using oi (Olympiad in Informatics) mode
-OJ_FULL_DIFF=1
-OJ_SHM_RUN=0               #using /dev/shm for fast running & low harddisk wear
-OJ_USE_MAX_TIME=1          #use the max time of all testcase rather than total time
-OJ_LANG_SET=0,1,2,3,4,5,6,7,8,9,12,13,14,15,17,18
-OJ_COMPILE_CHROOT=1
-OJ_TURBO_MODE=0
-
 
 不要直接复制下面的内容到你的judge.conf, judged/judge_client 不支持注释.
 OJ_HOST_NAME=127.0.0.1     #如果用mysql连接读取数据库，数据库的主机地址
@@ -57,25 +24,25 @@ OJ_JAVA_TIME_BONUS=2       #Java等虚拟机语言获得的额外运行时间。
 OJ_JAVA_MEMORY_BONUS=64    #Java等虚拟机语言获得的额外内存。
 OJ_JAVA_XMS=-Xms64M
 OJ_JAVA_XMX=-Xmx128M
-OJ_SIM_ENABLE=1            #是否使用sim进行代码相似度的检测
+OJ_SIM_ENABLE=1            #是否使用sim进行代码相似度的检测,即抄袭检查功能，长期开启此功能会占用大量硬盘存储空间
 OJ_HTTP_JUDGE=0            #是否使用HTTP方式连接数据库，如果启用，则前面的HOST_NAME等设置忽略,。
 OJ_HTTP_BASEURL=http://127.0.0.1/JudgeOnline  #使用HTTP方式连接数据库的基础地址，就是OJ的首页地址。
-OJ_HTTP_USERNAME=IP        #使用HTTP方式所用的用户帐号（HTTP_JUDGE权限），该帐号登录时不能启用VCODE图形验证码，但可以登录成功后启用。
+OJ_HTTP_USERNAME=IP        #使用HTTP方式所用的用户帐号（REJUDGE权限），该帐号登录时不能启用VCODE图形验证码，但可以登录成功后启用。
 OJ_HTTP_PASSWORD=admin     #密码
 OJ_REDISENABLE=0
 OJ_REDISSERVER=127.0.0.1
 OJ_REDISPORT=6379
 OJ_REDISAUTH=123456
 OJ_REDISQNAME=hustoj
-OJ_OI_MODE=0                #是否启用OI模式，即无论是否出错都继续判剩余的数据，在ACM比赛中一旦出错就停止运行。
-OJ_FULL_DIFF=1
+OJ_OI_MODE=0                #是否启用OI信息学奥林匹克竞赛模式，即无论是否出错都继续判剩余的数据，并显示测试数据通过率，而在在ACM比赛模式规则是(值为1)一旦出错就停止运行。
+OJ_FULL_DIFF=0              #是否启用RE信息全输出模式，即将每组的in数据、out数据以及对应运行结果的对比信息全部输出到到数据库RE信息表`runtimeinfo`，若不启用（值为0），则只将每组数据的out数据、对应运行结果的对比信息输出，这样可以避免选手根据对比数据刷题。
 OJ_SHM_RUN=0                #是否使用/dev/shm的共享内存虚拟磁盘来运行答案，如果启用能提高判题速度，但需要较多内存。
 OJ_USE_MAX_TIME=1           #是否使用所有测试数据中最大的运行时间作为最后运行时间，如果不启用则以所有测试数据的总时间作为超时判断依据。
 OJ_LANG_SET=0,1,2,3,4,5,6,7,8,9,12,13,14,15,17,18
 OJ_COMPILE_CHROOT=1
 OJ_TURBO_MODE=0
 
-static.php
+= static.php =
 
 static  $DB_HOST="localhost";//数据库的服务器地址
 static  $DB_NAME="jol";//数据库名
@@ -127,7 +94,7 @@ static $SILVER_RATE = 0.20; // 银牌比例
 static $BRONZE_RATE = 0.30; // 铜牌比例
 static $BORDER = 500000;
 static $LOGIN_DEFUNCT = false;
-static $VIDEO_SUBMIT_TIME=3;// can see video after
+static $VIDEO_SUBMIT_TIME=3;// can see video after,如果有帮助视频，几次提交错误后能观看视频
 
 static  $OJ_REGISTER=true; //允许注册新用户
 static  $OJ_REG_NEED_CONFIRM="pwd"; //新注册用户需要审核，四种模式
