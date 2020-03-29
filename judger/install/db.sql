@@ -726,7 +726,7 @@ CREATE TABLE `solution` (
   `num` tinyint(4) NOT NULL DEFAULT '-1',
   `code_length` int(11) NOT NULL DEFAULT '0',
   `judgetime` datetime DEFAULT NULL,
-  `pass_rate` decimal(2,2) unsigned NOT NULL DEFAULT '0.00',
+  `pass_rate` decimal(3,2) unsigned NOT NULL DEFAULT '0.00',
   `judger` char(16) NOT NULL DEFAULT 'LOCAL',
   PRIMARY KEY (`solution_id`),
   KEY `pid` (`problem_id`),
