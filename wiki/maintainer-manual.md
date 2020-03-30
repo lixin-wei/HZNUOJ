@@ -36,6 +36,12 @@ set encoding=prc
 
 运行完上面的命令后，Python的实际版本已经是3了，提交页面选择Pyhton语言提交Python3代码判题即可。
 
+### 班级列表
+
+上一版本的班级列表是写死在代码里的，本次更新（2020年3月）已经更改由数据库管理，老版本HZNUOJ请运行源码文件夹下judger/install/update.sql更新数据库。
+
+本次关于班级列表功能的更新包括班级模式开关，以及以班级为单位的注册码、注册名额功能。具体参看源码文件夹下 web/OJ/include/static.php 中的 **$OJ_NEED_CLASSMODE** 和 **$OJ_REG_NEED_CONFIRM** 两个参数的注释说明
+
 ### 题集编辑
 
 题集编辑的界面目前也还没写好，下个版本会改进。
@@ -71,3 +77,5 @@ set encoding=prc
 然后重启程序
 
 `sudo judged`
+
+或者试试 `sudo pkill -9 judged && sudo judged`
