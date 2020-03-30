@@ -1,4 +1,24 @@
-**HZNUOJ 是基于 [HUSTOJ](https://github.com/zhblue/hustoj) 改造而来的，遵循GPL协议开源**
+## **HZNUOJ 是基于 [HUSTOJ](https://github.com/zhblue/hustoj) 改造而来的，遵循GPL协议开源**
+
+目录
+--
+[优势](#%E4%BC%98%E5%8A%BF)
+
+[界面截图](#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE)
+
+[部署指南](#%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[基于Docekr部署](#%E4%BD%BF%E7%94%A8docker%E6%8E%A8%E8%8D%90)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[基于源码部署](#%E4%BD%BF%E7%94%A8%E6%BA%90%E7%A0%81)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[功能配置](#%E5%8A%9F%E8%83%BD%E9%85%8D%E7%BD%AE)
+
+[使用教程](#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)
+
+[贡献代码/Bug反馈](#%E8%B4%A1%E7%8C%AE%E4%BB%A3%E7%A0%81bug%E5%8F%8D%E9%A6%88)
+
+
 
 # 优势
 
@@ -104,15 +124,12 @@ admin@ubuntu16:~$ docker run -it --rm -p 90:80 --privileged hznuoj:latest
    ```
    源码或者还可以直接访问`https://github.com/wlx65003/HZNUOJ` 下载zip包
 
-3. 安装完成后访问localhost、服务器IP或相应域名即可。
+4. 安装完成后访问localhost、服务器IP或相应域名即可。
 
-# 使用教程
+## 功能配置
 
-默认管理员账号为admin/123456。
+### 原理
 
-出题手册见https://www.yuque.com/weilixinlianxin/zcf10d/yfk05w
-
-## 原理
 系统分为后台的Core(判题机)和前台的web(网站)两大部分。两个部分相对独立，通过数据库关联。判题机通过轮询数据库提取判题队列，生成判题信息回写数据库，web部分读取数据库显示在网页上。
 
 若发现提交代码后无法判题，一直显示pending或者等待，请尝试服务器中运行以下命令重启判题机进程
@@ -123,11 +140,11 @@ admin@ubuntu16:~$ sudo pkill -9 judged && sudo judged && ps -A | grep judged
 
 更多原理和说明可参考[hustoj文档大全.pdf](https://github.com/zhblue/hustoj/wiki/hustoj文档大全.pdf)及[HZNUOJ常见问题列表](wiki/maintainer-manual.md)
 
-## 功能配置
+### 参数配置
 
 Core判题机部分的配置文件为/home/judge/etc/judge.conf，web网站部分的配置文件为/var/www/web/OJ/include/static.php
 
-详细的配置说明可以参考[Configuration.md](wiki/Configuration.md)。
+详细的配置说明可以参看[HZNUOJ配置手册](wiki/Configuration.md)或者配置文件中的注释。
 
 下面把几个可能会用到的功能配置参数说明一下：
 
@@ -142,10 +159,10 @@ judge.conf中的OJ_OI_MODE负责标记判题机的判题模式是OI信息学奥�
 判题模式为OI信息学奥赛模式，即使有测试实例出错，它依旧会测试下去，比赛根据数据通过率排名，而不只看 AC 数量；另外会在status.php状态页中显示测试实例的通过率和程序最大运行时间。
  
 可运行脚本快速修改或手动修改judge.conf文件
-   ```bash
-   执行源码目录下的 `judger/install/ch_OI_MODE.sh` ，按照提示操作即可
-   admin@ubuntu16:~$ sudo bash HZNUOJ/judger/install/ch_OI_MODE.sh
-   ```
+```bash
+执行源码目录下的 `judger/install/ch_OI_MODE.sh` ，按照提示操作即可
+admin@ubuntu16:~$ sudo bash HZNUOJ/judger/install/ch_OI_MODE.sh
+```
 
 ### 判题WrongAnswer信息相关参数，输出模式切换 OJ_FULL_DIFF 和 对比信息查看开关 $OJ_SHOW_DIFF
 
@@ -163,13 +180,21 @@ judge.conf中的OJ_FULL_DIFF负责标记判题机的错误信息对比说明输�
 用户可以在reinfo.php页查看判题错误信息的对比说明。
 
 #### $OJ_SHOW_DIFF = false
-reinfo.php页会被静止访问，用户不能查看判题错误信息的对比说明。
+reinfo.php页会被禁止访问，用户不能查看判题错误信息的对比说明。
 
 ### 代码相似度检测开关 OJ_SIM_ENABLE 和 $OJ_SIM
 
+OJ_SIM_ENABLE负责标记判题机是否开启代码相似度检测，$OJ_SIM负责标记web部分的状态页上是否显示代码相似度检测的结果。
+
 通过配置judge.conf中的OJ_SIM_ENABLE = 1 和 static.php中的$OJ_SIM = true 开启代码相似度检测，也就是抄袭检查功能，但只针对AC的代码，不检测没通过的代码。
 
-判题机通过调用第三方应用程序SIM对**AC的提交代码**进行语法分析判读文本相似度，通过检验的代码将由判题机复制进题目数据的 ac 目录成为新的参考样本（基于此，长期开启本功能会占用大量硬盘存储空间。
+判题机通过调用第三方应用程序SIM对**AC的提交代码**进行语法分析判读文本相似度，通过检验的代码将由判题机复制进题目数据的 ac 目录成为新的参考样本（基于此，长期开启本功能会占用大量硬盘存储空间）。
+
+# 使用教程
+
+默认管理员账号为admin/123456。
+
+出题手册见https://www.yuque.com/weilixinlianxin/zcf10d/yfk05w
 
 # 贡献代码/Bug反馈
 
