@@ -34,13 +34,7 @@ set encoding=prc
 
 要切换回python2的话，执行`sudo update-alternatives --config python`，按照提示输入选择数字回车即可。
 
-运行完上面的命令后，Python的实际版本已经是3了，但是web的提交界面里显示的还是Python2，看着难受的话可以改一下。
-
-但是命令行界面下编辑文件得用vim，这个对新手很不友好，如果不会用可以百度下教程。
-
-`vim /var/www/web/OJ/include/const.inc.php`
-
-在里面找到language_name数组，把里面的Python2改成Python3就可以了，或者干脆直接改成Python，以免后面切换又得改。
+运行完上面的命令后，Python的实际版本已经是3了，提交页面选择Pyhton语言提交Python3代码判题即可。
 
 ### 题集编辑
 

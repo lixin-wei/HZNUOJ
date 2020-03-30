@@ -25,11 +25,12 @@
   static  $OJ_LANG="en";//设置默认显示的语言，中文为cn，英文为en
   static  $OJ_SIM=true;//是否显示相似度检测的结果。
   static  $OJ_DICT=true;//是否启用在线英字典
-  static  $OJ_LANGMASK=979967; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
+  static  $OJ_LANGMASK=717823; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
                 //HZNUOJ规则 1开启 0关闭，各个语言从后往前排，在最高位补1，再二进制转成十进制变成掩码,语言顺序见/include/const.inc.php的$language_name数组
-							  //1 1101111001111111111=1(455679D)=979967 github上down下来默认JavaScript、Obj-C、FreeBasic不开
-							  //1 1111111111111111111=1(524287D)=1048575 语言全开
-							  //1 1100000000000000011 = 1(393219D)=917507 只开C C++ python3 GO
+                //1 1111111111111111111=1(524287D)=1048575 语言全开
+                //1 1101111001111111111=1(455679D)=979967 github上down下来默认JavaScript、Obj-C、FreeBasic不开
+                //1 0101111001111111111=1(193535D)=717823 为方便和hustoj对接，关闭18Python3；Python2、Python3可以通过系统配置切换，具体参看wiki/maintainer-manual.md
+							  //1 0000000000001000011 = 1(67D)=524355 只开C C++ python
 							  //试验了下最高位1不补好像也没问题
   static  $OJ_EDITE_AREA=true; //true: 是否启用高亮语法显示的提交界面，可以在线编程，无须IDE。
   static  $OJ_AUTO_SHARE=true; //true: 自动分享代码，启用的话，做出一道题就可以在该题的Status中看其他人的答案。
@@ -46,7 +47,7 @@
   static  $OJ_TEMPLATE="hznu";
   static  $OJ_LOGIN_MOD="hustoj";
   static  $OJ_RANK_LOCK_PERCENT=0.2; //比赛封榜时间的比率，如5小时比赛设为0.2则最后1小时封榜。
-  static  $OJ_SHOW_DIFF=false;//是否显示WA的对比说明
+  static  $OJ_SHOW_DIFF=true;//是否显示WA的对比说明
   static  $OJ_TEST_RUN = true;//提交界面是否允许测试运行
   static $OJ_OPENID_PWD = '8a367fe87b1e406ea8e94d7d508dcf01';
 
