@@ -96,9 +96,9 @@ if (isset($_GET['cid'])){
     } else {
         $row=$result->fetch_object();
         if($row->user_limit=="Y" && $_SESSION['contest_id']!=$cid && !HAS_PRI("edit_contest")){
-            require_once "template/hznu/contest_header.php";
+            require_once "template/".$OJ_TEMPLATE."/contest_header.php";
             echo  "<div class='am-text-center'><font style='color:red;text-decoration:underline;'>You are not invited to this contest!</font></div>";
-            require_once "template/hznu/footer.php";
+            require_once "template/".$OJ_TEMPLATE."/footer.php";
             exit(0);
         }
         $view_private=$row->private;

@@ -9,10 +9,10 @@
 
 <?php $title="ACM Foundation"; ?>
 <?php
-require_once('./include/static.php'); 
+require_once('./include/db_info.inc.php');
 require_once('./include/setlang.php'); 
 ?>
-<?php require_once "template/hznu/header.php"; ?>
+<?php require_once "template/".$OJ_TEMPLATE."/header.php"; ?>
 <style>
     .box{
         border: 1px solid #eee;
@@ -142,4 +142,4 @@ require_once('./include/setlang.php');
     </div>
 </div><!-- container -->
 
-<?php require_once "template/hznu/footer.php" ?>
+<?php require_once "template/".$OJ_TEMPLATE."/footer.php" ?>

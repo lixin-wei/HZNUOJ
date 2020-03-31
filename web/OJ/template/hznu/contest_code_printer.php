@@ -4,7 +4,7 @@
    * @2019.03.15
   **/
 ?>
-<?php include "template/hznu/contest_header.php"; ?>
+<?php include "contest_header.php"; ?>
 <div class="am-container">
   <hr/>
   <h2>Code printing service</h2>

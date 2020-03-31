@@ -17,7 +17,7 @@ if(isset($_GET['class'])) {
 
 
 <?php
-require_once "template/hznu/header.php";
+require_once "template/".$OJ_TEMPLATE."/header.php";
 ?>
 <table>
     <tbody>
@@ -41,5 +41,5 @@ require_once "template/hznu/header.php";
     </tbody>
 </table>
 <?php
-require_once "template/hznu/footer.php"
+require_once "template/".$OJ_TEMPLATE."/footer.php"
 ?>

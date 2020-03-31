@@ -1,6 +1,6 @@
 <?php
-include "template/hznu/contest_header.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/const.inc.php";
+include "contest_header.php";
+require_once('./include/const.inc.php');
 ?>
 <div class="am-container">
   <hr/>

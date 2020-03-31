@@ -2,13 +2,14 @@
 <?php
 
 if(isset($_POST['pid'])){
-    $pid=$_POST['pid'];
+  $pid=$_POST['pid'];
 }
 else{
-    exit(0);
+  exit(0);
 }
 $title="Solution Video Of Problem $pid";
-require_once "template/hznu/header.php";
+require_once "./include/db_info.inc.php";
+require_once "template/".$OJ_TEMPLATE."/header.php";
 
 $can_see_video=false;
 if(isset($_SESSION['user_id'])){
@@ -34,4 +35,4 @@ $mysqli->query($sql);
   </div>
 </div>
 
-<?php require_once "template/hznu/footer.php"; ?>
+<?php require_once "template/".$OJ_TEMPLATE."/footer.php"; ?>

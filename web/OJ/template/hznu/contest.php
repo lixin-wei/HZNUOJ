@@ -10,7 +10,7 @@
 ?>
 
 <?php $title=$MSG_PROBLEM;?>
-<?php include "template/hznu/contest_header.php"; ?>
+<?php include "contest_header.php"; ?>
 <div class="am-container" style="margin-top: 20px;">
   <?php if($view_description):?>
   <h1><?php echo $MSG_Announcement?></h1><hr/>

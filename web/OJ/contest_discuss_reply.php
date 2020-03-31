@@ -2,13 +2,14 @@
 require_once('./include/db_info.inc.php');
 require_once('./include/my_func.inc.php');
 require_once('./include/setlang.php');
-require_once './include/const.inc.php';
-require_once "template/hznu/contest_header.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/const.inc.php";
+require_once('./include/const.inc.php');
+require_once('template/'.$OJ_TEMPLATE.'/contest_header.php');
+
 if (isset($_GET['cid'])){
     if(!HAS_PRI("edit_contest")) {
-        require_once "template/hznu/footer.php";
-        exit(0);
+      echo  "<div class='am-text-center'><font style='color:red;text-decoration:underline;'>You are not invited to this contest!</font></div>";
+      require_once "template/".$OJ_TEMPLATE."/footer.php";
+      exit(0);
     }
     $contest_id = $mysqli->real_escape_string($_GET['cid']);
     if(isset($_GET['problem_id']) && $_GET['problem_id'] != -1) {
@@ -92,7 +93,7 @@ HTML;
   </div>
 </div>
 <?php
-require_once "template/hznu/footer.php";
+require_once "template/".$OJ_TEMPLATE."/footer.php";
 ?>
 
 <script type="text/javascript">
