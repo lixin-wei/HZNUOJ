@@ -196,6 +196,12 @@ OJ_SIM_ENABLE负责标记判题机是否开启代码相似度检测，$OJ_SIM负
 
 出题手册见https://www.yuque.com/weilixinlianxin/zcf10d/yfk05w
 
+# 使用教程
+
+默认管理员账号为admin/123456。
+
+出题手册见https://www.yuque.com/weilixinlianxin/zcf10d/yfk05w
+
 # 贡献代码/Bug反馈
 
 HZNUOJ目前开发人手很有限，只有已经上班的我和训练繁忙的一些学弟，有许多已知的不友好的功能和小BUG，只能抽时间慢慢改了。
