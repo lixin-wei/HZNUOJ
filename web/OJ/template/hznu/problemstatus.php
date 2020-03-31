@@ -9,10 +9,9 @@
   **/
 ?>
 
-<?php
+<?php 
   $title=$MSG_PROBLEM.$MSG_STATISTICS;
  require_once "header.php";
- require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/const.inc.php";
 ?>
 
 
@@ -22,10 +21,12 @@
       <h1>$MSG_CodeArchive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
       <hr/>
 HTML;
+  if(isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE) {
     ?>
   <div style="color: grey;">
     <h4><?php echo $MSG_HELP_PROBLEM_STATISTICS ?></h4>
   </div>
+  <?php } ?>
   <div style="padding: 15px;">
     <div style="width: 350px; float: left;" class="am-text-center">
     <div class="am-panel-group">
