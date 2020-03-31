@@ -13,16 +13,62 @@
     echo "Permission denied!";
     exit(1);
   }
-  require_once("../include/set_get_key.php");
-  
-   
+  require_once("../include/set_get_key.php"); 
+  function formatTimeLength($length)
+  {
+    $hour = 0;
+    $minute = 0;
+    $second = 0;
+    $result = '';
+    global $OJ_LANG;
+    //加个语言判断，cn则显示中文时间，其他的都显示英文
+    if($OJ_LANG == "cn"){
+      if($length >= 60){
+      $second = $length%60;
+      if($second > 0){ $result = $second.'秒';}
+      $length = floor($length/60);
+      if($length >= 60){
+        $minute = $length%60;
+        if($minute == 0){ if($result != ''){ $result = '0分' . $result;}}
+        else{ $result = $minute.'分'.$result;}
+        $length = floor($length/60);
+        if($length >= 24){
+        $hour = $length%24;
+        if($hour == 0){ if($result != ''){ $result = '0小时' . $result;}}
+        else{ $result = $hour . '小时' . $result;}
+        $length = floor($length / 24);
+        $result = $length . '天' . $result;
+        } else{ $result = $length . '小时' . $result;}
+      } else{ $result = $length . '分' . $result;}
+      } else{ $result = $length . '秒';}
+    } else {
+      if($length >= 60){
+      $second = $length%60;
+      if($second > 0){ $result = $second.' Second'.($second>1?"s":"");}
+      $length = floor($length/60);
+      if($length >= 60){
+        $minute = $length%60;
+        if($minute == 0){ if($result != ''){ $result = '0 Minute' . $result;}}
+        else{ $result = $minute.' Minute'.($length>1?"s":"")." ".$result;}
+        $length = floor($length/60);
+        if($length >= 24){
+        $hour = $length%24;
+        if($hour == 0){ if($result != ''){ $result = '0 Hour' . $result;}}
+        else{ $result = $hour . ' Hour'.($length>1?"s":"")." " . $result;}
+        $length = floor($length / 24);
+        $result = $length . ' Day'.($length>1?"s":"")." " . $result;
+        } else{ $result = $length . ' Hour'.($length>1?"s":"")." " . $result;}
+      } else{ $result = $length . ' Minute'.($length>1?"s":"")." " . $result;}
+      } else{ $result = $length . ' Second'.($length>1?"s":"");}
+    }
+    return $result;
+  }
    //分页start
   $page = 1;
   if(isset($_GET['page'])) $page = intval($_GET['page']);
   $page_cnt = 50;
   $pstart = $page_cnt*$page-$page_cnt;
-  $pend = $page_cnt;    
-  if(isset($_GET['keyword']) && trim($_GET['keyword']) != "") $args['keyword']=htmlentities($keyword);
+  $pend = $page_cnt;
   if(isset($page)) $args['page']=$page;
 function generate_url($data){
     global $args;
@@ -39,15 +85,59 @@ function generate_url($data){
     return $link;
 }  
     // check the order_by arg
-  $sql_filter = " FROM `contest` ";
+  $sql_filter = " FROM `contest` WHERE 1 ";
   $sql_limit = " limit ".strval($pstart).",".strval($pend); 
   if(isset($_GET['keyword']) && trim($_GET['keyword']) != ""){
-	$keyword=htmlentities($_GET['keyword']);
-	$keyword=$mysqli->real_escape_string($keyword);
-	$args['keyword']=$keyword;
-	$sql_filter .=" WHERE title LIKE '%$keyword%' ";
-	$sql_limit = "";
+    $keyword=htmlentities($_GET['keyword']);
+    $keyword=$mysqli->real_escape_string($keyword);
+    $args['keyword']=$keyword;
+    $sql_filter .= " AND `title` LIKE '%$keyword%' ";
   } 
+  if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {
+    $type = trim($_GET['type']);
+    $args['type'] = $type;
+    switch ($type) {
+      case "Special":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='Y') ";
+      break;
+      case "Private":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND `private`) ";
+      break;
+      case "Public":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND NOT `private`) ";
+      break;
+      case "Practice":
+        $sql_filter .= "AND `practice` ";
+      break;
+    }
+  }
+  if(isset($_GET['status']) && trim($_GET['status']) != "" && trim($_GET['status']) != "all") {
+    $status = trim($_GET['status']);
+    $args['status'] = $status;
+    switch ($status) {
+      case "Available":
+        $sql_filter .= " AND `defunct`='N' ";
+      break;
+      case "Reserved":
+        $sql_filter .= " AND `defunct`='Y' ";
+      break;
+    }
+  }
+  if(isset($_GET['runstatus']) && trim($_GET['runstatus']) != "" && trim($_GET['runstatus']) != "all") {
+    $runstatus = trim($_GET['runstatus']);
+    $args['runstatus'] = $runstatus;
+    switch ($runstatus) {
+      case "noStart":
+        $sql_filter .= " AND `start_time`>NOW() ";
+      break;
+      case "Running":
+        $sql_filter .= " AND (`start_time`<NOW() AND `end_time`>NOW()) ";
+      break;
+      case "Ended":
+        $sql_filter .= " AND `end_time`<NOW() ";
+      break;
+    }
+  }
   $sql_page = "SELECT count(1) ".$sql_filter;  
   $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
   if($rows) $total = $rows[0][0];  
@@ -67,8 +157,27 @@ function generate_url($data){
   <hr/>  
 
  <div style="margin-top: 10px;margin-bottom: 10px;">
- <form class="form-inline center" action="contest_list.php">
-  <input class="form-control"  name="keyword" type="text"  placeholder="<?php echo $MSG_KEYWORDS ?>" <?php if(isset($keyword)) echo "value='$keyword'"; ?>/>&nbsp;<input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH?>" >
+ <form class="form-inline center" id="searchform" action="contest_list.php">
+  <select class="selectpicker show-tick" name="type" data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+      <option value='all' <?php if (isset($_GET['type']) && ($_GET['type'] == "" || $_GET['type'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Type ?></option>
+      <option value='Public' <?php if (isset($_GET['type']) && $_GET['type'] == "Public" ) echo "selected"; ?>><?php echo $MSG_Public ?></option>
+      <option value='Private' <?php if (isset($_GET['type']) && $_GET['type'] == "Private" ) echo "selected"; ?>><?php echo $MSG_Private ?></option>
+      <option value='Practice' <?php if (isset($_GET['type']) && $_GET['type'] == "Practice" ) echo "selected"; ?>><?php echo $MSG_Practice ?></option>
+      <option value='Special' <?php if (isset($_GET['type']) && $_GET['type'] == "Special" ) echo "selected"; ?>><?php echo $MSG_Special ?></option>
+  </select>&nbsp;
+  <select class="selectpicker show-tick" name="status" data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+      <option value='all' <?php if (isset($_GET['status']) && ($_GET['status'] == "" || $_GET['status'] == "all")) echo "selected"; ?>><?php echo $MSG_ALL.$MSG_STATUS ?></option>
+      <option value='Available' <?php if (isset($_GET['status']) && $_GET['status'] == "Available" ) echo "selected"; ?>><?php echo $MSG_Available ?></option>
+      <option value='Reserved' <?php if (isset($_GET['status']) && $_GET['status'] == "Reserved" ) echo "selected"; ?>><?php echo $MSG_Reserved ?></option>
+  </select>&nbsp;
+  <select class="selectpicker show-tick" name="runstatus" data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
+      <option value='all' <?php if (isset($_GET['runstatus']) && ($_GET['runstatus'] == "" || $_GET['runstatus'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_STATUS ?></option>
+      <option value='noStart' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "noStart" ) echo "selected"; ?>><?php echo $MSG_notStart2 ?></option>
+      <option value='Running' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "Running" ) echo "selected"; ?>><?php echo $MSG_Running ?></option>
+      <option value='Ended' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "Ended" ) echo "selected"; ?>><?php echo $MSG_Ended ?></option>
+  </select>&nbsp;
+  <input class="form-control"  name="keyword" type="text"  placeholder="<?php echo $MSG_KEYWORDS ?>" <?php if(isset($keyword)) echo "value='$keyword'"; ?>/>&nbsp;
+  <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH?>" >
 </form>
 </div>
 <!-- 页标签 start -->
@@ -109,18 +218,30 @@ function generate_url($data){
     <th><?php echo $MSG_TITLE ?></th>
     <th><?php echo $MSG_StartTime ?></th>
     <th><?php echo $MSG_EndTime ?></th>
+    <th><?php echo $MSG_TotalTime ?></th>
     <th><?php echo $MSG_Type ?></th>
     <th><?php echo $MSG_STATUS ?></th>
     <th colspan=4 style="text-align: center"><?php echo $MSG_Operations ?></th>
 </tr></thead>
 <?php 
-for (;$row=$result->fetch_object();){
+while ($row=$result->fetch_object()){
     echo "<tr>\n";
     echo "<td>".$row->contest_id."&nbsp;<input type=checkbox name='cid[]' value='".$row->contest_id."' /></td>\n";
     echo "<td><a href='../contest.php?cid=$row->contest_id'>".$row->title."</a></td>\n";
-    echo "<td>".$row->start_time."</td>\n";
-    echo "<td>".$row->end_time."</td>\n";
-	$type = "&gt;&gt;$MSG_Public";
+    echo "<td>".date('Y-m-d H:i',strtotime($row->start_time))."</td>\n";
+    echo "<td>".date('Y-m-d H:i',strtotime($row->end_time))."</td>\n";
+    $start_time=strtotime($row->start_time);
+    $end_time=strtotime($row->end_time);
+    $now=time();
+    $length=$end_time-$start_time;
+    $runstatus = " ";
+    if ($start_time>$now) {
+      $runstatus .= "<b>$MSG_notStart2</b>";
+    } else if ($end_time>=$now) {
+      $runstatus .= "<b>$MSG_Running</b>";
+    } else $runstatus .= $MSG_Ended;
+    echo "<td>".formatTimeLength($length).$runstatus."</td>\n";
+    $type = "&gt;&gt;$MSG_Public";
     if($row->private) $type = $MSG_Private;
     if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>$MSG_Special</span>";
     if($row->practice) $type = "<span style='color: #009688;'>$MSG_Practice</span>";
