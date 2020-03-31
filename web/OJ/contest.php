@@ -231,10 +231,9 @@ SQL;
         $cnt++;
     }
     $result->free();
-}
-else {
+} else {
   $getMy = "";
-  $wheremy = " 1";
+  $sql_filter = "";
   $mycontests = "";	
   if(isset($_GET['my'])){ //我的比赛、作业
     $getMy = "my";
@@ -243,27 +242,50 @@ else {
         $mycontests.=",".intval(mb_substr($key,1));
       }
     }
-    if($mycontests) $wheremy=" contest_id IN (".substr($mycontests,1).")";//去掉最开始的","
-    else $wheremy=" 0 ";
+    if($mycontests) $sql_filter .=" AND contest_id IN (".substr($mycontests,1).")";//去掉最开始的","
+    else $sql_filter .=" AND 0 ";
   }
-  $search = ""; //查找关键字
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
     $search=$mysqli->real_escape_string($_GET['search']);
-  }	
+    $sql_filter .= "AND contest.title LIKE '%$search%'";
+  }
+  if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {
+    switch (trim($_GET['type'])) {
+      case "Special":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='Y') ";
+      break;
+      case "Private":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND `private`) ";
+      break;
+      case "Public":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND NOT `private`) ";
+      break;
+      case "Practice":
+        $sql_filter .= "AND `practice` ";
+      break;
+    }
+  }
+  if(isset($_GET['runstatus']) && trim($_GET['runstatus']) != "" && trim($_GET['runstatus']) != "all") {
+    switch (trim($_GET['runstatus'])) {
+      case "noStart":
+        $sql_filter .= " AND `start_time`>NOW() ";
+      break;
+      case "Running":
+        $sql_filter .= " AND (`start_time`<NOW() AND `end_time`>NOW()) ";
+      break;
+      case "Ended":
+        $sql_filter .= " AND `end_time`<NOW() ";
+      break;
+    }
+  }
     $page = 1;
     if(isset($_GET['page'])) $page = intval($_GET['page']);
     $page_cnt = 10;
     $pstart = $page_cnt*$page-$page_cnt;
     $pend = $page_cnt;
-    if($search){
-      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy AND contest.title LIKE '%$search%' ";		
-      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND contest.title LIKE '%$search%' AND $wheremy ORDER BY contest_id DESC";		
-      $sql .= " limit ".strval($pstart).",".strval($pend); 
-    }else{
-      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy";
-      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND $wheremy ORDER BY contest_id DESC";
-      $sql .= " limit ".strval($pstart).",".strval($pend); 
-    }
+    $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' ".$sql_filter;
+    $sql = "SELECT *  FROM contest WHERE contest.defunct='N' ".$sql_filter." ORDER BY contest_id DESC";
+    $sql .= " limit ".strval($pstart).",".strval($pend); 
     //echo $sql0;
     $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
     if($rows) $total = $rows[0][0];
@@ -283,9 +305,9 @@ else {
         $left=$end_time-$now;
         
         if ($now>$end_time) { // past
-            $view_contest[$i][2]= "<span style='color: #9e9e9e;'>$MSG_Ended@$row->end_time</span>";
+            $view_contest[$i][2]= "<span style='color: #9e9e9e;'>$MSG_Ended@".date('Y-m-d H:i',$end_time)."</span>";
         } else if ($now<$start_time){ // pending
-            $view_contest[$i][2]= "<span style='color: #03a9f4;'>$MSG_Start@$row->start_time&nbsp;";
+            $view_contest[$i][2]= "<span style='color: #03a9f4;'>$MSG_Start@".date('Y-m-d H:i',$start_time)."&nbsp;";
             $view_contest[$i][2].= "$MSG_TotalTime ".formatTimeLength($length)."</span>";
         } else { // running
             $view_contest[$i][2]= "<span style='color: #ff5722;'> $MSG_Running&nbsp;";

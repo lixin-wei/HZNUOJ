@@ -13,8 +13,9 @@
 $title=$MSG_CONTEST;
 if(isset($_GET['my'])) $title = $MSG_MY.$MSG_CONTEST;
 require_once("header.php");
-
-if(isset($_GET['search'])) $args['search']=htmlentities($search);
+if(isset($_GET['type'])) $args['type']=htmlentities(trim($_GET['type']));
+if(isset($_GET['runstatus'])) $args['runstatus']=htmlentities(trim($_GET['runstatus']));
+if(isset($_GET['search'])) $args['search']=htmlentities(trim($_GET['search']));
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
     global $args, $getMy;
@@ -37,23 +38,42 @@ function generate_url($data){
   </div>
   <!-- contest查找 start -->
   <div class="am-g">
-<!-- 通过关键词查找 start -->
-    <div class='am-u-md-4'>
-      <form class="am-form am-form-horizontal">
+      <form id="searchform" class="am-form am-form-horizontal">
         <?php if(isset($_GET['my'])){
 			echo "<input type='hidden' name='my' value=''>";
 		}?>
-        <div class="am-u-sm-9">
+    <!-- 通过类型查找 start -->
+    <div class="am-form-group am-u-sm-2">
+      <select name="type" data-am-selected="{}" onchange='javascript:document.getElementById("searchform").submit();'>
+        <option value='all' <?php if (isset($_GET['type']) && ($_GET['type'] == "" || $_GET['type'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Type ?></option>
+        <option value='Public' <?php if (isset($_GET['type']) && $_GET['type'] == "Public" ) echo "selected"; ?>><?php echo $MSG_Public ?></option>
+        <option value='Private' <?php if (isset($_GET['type']) && $_GET['type'] == "Private" ) echo "selected"; ?>><?php echo $MSG_Private ?></option>
+        <option value='Practice' <?php if (isset($_GET['type']) && $_GET['type'] == "Practice" ) echo "selected"; ?>><?php echo $MSG_Practice ?></option>
+        <option value='Special' <?php if (isset($_GET['type']) && $_GET['type'] == "Special" ) echo "selected"; ?>><?php echo $MSG_Special ?></option>
+      </select>
+    </div>
+    <!-- 通过状态查找 end -->
+    <div class="am-form-group am-u-sm-2">
+      <select name="runstatus" data-am-selected="{}" onchange='javascript:document.getElementById("searchform").submit();'>
+        <option value='all' <?php if (isset($_GET['runstatus']) && ($_GET['runstatus'] == "" || $_GET['runstatus'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_STATUS ?></option>
+        <option value='noStart' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "noStart" ) echo "selected"; ?>><?php echo $MSG_notStart2 ?></option>
+        <option value='Running' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "Running" ) echo "selected"; ?>><?php echo $MSG_Running ?></option>
+        <option value='Ended' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "Ended" ) echo "selected"; ?>><?php echo $MSG_Ended ?></option>
+      </select>
+    </div>
+    <!-- 通过状态查找 end -->
+    <!-- 通过关键词查找 start -->
+        <div class="am-u-sm-3">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>
             <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $args['search'] ?>">
           </div>
         </div>
-        <button type="submit" class="am-u-sm-3 am-btn am-btn-secondary "><?php echo $MSG_SEARCH ?></button>
+       <button type="submit" class="am-u-sm-1 am-btn am-btn-secondary am-u-end"><?php echo $MSG_SEARCH ?></button>
       </form>
     </div>
-    <!-- 通过关键词查找 end -->
-     </div>
+<!-- 通过关键词查找 end -->
+
   <!-- contest查找 end -->
    <!-- 页标签 start -->
   <div class="am-g">
