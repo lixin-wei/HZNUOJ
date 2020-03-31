@@ -252,7 +252,8 @@
   $MSG_Name = "名称";
   $MSG_ID = "编号";
   $MSG_NearlyEnd = "即将结束，请注意掌握时间！";
-  $MSG_notStart = "尚未开始";
+  $MSG_notStart = $MSG_CONTEST."尚未开始";
+  $MSG_notStart2 = "未开始";
   $MSG_TimeElapsed = "已耗时";
   $MSG_TimeRemaining = "剩余时间";
   $MSG_ContestIsClosed = "竞赛&作业已关闭！";

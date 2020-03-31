@@ -253,6 +253,7 @@
   $MSG_ID = "ID";
   $MSG_NearlyEnd = "Contest is nearly the end!";
   $MSG_notStart = "Contest hasn't started now!";
+  $MSG_notStart2 = "Not Started";
   $MSG_TimeElapsed = "Time elapsed";
   $MSG_TimeRemaining = "Time remaining";
   $MSG_ContestIsClosed = "Contest is closed!";
