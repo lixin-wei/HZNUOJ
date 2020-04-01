@@ -63,12 +63,9 @@
     }
     return $result;
   }
-   //分页start
+
   $page = 1;
   if(isset($_GET['page'])) $page = intval($_GET['page']);
-  $page_cnt = 50;
-  $pstart = $page_cnt*$page-$page_cnt;
-  $pend = $page_cnt;
   if(isset($page)) $args['page']=$page;
 function generate_url($data){
     global $args;
@@ -85,8 +82,7 @@ function generate_url($data){
     return $link;
 }  
     // check the order_by arg
-  $sql_filter = " FROM `contest` WHERE 1 ";
-  $sql_limit = " limit ".strval($pstart).",".strval($pend); 
+  $sql_filter = " 1 ";
   if(isset($_GET['keyword']) && trim($_GET['keyword']) != ""){
     $keyword=htmlentities($_GET['keyword']);
     $keyword=$mysqli->real_escape_string($keyword);
@@ -138,17 +134,18 @@ function generate_url($data){
       break;
     }
   }
-  $sql_page = "SELECT count(1) ".$sql_filter;  
+  $sql_page = "SELECT count(1) FROM `contest` WHERE".$sql_filter;  
   $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
-  if($rows) $total = $rows[0][0];  
-  if($sql_limit == "") { //查找结果全部显示在一页上
-    $page_cnt = $total;
-    $view_total_page = 1;
-  } else
+  if($rows) $total = $rows[0][0];
+  $page_cnt = 50;
+  if(trim($_GET['keyword']) != "") { //查找结果全部显示在一页上
+    $page_cnt = $total? $total:1;
+  }
+  $st=($page-1)*$page_cnt;
   $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-  //分页end 
-  
-  $sql = "select `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct` ".$sql_filter." order by `contest_id` desc ".$sql_limit;
+
+  $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct` FROM `contest` WHERE";
+  $sql.= $sql_filter." order by `contest_id` desc LIMIT $st,$page_cnt";
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
 <title><?php echo $html_title.$MSG_CONTEST.$MSG_LIST?></title>
