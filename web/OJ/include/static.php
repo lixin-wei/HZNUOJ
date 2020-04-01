@@ -48,7 +48,7 @@
   static  $OJ_LOGIN_MOD="hustoj";
   static  $OJ_RANK_LOCK_PERCENT=0.2; //比赛封榜时间的比率，如5小时比赛设为0.2则最后1小时封榜。
   static  $OJ_SHOW_DIFF=true;//是否显示WA的对比说明
-  static  $OJ_TEST_RUN = true;//提交界面是否允许测试运行
+  static  $OJ_TEST_RUN = false;//提交界面是否允许测试运行
   static $OJ_OPENID_PWD = '8a367fe87b1e406ea8e94d7d508dcf01';
 
 
