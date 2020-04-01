@@ -388,6 +388,7 @@ function show_category($source,$size) {
     //$size的值有 default、sm、lg、xl
     $color_theme=Array("primary","secondary","success","warning","danger");
     $category = array_unique(explode(" ",trim($source)));
+    rsort($category);
     $html="";
     foreach ($category as $cat) {
         if(trim($cat)=="") continue;
