@@ -47,7 +47,7 @@
     $result=$mysqli->query($sql);
     $row=$result->fetch_object();
     $see_wa_admin = is_numeric($cid) ? HAS_PRI("see_wa_info_in_contest") : HAS_PRI("see_wa_info_out_of_contest");
-    if($row&&($OJ_SHOW_DIFF || $see_wa_admin)&&($OJ_TEST_RUN||is_valid($row->error))){
+    if($row&&($OJ_SHOW_DIFF || $see_wa_admin)&&($OJ_TEST_RUN||is_valid($row->error)|| $see_wa_admin)){
       $view_reinfo= htmlspecialchars(str_replace("\n\r","\n",$row->error));
     }else{
       $view_reinfo="出于数据保密原因，当前错误提示不可查看，如果希望能让任何人都查看对比和运行错误,请管理员编辑本文件，去除相关行的注释，令is_valid总是返回true。 <br>\n Sorry , not available (OJ_SHOW_DIFF:".$OJ_SHOW_DIFF.",TR:".$OJ_TEST_RUN.",valid:".is_valid($row->error).")";
