@@ -233,7 +233,7 @@ HTML;
       <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?php echo $MSG_AUTHOR ?></label>
         <div class="col-sm-10">
-          <input class="form-control" type=text name=author placeholder="留空则自动填入您的用户名" value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
+          <input class="form-control" type=text name=author placeholder="<?php echo $add_problem_mod ? "留空则自动填入您的用户名":"" ?>" value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
@@ -306,7 +306,7 @@ if(isset($_POST['problem_id'])){ //写入数据库
     $output = str_replace("<!---->","",$output);
     $hint = str_replace("<!---->","",$hint);
 
-	  if($author == "") $author = $_SESSION['user_id'];
+	  if($author == "" && $add_problem_mod) $author = $_SESSION['user_id'];
 
     //remove original samples
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
