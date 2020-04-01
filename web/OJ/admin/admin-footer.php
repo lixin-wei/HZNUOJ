@@ -6,6 +6,7 @@
 <script src="/OJ/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="/OJ/plugins/bootstrap/js/bootstrap-filestyle.min.js"></script>
 <script src="/OJ/plugins/bootstrap/js/bootstrap-select.min.js"></script>
+<?php if($OJ_LANG=="cn") echo "<script src=\"/OJ/plugins/bootstrap/js/defaults-zh_CN.min.js\"></script>"; ?>
 </div><!-- container -->
 
 </body>
