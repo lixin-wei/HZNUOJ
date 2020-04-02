@@ -389,7 +389,7 @@ function show_category($source,$size) {
     $baseUrl = substr($_SERVER['PHP_SELF'],strlen($_SERVER['PHP_SELF'])-16)=="problem_list.php" ? "problem_list.php?keyword=" : "problemset.php?search=";
     $color_theme=Array("primary","secondary","success","warning","danger");
     $category = array_unique(explode(" ",trim($source)));
-    rsort($category);
+    sortByPinYin($category);
     $html="";
     foreach ($category as $cat) {
         if(trim($cat)=="") continue;
@@ -401,5 +401,13 @@ function show_category($source,$size) {
     }
     return $html;
 }
-
+function sortByPinYin(&$array){
+    foreach ($array as $key=>$value) {
+        $array[$key] = mb_convert_encoding($value, "GBK", "UTF-8");
+    }
+    sort($array);
+    foreach ($array as $key=>$value) {
+        $array[$key] = mb_convert_encoding($value, "UTF-8", "GBK");
+    }
+}
 ?>
