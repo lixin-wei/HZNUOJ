@@ -8,10 +8,11 @@
 
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
+require_once "../include/db_info.inc.php";
+require_once '../include/my_func.inc.php';
 require_once "admin-header.php";
 require_once "kindeditor.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/problem.php";
+require_once "../include/problem.php";
 ?>
 <?php
 $add_problem_mod=false;
@@ -291,7 +292,9 @@ if(isset($_POST['problem_id'])){ //写入数据库
     // var_dump($sample_outputs);
     $hint=$mysqli->real_escape_string(trim($_POST['hint']));
     $source=$mysqli->real_escape_string(trim($_POST['source']));
-    $source=implode(' ', array_unique(explode(" ",$source)) );//关键字去重
+    $source=array_unique(explode(" ",$source));//关键字去重
+    sortByPinYin($source);//关键字按拼音字母排序
+    $source=implode(' ', $source);
     $spj=$_POST['spj'];
 	  $author = "";
     $author_tmp = $mysqli->real_escape_string($_POST['author']);
