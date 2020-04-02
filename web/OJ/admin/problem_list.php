@@ -208,7 +208,7 @@
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
         <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_PROBLEM ?>' onclick='$("form").attr("action","problem_edit.php?new_problem")'>&nbsp;|
         
-        <input class="form-control" name="cate" id="cate" type="text" placeholder="<?php echo $MSG_Source ?> 多个标签请以空格分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
+        <input class="form-control" name="cate" id="cate" type="text" maxlength='50' placeholder="<?php echo $MSG_Source ?> 多个标签请以逗号分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
         <input type='submit' name='addCategory' title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_ADD ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
         <?php require_once("../include/set_post_key.php"); ?>
         <select multiple class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="10" data-live-search-placeholder="搜索" name="category[]" onchange='$("#cate").val($(this).val());' />
