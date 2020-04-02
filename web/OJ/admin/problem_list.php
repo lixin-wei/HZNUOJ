@@ -32,7 +32,55 @@
       }
       return $link;
   }
-
+  /* 来源/分类标签处理：给选定题目批量删掉指定标签、批量打标签 start */
+  if(isset($_POST['addCategory']) || isset($_POST['delCategory'])){
+    require_once("../include/check_post_key.php");
+    $pids=array();
+    foreach($_POST['pid'] as $i){
+      $i = intval($mysqli->real_escape_string($i));
+      if(HAS_PRI("edit_".get_problemset($i)."_problem")) array_push($pids,$i);
+    }
+    if(isset($_POST['addCategory'])){
+      $addCate = str_replace(" ","",$_POST['cate']);
+      $addCate = str_replace("，",",",$addCate);
+      $addCate = array_unique(explode(",",$addCate));
+      if ($addCate) {
+        $sql = "SELECT `problem_id`,`source` FROM `problem` WHERE `problem_id` IN ('". implode("','", $pids) ."')";
+        $result=$mysqli->query($sql) or die($mysqli->error);
+        while($row = $result->fetch_array()) {//搜出来的结果，先和$addCate合并，再去重、回写
+          $source = explode(" ",$row['source']);
+          $source = array_unique(array_merge($source, $addCate));//合并、去重
+          sortByPinYin($source);
+          $sql = "UPDATE `problem` SET `source`='".implode(" ", $source) ."' WHERE `problem_id`='{$row['problem_id']}'";
+          $mysqli->query($sql);
+        }
+      }
+    }
+    if(isset($_POST['delCategory'])){
+      $delCategory = array_unique($_POST['category']);
+      if ($delCategory) {
+        $sql = "SELECT `problem_id`,`source` FROM `problem` WHERE `problem_id` IN ('". implode("','", $pids) ."')";
+        $result=$mysqli->query($sql) or die($mysqli->error);        
+        while($row = $result->fetch_array()) {//搜出来的结果，挨个先去重，再删除指定$delCategory、回写
+          $source = array_unique(explode(" ",$row['source']));
+          $flag = false;
+          foreach($delCategory as $cate){
+            if(in_array($cate,$source)){
+              $flag = true;
+              break;
+            }
+          }
+          if($flag){
+            $source = array_diff($source, $delCategory);
+            sortByPinYin($source);
+            $sql = "UPDATE `problem` SET `source`='".implode(" ", $source) ."' WHERE `problem_id`='{$row['problem_id']}'";
+            $mysqli->query($sql);
+          }
+        }
+      } // end of if ($delCategory) 
+    }
+  }
+  /* 来源/分类标签处理：给选定题目批量删掉指定标签、批量打标签 end */
   $sql = "";
   $total = 0;
   /* 获取sql语句中的筛选部分 start */
@@ -85,6 +133,21 @@
   $st=($page-1)*$page_cnt;
   $view_total_page=$total/$page_cnt+($total%$page_cnt?1:0);// 页数
   /* 计算页数cnt end */
+
+  if($problem_sets) {
+    $sql= "SELECT distinct `source` FROM `problem` WHERE `problemset` IN ('". implode("','", array_column($problem_sets, 'set_name')) ."')";
+    if ($result = $mysqli->query($sql)){
+      $categorys="";
+      foreach ($result as $row){
+        $cate=explode(" ",trim($row['source']));
+        foreach($cate as $cat){
+            $categorys .= trim($cat)." ";
+        }
+      }
+      $categorys = array_unique(explode(" ",trim($categorys)));
+      sortByPinYin($categorys);
+    }
+  } 
   $sql = "SELECT p.*,s.`set_name_show` FROM `problem` AS p LEFT JOIN `problemset` AS s ON p.`problemset`=s.`set_name`";
   $sql.= " WHERE ".$sql_filter. " ORDER BY `problem_id` DESC LIMIT $st,$page_cnt";
   //echo "<pre>$sql</pre>";
@@ -102,7 +165,7 @@
       <option value='all' <?php if (isset($_GET['status']) && ($_GET['status'] == "" || $_GET['status'] == "all")) echo "selected"; ?>><?php echo $MSG_ALL.$MSG_STATUS ?></option>
       <option value='Available' <?php if (isset($_GET['status']) && $_GET['status'] == "Available" ) echo "selected"; ?>><?php echo $MSG_Available ?></option>
       <option value='Reserved' <?php if (isset($_GET['status']) && $_GET['status'] == "Reserved" ) echo "selected"; ?>><?php echo $MSG_Reserved ?></option>
-  </select>&nbsp;
+    </select>
     <select class='selectpicker show-tick' data-width="auto" name="OJ" onchange='javascript:document.getElementById("searchform").submit();'>
       <option value='all' <?php if (isset($_GET['OJ']) && ($_GET['OJ'] == "" || $_GET['OJ'] == "all")) echo "selected"; ?> ><?php echo $MSG_ALL.$MSG_PROBLEMSET ?></option>
     <?php
@@ -136,15 +199,30 @@
   </div>
 <!-- 页标签 end -->
 <!-- 罗列题目 start -->
-<form id="form1" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
+<form id="form1" class="form-inline center" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
     	<td colspan=13>
-        <input type=submit name='problem2contest' class='btn btn-default' value='CheckToNewContest' >&nbsp;
-        <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
-        <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
-        <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_PROBLEM ?>' onclick='$("form").attr("action","problem_edit.php?new_problem")'>
-        </td>
+        <input type=submit name='problem2contest' class='btn btn-default' value='CheckToNewContest' >
+        <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
+        <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
+        <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_PROBLEM ?>' onclick='$("form").attr("action","problem_edit.php?new_problem")'>&nbsp;|
+        
+        <input class="form-control" name="cate" id="cate" type="text" placeholder="<?php echo $MSG_Source ?> 多个标签请以空格分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
+        <input type='submit' name='addCategory' title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_ADD ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
+        <?php require_once("../include/set_post_key.php"); ?>
+        <select multiple class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="10" data-live-search-placeholder="搜索" name="category[]" onchange='$("#cate").val($(this).val());' />
+          <option value=''></option>
+          <?php
+          echo "<optgroup label='$MSG_Source$MSG_LIST'>\n";
+          foreach($categorys as $cat){
+            echo "<option value='$cat'>$cat</option>";
+          }
+          echo "</optgroup>\n";
+          ?>
+        </select>
+        <input type='submit' name='delCategory' title='先勾选需要<?php echo $MSG_DEL.$MSG_Source ?>标签的题目，选择相关词条，再点击‘<?php echo $MSG_DEL ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_DEL ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
+      </td>
     </tr>
     <tr>
     	  <th width=60px><?php echo $MSG_PROBLEM_ID ?>&nbsp;<input type=checkbox style='vertical-align:2px;' onchange='$("input[type=checkbox]").prop("checked", this.checked)'></th>
