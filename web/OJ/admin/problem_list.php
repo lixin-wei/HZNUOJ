@@ -221,7 +221,7 @@
           echo "</optgroup>\n";
           ?>
         </select>
-        <input type='submit' name='delCategory' title='先勾选需要<?php echo $MSG_DEL.$MSG_Source ?>标签的题目，选择相关词条，再点击‘<?php echo $MSG_DEL ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_DEL ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
+        <input type='submit' name='delCategory' title='先勾选需要<?php echo $MSG_DEL.$MSG_Source ?>标签的题目，选择相关词条，再点击‘<?php echo $MSG_DEL ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_DEL ?>' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) {$("form").attr("action","<?php echo generate_url("")?>")} else return false;' >
       </td>
     </tr>
     <tr>
