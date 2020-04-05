@@ -37,7 +37,7 @@ CREATE TABLE `contest_discuss` (
 DROP TABLE IF EXISTS `printer_code`;
 CREATE TABLE `printer_code` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` char(20) NOT NULL,
+  `user_id` char(48) NOT NULL,
   `contest_id` int(11) NOT NULL,
   `code` text NOT NULL,
   `in_date` datetime DEFAULT NULL,
@@ -417,7 +417,7 @@ DROP TABLE IF EXISTS `privilege`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `privilege` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` char(20) NOT NULL DEFAULT '',
+  `user_id` char(48) NOT NULL DEFAULT '',
   `rightstr` char(30) NOT NULL DEFAULT '',
   PRIMARY KEY (`index`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -714,7 +714,7 @@ DROP TABLE IF EXISTS `solution`;
 CREATE TABLE `solution` (
   `solution_id` int(11) NOT NULL AUTO_INCREMENT,
   `problem_id` int(11) DEFAULT '0',
-  `user_id` char(20) NOT NULL,
+  `user_id` char(48) NOT NULL,
   `time` int(11) NOT NULL DEFAULT '0',
   `memory` int(11) NOT NULL DEFAULT '0',
   `in_date` datetime NOT NULL,
