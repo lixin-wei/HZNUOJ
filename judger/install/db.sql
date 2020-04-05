@@ -32,7 +32,7 @@ CREATE TABLE `contest_discuss` (
   `in_date` datetime DEFAULT NULL,
   `reply_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `printer_code`;
 CREATE TABLE `printer_code` (
@@ -43,7 +43,7 @@ CREATE TABLE `printer_code` (
   `in_date` datetime DEFAULT NULL,
   `status` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `compileinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -94,7 +94,7 @@ CREATE TABLE `contest` (
   PRIMARY KEY (`contest_id`),
   KEY `contest_id` (`contest_id`,`defunct`,`private`,`defunct_TA`,`open_source`) USING BTREE,
   KEY `running_contest` (`start_time`,`end_time`,`practice`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `loginlog` (
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`index`),
   KEY `user_time_index` (`user_id`,`time`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -734,7 +734,7 @@ CREATE TABLE `solution` (
   KEY `in_date` (`in_date`) USING BTREE,
   KEY `uid` (`user_id`,`result`) USING BTREE,
   KEY `cid` (`contest_id`,`result`,`num`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1036,6 +1036,50 @@ LOCK TABLES `users_cache_array` WRITE;
 /*!40000 ALTER TABLE `users_cache_array` ENABLE KEYS */;
 UNLOCK TABLES;
 
+-- Dump completed on 2019-03-13 17:03:43
+-- ----------------------------
+-- Table structure for `class_list`
+-- ----------------------------
+DROP TABLE IF EXISTS `class_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `class_list` (
+  `class_name` varchar(100) NOT NULL,
+  `enrollment_year` smallint(4) NOT NULL,
+  PRIMARY KEY (`class_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+-- ----------------------------
+-- Dumping data for table class_list
+-- ----------------------------
+LOCK TABLES `class_list` WRITE;
+/*!40000 ALTER TABLE `class_list` DISABLE KEYS */;
+INSERT INTO `class_list` VALUES ('其它', '0');
+/*!40000 ALTER TABLE `class_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+-- ----------------------------
+-- Table structure for `reg_code`
+-- ----------------------------
+DROP TABLE IF EXISTS `reg_code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reg_code` (
+  `class_name` varchar(100) NOT NULL,
+  `reg_code` varchar(100) NOT NULL,
+  `remain_num` smallint(4) NOT NULL,
+  PRIMARY KEY (`class_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+-- ----------------------------
+-- Dumping data for table reg_code
+-- ----------------------------
+LOCK TABLES `reg_code` WRITE;
+/*!40000 ALTER TABLE `reg_code` DISABLE KEYS */;
+INSERT INTO `reg_code` VALUES ('其它', '', '0');
+/*!40000 ALTER TABLE `reg_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Final view structure for view `squid`
 --
@@ -1063,31 +1107,3 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-13 17:03:43
--- ----------------------------
--- Table structure for `class_list`
--- ----------------------------
-DROP TABLE IF EXISTS `class_list`;
-CREATE TABLE `class_list` (
-  `class_name` varchar(100) NOT NULL,
-  `enrollment_year` smallint(4) NOT NULL,
-  PRIMARY KEY (`class_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of class_list
--- ----------------------------
-INSERT INTO `class_list` VALUES ('其它', '0');
-
--- ----------------------------
--- Table structure for `reg_code`
--- ----------------------------
-CREATE TABLE `reg_code` (
-  `class_name` varchar(100) NOT NULL,
-  `reg_code` varchar(100) NOT NULL,
-  `remain_num` smallint(4) NOT NULL,
-  PRIMARY KEY (`class_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
--- ----------------------------
--- Records of reg_code
--- ----------------------------
-INSERT INTO `reg_code` VALUES ('其它', '', '0');
