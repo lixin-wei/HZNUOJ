@@ -2,11 +2,12 @@
 -- 2020/3/30 DATABASE update by lixun2015
 -- ----------------------------
 set names utf8;
-ALTER TABLE `contest` ADD `user_id` VARCHAR(48) NOT NULL DEFAULT 'admin' AFTER `password`;
-ALTER TABLE `solution` CHANGE `pass_rate` `pass_rate` DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT '0.00';
-ALTER TABLE `printer_code` CHANGE `user_id` `user_id` CHAR(48) NOT NULL;
-ALTER TABLE `privilege` CHANGE `user_id` `user_id` CHAR(48) NOT NULL;
-ALTER TABLE `solution` CHANGE `user_id` `user_id` CHAR(48) NOT NULL;
+use jol;
+ALTER TABLE `contest` ADD COLUMN `user_id` VARCHAR(48) NOT NULL DEFAULT 'admin' AFTER `password`;
+ALTER TABLE `solution` MODIFY COLUMN `pass_rate` DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT '0.00';
+ALTER TABLE `printer_code` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
+ALTER TABLE `privilege` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
+ALTER TABLE `solution` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 -- Dump completed on 2019-03-13 17:03:43
 -- ----------------------------
 -- Table structure for `class_list`
