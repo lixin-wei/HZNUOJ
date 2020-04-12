@@ -81,6 +81,14 @@ HTML;
   else */
   if(isset($_GET['cid'])){
     echo "<ul class=\"am-nav am-nav-tabs\" style='margin-top: 30px;'>";
+    //跳过不存在题目的题号
+    $sql = "SELECT `num` FROM contest_problem a 
+    inner join (select problem_id from `problem`) b 
+    on a.problem_id = b.problem_id 
+    WHERE contest_id = $cid and num >=0 order by num" ;
+    $result=$mysqli->query($sql) or die($mysqli->error);
+    $pid_nums=$result->fetch_all(MYSQLI_BOTH);
+    $result->free();
 	foreach($pid_nums as $num){
 		$label = PID($num[0]);
         $class = ($num[0] == $pid)? "am-active": "";
@@ -88,13 +96,6 @@ HTML;
   <li class="$class"><a href="problem.php?cid=$cid&pid=$num[0]">$label</a></li>
 HTML;
 	}
-    /*for($i = 0 ; $i<$problem_cnt ; ++$i) {
-      $label = PID($i);
-      $class = $i == $pid? "am-active": "";
-      echo <<<HTML
-  <li class="$class"><a href="problem.php?cid=$cid&pid=$i">$label</a></li>
-HTML;
-    } */
     echo "</ul>";
   }
   ?>

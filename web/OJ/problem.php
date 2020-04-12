@@ -120,8 +120,8 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
     
     $sql="SELECT `problem_id`, score FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
     $res=$mysqli->query($sql)->fetch_array();
-    $real_id=$res[0];
-    $contest_score = $res[1];
+    $real_id=$res ? $res[0] : "0";
+    $contest_score = $res ? $res[1] : "0";
     
     if(isset($_SESSION['user_id'])) {
         $sql = "SELECT count(*) FROM solution WHERE contest_id=$cid AND num=$pid AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
@@ -135,14 +135,13 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
         exit(0);
     }
 
-    $sql="SELECT problemset FROM `problem` WHERE `problem_id`=$real_id";
+    $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$real_id'";
     $res = $mysqli->query($sql);
-    $set_name = $res->fetch_array()[0];
-    
+    $set_name = $res ? $res->fetch_array()[0] : "";
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
-        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid AND `start_time`<='$now'";
+        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`='$cid' AND `start_time`<='$now'";
     else
-        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid";
+        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`='$cid'";
     $result=$mysqli->query($sql);
     $rows_cnt=$result->num_rows;
     $row=$result->fetch_array();
