@@ -1,7 +1,7 @@
 #!/bin/bash
 printf "Upgrade Core? Input 'y' to continue:"
-read comfirm
-if [["$comfirm" == "y"]]
+read confirm
+if test $confirm = "y"
 then
     set -e -x
     pkill -9 judged
