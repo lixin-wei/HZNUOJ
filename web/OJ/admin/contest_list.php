@@ -87,7 +87,7 @@ function generate_url($data){
     $keyword=htmlentities($_GET['keyword']);
     $keyword=$mysqli->real_escape_string($keyword);
     $args['keyword']=$keyword;
-    $sql_filter .= " AND `title` LIKE '%$keyword%' ";
+    $sql_filter .= " AND (`title` LIKE '%$keyword%' OR `user_id` LIKE '%$keyword%') ";
   } 
   if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {
     $type = trim($_GET['type']);
@@ -144,7 +144,7 @@ function generate_url($data){
   $st=($page-1)*$page_cnt;
   $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
 
-  $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct` FROM `contest` WHERE";
+  $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct`,`user_id` FROM `contest` WHERE";
   $sql.= $sql_filter." order by `contest_id` desc LIMIT $st,$page_cnt";
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
@@ -216,6 +216,7 @@ function generate_url($data){
     <th><?php echo $MSG_StartTime ?></th>
     <th><?php echo $MSG_EndTime ?></th>
     <th><?php echo $MSG_TotalTime ?></th>
+    <th><?php echo $MSG_Creator ?></th>
     <th><?php echo $MSG_Type ?></th>
     <th><?php echo $MSG_STATUS ?></th>
     <th colspan=4 style="text-align: center"><?php echo $MSG_Operations ?></th>
@@ -238,11 +239,12 @@ while ($row=$result->fetch_object()){
       $runstatus .= "<b>$MSG_Running</b>";
     } else $runstatus .= $MSG_Ended;
     echo "<td>".formatTimeLength($length).$runstatus."</td>\n";
+    echo "<td>".$row->user_id."</td>\n";
     $type = "&gt;&gt;$MSG_Public";
     if($row->private) $type = $MSG_Private;
     if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>$MSG_Special</span>";
     if($row->practice) $type = "<span style='color: #009688;'>$MSG_Practice</span>";
-	$cid=$row->contest_id;
+	  $cid=$row->contest_id;
     if(HAS_PRI("edit_contest")) {
 	  if($type == $MSG_Private || $type == "&gt;&gt;".$MSG_Public){
 	      echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".$type."</a></td>\n";
