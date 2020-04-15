@@ -258,7 +258,7 @@
 <td><a href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
 <td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
 	
-          <td><?php echo $row->author ?></td>
+          <td><?php echo $row->author?$row->author:$MSG_IMPORTED ?></td>
           <?php
           $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
           if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
