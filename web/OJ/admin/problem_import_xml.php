@@ -128,7 +128,7 @@ function mkpta($pid, $pends, $node)
 }
 function import_fps($tempfile)
 {
-	global $mysqli, $OJ_DATA, $OJ_SAE, $MSG_IMPORTED;
+	global $mysqli, $OJ_DATA, $OJ_SAE;
 	$xmlDoc=simplexml_load_file($tempfile, 'SimpleXMLElement', LIBXML_PARSEHUGE);
 	$searchNodes = $xmlDoc->xpath ( "/fps/item" );
 	$spid=0;
@@ -156,7 +156,7 @@ function import_fps($tempfile)
 		$spjcode = getValue ( $searchNode, 'spj' );
 		$spj = trim($spjcode)?1:0;
 		if(!hasProblem($title )){
-			$pid=addproblem($_POST["problemset"],$title, $time_limit, $memory_limit, $description, $input, $output, $hint, $MSG_IMPORTED, $source, $spj, $OJ_DATA);
+			$pid=addproblem($_POST["problemset"],$title, $time_limit, $memory_limit, $description, $input, $output, $hint, "", $source, $spj, $OJ_DATA);
 			if($spid==0) $spid=$pid;
 			echo $pid;
 			$basedir = "$OJ_DATA/$pid";
