@@ -397,7 +397,7 @@ function show_category($source,$size) {
         $source_theme = $color_theme[$hash_num%count($color_theme)];
         if ($source_theme=="") $source_theme = $color_theme[0];
         $temp = htmlentities($cat,ENT_QUOTES,'UTF-8');
-        $html .= "<a style='margin-top: 2px; margin-bottom: 2px;' title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='$baseUrl$temp'>".(strlen($temp)>30?mb_substr($temp,0,10,'utf8')."…":$temp)."</a>&nbsp;";
+        $html .= "<a style='margin-top: 2px; margin-bottom: 2px;' title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='$baseUrl".urlencode($cat)."'>$temp</a>&nbsp;";
     }
     return $html;
 }
