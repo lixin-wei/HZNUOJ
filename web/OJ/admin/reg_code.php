@@ -162,7 +162,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     $result = $mysqli->query($sql0)->fetch_all();
     $total = 0;
     if ($result) $total = $result[0][0];
-    $page_cnt = 50;
+    $page_cnt = 10;
     $view_total_page = ceil($total / $page_cnt); //计算页数
     if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
     $left_bound = $page_cnt * $page - $page_cnt;
@@ -332,16 +332,28 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     <!-- 页标签 start -->
     <div class="am-g" style="margin-left: 5px;">
         <ul class="pagination text-center" style="margin-top: 10px;margin-bottom: 0px;">
+            <?php $link = generate_url(Array("page"=>"1"))?>
+            <li><a href="<?php echo $link ?>">Top</a></li>
             <?php $link = generate_url(array("page" => max($page - 1, 1))) ?>
             <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
             <?php
             //分页
-            for ($i = 1; $i <= $view_total_page; $i++) {
-                $link = generate_url(array("page" => "$i"));
-                if ($page == $i)
-                    echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-                else
-                    echo "<li><a href=\"$link\">{$i}</a></li>";
+            $page_size=10;
+            $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+            $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+            for ($i=$page_start;$i<$page;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            $link=generate_url(Array("page"=>"$page"));
+            echo "<li class='active'><a href=\"$link\">{$page}</a></li>";
+            for ($i=$page+1;$i<=$page_end;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            if ($i <= $view_total_page){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
             }
             ?>
             <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page)))) ?>
@@ -465,16 +477,28 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     <!-- 页标签 start -->
     <div class="am-g" style="margin-left: 5px;">
         <ul class="pagination text-center" style="margin-top: 1px;margin-bottom: 0px;">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+            <li><a href="<?php echo $link ?>">Top</a></li>
             <?php $link = generate_url(array("page" => max($page - 1, 1))) ?>
             <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
             <?php
             //分页
-            for ($i = 1; $i <= $view_total_page; $i++) {
-                $link = generate_url(array("page" => "$i"));
-                if ($page == $i)
-                    echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-                else
-                    echo "<li><a href=\"$link\">{$i}</a></li>";
+            $page_size=10;
+            $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+            $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+            for ($i=$page_start;$i<$page;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            $link=generate_url(Array("page"=>"$page"));
+            echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+            for ($i=$page+1;$i<=$page_end;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            if ($i <= $view_total_page){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
             }
             ?>
             <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page)))) ?>
