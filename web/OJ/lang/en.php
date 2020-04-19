@@ -51,11 +51,16 @@
   $MSG_RANK = "Rank";
   $MSG_NICK = "Nick Name";
   $MSG_SOLVED = "Solved";
-  $MSG_RATIO = "Ratio";
+  $MSG_RATIO = "Pass Rate";
   $MSG_LEVEL = "Level";
   $MSG_STRENGTH = "Strength";
   $MSG_RANKTIPS = "Standings won't update automatically, Please visit your user info page to update your information.";
   $MSG_Wrong = "Wrong";
+  $MSG_Year = "Year";
+  $MSG_Month = "Month";
+  $MSG_Week = "Week";
+  $MSG_Day = "Day";
+  $MSG_Update_RANK = "Update Rank";
   
   // contestRank.php
   $MSG_USER = "User";

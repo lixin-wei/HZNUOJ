@@ -56,6 +56,11 @@
   $MSG_STRENGTH = "实力";
   $MSG_RANKTIPS = "此排名非实时数据排名，请访问自己的用户信息页更新数据。";
   $MSG_Wrong = "错误";
+  $MSG_Year = "本年";
+  $MSG_Month = "本月";
+  $MSG_Week = "本周";
+  $MSG_Day = "本日";
+  $MSG_Update_RANK = "更新排名";
 
   // contestRank.php
   $MSG_REAL_NAME = "姓名";
