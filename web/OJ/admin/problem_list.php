@@ -84,8 +84,75 @@
   $sql = "";
   $total = 0;
   /* 获取sql语句中的筛选部分 start */
-  $sql_filter = " 1 ";
   
+  if (isset($_GET['sort_method']) && trim($_GET['sort_method'])!="" ) $args['sort_method'] = $_GET['sort_method'];
+  else $args['sort_method'] = "";
+  switch ($args['sort_method']){
+    case "ac_DESC":
+      $sql_orderby = " ORDER BY accepted DESC, submit ";
+      $ac = "ac_ASC";
+      $ac_icon = "am-icon-sort-amount-desc";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort";
+      break;
+    case "ac_ASC":
+      $sql_orderby = " ORDER BY accepted, submit ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort-amount-asc";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort";
+      break;    
+    case "submit_DESC":
+      $sql_orderby = " ORDER BY submit DESC, accepted  ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort";
+      $submit = "submit_ASC";
+      $submit_icon = "am-icon-sort-amount-desc";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort";
+      break;
+    case "submit_ASC":
+      $sql_orderby = " ORDER BY submit, accepted ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort-amount-asc";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort";
+      break;
+    case "pass_DESC":
+      $sql_orderby = " ORDER BY accepted/submit DESC, accepted DESC, submit ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort";
+      $pass = "pass_ASC";
+      $pass_icon = "am-icon-sort-amount-desc";
+      break;
+    case "pass_ASC":
+      $sql_orderby = " ORDER BY accepted/submit, accepted, submit ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort-amount-asc";
+      break;
+    default:
+      $sql_orderby = " ORDER BY `problem_id` DESC ";
+      $ac = "ac_DESC";
+      $ac_icon = "am-icon-sort";
+      $submit = "submit_DESC";
+      $submit_icon = "am-icon-sort";
+      $pass = "pass_DESC";
+      $pass_icon = "am-icon-sort";
+  }
+
+  $sql_filter = " 1 ";
   if(isset($_GET['status']) && trim($_GET['status']) != "" && trim($_GET['status']) != "all") {
     $status = trim($_GET['status']);
     $args['status'] = $status;
@@ -149,7 +216,7 @@
     }
   } 
   $sql = "SELECT p.*,s.`set_name_show` FROM `problem` AS p LEFT JOIN `problemset` AS s ON p.`problemset`=s.`set_name`";
-  $sql.= " WHERE ".$sql_filter. " ORDER BY `problem_id` DESC LIMIT $st,$page_cnt";
+  $sql.= " WHERE ".$sql_filter. $sql_orderby." LIMIT $st,$page_cnt";
   //echo "<pre>$sql</pre>";
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
@@ -211,6 +278,11 @@
   </div>
 <!-- 页标签 end -->
 <!-- 罗列题目 start -->
+<style type="text/css" media="screen">
+    #ac,#submit,#passrate {
+        cursor: pointer;
+    }
+</style>
 <form id="form1" class="form-inline center" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
@@ -239,27 +311,25 @@
     <tr>
     	  <th width=60px><?php echo $MSG_PROBLEM_ID ?>&nbsp;<input type=checkbox style='vertical-align:2px;' onchange='$("input[type=checkbox]").prop("checked", this.checked)'></th>
         <th><?php echo $MSG_TITLE ?></th>
-        <th><?php echo $MSG_Accepted."&nbsp;/&nbsp;".$MSG_SUBMIT ?></th>  
+        <th id="ac"><?php echo $MSG_Accepted ?>&nbsp;<span class="<?php echo $ac_icon ?>"></span></th>
+        <th id="submit"><?php echo $MSG_SUBMIT ?>&nbsp;<span class="<?php echo $submit_icon ?>"></span></th>
+        <th id='passrate'><?php echo $MSG_RATIO ?>&nbsp;<span class="<?php echo $pass_icon ?>"></th>
         <th><?php echo $MSG_SCORE ?></th>   
-        <th><?php echo $MSG_TAGS ?></th>
         <th><?php echo $MSG_STATUS ?></th>
-        <th colspan=3 style="text-align: center"><?php echo $MSG_Operations ?></th>         
+        <th colspan=3 style="text-align: center"><?php echo $MSG_Operations ?></th>
         <th><?php echo $MSG_AUTHOR ?></th>        
         <th><?php echo $MSG_Source ?></th>
         <th><?php echo $MSG_PROBLEMSET ?></th>
         <th><?php echo $MSG_CreatedDate ?></th>
     </tr></thead><tbody>
-<?php while($row=$result->fetch_object()){ 
-  $tags= "<span style='background-color: #F37B1D;'>".$row->tag1."</span>";
-  $tags .= "<span style='background-color: #dd514c;'>".$row->tag2."</span>";
-  $tags .= "<span style='background-color: #0e90d2;'>".$row->tag3."</span>";
-?>
+<?php while($row=$result->fetch_object()){ ?>
       <tr>
           <td><?php echo $row->problem_id ?>&nbsp;<input type=checkbox name='pid[]' value='<?php echo $row->problem_id ?>' /></td>
-          <td><a href='../problem.php?id=<?php echo $row->problem_id ?>'><?php echo $row->title ?></a></td>
-          <td><?php echo $row->accepted."&nbsp;/&nbsp;".$row->submit ?></td>
+          <td  style='white-space:normal;'><a href='../problem.php?id=<?php echo $row->problem_id ?>'><?php echo $row->title ?></a></td>
+          <td><?php echo $row->accepted ?></td>
+          <td><?php echo $row->submit ?></td>
+          <td><?php if($row->submit) echo round(100*$row->accepted/$row->submit,1)."%"; ?></td>
            <td><?php echo $row->score ?></td>
-          <td><?php echo $tags ?></td>
           <td><?php if($row->defunct=="N"){
 				echo "<a href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Available."</a>";
 				} else {
@@ -324,3 +394,22 @@
   require_once("admin-footer.php");
   include("../template/$OJ_TEMPLATE/js.php");
 ?>
+<!-- sort by ac、submit、passrate BEGIN -->
+<script>
+    <?php $args['sort_method'] = $ac; ?>
+    $("#ac").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+    <?php $args['sort_method'] = $submit; ?>
+    $("#submit").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+    <?php $args['sort_method'] = $pass; ?>
+    $("#passrate").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+</script>
+<!-- sort by ac、submit、passrate END -->
