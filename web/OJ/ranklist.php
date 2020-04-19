@@ -33,21 +33,80 @@ $sql_filter = " WHERE users.defunct='N' "; // SQL中的筛选语句
 $sql_limit = " limit ".strval($pstart).",".strval($pend); 
 $sql_orderby = "";
 
-// check the order_by arg
+// check the prefix arg
 if(isset($_GET['prefix'])){
 	$prefix=$_GET['prefix'];
 	$sql_filter .=" AND users.user_id like '%$prefix%'";
 }
+
 // check the order_by arg
-$order_by="";
-if(isset($_GET['order_by'])) {
-    $order_by=$_GET['order_by'];
-	if ($order_by=="ac"){
-		$sql_orderby = " ORDER BY solved DESC, submit, reg_time ";
-	}
-	if ($order_by=="level"){
-		$sql_orderby = " ORDER BY strength DESC, solved, submit, reg_time ";
-	}
+if (isset($_GET['sort_method']) && trim($_GET['sort_method'])!="" ) $args['sort_method'] = $_GET['sort_method'];
+else $args['sort_method'] = "";
+switch ($args['sort_method']){
+    case "ac_DESC":
+        $sql_orderby = " ORDER BY solved DESC, submit, reg_time ";
+        $ac = "ac_ASC";
+        $ac_icon = "am-icon-sort-amount-desc";        
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort";
+        break;
+    case "ac_ASC":
+        $sql_orderby = " ORDER BY solved, submit, reg_time ";
+        $ac = "ac_DESC";
+        $ac_icon = "am-icon-sort-amount-asc";
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort";
+        break;
+    
+    case "pass_DESC":
+        $sql_orderby = " ORDER BY solved/submit DESC, solved DESC, submit, reg_time ";
+        $ac = "ac_DESC";
+        $ac_icon = "am-icon-sort";
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort";
+        $pass = "pass_ASC";
+        $pass_icon = "am-icon-sort-amount-desc";
+        break;
+    case "pass_ASC":
+        $sql_orderby = " ORDER BY solved/submit,solved, submit, reg_time ";
+        $ac = "ac_DESC";
+        $ac_icon = "am-icon-sort";
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort-amount-asc";
+        break;
+
+    case "level_DESC":
+        $sql_orderby = " ORDER BY strength DESC, solved, submit, reg_time ";
+        $ac = "ac_DESC";
+        $ac_icon = "am-icon-sort";
+        $level = "level_ASC";
+        $level_icon = "am-icon-sort-amount-desc";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort";
+        break;
+    case "level_ASC":
+        $sql_orderby = " ORDER BY strength, solved, submit, reg_time ";
+        $ac = "ac_DESC";
+        $ac_icon = "am-icon-sort";
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort-amount-asc";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort";
+        break;
+    default:
+        $sql_orderby = " ORDER BY solved DESC, submit, reg_time ";
+        $ac = "ac_ASC";
+        $ac_icon = "am-icon-sort-amount-desc";        
+        $level = "level_DESC";
+        $level_icon = "am-icon-sort";
+        $pass = "pass_DESC";
+        $pass_icon = "am-icon-sort";
 }
 
 // check the class arg
@@ -58,15 +117,13 @@ if (isset($_GET['class']) ) {
 }
 
 // check the scope arg
-$scope="";
-if(isset($_GET['scope'])) {
-    $scope=$_GET['scope'];
-}
-if($scope!=""&&$scope!='d'&&$scope!='w'&&$scope!='m')
-   $scope='y';
-if($scope){
+if (isset($_GET['scope']) && trim($_GET['scope'])!="" ) $args['scope'] = $_GET['scope'];
+else $args['scope'] = "";
+
+if($args['scope']!=""&&$args['scope']!='d'&&$args['scope']!='w'&&$args['scope']!='m') $args['scope']='y';
+if($args['scope']!=""){
     $s="";
-    switch ($scope){
+    switch ($args['scope']){
         case 'd':
             $s=date('Y').'-'.date('m').'-'.date('d');
             break;
@@ -134,9 +191,9 @@ for ( $i=0;$i<$rows_cnt;$i++ ) {
     $view_rank[$i][3] = "<a href='status.php?user_id=".$row['user_id']."&jresult=4'>".$row['solved']."</a>";
 	$view_rank[$i][4] = "<a href='status.php?user_id=".$row['user_id']."'>".$row['submit']."</a>";
 	if ($row['submit'] == 0){
-        $view_rank[$i][5]= "0.000%";
+        $view_rank[$i][5]= "0%";
 	} else {
-        $view_rank[$i][5]= sprintf ( "%.03lf%%", 100 * $row['solved'] / $row['submit'] );
+        $view_rank[$i][5]= round(100 * $row['solved'] / $row['submit'],2)."%";
 	}
     $view_rank[$i][10]= "<font color='".$row['color']."'>".$row['level']."</font>";
     $view_rank[$i][11]= round($row['strength']);

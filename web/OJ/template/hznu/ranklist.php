@@ -13,8 +13,6 @@
 <?php 
 include "header.php";
 if(isset($_GET['prefix']) && trim($_GET['prefix'])!="") $args['prefix']=htmlentities($prefix);
-if(isset($_GET['order_by']) && trim($_GET['order_by'])!="") $args['order_by']=htmlentities($order_by);
-if(isset($_GET['scope']) && trim($_GET['scope'])!="") $args['scope']=htmlentities($scope);
 if(isset($_GET['class']) && trim($_GET['class']) != "all") $args['class']=htmlentities($class_get);
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
@@ -54,10 +52,10 @@ function generate_url($data){
   <div class='am-g'>
     <!-- 用户查找 start -->
     <div class='am-u-md-6'>
-      <form class="am-form am-form-inline">
+      <form class="am-form am-form-inline" id="searchform">
         <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
         <div class='am-form-group'>
-          <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' name='class' style='width:110px'>
+          <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' name='class' style='width:110px' onchange='javascript:document.getElementById("searchform").submit();'>
             <option value='all' <?php if (isset($_GET['class']) && $_GET['class']=="" || !isset($_GET['class'])) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
           <?php
             foreach($classSet as $class) {
@@ -67,66 +65,81 @@ function generate_url($data){
               echo "<option value='".$class."' ".$selected.">".$class."</option>";
             }
           ?>
-
           </select>
-              
         </div>
         <?php } ?>
         <div class="am-form-group am-form-icon">
           <i class="am-icon-search"></i>
           <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_Input.$MSG_USER_ID ?>" name="prefix" id="prefix" value='<?php echo $args['prefix'] ?>'>
         </div>
+        <?php if ($args['scope']!="") echo "<input type='hidden' name='scope' value='{$args['scope']}'>"; ?>
         <button type="submit" class="am-btn am-btn-secondary "><?php echo $MSG_SEARCH ?></button>
-        <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
-          <!-- 选择班级后自动跳转页面的js代码 start -->
-          <script type="text/javascript">
-            var oSelect=document.getElementById("class");
-			var prefix=document.getElementById("prefix").value;
-            oSelect.onchange=function() { //当选项改变时触发
-              var valOption=this.options[this.selectedIndex].value; //获取option的value
-              var url = window.location.search;
-              var cid = url.substr(url.indexOf('=')+1,4);
-              var url = window.location.pathname+"?class="+valOption+"&prefix="+prefix;
-              window.location.href = url;
-            }
-          </script>
-          <!-- 选择班级后自动跳转页面的js代码 end -->   
-         <?php } ?> 
       </form>
     </div>
     <!-- 用户查找 end -->
 
-    <!-- 排序模块 start -->
-<!--     <div class='am-u-md-6 am-text-right am-text-middle'>
-      <b>For All:&nbsp</b>
-      <a href=ranklist.php?order_by=s>Level</a>&nbsp&nbsp&nbsp&nbsp
-      <b>For HZNU:</b>&nbsp
-      <a href=ranklist.php?order_by=ac>AC</a>&nbsp&nbsp
-      <a href=ranklist.php?scope=d>Day</a>&nbsp&nbsp
-      <a href=ranklist.php?scope=w>Week</a>&nbsp&nbsp
-      <a href=ranklist.php?scope=m>Month</a>&nbsp&nbsp
-      <a href=ranklist.php?scope=y>Year</a>&nbsp&nbsp
-    </div> -->
-    <!-- 排序模块 end -->
   </div>
-  <div class="am-g" style="color: grey; text-align: center;">
-    <div>
-      <?php echo $MSG_RANKTIPS ?>
-    </div>
-  </div>
+  <div class="am-avg-md-1" style="margin-top: 10px; margin-bottom: 10px;">
+    <ul class="am-nav am-nav-tabs">
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+        <li <?php if($args['scope']=="") echo "class='am-active'"; ?>><a href="ranklist.php"><?php echo $MSG_ALL ?></a></li>
+        <li <?php if($args['scope']=="y") echo "class='am-active'"; ?>><a href="ranklist.php?scope=y"><?php echo $MSG_Year ?></a></li>
+        <li <?php if($args['scope']=="m") echo "class='am-active'"; ?>><a href="ranklist.php?scope=m"><?php echo $MSG_Month ?></a></li>
+        <li <?php if($args['scope']=="w") echo "class='am-active'"; ?>><a href="ranklist.php?scope=w"><?php echo $MSG_Week ?></a></li>
+        <li <?php if($args['scope']=="d") echo "class='am-active'"; ?>><a href="ranklist.php?scope=d"><?php echo $MSG_Day ?></a></li>
+        <?php if (HAS_PRI("edit_user_profile")) echo "<li><a href='/OJ/admin-tools/updateRank2.php?silent'>$MSG_Update_RANK</a></li>";?>
+        <li><a style="color: grey; text-align: center;"><?php echo $MSG_RANKTIPS ?></a></li>
+    </ul>
+</div>
+<!-- 页标签 start -->
+<div class="am-g">
+  <ul class="am-pagination am-text-center">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
+    <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
+      <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
+        <?php
+        //分页
+        $page_size=10;
+        $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+        $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+        for ($i=$page_start;$i<$page;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"));
+        echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+      ?>
+        <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
+      <li><a href="<?php echo $link ?>">Next &raquo;</a></li>
+  </ul>
+</div>
+<!-- 页标签 end --> 
   <div class="am-avg-md-1 well" style="font-size: normal;">
-    <table class="am-table am-table-hover am-table-striped">
-      
+  <style type="text/css" media="screen">
+    #ac,#level,#passrate {
+        cursor: pointer;
+    }
+</style>
+    <table class="am-table am-table-hover am-table-striped" style="white-space: nowrap;">
       <!-- 表头 start -->
       <thead>
       <tr>
         <th class='am-text-left'><?php echo $MSG_RANK ?></th>
         <th class='am-text-left'><?php echo $MSG_USER ?></th>
         <th class='am-text-left'><?php echo $MSG_NICK ?></th>
-        <th class='am-text-left'><?php echo $MSG_SOLVED ?></th>
+        <th class='am-text-left' id='ac'><?php echo $MSG_SOLVED ?>&nbsp;<span class="<?php echo $ac_icon ?>"></span></th>
         <th class='am-text-left'><?php echo $MSG_SUBMIT ?></th>
-        <th class='am-text-left'><?php echo $MSG_RATIO ?></th>
-        <th class='am-text-left' style='width:100px'><?php echo $MSG_LEVEL ?></th>
+        <th class='am-text-left' id='passrate'><?php echo $MSG_RATIO ?>&nbsp;<span class="<?php echo $pass_icon ?>"></th>
+        <th class='am-text-left' id='level'><?php echo $MSG_LEVEL ?>&nbsp;<span class="<?php echo $level_icon ?>"></span</th>
         <th class='am-text-left'><?php echo $MSG_STRENGTH ?></th>
       </tr>
       </thead>
@@ -185,3 +198,22 @@ function generate_url($data){
 <!-- 页标签 end -->
 
 <?php include "footer.php" ?>
+<!-- sort by ac、level BEGIN -->
+<script>
+    <?php $args['sort_method'] = $ac; ?>
+    $("#ac").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+    <?php $args['sort_method'] = $level; ?>
+    $("#level").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+    <?php $args['sort_method'] = $pass; ?>
+    $("#passrate").click(function() {
+        var link = "<?php echo generate_url(array("page" => "1")) ?>";
+        window.location.href = link;
+    });
+</script>
+<!-- sort by ac、level END -->
