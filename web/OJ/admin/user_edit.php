@@ -356,7 +356,7 @@ if(!isset($_GET['team'])) {
   }
   $user_id = $mysqli->real_escape_string($_GET['cid']);
   $sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
-  echo $sql."<br>";
+  //echo $sql."<br>";
   $title = $MSG_EDIT.$MSG_USER;
 } else {
   $tuser = explode("@", trim($_GET['cid']));
