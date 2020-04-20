@@ -18,7 +18,7 @@
 --
 -- Table structure for table `compileinfo`
 --
-CREATE Database jol;
+CREATE Database jol CHARACTER SET utf8 COLLATE utf8_general_ci;
 use jol;
 
 DROP TABLE IF EXISTS `contest_discuss`;
@@ -565,7 +565,7 @@ CREATE TABLE `problem_samples` (
   `show_after` int(11) DEFAULT '0',
   PRIMARY KEY (`problem_id`,`sample_id`),
   KEY `problem_id` (`problem_id`,`sample_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1080,6 +1080,22 @@ INSERT INTO `reg_code` VALUES ('其它', '', '0');
 /*!40000 ALTER TABLE `reg_code` ENABLE KEYS */;
 UNLOCK TABLES;
 
+-- 添加触发器，防止同一用户类似代码提交第二遍时被认定为抄袭
+delimiter //
+drop trigger if exists simfilter//
+create trigger simfilter
+before insert on sim
+for each row
+begin
+ declare new_user_id varchar(64);
+ declare old_user_id varchar(64);
+ select user_id from solution where solution_id=new.s_id into new_user_id;
+ select user_id from solution where solution_id=new.sim_s_id into old_user_id;
+ if old_user_id=new_user_id then
+	set new.s_id=0;
+ end if;
+end;//
+delimiter ;
 --
 -- Final view structure for view `squid`
 --
