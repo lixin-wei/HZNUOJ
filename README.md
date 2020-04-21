@@ -109,9 +109,7 @@ admin@ubuntu16:~$ docker run -it --rm -p 90:80 --privileged hznuoj:latest
 
 ## 使用源码
 
-0. HZNUOJ目前只在Ubuntu16.04上跑过，在更高版本下判题机可能无法正常运行。
-
-1. 若已安装mysql，请下载源码后修改`/judger/install/intall.sh` 、`/judger/install/judge.conf` 、`/web/OJ/include/static.php` 中的相应账户密码信息(默认为root/root)。若还未安装，请确保接下来安装mysql的过程中将用户名和密码都设成root。
+1. HZNUOJ目前只在Ubuntu16.04上跑过，在更高版本下判题机可能无法正常运行。
 
 2. 若OJ用于OI信息学奥赛训练，请下载源码后修改`/judger/install/judge.conf`OJ_OI_MODE=1，默认运行模式为OJ_OI_MODE=0 ACM竞赛模式。
 
