@@ -269,22 +269,21 @@
   }
   $result->free();
 
-  $sql= "SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql' group by md order by md desc";
+  $sql= "SELECT date_format(in_date,'%Y/%m') ym,count(1) c FROM `solution` where `user_id`='$user_mysql' group by ym order by ym";
   $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
   $chart_data_all= array();
+  $xAxis_data=array();
   //echo $sql;
     
   while ($row=$result->fetch_array()){
-    $chart_data_all[$row['md']]=$row['c'];
+    $chart_data_all[$row['ym']]['total']=$row['c'];
+    $chart_data_all[$row['ym']]['ac']=0;
+    array_push($xAxis_data,$row['ym']);
   }
-    
-  $sql= "SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql' and result=4 group by md order by md desc ";
+  $sql= "SELECT date_format(in_date,'%Y/%m') ym,count(1) c FROM `solution` where `user_id`='$user_mysql' and result=4 group by ym order by ym";
   $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
-  $chart_data_ac= array();
-  //echo $sql;
-    
   while ($row=$result->fetch_array()){
-    $chart_data_ac[$row['md']]=$row['c'];
+    $chart_data_all[$row['ym']]['ac']=$row['c'];
   }
   
   $result->free();

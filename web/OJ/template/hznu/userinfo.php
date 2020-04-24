@@ -38,6 +38,16 @@ require_once("header.php");
               <th class="first-col am-text-right"><?php echo $MSG_SOLVED ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
               <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
             </tr>
+            <tr>
+              <th class="first-col am-text-right"><?php echo $MSG_SUBMIT?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+              <td><a href='status.php?user_id=<?php echo htmlentities($user)?>'><?php echo $Submit?></a></td>
+            </tr>
+            <?php
+              foreach($view_userstat as $row){
+                echo "<tr><th class='first-col am-text-right'>".$jresult[$row[0]]."&nbsp;&nbsp;&nbsp;&nbsp;</th>\n";
+                echo "<td><a href=status.php?user_id=".htmlentities($user)."&jresult=".$row[0]." >".$row[1]."</a></td></tr>\n";
+                }
+            ?>
             <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($school)?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
             <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
@@ -84,27 +94,35 @@ require_once("header.php");
           </tbody>
         </table>
         <?php 
-		if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
-		if (HAS_PRI("edit_user_profile")){ ?>
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+  if (HAS_PRI("edit_user_profile")){ ?>
           <div class="am-text-center">
             <button class="am-btn am-btn-secondary"><?php echo $MSG_SUBMIT ?></button>
           </div>
-        <?php }	?>
+        <?php } ?>
       </form>
       <?php }?>
     </div>
     <!-- 左侧个人信息表格 end -->
      
     <!-- 个人图表信息 start -->
-    <div class="am-u-md-4" >
-      <div id="chart-sub" style="height: 327px; width: 100%;"></div>
+    <div class='am-u-md-8'>
+      <div class='am-g'>
+        <div class="am-u-md-6" >
+          <div id="chart-sub" style="height: 327px; width: 100%;"></div>
+        </div>
+        <div class='am-u-md-6'>
+          <!-- <label>用户评价</label><br> -->
+          <!-- <a href="charts/show_fore.php?user=<?php echo $_GET['user']?>">用于教学的过程性评价详情请点这里</a> -->
+          <div id='chart' style='height:327px;width:100%'></div>
+        </div>
+      </div>
+      <div class='am-g'>
+        <div class="am-u-md-12" >
+          <div id="chart-sub2" style="height: 327px; width: 100%;"></div>
+        </div>
+      </div>
     </div>
-    <div class='am-u-md-4'>
-      <!-- <label>用户评价</label><br> -->
-      <!-- <a href="charts/show_fore.php?user=<?php echo $_GET['user']?>">用于教学的过程性评价详情请点这里</a> -->
-      <div id='chart' style='height:327px;width:100%'></div>
-    </div>
-   
     <!-- 个人图表信息 end -->
   </div>
   <!-- userinfo上半部分 end -->
@@ -244,9 +262,7 @@ require_once("header.php");
 
 <?php
 $chart_sub_data="";
-$sql="SELECT result,count(*) FROM solution WHERE user_id='{$_GET['user']}' group by result";
-$res=$mysqli->query($sql)->fetch_all();
-foreach($res as $row){
+foreach($view_userstat as $row){
   $chart_sub_data.="{value: $row[1], name: '{$judge_result[$row[0]]}'},";
 }
 ?>
@@ -315,12 +331,58 @@ option = {
 };
 chart_sub.setOption(option);
 
+var chart_sub2=echarts.init(document.getElementById("chart-sub2"));
+option = {
+  grid: {
+      x: 50,
+      x2: 50, y2: 50
+  },
+  color: ['#3398DB','red'],
+  tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+          type: 'shadow'
+      }
+  },
+  legend: {
+      show: true,
+      data:['<?php echo $MSG_SUBMIT ?>','<?php echo $MSG_Accepted ?>']
+  },
+  xAxis: {
+      type: 'category',
+      data: ['<?php echo implode("','",$xAxis_data) ?>']
+  },
+  yAxis: [
+      {
+          type : "value",
+          name : "<?php echo $MSG_SUBMISSIONS ?>"
+      }
+  ],
+  series: [
+      {
+          name: '<?php echo $MSG_SUBMIT ?>',
+          barWidth : 10,
+          type: 'bar',
+          stack: 'total',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'total')) ?>']
+      },
+      {
+          name: '<?php echo $MSG_Accepted ?>',
+          type: 'line',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'ac')) ?>']
+      }
+  ]
+};
+chart_sub2.setOption(option);
+
 $(window).resize(function(){
   chart.resize();
   chart_sub.resize();
+  chart_sub2.resize();
 });
 $(window).ready(function(){
   chart.resize();
   chart_sub.resize();
+  chart_sub2.resize();
 });
 </script>
