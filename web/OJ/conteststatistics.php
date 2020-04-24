@@ -69,35 +69,24 @@ while ($row=$result->fetch_object()){
 }
 $result->free();
 
-$res=3600;
-
-$sql="SELECT (UNIX_TIMESTAMP(end_time)-UNIX_TIMESTAMP(start_time))/100 FROM contest WHERE contest_id=$cid ";
-        $result=$mysqli->query($sql);
-        $view_userstat=array();
-        if($row=$result->fetch_array()){
-              $res=$row[0];
-        }
-        $result->free();
-
-$sql=   "SELECT floor(UNIX_TIMESTAMP((in_date))/$res)*$res*1000 md,count(1) c FROM `solution` where  `contest_id`='$cid'   group by md order by md desc ";
-        $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
-        $chart_data_all= array();
+$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' group by m order by m";
+$result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
+$chart_data_all= array();
+$xAxis_data=array();
 //echo $sql;
-   
-        while ($row=$result->fetch_array()){
-                $chart_data_all[$row['md']]=$row['c'];
-    }
-   
-$sql=   "SELECT floor(UNIX_TIMESTAMP((in_date))/$res)*$res*1000 md,count(1) c FROM `solution` where  `contest_id`='$cid' and result=4 group by md order by md desc ";
-        $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
-        $chart_data_ac= array();
+while ($row=$result->fetch_array()){
+  $chart_data_all[$row['m']]['total']=$row['c'];
+  $chart_data_all[$row['m']]['ac']=0;
+  array_push($xAxis_data,$row['m']);
+}
+
+$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' and result=4 group by m order by m";
+$result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
 //echo $sql;
-   
-        while ($row=$result->fetch_array()){
-                $chart_data_ac[$row['md']]=$row['c'];
-    }
- 
-  $result->free();
+while ($row=$result->fetch_array()){
+	$chart_data_all[$row['m']]['ac']=$row['c'];
+}
+$result->free();
 
 
 /////////////////////////Template
