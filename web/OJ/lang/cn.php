@@ -65,7 +65,7 @@
   // contestRank.php
   $MSG_REAL_NAME = "姓名";
   $MSG_USER = "用户";
-  $MSG_PENALTY = "罚时";
+  $MSG_PENALTY = "累计时间";
   $MSG_DOWNLOAD_RANK = "下载排名";
   
   //其他
