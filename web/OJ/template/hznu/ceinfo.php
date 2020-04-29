@@ -97,7 +97,7 @@
     pats[35]=/expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘namespace’/;
     exps[35]="不要将C++语言程序提交为C,提交前注意选择语言类型。";
     pats[36]=/stray ‘\\[0123456789]*’ in program/;
-    exps[36]="中文空格、标点等不能出现在程序中注释和字符串以外的部分。编写程序时请关闭中文输入法。请不要使用网上复制来的代码。";
+    exps[36]="中文字符（如中文空格、中文标点等）不能出现在程序中注释和字符串以外的部分。编写程序时请关闭中文输入法，请不要使用网上复制来的代码！";
     pats[37]=/division by zero/;
     exps[37]="除以零将导致浮点溢出。";
     pats[38]=/cannot be used as a function/;
