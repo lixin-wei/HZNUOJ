@@ -16,7 +16,7 @@
   else $showStyle = "margin-top:10px;";
 ?>
 <div id='container' class="am-container">
-<div style=<?php echo $showStyle?> class='am-g' id='show'>
+<div style='<?php echo $showStyle?>' class='am-g' id='show'>
 
   <!-- 工具栏 start -->
   <div class='am-text-center'>
@@ -105,22 +105,34 @@
       vertical-align: middle !important;
       line-height: 1.4 !important;
     }
-  </style>
+    th.header:hover{
+      cursor: pointer;
+    }
+    th.header:after{
+      content: " \f0dc";
+    }
+    th.headerSortUp:after{
+      content: " \f161";
+    }
+    th.headerSortDown:after{
+      content: " \f160";
+    }
+</style>
 <div class="am-container well am-scrollable-horizontal" style="max-width: 98%;">
   <table class="am-table" id="rank_table" style="white-space: nowrap;">
     <thead>
       <tr>
-      <th id="rank" width=5%><?php echo $MSG_RANK ?></th>
+      <th id="rank" width="5%"><?php echo $MSG_RANK ?></th>
       <?php if($real_name_mode):?>
-        <th id="user" width=10%><?php echo $MSG_StudentID ?></th>
-        <th id="nick" width=10%><?php echo $MSG_REAL_NAME ?></th>
+        <th id="user" width="10%" ><?php echo $MSG_StudentID ?></th>
+        <th id="nick" width="10%"><?php echo $MSG_REAL_NAME ?></th>
       <?php else: ?>
-        <th id="user" width=10%><?php echo $MSG_USER ?></th>
-        <th id="nick" width=10%><?php echo $MSG_NICK ?></th>
+        <th id="user" width="10%"><?php echo $MSG_USER ?></th>
+        <th id="nick" width="10%"><?php echo $MSG_NICK ?></th>
       <?php endif; ?>
-      <th id="solved" width=5%><?php echo $MSG_SCORE ?></th>
-      <th id="score" width=5%><?php echo $MSG_SOLVED ?></th>
-      <th id="penalty" width=5%><?php echo $MSG_PENALTY ?></th>
+      <th id="solved" width="5%"><?php echo $MSG_SCORE ?></th>
+      <th id="score" width="5%"><?php echo $MSG_SOLVED ?></th>
+      <th id="penalty" width="5%"><?php echo $MSG_PENALTY ?></th>
       <?php
 	   foreach($pid_nums as $num)
           echo "<th id='p-cell-$i'><a href=problem.php?cid=$cid&pid=$num[0]>".PID($num[0])."</a></th>";	
@@ -250,6 +262,12 @@
 </div>
 <?php include "footer.php" ?>
 
+<script type="text/javascript" src="plugins/tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+  $( document ).ready( function () {
+    $( "#rank_table" ).tablesorter({headers:{0:{sorter:false}}});
+  });
+</script>
 
 <!-- auto set nick-cell's max-width START-->
 <script>
