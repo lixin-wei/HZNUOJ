@@ -386,7 +386,7 @@ function get_set_name($pid) {
 }
 function show_category($source,$size) {
     //$size的值有 default、sm、lg、xl
-    $baseUrl = substr($_SERVER['PHP_SELF'],strlen($_SERVER['PHP_SELF'])-16)=="problem_list.php" ? "problem_list.php?keyword=" : "problemset.php?search=";
+    $baseUrl = basename($_SERVER['SCRIPT_NAME'])=="problem_list.php" ? "problem_list.php?keyword=" : "problemset.php?search=";
     $color_theme=Array("primary","secondary","success","warning","danger");
     $category = array_unique(explode(" ",trim($source)));
     sortByPinYin($category);
