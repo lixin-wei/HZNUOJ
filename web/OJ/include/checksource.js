@@ -40,7 +40,7 @@ function checksource(src){
 		if(checkIsChinese(src))
 			msg+="程序中有中文字符！注意，一般来说本系统中的题目都不会要求输出提示，特别是中文提示。\n请先使用SampleInput做输入，对比输出和SampleOutput，有任何多余的输出（包括提示、多出的逗号、等号空格等等）都会被判错误！\n如有任何程序内容出现中文的括号、分号、引号、空格都会编译出错。";
 		if(msg.length>0)
-			return confirm(msg+"\n 代码可能有错误，确定要提交么？\n建议先使用题目的SampleInput做测试，看看你的程序输出是否与SampleOutput完全一致。\n多个空格，标点都会被认为是错误答案（WrongAnswer）。\n如果出现编译错误（CompileError），请点击CompileError字样，查看具体编译报错，以便纠正。");					
+		return confirm(msg+"\n 代码可能有错误，确定要提交么？\n建议先使用题目的SampleInput做测试，看看你的程序输出是否与SampleOutput完全一致。\n多个空格，标点都会被认为是错误答案（WrongAnswer）。\n如果出现编译错误（CompileError），请点击CompileError字样，查看具体编译报错，以便纠正。\n\n点击“确定”继续提交，点击“取消”返回修改。");
 		else
 			return true;
 }
