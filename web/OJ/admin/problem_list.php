@@ -313,7 +313,7 @@
         <th><?php echo $MSG_TITLE ?></th>
         <th id="ac"><?php echo $MSG_Accepted ?>&nbsp;<span class="<?php echo $ac_icon ?>"></span></th>
         <th id="submit"><?php echo $MSG_SUBMIT ?>&nbsp;<span class="<?php echo $submit_icon ?>"></span></th>
-        <th id='passrate'><?php echo $MSG_RATIO ?>&nbsp;<span class="<?php echo $pass_icon ?>"></th>
+        <th id='passrate'><?php echo $MSG_RATIO ?>&nbsp;<span class="<?php echo $pass_icon ?>"></span></th>
         <th><?php echo $MSG_SCORE ?></th>   
         <th><?php echo $MSG_STATUS ?></th>
         <th colspan=3 style="text-align: center"><?php echo $MSG_Operations ?></th>
