@@ -148,11 +148,8 @@ if ($start_time>time()){
     exit(0);
 }
 if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
-$lock=$end_time-$row['lock_time'];
-$unlock=$row['unlock'];
-if(isset($_GET['unlock']) && HAS_PRI("edit_contest")){
-    $unlock=1;
-}
+$lock = $end_time - ($end_time - $start_time) * $OJ_RANK_LOCK_PERCENT;
+
 $first_prize=$row['first_prize'];
 $second_prize=$row['second_prize'];
 $third_prize=$row['third_prize'];
@@ -268,7 +265,7 @@ for ($i=0; $i<$rows_cnt; $i++){
         $U[$user_cnt]->class = $row['class'];
         $user_name=$n_user;
     }
-    if(!$unlock && time() < $end_time && $lock < strtotime($row['in_date']))
+    if(time() < $end_time && $lock < strtotime($row['in_date']))
         $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,-1);//Unknown
     else
         $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));

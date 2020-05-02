@@ -68,13 +68,10 @@
       $end_time=strtotime($row->end_time);
       $open_source = $row->open_source=="Y"?1:0; // 默认值为0
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
-      $lock_time=$row->lock_time;
-      $unlock=$row->unlock;
     }
-    $lock_t=$end_time-$lock_time;
-    $time_sql="";
-    if(time()>$lock_t && !$unlock){
-      //echo $time_sql;
+    if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
+    $lock_t=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
+    if(time()>$lock_t && time()<$end_time){
        $lock=true;
     }else{
        $lock=false;

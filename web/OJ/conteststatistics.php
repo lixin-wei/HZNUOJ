@@ -17,6 +17,9 @@ if ($num==0){
 	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);
 }
+$row=$result->fetch_object();
+$start_time=strtotime($row->start_time);
+$end_time=strtotime($row->end_time);
 $result->free();
 
 $view_title= $MSG_CONTEST.$MSG_STATISTICS;
@@ -34,7 +37,12 @@ $sql = "SELECT `num` FROM contest_problem a
 $result=$mysqli->query($sql) or die($mysqli->error);
 $pid_nums=$result->fetch_all(MYSQLI_BOTH);
 
-$sql="SELECT `result`,`num`,`language` FROM `solution` WHERE `contest_id`='$cid' and num>=0"; 
+if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
+$lock_time = $end_time - ($end_time - $start_time) * $OJ_RANK_LOCK_PERCENT;
+$sql_lockboard="";
+if($OJ_RANK_LOCK_PERCENT!=0) $sql_lockboard=" AND `in_date`<'".date("Y-m-d H:i:s",$lock_time)."' ";
+
+$sql="SELECT `result`,`num`,`language` FROM `solution` WHERE `contest_id`='$cid' and num>=0 $sql_lockboard";
 $result=$mysqli->query($sql);
 $R=array();
 while ($row=$result->fetch_object()){
@@ -69,7 +77,7 @@ while ($row=$result->fetch_object()){
 }
 $result->free();
 
-$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' group by m order by m";
+$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' $sql_lockboard group by m order by m";
 $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
 $chart_data_all= array();
 $xAxis_data=array();
@@ -80,7 +88,7 @@ while ($row=$result->fetch_array()){
   array_push($xAxis_data,$row['m']);
 }
 
-$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' and result=4 group by m order by m";
+$sql="SELECT date_format(in_date, '%H:%i') m, count(1) c FROM `solution` where `contest_id`='$cid' and result=4 $sql_lockboard group by m order by m";
 $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
 //echo $sql;
 while ($row=$result->fetch_array()){
