@@ -86,7 +86,10 @@
       var contest_len = <?php echo $contest_len ?>;
       var begin_time = <?php echo $contest_time[0] ?>;
       var warnning_percent = <?php echo $warnning_percent ?>;
-
+      var lock_time=-1;
+      <?php if (isset($OJ_RANK_LOCK_PERCENT)&&$OJ_RANK_LOCK_PERCENT!=0){ ?>
+        lock_time=<?php echo $view_lock_time ?>;
+      <?php }?>
       function time_format(time_stamp) {
           var h = Math.floor(time_stamp / 3600);
           time_stamp -= h * 3600;
@@ -112,6 +115,8 @@
           } else if (bar_percent >= warnning_percent) {
               $("#contest-bar-progress").attr("class", "am-progress-bar am-progress-bar-danger");
               $("#contest-bar-progress").html("<?php echo $MSG_NearlyEnd ?>");
+          } else if (now() >= lock_time && lock_time > 0) {
+            $("#contest-bar-progress").html("<?php echo $MSG_Locked ?>");
           }
           $("#contest-bar-progress").css({"width" : bar_percent+"%"});
           $("#time_elapsed").html(time_format(dur));
