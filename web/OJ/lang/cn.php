@@ -247,6 +247,8 @@
   $MSG_Start="开始于";
   $MSG_StartTime="开始时间";
   $MSG_EndTime="结束时间";
+  $MSG_LockTime="封榜时间";
+  $MSG_Locked = "已封榜，答题信息停止更新！";
   $MSG_TotalTime="总赛时";
   $MSG_LeftTime="剩余";
   $MSG_Ended="已结束";

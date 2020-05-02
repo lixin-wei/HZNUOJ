@@ -247,6 +247,8 @@
   $MSG_Start="Start";
   $MSG_StartTime="Start Time";
   $MSG_EndTime="End Time";
+  $MSG_LockTime="Lock Board Time";
+  $MSG_Locked = "The board has been locked.";
   $MSG_TotalTime="Total";
   $MSG_LeftTime="Left";
   $MSG_Ended="Finished";  
