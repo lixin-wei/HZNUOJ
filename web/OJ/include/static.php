@@ -17,7 +17,7 @@
   static  $DB_VJPASS="root";
   static  $VJ_OPEN=false;
 
-  $OJ_HOME=dirname(dirname(__FILE__));//:OJ/ OJ的首页地址
+  static  $OJ_HOME="/OJ/";//OJ的首页地址
   static  $OJ_NAME="HZNUOJ";//OJ的名字，将取代页面标题等位置HZNUOJ字样。
   static  $OJ_ADMIN="root@localhost";//管理员email
   static  $OJ_DATA="/home/judge/data";//测试数据所在目录，实际位置。
@@ -52,7 +52,7 @@
   static $OJ_OPENID_PWD='8a367fe87b1e406ea8e94d7d508dcf01';
 
 
-  static $ICON_PATH="image/hznuoj.ico";
+  static $ICON_PATH="image/hznuoj.ico";//设置网站图标
   static $GOLD_RATE=0.10; // 金牌比例
   static $SILVER_RATE=0.20; // 银牌比例
   static $BRONZE_RATE=0.30; // 铜牌比例

@@ -90,7 +90,7 @@
     </button>
     <div class="am-container" >
       <h1 class="am-topbar-brand">
-        <a href="/OJ/index.php"><?php echo $OJ_NAME ?></a>
+        <a href="<?php echo $OJ_HOME ?>"><?php echo $OJ_NAME ?></a>
       </h1>
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
