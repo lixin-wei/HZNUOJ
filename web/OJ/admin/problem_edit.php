@@ -60,7 +60,7 @@ if(!$add_problem_mod){
         }
         else{
             echo<<<HTML
-        <h1>$MSG_EDIT$MSG_PROBLEM:<a href="/OJ/problem.php?id=$pid">$pid</a></h1>
+        <h1>$MSG_EDIT$MSG_PROBLEM:<a href="../problem.php?id=$pid">$pid</a></h1>
 HTML;
         }
         ?>

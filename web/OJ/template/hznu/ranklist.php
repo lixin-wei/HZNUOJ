@@ -43,9 +43,9 @@ function generate_url($data){
   <?php 
 	/*把题库、状态、排名分开
     <ul class="am-nav am-nav-tabs">
-      <li><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
-      <li><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
-      <li class="am-active"><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
+      <li><a href="./problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
+      <li><a href="./status.php"><?php echo $MSG_STATUS ?></a></li>
+      <li class="am-active"><a href="./ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
     </ul>
 	*/ ?>
   </div>
@@ -87,7 +87,7 @@ function generate_url($data){
         <li <?php if($args['scope']=="m") echo "class='am-active'"; ?>><a href="ranklist.php?scope=m"><?php echo $MSG_Month ?></a></li>
         <li <?php if($args['scope']=="w") echo "class='am-active'"; ?>><a href="ranklist.php?scope=w"><?php echo $MSG_Week ?></a></li>
         <li <?php if($args['scope']=="d") echo "class='am-active'"; ?>><a href="ranklist.php?scope=d"><?php echo $MSG_Day ?></a></li>
-        <?php if (HAS_PRI("edit_user_profile")) echo "<li><a href='/OJ/admin-tools/updateRank2.php?silent'>$MSG_Update_RANK</a></li>";?>
+        <?php if (HAS_PRI("edit_user_profile")) echo "<li><a href='./admin-tools/updateRank2.php?silent'>$MSG_Update_RANK</a></li>";?>
         <li><a style="color: grey; text-align: center;"><?php echo $MSG_RANKTIPS ?></a></li>
     </ul>
 </div>

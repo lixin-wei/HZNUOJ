@@ -180,7 +180,7 @@ for ($i=$result->num_rows;$i>0;$i--){
   <h1>
     <?php echo $MSG_EDIT.$MSG_CONTEST ?>:
       <?php
-      echo "<a href='/OJ/contest.php?cid={$_GET['cid']}'>{$_GET['cid']}</a>"
+      echo "<a href='../contest.php?cid={$_GET['cid']}'>{$_GET['cid']}</a>"
       ?>
   </h1>
   <input type=hidden name='cid' value='<?php echo $cid?>'>

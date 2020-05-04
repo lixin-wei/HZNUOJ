@@ -48,7 +48,7 @@ SQL;
   </tr></thead>
   <?php
   for (;$row=$result->fetch_object();){
-    echo "<tr>\n<td><a href='/OJ/userinfo.php?user=$row->user_id' target='_blank'>$row->user_id</a></td>\n";
+    echo "<tr>\n<td><a href='../userinfo.php?user=$row->user_id' target='_blank'>$row->user_id</a></td>\n";
     echo "<td>".$row->rightstr."</td>\n";
     if (HAS_PRI("edit_privilege_group") && $user_order<get_order($row->rightstr)) 
       echo "<td><a href=privilege_delete.php?uid=$row->user_id&rightstr=$row->rightstr&getkey=".$_SESSION['getkey'].">$MSG_DEL</a></td>\n";

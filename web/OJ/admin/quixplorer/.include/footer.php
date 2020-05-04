@@ -39,7 +39,7 @@ Comment:
 ------------------------------------------------------------------------------*/
 //------------------------------------------------------------------------------
 function show_footer() {			// footer for html-page
-     require_once $_SERVER['DOCUMENT_ROOT']."/OJ/admin/admin-footer.php";
+     require_once "../admin-footer.php";
      echo <<<HTML
           <footer style="text-align: center;">
                <hr/>

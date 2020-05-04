@@ -15,8 +15,8 @@
 <div class="am-container">
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
-      <li><a href="/OJ/contest.php">Local</a></li>
-      <li class="am-active"><a href="/OJ/recent-contest.php">Remote</a></li>
+      <li><a href="./contest.php">Local</a></li>
+      <li class="am-active"><a href="./recent-contest.php">Remote</a></li>
     </ul>
   </div>
   <div class="am-avg-md-1">

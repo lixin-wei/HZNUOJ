@@ -14,9 +14,9 @@
   <a href="https://github.com/lixin-wei/HZNUOJ" target="_blank">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
   <div>
   <span>-</span>
-  <a href='/OJ/setlang.php?lang=en'>English</a>
+  <a href='./setlang.php?lang=en'>English</a>
   <span>-</span>
-  <a href='/OJ/setlang.php?lang=cn'>简体中文</a>
+  <a href='./setlang.php?lang=cn'>简体中文</a>
   <span>-</span>
   </div>
   ★<?php echo $MSG_SERVERTIME ?>: <span id='footerdate'><?php echo date('Y-m-d H:i:s',time()); ?></span>★
@@ -29,9 +29,8 @@
 </footer>
 <!--[if (gte IE 9)|!(IE)]><!-->
 
-<script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script>
-<script src="/OJ/plugins/AmazeUI/js/amazeui.min.js"></script>
-<!-- <script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script> -->
+<script src="./plugins/jquery/jquery-3.1.1.min.js"></script>
+<script src="./plugins/AmazeUI/js/amazeui.min.js"></script>
 <!-- <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script> -->
 <!-- <script src="AmazeUI/js/handlebars.min.js"></script> -->
 

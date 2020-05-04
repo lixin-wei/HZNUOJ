@@ -18,7 +18,7 @@
     <h1 style="margin-top:40px; margin-bottom: 0px;"><?php echo $MSG_REG_INFO ?></h1>
     <hr>
     <form class="am-form am-form-horizontal" action="register.php" method="post"  data-am-validator >
-    <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+    <?php include_once "./include/set_post_key.php"?>
     <div class="am-form-group">
       <label for="username" class="am-u-sm-4 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_USER_ID ?>:

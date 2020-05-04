@@ -17,7 +17,7 @@
       <h2><?php echo $MSG_LOGIN ?></h2>
     <hr>
     <form action="login.php" method="post" class="am-form am-form-horizontal">
-      <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+      <?php include_once "./include/set_post_key.php"?>
       <div class="am-form-group">
         <label for="username" class="am-u-sm-4 am-form-label"><?php echo $MSG_USER_ID ?>: </label>
         <div class="am-u-sm-8">

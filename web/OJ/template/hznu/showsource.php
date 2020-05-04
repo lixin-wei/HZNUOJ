@@ -51,10 +51,10 @@
         $html_sup = "";
         $html_link = "";
         if($is_temp_user) {
-          $html_sup = "<sup title='this is a temporary user in a special contest'><a href='/OJ/contest.php?cid=$cid' style='color: white;'>$cid</a></sup>";
+          $html_sup = "<sup title='this is a temporary user in a special contest'><a href='./contest.php?cid=$cid' style='color: white;'>$cid</a></sup>";
         }
         else {
-          $html_link = "href='/OJ/userinfo.php?user=$suser_id'";
+          $html_link = "href='./userinfo.php?user=$suser_id'";
         }
         echo <<<HTML
           <div class='solution-info'>
@@ -111,20 +111,20 @@ HTML;
 </div> <!-- /container -->
 
 <!-- SyntaxHighlighter START -->
-<link href='/OJ/plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-<link href='/OJ/plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
-<script src='/OJ/plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushJava.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushJScript.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPython.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<link href='./plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='./plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script src='./plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushJava.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushJScript.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPython.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
 <script language='javascript'>
 SyntaxHighlighter.config.bloggerMode = false;
 SyntaxHighlighter.defaults['quick-code'] = true;//启用“双击”快速代码复制和粘贴。

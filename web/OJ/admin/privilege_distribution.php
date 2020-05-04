@@ -33,7 +33,7 @@ if($_POST['data']){
 <h1><?php echo $MSG_Distribution ?></h1>
 <hr/>
 <form method="post">
-  <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+  <?php require "../include/set_post_key.php"?>
   <div class="row">
     <div class="col-sm-2">
       <!-- Nav tabs -->

@@ -201,5 +201,5 @@ if(isset($_POST['classList'])) {
 </body>
 </html>
 
-<link rel="stylesheet" href="/OJ/plugins/AmazeUI/css/amazeui.min.css"/>
+<link rel="stylesheet" href="../plugins/AmazeUI/css/amazeui.min.css"/>
 

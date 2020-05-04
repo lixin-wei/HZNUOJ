@@ -11,8 +11,8 @@ if (!HAS_PRI("inner_function")) {
 <div id="user_chart" style="width: 100%; height: 800px;"></div>
 <div id="sol_tot_chart" style="width: 100%; height: 800px;"></div>
 
-<script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script>
-<script src="/OJ/plugins/echarts/echarts/echarts.min.js"></script>
+<script src="../plugins/jquery/jquery-3.1.1.min.js"></script>
+<script src="../plugins/echarts/echarts/echarts.min.js"></script>
 <?php 
 $sql="SELECT DATE_FORMAT(in_date,'%Y/%m/%d') days, count(*) FROM solution GROUP BY days";
 $res=$mysqli->query($sql);

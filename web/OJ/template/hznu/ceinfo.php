@@ -227,20 +227,20 @@
 </div> <!-- /container -->  
 <?php require_once("footer.php") ?>
 <!-- SyntaxHighlighter START-->
-<link href='/OJ/plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
-<link href='/OJ/plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
-<script src='/OJ/plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushJava.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushJScript.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPython.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
-<script src='/OJ/plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<link href='./plugins/highlight/styles/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='./plugins/highlight/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script src='./plugins/highlight/scripts/shCore.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushCpp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushJava.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushJScript.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushDelphi.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushRuby.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPython.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPhp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushPerl.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
 <script language='javascript'>
 $(document).ready(function(){
 	$("#source").load("getsource.php?ce&id=<?php echo $id?>",function(response,status,xhr){

@@ -43,9 +43,9 @@ function generate_url($data){
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <?php 	/*把题库、状态、排名分开	
     <ul class="am-nav am-nav-tabs">
-      <li class="am-active"><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEM ?></a></li>
-      <li><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
-      <li><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
+      <li class="am-active"><a href="./problemset.php"><?php echo $MSG_PROBLEM ?></a></li>
+      <li><a href="./status.php"><?php echo $MSG_STATUS ?></a></li>
+      <li><a href="./ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
     </ul>
 	*/ ?>
   </div>

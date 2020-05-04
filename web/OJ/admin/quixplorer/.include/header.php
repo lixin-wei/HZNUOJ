@@ -40,7 +40,7 @@ Comment:
 //------------------------------------------------------------------------------
 function show_header($title) {			// header for html-pagex
      global $MSG_TestData;
-     require_once $_SERVER['DOCUMENT_ROOT']."/OJ/admin/admin-header.php";
+     require_once "../admin-header.php";
      $title = $MSG_TestData.$title;
      echo "<title>$html_title$title</title>";
 	echo "<h1>$title</h1><hr>";

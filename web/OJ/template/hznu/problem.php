@@ -71,9 +71,9 @@ function sss($str){
     echo <<<HTML
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <ul class="am-nav am-nav-tabs">
-      <li class="am-active"><a href="/OJ/problemset.php">$MSG_PROBLEM</a></li>
-      <li><a href="/OJ/status.php">$MSG_STATUS</a></li>
-      <li><a href="/OJ/ranklist.php">$MSG_RANKLIST</a></li>
+      <li class="am-active"><a href="./problemset.php">$MSG_PROBLEM</a></li>
+      <li><a href="./status.php">$MSG_STATUS</a></li>
+      <li><a href="./ranklist.php">$MSG_RANKLIST</a></li>
     </ul>
   </div>
 HTML;
@@ -193,7 +193,7 @@ HTML;
         <?php
         if(!isset($_GET['cid']) || $is_practice==1) {
             echo<<<HTML
-            <a href="problemstatus.php?id={$row->problem_id}" style="color:white" target="_blank">
+            <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
                 $MSG_Codes
               </button>
@@ -202,12 +202,12 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
           </a>
-          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white' target="_blank">
+          <a href="./admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white' target="_blank">
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
               $MSG_TestData
             </button>
@@ -374,12 +374,12 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="/OJ/admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
           </a>
-          <a href="/OJ/admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+          <a href="./admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
               $MSG_TestData
             </button>

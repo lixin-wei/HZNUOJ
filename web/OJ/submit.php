@@ -245,6 +245,6 @@ if(($OJ_LANGMASK)&(1<<$language)){
      if(isset($cid)) {
        $para .= "&cid=$cid";
      }
-     echo "<script>window.location.href='/OJ/status.php?$para'</script>";
+     echo "<script>window.location.href='./status.php?$para'</script>";
    }
 ?>
