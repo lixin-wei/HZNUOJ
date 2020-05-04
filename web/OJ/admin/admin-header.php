@@ -15,6 +15,7 @@ if(preg_match("/\/admin\/quixplorer\//i", $_SERVER['SCRIPT_NAME'])) {
   $baseDir="..";
   $urlbaseDir=".";
 }
+require_once("$baseDir/include/db_info.inc.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +26,7 @@ if(preg_match("/\/admin\/quixplorer\//i", $_SERVER['SCRIPT_NAME'])) {
     <meta name="format-detection" content="telephone=no">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="alternate icon" type="image/jpg" href="<?php echo $baseDir ?>/image/hznuoj.ico">
+    <link rel="alternate icon" type="image/jpg" href="<?php echo $baseDir ?>/<?php echo $GLOBALS["ICON_PATH"] ?>">
     <link rel="stylesheet" href="<?php echo $baseDir ?>/plugins/AmazeUI/css/amazeui.min.css"/>
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="<?php echo $baseDir ?>/plugins/bootstrap/css/bootstrap.min.css">
@@ -33,7 +34,6 @@ if(preg_match("/\/admin\/quixplorer\//i", $_SERVER['SCRIPT_NAME'])) {
 </head>
 <body>
 <?php 
-  require_once("$baseDir/include/db_info.inc.php");
   require_once("$baseDir/include/setlang.php");
   $html_title = $MSG_DASHBOARD."--";
   global $mysqli;

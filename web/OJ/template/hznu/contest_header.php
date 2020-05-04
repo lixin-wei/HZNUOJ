@@ -70,7 +70,7 @@ if(isset($_GET['cid'])){
     <meta name="format-detection" content="telephone=no">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="alternate icon" type="image/png" href="image/hznuoj.ico">
+    <link rel="alternate icon" type="image/png" href="<?php echo $ICON_PATH ?>">
     <link rel="stylesheet" href="plugins/AmazeUI/css/amazeui.min.css"/>
     <!-- <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css"/> -->
     <style type="text/css">
@@ -135,7 +135,7 @@ echo <<<BOT
           <div class="am-topbar-right">
             <ul class="am-nav am-nav-pills am-topbar-nav">
               <li class="am-dropdown" data-am-dropdown>
-                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">$MSG_LOGIN<span class="am-icon-caret-down"></span></a>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;"> $MSG_LOGIN <span class="am-icon-caret-down"></span></a>
                   <ul class="am-dropdown-content">
                     <li><a href="loginpage.php"><span class="am-icon-user"></span> $MSG_LOGIN</a></li>
                     <li><a href="registerpage.php"><span class="am-icon-pencil"></span> $MSG_REGISTER</a></li>
@@ -150,7 +150,7 @@ echo <<<BOT
           <div class="am-topbar-right">
                <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-dropdown" data-am-dropdown>
-                  <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'><span class='am-icon-user'></span> {$_SESSION['user_id']}<span class='am-icon-caret-down'></span></a>
+                  <a class='am-dropdown-toggle' data-am-dropdown-toggle href='javascript:;'><span class='am-icon-user'></span> {$_SESSION['user_id']} <span class='am-icon-caret-down'></span></a>
                     <ul class="am-dropdown-content">
 BOT;
                     if (!isset($_SESSION['contest_id'])) {
