@@ -13,7 +13,7 @@
     
 	$view_category=array();
 	$sql="SELECT distinct `source` FROM `problem` WHERE 0 ";
-	$problen_sets = get_set_name("");
+	$problen_sets = get_problemset("");
 	foreach($problen_sets as $row){
 		if(HAS_PRI("see_hidden_".$row[0]."_problem")){
 			$sql.=" OR `problemset`='$row[0]'";

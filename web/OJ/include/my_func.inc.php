@@ -291,9 +291,14 @@ function can_see_res_info($sid) {
 
 function get_problemset($pid){
     global $mysqli;
-    $sql="SELECT problemset FROM problem WHERE problem_id='$pid'";
-    $res=$mysqli->query($sql);
-    return $res->fetch_array()[0];
+    if(trim($pid)!=""){
+        $pid = intval($pid);
+        $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
+        return ($mysqli->query($sql)->fetch_array()[0]);
+    } else {
+        $sql="SELECT `set_name` FROM `problemset`";
+        return ($mysqli->query($sql)->fetch_all());
+    }
 }
 function get_order($group_name){
     global $mysqli;
@@ -372,17 +377,6 @@ function createPwd($seed, $len){
     str_replace("0", "Z", $password);
     str_replace("1", "W", $password);
     return $password;
-}
-function get_set_name($pid) {
-    global $mysqli;
-    if(trim($pid)!=""){
-        $pid = intval($pid);
-        $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
-        return ($mysqli->query($sql)->fetch_array()[0]);
-    } else {
-        $sql="SELECT `set_name` FROM `problemset`";
-        return ($mysqli->query($sql)->fetch_all());
-    }
 }
 function show_category($source,$size) {
     //$size的值有 default、sm、lg、xl

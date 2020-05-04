@@ -197,7 +197,7 @@ while ($row=$result->fetch_object()) {
     $view_problemset[$i][4] = "<td><nobr>".mb_substr(($row->author?$row->author:$MSG_IMPORTED),0,40,'utf8')."</nobr></td >";
     // 题目来源 ajax html代码 start
     $view_problemset[$i][5] = "<td style='text-align:left;white-space:normal;'><div pid='".$row->problem_id."' fd='source' class='center' >\n";
-    if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
+    if(HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {
         $view_problemset[$i][5] .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
     }  
     $view_problemset[$i][5] .= show_category($row->source,"default");

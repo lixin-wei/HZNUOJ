@@ -343,7 +343,7 @@
           <td><?php echo $row->author?$row->author:$MSG_IMPORTED ?></td>
           <?php
           $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
-          if(HAS_PRI("edit_".get_set_name($row->problem_id)."_problem")) {
+          if(HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {
               $view_source .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
           }
           $view_source .= show_category($row->source,"sm");
