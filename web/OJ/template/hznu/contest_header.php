@@ -30,7 +30,7 @@ else $_SESSION['tag'] = "N";
 if(isset($_GET['cid'])){
   $warnning_percent=90;
   $cid =  $mysqli->real_escape_string($_GET['cid']);
-  $sql="SELECT UNIX_TIMESTAMP(start_time), UNIX_TIMESTAMP(end_time) FROM contest WHERE contest_id='$cid'";
+  $sql="SELECT UNIX_TIMESTAMP(start_time) AS start_time, UNIX_TIMESTAMP(end_time) AS end_time,`unlock`,lock_time,title FROM contest WHERE contest_id='$cid'";
   $res=$mysqli->query($sql);
   $contest_time=$res->fetch_array();
   $contest_len=$contest_time[1]-$contest_time[0];
@@ -41,9 +41,7 @@ if(isset($_GET['cid'])){
   $dur=$now-$contest_time[0];
   if($dur>=$contest_len)$dur=$contest_len;
   $bar_percent=$dur/$contest_len*100;
-  if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
-  if (isset($OJ_RANK_LOCK_PERCENT)&&$OJ_RANK_LOCK_PERCENT!=0)
-      $view_lock_time=$contest_time[1] - ($contest_time[1] - $contest_time[0]) * $OJ_RANK_LOCK_PERCENT;
+  
   $bar_color="am-progress-bar-success";
   if($bar_percent==100)$bar_color="am-progress-bar-secondary";
   else if($bar_percent>=$warnning_percent)$bar_color="am-progress-bar-danger";
@@ -52,10 +50,16 @@ if(isset($_GET['cid'])){
     $bar_percent=100;
     $bar_color="am-progress-bar-secondary";
   }
-
-  $sql="SELECT title FROM contest WHERE contest_id='$cid'";
-  $res=$mysqli->query($sql);
-  $contest_title=$res->fetch_array()[0];
+  $unlock=$contest_time['unlock'];
+  switch($unlock){
+      case 0: //用具体时间来控制封榜
+          $view_lock_time=$contest_time['end_time'] - $contest_time['lock_time'];
+          break;
+      case 2: //用时间比例来控制封榜
+          $view_lock_time=$contest_time['end_time'] - ($contest_time['end_time'] - $contest_time['start_time']) * $contest_time['lock_time'] / 100;
+          break;
+  }
+  $contest_title=$contest_time['title'];
   $title.="<".$contest_title.">";
 }
 ?>
@@ -223,7 +227,7 @@ BOT;
       <span id="time_elapsed"></span>
     </div>
     <div class="am-u-sm-4 am-text-center">
-    <?php if (isset($OJ_RANK_LOCK_PERCENT)&&$OJ_RANK_LOCK_PERCENT!=0) { ?>
+    <?php if ($unlock!=1) { ?>
       <span class="text-bold"><?php echo $MSG_LockTime ?>: </span>
       <span><?php echo date("Y-m-d, H:i:s",$view_lock_time) ?></span>
     <?php }?>

@@ -20,6 +20,15 @@ if ($num==0){
 $row=$result->fetch_object();
 $start_time=strtotime($row->start_time);
 $end_time=strtotime($row->end_time);
+$unlock=$row->unlock;
+switch($unlock){
+    case 0: //用具体时间来控制封榜
+        $lock=$end_time-$row->lock_time;
+        break;
+    case 2: //用时间比例来控制封榜
+        $lock = $end_time - ($end_time - $start_time) * $row->lock_time / 100;
+        break;
+}
 $result->free();
 
 $view_title= $MSG_CONTEST.$MSG_STATISTICS;
@@ -37,10 +46,8 @@ $sql = "SELECT `num` FROM contest_problem a
 $result=$mysqli->query($sql) or die($mysqli->error);
 $pid_nums=$result->fetch_all(MYSQLI_BOTH);
 
-if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
-$lock_time = $end_time - ($end_time - $start_time) * $OJ_RANK_LOCK_PERCENT;
 $sql_lockboard="";
-if($OJ_RANK_LOCK_PERCENT!=0) $sql_lockboard=" AND `in_date`<'".date("Y-m-d H:i:s",$lock_time)."' ";
+if($unlock != 1) $sql_lockboard=" AND `in_date`<'".date("Y-m-d H:i:s",$lock)."' ";
 
 $sql="SELECT `result`,`num`,`language` FROM `solution` WHERE `contest_id`='$cid' and num>=0 $sql_lockboard";
 $result=$mysqli->query($sql);

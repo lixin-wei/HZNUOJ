@@ -68,10 +68,18 @@
       $end_time=strtotime($row->end_time);
       $open_source = $row->open_source=="Y"?1:0; // 默认值为0
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
+      $lock_time=$row->lock_time;
+      $unlock=$row->unlock;
     }
-    if(!isset($OJ_RANK_LOCK_PERCENT)) $OJ_RANK_LOCK_PERCENT=0;
-    $lock_t=$end_time-($end_time-$start_time)*$OJ_RANK_LOCK_PERCENT;
-    if(time()>$lock_t && time()<$end_time){
+    switch($unlock){
+      case 0: //用具体时间来控制封榜
+          $lock_t=$end_time-$lock_time;
+          break;
+      case 2: //用时间比例来控制封榜
+          $lock_t = $end_time - ($end_time - $start_time) * $lock_time / 100;
+          break;
+    }
+    if($unlock != 1 && time()>$lock_t && time()<$end_time){
        $lock=true;
     }else{
        $lock=false;
