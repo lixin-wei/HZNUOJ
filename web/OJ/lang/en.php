@@ -266,6 +266,12 @@
   $MSG_ContestIsClosed = "Contest is closed!";
   $MSG_Creator = "Creator";
   $MSG_IMPORTED="Imported";
+  $MSG_LockBoard = "Lock Board";
+  $MSG_LockByTime="Lock By Time (Hour)";
+  $MSG_LockByRate="Lock By Rate (%)";
+  $MSG_GOLD="Gold Num"; 
+  $MSG_SILVER="Silver Num";
+  $MSG_BRONZE="Bronze Num";
   
   $MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
   $MSG_HELP_TeamAccount_login = "Don't input if you are not team account!";

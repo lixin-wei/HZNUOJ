@@ -266,6 +266,12 @@
   $MSG_ContestIsClosed = "竞赛&作业已关闭！";
   $MSG_Creator = "组织者";
   $MSG_IMPORTED = "外部导入";
+  $MSG_LockBoard = "封榜";
+  $MSG_LockByTime="比赛结束前xx小时封榜";
+  $MSG_LockByRate=$MSG_TotalTime."剩余xx%时封榜";
+  $MSG_GOLD="金牌数量"; 
+  $MSG_SILVER="银牌数量";
+  $MSG_BRONZE="铜牌数量";
   
   $MSG_HELP_TeamAccount_forbid = $MSG_TEAM."不能访问此页！";
   $MSG_HELP_TeamAccount_login = "非".$MSG_TEAM."登录勿填！";
