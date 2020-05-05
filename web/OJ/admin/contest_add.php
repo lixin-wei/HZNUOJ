@@ -31,6 +31,12 @@
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
     $open_source = $mysqli->real_escape_string($_POST['open_source']);
     $practice = $mysqli->real_escape_string($_POST['practice']);
+    $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
+    $unlock = $mysqli->real_escape_string($_POST['unlock']);
+    $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']))*3600;
+    $first_prize = $mysqli->real_escape_string($_POST['first_prize']);
+    $second_prize = $mysqli->real_escape_string($_POST['second_prize']);
+    $third_prize = $mysqli->real_escape_string($_POST['third_prize']);
 
     if (get_magic_quotes_gpc ()){
       $title = stripslashes ($title);
@@ -45,8 +51,8 @@
 	  //echo $t." ";
       $langmask+=1<<$t;
     }
-    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`)
-          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice', '$user_id')";
+    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`,`unlock`,`lock_time`,`first_prize`,`second_prize`,`third_prize`)
+          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice', '$user_id','$unlock','$lock_time','$first_prize','$second_prize','$third_prize')";
   //echo $sql;
   $mysqli->query($sql) or die($mysqli->error);
   //添加contest记录 end  
@@ -126,7 +132,11 @@ else{
           exit(0);
         }
         $row=$result->fetch_array();
-
+  $unlock=$row['unlock'];
+  $lock_time=$row['lock_time'];
+  $first_prize=$row['first_prize'];
+  $second_prize=$row['second_prize'];
+  $third_prize=$row['third_prize'];
 	$private=$row['private'];
 	$user_limit = $row['user_limit']=="Y"?'Y':'N';
 	$defunct_TA = $row['defunct_TA']=="Y"?'Y':'N';
@@ -271,6 +281,24 @@ else if(isset($_POST['problem2contest'])){
   </select>
   </p>
   <p align=left>
+    <strong><?php echo $MSG_LockBoard ?>&nbsp;:</strong>&nbsp;
+  <select name='unlock' style='width:200px' onchange='if($(this).val()=="1") $("#lock_time").val("0"); else $("#lock_time").val("");'>
+  <?php if(isset($_GET['cid'])){ ?>
+    <option value='1' <?php echo $unlock==1?'selected=selected':''?>>No</option>
+    <option value='0' <?php echo $unlock==0?'selected=selected':''?>><?php echo $MSG_LockByTime ?></option>
+    <option value='2' <?php echo $unlock==2?'selected=selected':''?>><?php echo $MSG_LockByRate ?></option>
+  <?php  }else { 
+	   echo "<option value='1' selected='selected'>No</option>";
+     echo "<option value='0'>$MSG_LockByTime</option>";
+     echo "<option value='2'>$MSG_LockByRate</option>";
+  } ?>
+  </select>&nbsp;&nbsp;
+  <strong><?php echo $MSG_LockTime ?>:</strong>&nbsp;<input name='lock_time' id='lock_time' type='number' style='width:150px' min="0" max="99" step="1" value="<?php if(isset($lock_time)&&$lock_time!="") echo ceil($lock_time/3600); else echo 0?>" maxlength="15" required>
+  </p>
+  <p align=left>
+  <strong><?php echo $MSG_GOLD ?>:</strong>&nbsp;<input name='first_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($first_prize)&&$first_prize!="") echo $first_prize; else echo 1?>" maxlength="15" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_SILVER ?>:</strong>&nbsp;<input name='second_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($second_prize)&&$second_prize!="") echo $second_prize; else echo 2?>" maxlength="15" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_BRONZE ?>:</strong>&nbsp;<input name='third_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($third_prize)&&$third_prize!="") echo $third_prize; else echo 3?>" maxlength="15" required>
   </p>
     <table >
     <tr>

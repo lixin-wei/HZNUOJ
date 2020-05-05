@@ -30,6 +30,12 @@ if (isset($_POST['startdate'])) { // 如果有POST过来的信息，则获取POS
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
     $open_source = $mysqli->real_escape_string($_POST['open_source']);
     $practice = $mysqli->real_escape_string($_POST['practice']);
+    $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
+    $unlock = $mysqli->real_escape_string($_POST['unlock']);
+    $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']))*3600;
+    $first_prize = $mysqli->real_escape_string($_POST['first_prize']);
+    $second_prize = $mysqli->real_escape_string($_POST['second_prize']);
+    $third_prize = $mysqli->real_escape_string($_POST['third_prize']);
     if (get_magic_quotes_gpc ()) {
         $title = stripslashes ( $title);
         $private = stripslashes ($private);
@@ -48,7 +54,8 @@ if (isset($_POST['startdate'])) { // 如果有POST过来的信息，则获取POS
     $sql = "UPDATE `contest` 
             SET `title`='$title',description='$description',`start_time`='$starttime',`end_time`='$endtime',
                 `private`='$private', user_limit='$user_limit', defunct_TA='$defunct_TA', open_source='$open_source',
-                `practice` = $practice, `langmask`=$langmask  ,password='$password'
+                `practice` = $practice, `langmask`=$langmask ,`password`='$password',`unlock`='$unlock',`lock_time`='$lock_time',
+                `first_prize`='$first_prize',`second_prize`='$second_prize',`third_prize`='$third_prize' 
             WHERE `contest_id`=$cid";
     //echo $sql;
     $mysqli->query($sql) or die($mysqli->error);
@@ -142,6 +149,11 @@ $langmask=$row['langmask'];
 $description=$row['description'];
 $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
 $title=htmlentities($row['title'],ENT_QUOTES,"UTF-8");
+$unlock=$row['unlock'];
+$lock_time=$row['lock_time'];
+$first_prize=$row['first_prize'];
+$second_prize=$row['second_prize'];
+$third_prize=$row['third_prize'];
 $result->free();
 $plist="";
 $slist="";
@@ -229,6 +241,18 @@ for ($i=$result->num_rows;$i>0;$i--){
   </select>
   </p>
   <p align=left>
+  <strong><?php echo $MSG_LockBoard ?>&nbsp;:</strong>&nbsp;
+  <select name='unlock' style='width:200px' onchange='if($(this).val()=="1") $("#lock_time").val("0"); else $("#lock_time").val("");'>
+    <option value='1' <?php echo $unlock==1?'selected=selected':''?>>No</option>
+    <option value='0' <?php echo $unlock==0?'selected=selected':''?>><?php echo $MSG_LockByTime ?></option>
+    <option value='2' <?php echo $unlock==2?'selected=selected':''?>><?php echo $MSG_LockByRate ?></option>
+  </select>&nbsp;&nbsp;
+  <strong><?php echo $MSG_LockTime ?>:</strong>&nbsp;<input name='lock_time' id='lock_time' type='number' style='width:150px' min="0" max="99" step="1" value="<?php echo ceil(intval($lock_time)/3600);?>" maxlength="15" required>
+  </p>
+  <p align=left>
+  <strong><?php echo $MSG_GOLD ?>:</strong>&nbsp;<input name='first_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php echo $first_prize ?>" maxlength="15" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_SILVER ?>:</strong>&nbsp;<input name='second_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php echo $second_prize ?>" maxlength="15" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_BRONZE ?>:</strong>&nbsp;<input name='third_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php echo $third_prize ?>" maxlength="15" required>
   </p>
     <table >
     <tr>
