@@ -83,15 +83,11 @@ static  $OJ_MEMSERVER="127.0.0.1";//memcached的服务器地址
 static  $OJ_MEMPORT=11211;//memcached的端口
 static  $OJ_TEMPLATE="hznu";
 static  $OJ_LOGIN_MOD="hustoj";
-static  $OJ_RANK_LOCK_PERCENT=0.2; //比赛封榜时间的比率，如5小时比赛设为0.2则最后1小时封榜。
 static  $OJ_SHOW_DIFF=true;//是否显示WA的对比说明
 static  $OJ_TEST_RUN = true;//提交界面是否允许测试运行
 static $OJ_OPENID_PWD = '8a367fe87b1e406ea8e94d7d508dcf01';
 
 static $ICON_PATH = "image/hznuoj.ico";//设置网站图标
-static $GOLD_RATE = 0.10; // 金牌比例
-static $SILVER_RATE = 0.20; // 银牌比例
-static $BRONZE_RATE = 0.30; // 铜牌比例
 static $BORDER = 500000;
 static $LOGIN_DEFUNCT = false;
 static $VIDEO_SUBMIT_TIME=3;// can see video after,如果有帮助视频，几次提交错误后能观看视频
