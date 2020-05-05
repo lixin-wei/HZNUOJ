@@ -142,12 +142,9 @@
     <tbody>
       <?php
         $rank=1;
-        $num_gold= $user_cnt*$GOLD_RAT<0.5?1:round($user_cnt*$GOLD_RATE);
-        $num_silver=$user_cnt*$SILVER_RATE<0.5?1:round($user_cnt*$SILVER_RATE);
-        $num_bronze=$user_cnt*$BRONZE_RATE<0.5?1:round($user_cnt*$BRONZE_RATE);
-        $num_gold= $first_prize?$first_prize:$num_gold;
-        $num_silver=$second_prize?$second_prize:$num_silver;
-        $num_bronze=$third_prize?$third_prize:$num_bronze;
+        $num_gold=$first_prize;
+        $num_silver=$second_prize;
+        $num_bronze=$third_prize;
         for ($i=0;$i<$user_cnt;$i++){
           echo "<tr>";
           $medal_class="am-badge am-round";
