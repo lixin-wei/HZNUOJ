@@ -215,7 +215,7 @@ function generate_url($data){
 <thead>
 <?php if(HAS_PRI("edit_contest")) { ?>
 <tr>
-    	<td colspan=10>
+    	<td colspan=12>
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","contest_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","contest_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_CONTEST ?>' onclick='$("form").attr("action","contest_add.php")'>
