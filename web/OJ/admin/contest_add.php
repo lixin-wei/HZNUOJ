@@ -26,14 +26,23 @@
     $private=$mysqli->real_escape_string($_POST['private']);
     $password=$mysqli->real_escape_string($_POST['password']);
 	  $user_id=$_SESSION['user_id'];
-    $description=$mysqli->real_escape_string($_POST['description']);
+    $description=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['description']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $description = str_replace("<!---->","",$description);//火狐浏览器中kindeditor会在内容的末尾加入<!---->
     $user_limit = $mysqli->real_escape_string($_POST['user_limit']);
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
     $open_source = $mysqli->real_escape_string($_POST['open_source']);
     $practice = $mysqli->real_escape_string($_POST['practice']);
-    $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
-    $unlock = $mysqli->real_escape_string($_POST['unlock']);
-    $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']))*3600;
+    $unlock = intval($mysqli->real_escape_string($_POST['unlock']));
+    switch($unlock){
+      case 0:
+        $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']))*3600;
+        break;
+      case 2:
+        $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']));
+        break;
+      default:
+        $lock_time = 0;
+    }
     $first_prize = $mysqli->real_escape_string($_POST['first_prize']);
     $second_prize = $mysqli->real_escape_string($_POST['second_prize']);
     $third_prize = $mysqli->real_escape_string($_POST['third_prize']);
@@ -144,8 +153,8 @@ else{
 	$practice = $row['practice'];
 	$password=$row['password'];
 	$langmask=$row['langmask'];
-  $description=$row['description'];  
-  $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
+  $description=str_replace("<br />\r\n<!---->","",$row['description']);//kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+  $description = str_replace("<!---->","",$description);//火狐浏览器中kindeditor会在内容的末尾加入<!---->
 	$title=htmlentities($row['title'],ENT_QUOTES,"UTF-8")." copy";
       $result->free();
       $plist="";
@@ -282,7 +291,7 @@ else if(isset($_POST['problem2contest'])){
   </p>
   <p align=left>
     <strong><?php echo $MSG_LockBoard ?>&nbsp;:</strong>&nbsp;
-  <select name='unlock' style='width:200px' onchange='if($(this).val()=="1") $("#lock_time").val("0"); else $("#lock_time").val("");'>
+  <select name='unlock' style='width:195px' onchange='if($(this).val()=="1") $("#lock_time").val("0"); else $("#lock_time").val("");'>
   <?php if(isset($_GET['cid'])){ ?>
     <option value='1' <?php echo $unlock==1?'selected=selected':''?>>No</option>
     <option value='0' <?php echo $unlock==0?'selected=selected':''?>><?php echo $MSG_LockByTime ?></option>
@@ -293,12 +302,12 @@ else if(isset($_POST['problem2contest'])){
      echo "<option value='2'>$MSG_LockByRate</option>";
   } ?>
   </select>&nbsp;&nbsp;
-  <strong><?php echo $MSG_LockTime ?>:</strong>&nbsp;<input name='lock_time' id='lock_time' type='number' style='width:150px' min="0" max="99" step="1" value="<?php if(isset($lock_time)&&$lock_time!="") echo ceil($lock_time/3600); else echo 0?>" maxlength="15" required>
+  <strong><?php echo $MSG_LockTime ?>:</strong>&nbsp;<input name='lock_time' id='lock_time' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($lock_time)&&$lock_time!="") {if($unlock==0) echo ceil($lock_time/3600); else echo $lock_time; } else echo 0?>" maxlength="2" required>
   </p>
   <p align=left>
-  <strong><?php echo $MSG_GOLD ?>:</strong>&nbsp;<input name='first_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($first_prize)&&$first_prize!="") echo $first_prize; else echo 1?>" maxlength="15" required>&nbsp;&nbsp;
-  <strong><?php echo $MSG_SILVER ?>:</strong>&nbsp;<input name='second_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($second_prize)&&$second_prize!="") echo $second_prize; else echo 2?>" maxlength="15" required>&nbsp;&nbsp;
-  <strong><?php echo $MSG_BRONZE ?>:</strong>&nbsp;<input name='third_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($third_prize)&&$third_prize!="") echo $third_prize; else echo 3?>" maxlength="15" required>
+  <strong><?php echo $MSG_GOLD ?>:</strong>&nbsp;<input name='first_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($first_prize)&&$first_prize!="") echo $first_prize; else echo 1?>" maxlength="2" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_SILVER ?>:</strong>&nbsp;<input name='second_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($second_prize)&&$second_prize!="") echo $second_prize; else echo 3?>" maxlength="2" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_BRONZE ?>:</strong>&nbsp;<input name='third_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($third_prize)&&$third_prize!="") echo $third_prize; else echo 5?>" maxlength="2" required>
   </p>
     <table >
     <tr>
