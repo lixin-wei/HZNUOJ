@@ -285,12 +285,15 @@ if(isset($_POST['problem_id'])){ //写入数据库
     $description=$mysqli->real_escape_string(trim($_POST['description']));
     $input=$mysqli->real_escape_string(trim($_POST['input']));
     $output=$mysqli->real_escape_string(trim($_POST['output']));
+    $description=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['description']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $input=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['input']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $output=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['output']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
     $sample_inputs=$_POST['sample_input'];
     $sample_outputs=$_POST['sample_output'];
     $sample_show_after=$_POST['show_after'];
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
-    $hint=$mysqli->real_escape_string(trim($_POST['hint']));
+    $hint=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['hint']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
     $source=$mysqli->real_escape_string(trim($_POST['source']));
     $source=array_unique(explode(" ",$source));//关键字去重
     sortByPinYin($source);//关键字按拼音字母排序
