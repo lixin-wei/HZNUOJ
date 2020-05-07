@@ -138,6 +138,7 @@ sss;
           $html_li = "<li><a href='$urlbaseDir/user_list.php'>$MSG_USER$MSG_LIST</a></li>";
           $html_li .= "<li><a href='$urlbaseDir/class_list.php'>$MSG_Class$MSG_LIST</a></li>";
           if(HAS_PRI("edit_user_profile")){
+            $html_li .= "<li><a href='$urlbaseDir/change_class.php'>$MSG_ChangeClass</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/change_user_id.php'>$MSG_SET_USER_ID</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/changepass.php'>$MSG_SETPASSWORD</a></li>";
           }

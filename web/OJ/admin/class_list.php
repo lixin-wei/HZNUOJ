@@ -176,6 +176,7 @@ while ($row = $result->fetch_object()) {
         <li><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
         <li><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
         <li class="am-active"><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+        <li><a href="change_class.php"><?php echo $MSG_ChangeClass ?></a></li>
         <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
     </ul>
 </div>
