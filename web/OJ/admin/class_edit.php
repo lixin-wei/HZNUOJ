@@ -56,7 +56,7 @@ if (isset($_GET['del'])) { //删除班级信息
     $err_cnt++;
   }
   if ($mode == "A" || $mode == "B") {
-    if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+    if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
       $err_str .= "输入的{$MSG_Prefix}限20个以内的汉字、字母、数字或下划线 ！\\n";
       $err_cnt++;
     }
@@ -170,8 +170,8 @@ if (isset($_GET['del'])) { //删除班级信息
   } else if (class_is_exist($new_name)) {
     $err_str .= "输入的$MSG_New{$MSG_Class_Name}有重名！\\n";
     $err_cnt++;
-  } else if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $new_name)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
-    $err_str = $err_str . "输入的{$MSG_Class_Name}限20个以内的汉字、字母、数字或下划线 ！\\n";
+  } else if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $new_name)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+    $err_str = $err_str . "输入的{$MSG_Class_Name}限20个以内的汉字、字母、数字或下划线、+ ！\\n";
     $err_cnt++;
   }
   if ($err_cnt > 0) {
@@ -243,7 +243,7 @@ $result->free();
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_New . $MSG_Class_Name ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" maxlength="20" id="new_name" name="new_name" value="<?php echo $view_class['class_name'] ?>" placeholder="限20个以内的汉字、字母、数字或下划线" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required />
+        <input type="text" style="width:340px;" maxlength="20" id="new_name" name="new_name" value="<?php echo $view_class['class_name'] ?>" placeholder="限20个以内的汉字、字母、数字、下划线及加号" pattern="^[\u4e00-\u9fa5_+a-zA-Z0-9]{1,20}$" required />
       </div>
     </div>
     <div class="am-form-group">

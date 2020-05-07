@@ -118,10 +118,10 @@ if ($row = $result->fetch_object()) {
     if (!$row->team_account_num) $row->team_account_num = 0;
     if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         if ($row->stu_num) {
-            $view_class[$cnt][5] = "<a href='user_list.php?class=其它' target='_blank'>$MSG_Stu_List($row->stu_num)</a>";
+            $view_class[$cnt][5] = "<a href='user_list.php?class=".urlencode("其它")."'>$MSG_Stu_List($row->stu_num)</a>";
         } else $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
         if ($row->team_account_num) {
-            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class=其它' target='_blank'>$MSG_TEAM($row->team_account_num)</a>";
+            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class=".urlencode("其它")."'>$MSG_TEAM($row->team_account_num)</a>";
         } else $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
     } else {
         $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
@@ -142,18 +142,18 @@ while ($row = $result->fetch_object()) {
     $view_class[$cnt][1] = $row->enrollment_year . "级";
     $view_class[$cnt][2] = $row->class_name;
     if (HAS_PRI("edit_user_profile")) {
-        $view_class[$cnt][3] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=$row->class_name&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-        $view_class[$cnt][4] = "<a href='" . generate_url("", "class_edit.php") . "&cid=$row->class_name'>$MSG_EDIT</a>";
+        $view_class[$cnt][3] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+        $view_class[$cnt][4] = "<a href='" . generate_url("", "class_edit.php") . "&cid=".urlencode($row->class_name)."'>$MSG_EDIT</a>";
     } else {
         $view_class[$cnt][3] = $MSG_DEL;
         $view_class[$cnt][4] = $MSG_EDIT;
     }
     if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         if ($row->stu_num) {
-            $view_class[$cnt][5] = "<a href='user_list.php?class=$row->class_name' target='_blank'>$MSG_Stu_List($row->stu_num)</a>";
+            $view_class[$cnt][5] = "<a href='user_list.php?class=".urlencode($row->class_name)."'>$MSG_Stu_List($row->stu_num)</a>";
         } else $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
         if ($row->team_account_num) {
-            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class=$row->class_name' target='_blank'>$MSG_TEAM($row->team_account_num)</a>";
+            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class".urlencode($row->class_name)."'>$MSG_TEAM($row->team_account_num)</a>";
         } else $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
     } else {
         $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
@@ -324,7 +324,7 @@ while ($row = $result->fetch_object()) {
                     </div>
                     <div class="am-form-group" style="white-space: nowrap;" id="A">
                         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Prefix ?>:</label>
-                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" id="prefix" name="prefix" placeholder="填入统一的班级名称前缀" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required/>
+                        <input type="text" style="width:220px;" class="am-u-sm-8 am-u-end" maxlength="20" id="prefix" name="prefix" placeholder="填入统一的班级名称前缀" pattern="^[\u4e00-\u9fa5_+a-zA-Z0-9]{1,20}$" required/>
                     </div>
                     <div class="am-form-group" style="white-space: nowrap;" id="B">
                         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Amount ?>:</label>
@@ -341,7 +341,7 @@ while ($row = $result->fetch_object()) {
                     </div>
                 </form>
             </main>
-            <footer class="am-panel-footer"><b><?php echo $MSG_Prefix ?></b>限20个以内汉字、字母、数字、下划线</footer>
+            <footer class="am-panel-footer"><b><?php echo $MSG_Prefix ?></b>限20个以内汉字、字母、数字、下划线及加号</footer>
         </section>
     </div>
 </div>
