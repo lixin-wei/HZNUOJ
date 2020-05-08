@@ -235,6 +235,7 @@
   $MSG_Old = "老";
   $MSG_New = "新";
   $MSG_FastTrack = "快速通道";
+  $MSG_ChangeClass = "批量分班";
   
   //contest
   $MSG_PRIVATE_WARNING="私有比赛或考试作业，您无权查看题目。";
@@ -279,6 +280,7 @@
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
   $MSG_HELP_CLASS_LIST="班级模式下，添加、删除和编辑班级。若删除一个班级，则该班所有普通账号和比赛账号都会归到<b>“其它”</b>班下。";
+  $MSG_HELP_CHANGECALSS="班级模式下，给学生批量的重新分班。";
   $MSG_HELP_RegCode_OpenMode="当前系统为开放模式，注册无限制，账号注册后立即激活。";
   $MSG_HELP_RegCode_ComfirmMode="当前系统设定为审核模式，注册无限制，账号注册后需要管理员后台审核激活。";
   $MSG_HELP_RegCode_PwdMode="当前系统设定为密码模式，人员凭后台设置的注册码进行注册，账号注册后立即激活。";

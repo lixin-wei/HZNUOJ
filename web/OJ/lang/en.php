@@ -235,6 +235,7 @@
   $MSG_Old = "Old ";
   $MSG_New = "New ";
   $MSG_FastTrack = "Fast Track";
+  $MSG_ChangeClass = "Change Classes";
    
   //contest.php
   $MSG_PRIVATE_WARNING="This is a private contest which you don't have privilege.";
@@ -279,6 +280,7 @@
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
   $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.If you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
+  $MSG_HELP_CHANGECALSS="You can reassign class for everyone in Class Mode.";
   $MSG_HELP_RegCode_OpenMode="Current mode is Open Mode, everyone can register account, and system will activate account automatically.";
   $MSG_HELP_RegCode_ComfirmMode="Current mode is Comfirm Mode,everyone can register account, but the account must be activated by administrator.";
   $MSG_HELP_RegCode_PwdMode="Current mode is Password Mode,only someone who have a register code created by administrator can register account, and system will activate account automatically.";
