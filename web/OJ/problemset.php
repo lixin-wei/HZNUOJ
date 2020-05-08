@@ -143,8 +143,13 @@ switch ($sort_method) {
         break;
 }
 $sql.=$sort_cmd;
+/* 计算页数cnt start */
+$view_total_page = ceil($cnt / $page_cnt); //计算页数
+$view_total_page = $view_total_page>0?$view_total_page:1;
+if ($page > $view_total_page) $page = $view_total_page;
+if ($page < 1) $page = 1;
+/* 计算页数cnt end */
 $st=($page-1)*$page_cnt;
-if($st<0)$st=0;
 $sql.=" LIMIT $st,$page_cnt";
 
 if($first) $sql="";
@@ -157,12 +162,11 @@ $result=$mysqli->query($sql) or die($mysqli->error);
 
 
 
-/* 计算页数cnt start */
-$view_total_page=$cnt/$page_cnt+($cnt%$page_cnt?1:0);// 页数
+
 $cnt=0;
 $view_problemset=Array();
 $i=0;
-/* 计算页数cnt end */
+
 
 /* 把结果放入表格 start */
 while ($row=$result->fetch_object()) {

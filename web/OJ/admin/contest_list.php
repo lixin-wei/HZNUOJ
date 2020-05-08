@@ -141,9 +141,11 @@ function generate_url($data){
   if(trim($_GET['keyword']) != "") { //查找结果全部显示在一页上
     $page_cnt = $total? $total:1;
   }
+  $view_total_page = ceil($total / $page_cnt); //计算页数
+  $view_total_page = $view_total_page>0?$view_total_page:1;
+  if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
+  if ($page < 1) $page = 1;
   $st=($page-1)*$page_cnt;
-  $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-
   $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct`,`user_id` FROM `contest` WHERE";
   $sql.= $sql_filter." order by `contest_id` desc LIMIT $st,$page_cnt";
   $result=$mysqli->query($sql) or die($mysqli->error);

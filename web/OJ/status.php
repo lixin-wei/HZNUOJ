@@ -45,12 +45,10 @@
   $page = 1;
   if(isset($_GET['page'])) $page = intval($_GET['page']);
   $page_cnt = 20;
-  $pstart = $page_cnt*$page-$page_cnt;
-  $pend = $page_cnt;  
+
   //分页end  
   
   $lock=false;
-  $sql_limit = " limit ".strval($pstart).",".strval($pend);   
   $sql=" WHERE problem_id>0 ";
   //check the cid arg start
   if (isset($_GET['cid'])){	 
@@ -147,9 +145,13 @@
   $sql_page = "SELECT count(1) FROM `solution` ".$sql;
   $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
   if($rows) $total = $rows[0][0];  
-  $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-
-
+  $view_total_page = ceil($total / $page_cnt); //计算页数
+  $view_total_page = $view_total_page>0?$view_total_page:1;
+  if ($page > $view_total_page) $page = $view_total_page;
+  if ($page < 1) $page = 1;
+  $pstart = $page_cnt*$page-$page_cnt;
+  $pend = $page_cnt;
+  $sql_limit = " limit ".strval($pstart).",".strval($pend);
 
   if($OJ_SIM){
     //$old=$sql;

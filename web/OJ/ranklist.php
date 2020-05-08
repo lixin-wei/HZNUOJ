@@ -25,12 +25,8 @@ $view_title= $MSG_RANKLIST;
 $page = 1;
 if(isset($_GET['page'])) $page = intval($_GET['page']);
 $page_cnt = 50;
-$rank = $page_cnt*($page-1);
-$pstart = $page_cnt*$page-$page_cnt;
-$pend = $page_cnt;    
   //分页end 
 $sql_filter = " WHERE users.defunct='N' "; // SQL中的筛选语句
-$sql_limit = " limit ".strval($pstart).",".strval($pend); 
 $sql_orderby = "";
 
 // check the prefix arg
@@ -143,7 +139,7 @@ if($args['scope']!=""){
                     (select count(distinct problem_id) solved ,user_id from solution where in_date>str_to_date('$s','%Y-%m-%d') and result=4 group by user_id order by solved desc) s on users.user_id=s.user_id
                     left join
                     (select count( problem_id) submit ,user_id from solution where in_date>str_to_date('$s','%Y-%m-%d') group by user_id order by submit desc) t on users.user_id=t.user_id
-            ".$sql_filter." ORDER BY s.solved DESC,t.submit,reg_time ".$sql_limit;
+            ".$sql_filter." ORDER BY s.solved DESC,t.submit,reg_time ";
 	$sql_page = "SELECT count(1) FROM `users`
                     right join
                     (select count(distinct problem_id) solved ,user_id from solution where in_date>str_to_date('$s','%Y-%m-%d') and result=4 group by user_id order by solved desc) s on users.user_id=s.user_id
@@ -157,12 +153,18 @@ if($args['scope']!=""){
                     (select count( problem_id) submit ,user_id from solution where in_date>str_to_date('$s','%Y-%m-%d') group by user_id order by submit desc limit " . strval ( $rank ) . ",".($page_size*2).") t on users.user_id=t.user_id
             ".$sql_filter." ORDER BY solved DESC,t.submit,reg_time  LIMIT  0,50";*/
 } else {	
-	$sql = "SELECT * FROM users ".$sql_filter.$sql_orderby.$sql_limit;
+	$sql = "SELECT * FROM users ".$sql_filter.$sql_orderby;
 	$sql_page = "SELECT count(1) FROM users ".$sql_filter.$sql_orderby;
 }
 $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
 if($rows) $total = $rows[0][0];  
-$view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
+$view_total_page = ceil($total / $page_cnt); //计算页数
+$view_total_page = $view_total_page>0?$view_total_page:1;
+if ($page > $view_total_page) $page = $view_total_page;
+if ($page < 1) $page = 1;
+$pstart = $rank = $page_cnt*$page-$page_cnt;
+$pend = $page_cnt;
+$sql .= " limit ".strval($pstart).",".strval($pend);
 
 if($OJ_MEMCACHE){
     require("./include/memcache.php");

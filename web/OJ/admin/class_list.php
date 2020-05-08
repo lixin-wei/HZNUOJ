@@ -66,7 +66,9 @@ $total = 0;
 if ($result) $total = $result[0][0];
 $page_cnt = 10;
 $view_total_page = ceil($total / $page_cnt); //计算页数
-if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
+$view_total_page = $view_total_page>0?$view_total_page:1;
+if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
+if ($page < 1) $page = 1;
 $left_bound = $page_cnt * $page - $page_cnt;
 $u_id = $left_bound;
 switch ($args['sort_method']) {

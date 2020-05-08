@@ -281,16 +281,18 @@ SQL;
     $page = 1;
     if(isset($_GET['page'])) $page = intval($_GET['page']);
     $page_cnt = 10;
-    $pstart = $page_cnt*$page-$page_cnt;
-    $pend = $page_cnt;
     $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' ".$sql_filter;
-    $sql = "SELECT *  FROM contest WHERE contest.defunct='N' ".$sql_filter." ORDER BY contest_id DESC";
-    $sql .= " limit ".strval($pstart).",".strval($pend); 
     //echo $sql0;
     $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
     if($rows) $total = $rows[0][0];
     $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-
+    $view_total_page = $view_total_page>0?$view_total_page:1;
+    if ($page > $view_total_page) $page = $view_total_page;
+    if ($page < 1) $page = 1;
+    $pstart = $page_cnt*$page-$page_cnt;
+    $pend = $page_cnt;
+    $sql = "SELECT *  FROM contest WHERE contest.defunct='N' ".$sql_filter." ORDER BY contest_id DESC";
+    $sql .= " limit ".strval($pstart).",".strval($pend); 
     $result=$mysqli->query($sql);
     $view_contest=Array();
     $i=0;
