@@ -13,7 +13,7 @@
 <?php 
 include "header.php";
 if(isset($_GET['prefix']) && trim($_GET['prefix'])!="") $args['prefix']=htmlentities($prefix);
-if(isset($_GET['class']) && trim($_GET['class']) != "all") $args['class']=htmlentities($class_get);
+if(isset($_GET['class']) && trim($_GET['class']) != "all") $args['class']=urlencode(htmlentities($class_get));
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
     global $args;

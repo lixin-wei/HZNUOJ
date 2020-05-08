@@ -128,8 +128,10 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     if (isset($_GET['page'])) $page = intval($_GET['page']);
     if (isset($_GET['year'])) $args['year'] = $_GET['year'];
     else $args['year'] = "";
-    if (isset($_GET['keyword'])) $args['keyword'] = $_GET['keyword'];
-    else $args['keyword'] = "";
+    if (isset($_GET['keyword'])) {
+        $_GET['keyword'] = trim($_GET['keyword']);
+        $args['keyword'] = urlencode($_GET['keyword']);
+    }
     if (isset($_GET['sort_method'])) $args['sort_method'] = $_GET['sort_method'];
     else $args['sort_method'] = "";
     if (isset($page)) $args['page'] = $page;
@@ -322,7 +324,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             </div>
             <div class="am-form-group am-form-icon">
                 <i class="am-icon-search"></i>
-                <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>" />
+                <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $_GET['keyword'] ?>" />
             </div>
             <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH ?>">
         </form>

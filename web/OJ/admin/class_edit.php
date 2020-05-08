@@ -140,7 +140,10 @@ if (isset($_GET['del'])) { //删除班级信息
   require_once("../include/check_post_key.php");
 
   if (isset($_POST['year'])) $args['year'] = $_POST['year'];
-  if (isset($_POST['keyword'])) $args['keyword'] = $_POST['keyword'];
+  if (isset($_POST['keyword'])) {
+    $_POST['keyword'] = trim($_POST['keyword']);
+    $args['keyword'] = urlencode($_POST['keyword']);
+  }
   if (isset($_POST['sort_method'])) $args['sort_method'] = $_POST['sort_method'];
   if (isset($_POST['page'])) $args['page'] = $_POST['page'];
   function generate_url($data)

@@ -34,7 +34,7 @@
           for ($i=0; $i<$sz; $i++) {
             if ($classSet[$i]==null || $classSet[$i]=="null" || $classSet[$i]=="其它") continue; 
         ?>
-            <option value="<?php echo $classSet[$i]; ?>" <?php if ($_GET['class']==$classSet[$i]) echo "selected"; ?> ><?php echo $classSet[$i]; ?></option>
+            <option value="<?php echo urlencode($classSet[$i]); ?>" <?php if ($_GET['class']==$classSet[$i]) echo "selected"; ?> ><?php echo $classSet[$i]; ?></option>
         <?php
           }
         ?>

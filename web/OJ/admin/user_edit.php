@@ -67,11 +67,14 @@ if(isset($_GET['del'])) { //删除账号
     exit(1);
   }
   if(isset($_POST['team'])) $args['team']=$_POST['team'];
-  if(isset($_POST['class'])) $args['class']=$_POST['class'];
+  if(isset($_POST['class'])) $args['class']=urlencode($_POST['class']);
   if (isset($_POST['defunct'])) $args['defunct'] = $_POST['defunct'];
   if (isset($_POST['contest'])) $args['contest'] = $_POST['contest'];
   if(isset($_POST['sort_method'])) $args['sort_method']=$_POST['sort_method'];
-  if(isset($_POST['keyword'])) $args['keyword']=$_POST['keyword'];
+  if (isset($_POST['keyword'])) {
+    $_POST['keyword'] = trim($_POST['keyword']);
+    $args['keyword'] = urlencode($_POST['keyword']);
+  }
   if(isset($_POST['page'])) $args['page']=$_POST['page'];
   function generate_url($data){
       global $args;

@@ -169,7 +169,7 @@
   if(isset($_GET['keyword'])&&trim($_GET['keyword'])!="" && trim($_GET['keyword'])!="all") {
     $keyword=htmlentities(trim($_GET['keyword']));
     $keyword=$mysqli->real_escape_string($keyword);
-    $args['keyword']=$keyword;
+    $args['keyword']=urlencode($keyword);
       $sql_filter .= " AND (title like '%$keyword%' or source like '%$keyword%' or author like '%$keyword%' OR tag1 like '%$keyword%' OR tag2 like '%$keyword%' OR tag3 like '%$keyword%')";
   }
   $problem_sets = array();

@@ -84,9 +84,9 @@ function generate_url($data){
     // check the order_by arg
   $sql_filter = " 1 ";
   if(isset($_GET['keyword']) && trim($_GET['keyword']) != ""){
-    $keyword=htmlentities($_GET['keyword']);
+    $keyword=htmlentities(trim($_GET['keyword']));
     $keyword=$mysqli->real_escape_string($keyword);
-    $args['keyword']=$keyword;
+    $args['keyword']=urlencode($keyword);
     $sql_filter .= " AND (`title` LIKE '%$keyword%' OR `user_id` LIKE '%$keyword%') ";
   } 
   if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {

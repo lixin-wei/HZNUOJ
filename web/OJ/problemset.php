@@ -84,7 +84,7 @@ if (isset($_SESSION['user_id'])) {
 
 /* 获取sql语句中的筛选部分 start */
 if(isset($_GET['search'])&&trim($_GET['search'])!="") {
-    $search=$mysqli->real_escape_string($_GET['search']);
+    $search=$mysqli->real_escape_string(trim($_GET['search']));
     $filter_sql="(title like '%$search%' or source like '%$search%' or author like '%$search%' OR tag1 like '%$search%' OR tag2 like '%$search%' OR tag3 like '%$search%')";
 } else {
     $filter_sql="1";

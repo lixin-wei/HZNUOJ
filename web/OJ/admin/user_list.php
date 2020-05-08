@@ -18,11 +18,13 @@ if (isset($_GET['page'])) $page = intval($_GET['page']);
 if (isset($_GET['team'])) $args['team'] = $_GET['team'];
 if (isset($_GET['contest'])) $args['contest'] = $_GET['contest'];
 if (isset($_GET['defunct'])) $args['defunct'] = $_GET['defunct'];
-if (isset($_GET['class'])) $args['class'] = $_GET['class'];
+if (isset($_GET['class'])) $args['class'] = urlencode($_GET['class']);
 if (isset($_GET['sort_method'])) $args['sort_method'] = $_GET['sort_method'];
 else $args['sort_method'] = "";
-if (isset($_GET['keyword'])) $args['keyword'] = $_GET['keyword'];
-else $args['keyword'] = "";
+if (isset($_GET['keyword'])) {
+    $_GET['keyword'] = trim($_GET['keyword']);
+    $args['keyword'] = urlencode($_GET['keyword']);
+}
 if (isset($page)) $args['page'] = $page;
 function generate_url($data, $link)
 {
@@ -327,7 +329,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         <?php } ?>
         <div class="am-form-group am-form-icon">
             <i class="am-icon-search"></i>
-            <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>" />
+            <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $_GET['keyword'] ?>" />
         </div>
         <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH ?>">
     </form>

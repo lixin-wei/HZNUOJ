@@ -17,7 +17,7 @@ $args=Array();
 //default args
 if($OJ!="all")$args['OJ']=$OJ;
 if(isset($sort_method)) $args['sort_method']=$sort_method;
-if(isset($_GET['search'])) $args['search']=htmlentities($search);
+if(isset($_GET['search'])) $args['search'] = urlencode(htmlentities($search));
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
     // echo "<pre>";
@@ -71,7 +71,7 @@ function generate_url($data){
         <div class="am-u-sm-9">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>
-            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $args['search'] ?>">
+            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $search ?>">
             <input type="hidden" name="OJ" value="<?php echo $args['OJ'] ?>">
           </div>
         </div>

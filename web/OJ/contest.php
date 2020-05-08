@@ -246,7 +246,7 @@ SQL;
     else $sql_filter .=" AND 0 ";
   }
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
-    $search=$mysqli->real_escape_string($_GET['search']);
+    $search=$mysqli->real_escape_string(trim($_GET['search']));
     $sql_filter .= "AND contest.title LIKE '%$search%'";
   }
   if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {
