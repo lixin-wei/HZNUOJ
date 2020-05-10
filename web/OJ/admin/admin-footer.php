@@ -14,7 +14,7 @@ if(preg_match("/\/admin\/quixplorer\//i", $_SERVER['SCRIPT_NAME'])) {
 <script src="<?php echo $baseDir ?>/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $baseDir ?>/plugins/bootstrap/js/bootstrap-filestyle.min.js"></script>
 <script src="<?php echo $baseDir ?>/plugins/bootstrap/js/bootstrap-select.min.js"></script>
-<?php if($OJ_LANG=="cn") echo "<script src=\"<?php echo $baseDir ?>/plugins/bootstrap/js/defaults-zh_CN.min.js\"></script>"; ?>
+<?php if($OJ_LANG=="cn") echo "<script src=\"$baseDir/plugins/bootstrap/js/defaults-zh_CN.min.js\"></script>"; ?>
 </div><!-- container -->
 
 </body>
