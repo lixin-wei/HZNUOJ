@@ -34,7 +34,7 @@
       <div class="am-form-group">
         <label for="vcode" class="am-u-sm-4 am-form-label"><?php echo $MSG_VCODE ?>: </label>
         <div class="am-u-sm-1"><input name="vcode" type='text' style="width:100px;" maxlength="4" autocomplete="off" required></input></div>
-        <div class="am-u-sm-6"><img style='width:100px;height:35px' alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <div class="am-u-sm-6"><img style='width:100px; height:35px; cursor:pointer;' alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
       </div>
       <div class="am-from-group">
         <div class="am-cf am-u-sm-offset-4 am-u-sm-5 am-u-end">

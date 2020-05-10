@@ -36,7 +36,7 @@
       <div class="am-u-sm-1">
 		<input name="vcode" type='text' style="width:100px;" size=4 maxlength="4" autocomplete="off" required></input></div>
         <div class="am-u-sm-5">
-        <img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <img style='width:100px; height:35px; cursor:pointer;' alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
     </div>
     <?php endif ?>
       <div class="am-form-group">
