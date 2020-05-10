@@ -30,7 +30,13 @@
   $MSG_MY_CONTESTS="My ".$MSG_CONTEST; 
   $MSG_HIDETAG = "Hide Tag";
   $MSG_SHOWTAG = "Show Tag";
-  
+  $MSG_LOST_PASSWORD="Lost Password";
+  $MSG_Securekey="Secure Key";
+  $MSG_LOSTPASSWORD_HELP1="Input your User ID and Email to authenticate your Identity.";
+  $MSG_LOSTPASSWORD_HELP2="Input the ".$MSG_Securekey." sended to your email (may be in Trash Box). if it's correct, it will be the new password.";
+  $MSG_RESETPASSWORD_SUCC="Password has been reseted to the ".$MSG_Securekey." you've just inputed. Click <a href='loginpage.php'>here</a> to login!";
+  $MSG_RESETPASSWORD_FAIL="Password Reset Failed.";
+
   // 比赛导航栏
   $MSG_BACK_TO_HOME = "Back To Home";
   $MSG_PROBLEM = " Problem ";

@@ -30,6 +30,12 @@
   $MSG_MY_CONTESTS="我的$MSG_CONTEST"; 
   $MSG_HIDETAG = "隐藏标签";
   $MSG_SHOWTAG = "显示标签";
+  $MSG_LOST_PASSWORD="忘记密码";
+  $MSG_Securekey="安全口令";
+  $MSG_LOSTPASSWORD_HELP1="请填写您的用户名和注册时登记的电子邮箱进行身份验证。";
+  $MSG_LOSTPASSWORD_HELP2="请将发到您邮箱中的".$MSG_Securekey."填写到相应位置；如果填写正确通过下一步验证，这个验证码就自动成为您的新密码！";
+  $MSG_RESETPASSWORD_SUCC="已将输入的".$MSG_Securekey."设置为您的新密码。 点击<a href='loginpage.php'>这里</a>登录！";
+  $MSG_RESETPASSWORD_FAIL="密码重置失败！";
 
   // 比赛导航栏
   $MSG_BACK_TO_HOME = "返回主页";
