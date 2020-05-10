@@ -369,13 +369,16 @@ function get_contests($type_list){ //返回一个二维数组给选择框等提�
     $result->free();
     return $view_contest;
 }
-function createPwd($seed, $len){
-    $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-    while (is_numeric($password))  $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-    str_replace("I", "X", $password);
-    str_replace("O", "Y", $password);
-    str_replace("0", "Z", $password);
-    str_replace("1", "W", $password);
+function createPwd($seed="", $len=16){
+    $password = "";
+    $codeAlphabet .= "ABCDEFGHJKMNPQRSTUVWXYZ".$seed;
+    $codeAlphabet .= "abcdefghjkmnpqrstuvwxyz";
+    $codeAlphabet .= "23456789";
+    $codeAlphabet .= "!@#$%^&*";
+    $r=strlen($codeAlphabet)-1;
+    for($i=0;$i<$len;$i++){
+        $password .= $codeAlphabet[mt_rand(0,$r)];
+    }
     return $password;
 }
 function show_category($source,$size) {
