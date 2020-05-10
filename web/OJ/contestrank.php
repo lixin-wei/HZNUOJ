@@ -216,7 +216,7 @@ switch($cls){
         break;
     case "null":
         if (!$user_limit) $sql_filter = " WHERE users.class='null' or users.class is null or users.class='其它'";
-        else$sql_filter = " team.class='null' or team.class is null or team.class='其它'";
+        else $sql_filter = " WHERE team.class='null' or team.class is null or team.class='其它'";
         break;
     default:
         if (!$user_limit) $sql_filter = " WHERE users.class='$cls' ";
