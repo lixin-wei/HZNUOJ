@@ -11,6 +11,7 @@
 
 <?php $title=$MSG_LOST_PASSWORD;?>
 <?php include "header.php" ?>
+<link rel="stylesheet" href="./plugins/emailAutoComplete/emailAutoComplete.css"/>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <br>
@@ -27,8 +28,8 @@
       </div>
       <div class="am-form-group">
         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_EMAIL ?>: </label>
-        <div class="am-u-sm-8">
-          <input type="email" name="email" id="email" autocomplete="off" value="" placeholder="注册时登记的邮箱" style="width:300px;" maxlength="30" required>
+        <div class="am-u-sm-8 parentCls">
+          <input class="inputElem" type="email" name="email" id="email" autocomplete="off" value="" placeholder="注册时登记的邮箱" style="width:300px;" maxlength="30" required>
         </div>
       </div>
       <div class="am-form-group">
@@ -47,3 +48,4 @@
   <br>
 </div>
 <?php include "footer.php" ?>
+<script type="text/javascript" src="./plugins/emailAutoComplete/emailAutoComplete.js"></script>

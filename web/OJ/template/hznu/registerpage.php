@@ -13,6 +13,7 @@
 <?php
   include "header.php";
 ?>
+<link rel="stylesheet" href="./plugins/emailAutoComplete/emailAutoComplete.css"/>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <h1 style="margin-top:40px; margin-bottom: 0px;"><?php echo $MSG_REG_INFO ?></h1>
@@ -91,8 +92,8 @@
       <label for="email" class="am-u-sm-4 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_EMAIL ?>:
       </label>
-      <div class="am-u-sm-8">
-        <input type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL?>"
+      <div class="am-u-sm-8 parentCls">
+        <input class="inputElem" type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL?>" autocomplete="off" 
           required/>
       </div>
     </div>
@@ -121,8 +122,6 @@
     </form>
   </div>
   <br>
-  <br>
-  <br>
-  <br>
 </div>
 <?php include "footer.php" ?>
+<script type="text/javascript" src="./plugins/emailAutoComplete/emailAutoComplete.js"></script>

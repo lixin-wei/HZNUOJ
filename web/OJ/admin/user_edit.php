@@ -381,6 +381,7 @@ if(isset($_GET['team'])) {
 <title><?php echo $html_title.$title ?></title>
 <h1><?php echo $title ?></h1>
 <hr>
+<link rel="stylesheet" href="../plugins/emailAutoComplete/emailAutoComplete.css"/>
 <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;width:600px;">
   <form class="am-form am-form-horizontal" action="user_edit.php" method="post">
     <?php require_once('../include/set_post_key.php');?>
@@ -437,8 +438,8 @@ if(isset($_GET['team'])) {
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label" style="float:left;">
       <?php echo $MSG_EMAIL ?>:
       </label>
-      <div class="am-u-sm-8">
-        <input type="email" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->email)?>" name="email">
+      <div class="am-u-sm-8 parentCls">
+        <input class="inputElem" type="email" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->email)?>" name="email">
       </div>
     </div>
     <?php } else {?>
@@ -523,3 +524,4 @@ if(isset($_GET['team'])) {
 <?php 
   require_once("admin-footer.php")
 ?>
+<script type="text/javascript" src="../plugins/emailAutoComplete/emailAutoComplete.js"></script>
