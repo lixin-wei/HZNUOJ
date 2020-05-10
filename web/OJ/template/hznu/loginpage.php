@@ -47,8 +47,11 @@
       </div>
       <div class="am-from-group">
         <div class="am-cf am-u-sm-offset-4 am-u-sm-8 am-u-end" style="text-align: center">
-            <div style="display: inline-block;">
+            <div class="am-u-sm-6" style="display: inline-block;">
               <input type="submit" name="submit" value="<?php echo $MSG_LOGIN ?>" class="am-btn am-btn-primary am-btn-sm am-fl" style="width: 100px;"> 
+            </div>
+            <div class="am-u-sm-6" style="display: inline-block;">
+              <a class="am-btn am-btn-warning am-btn-sm am-fl" href="lostpassword.php"><?php echo $MSG_LOST_PASSWORD ?></a>
             </div>
         </div>
       </div>
