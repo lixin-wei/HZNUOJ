@@ -165,10 +165,9 @@ echo <<<BOT
                       <li><a href="status.php?user_id=$user_session"><span class="am-icon-keyboard-o"></span> $MSG_MY_SUBMISSIONS</a></li>
 					  <li><a href="./contest.php?my"><span class="am-icon-leaf"></span> $MSG_MY_CONTESTS </a></li> 
 BOT;
-          }
           if ($show_tag) echo "<li><a href='./changeTag.php'><span class='am-icon-toggle-on'></span> $MSG_HIDETAG</a></li>";
           else echo "<li><a href='./changeTag.php'><span class='am-icon-toggle-off'></span> $MSG_SHOWTAG</a></li>";
-		  
+          }
 		  echo "<li><a href='./logout.php'><span class='am-icon-reply'></span> $MSG_LOGOUT</a></li>";
           if(HAS_PRI('enter_admin_page')){
             echo <<<BOT
