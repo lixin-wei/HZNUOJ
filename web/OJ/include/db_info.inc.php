@@ -8,8 +8,8 @@
 <?php if(!session_id()) @session_start();
 
 ini_set("display_errors","Off");
-// ini_set("display_errors",true);
-// error_reporting(E_ALL^E_NOTICE^E_WARNING);
+//ini_set("display_errors",true);
+//error_reporting(E_ALL^E_NOTICE^E_WARNING);
 require_once("static.php");
 
 //if(date('H')<5||date('H')>21||isset($_GET['dark'])) $OJ_CSS="dark.css";
@@ -29,8 +29,6 @@ $mysqli->query("SET time_zone ='+8:00'");
 function HAS_PRI($pri_str){  // if has privilege
     //non-realtime
     //return $_SESSION[$pri_str];
-     if($pri_str =="see_hidden_python_problem") return true;
-     if($pri_str =="edit_python_problem") return true;
     //realtime checking
     global $mysqli;
     if(isset($_SESSION['user_id'])){
