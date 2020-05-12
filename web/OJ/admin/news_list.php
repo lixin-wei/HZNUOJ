@@ -13,7 +13,7 @@
     require_once("error.php");
     exit(1);
   }
-  $sql="SELECT `news_id`,`user_id`,`title`,`time`,`defunct` FROM `news` order by defunct, `importance` desc";
+  $sql="SELECT * FROM `news` order by defunct, `importance` desc";
   $result=$mysqli->query($sql) or die($mysqli->error);
   ?>
   <title><?php echo $html_title.$MSG_NEWS.$MSG_LIST ?></title>
@@ -23,8 +23,10 @@
   <thead><tr>
   <th style="width:50px"><?php echo $MSG_ID ?></th>
   <th><?php echo $MSG_TITLE ?></th>
-  <th style="width:150px"><?php echo $MSG_CreatedDate ?></th>
-  <th style="width:50px"><?php echo $MSG_STATUS ?></th>
+  <th style="width:50px;"><?php echo $MSG_Importance ?></th>
+  <th style="width:50px;"><?php echo $MSG_Creator ?></th>
+  <th style="width:150px;"><?php echo $MSG_CreatedDate ?></th>
+  <th style="width:50px;"><?php echo $MSG_STATUS ?></th>
   <th colspan="2" style="text-align: center;"><?php echo $MSG_Operations ?></th>
   </tr></thead>
   <tbody>
@@ -34,6 +36,8 @@
     echo "<td style='vertical-align:middle;'>".$row->news_id."</td>";
     //echo "<input type=checkbox name='pid[]' value='$row->problem_id'>";
     echo "<td style='vertical-align:middle;'>".$row->title."</td>";
+    echo "<td style='vertical-align:middle;'>".$row->importance."</td>";
+    echo "<td style='vertical-align:middle;'>".$row->user_id."</td>";
     echo "<td style='vertical-align:middle;'>".$row->time."</td>";
     echo "<td style='vertical-align:middle;'><a ".($row->defunct=="N"?"class='btn btn-primary'":"class='btn btn-danger'")." href='news_df_change.php?id=$row->news_id&getkey=".$_SESSION['getkey']."'>".($row->defunct=="N"?"<span class=green>$MSG_Available</span>":"<span class=red>$MSG_Reserved</span>")."</a>";
     echo "<td style='vertical-align:middle;width:50px;'><a class='btn btn-primary' href='news_edit.php?id=$row->news_id'>$MSG_EDIT</a></td>";
