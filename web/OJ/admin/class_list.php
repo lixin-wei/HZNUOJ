@@ -111,8 +111,8 @@ $cnt = 0;
 $view_class[$cnt][0] = "<input type=checkbox name='other' value='' disabled/>&nbsp;0";
 $view_class[$cnt][1] = "";
 $view_class[$cnt][2] = "其它";
-$view_class[$cnt][3] = $MSG_DEL;
-$view_class[$cnt][4] = $MSG_EDIT;
+$view_class[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
+$view_class[$cnt][4] = "<span class='btn btn-primary' disabled>$MSG_EDIT</span>";
 
 $sql = "SELECT `class_list`.*, stu_num, team_account_num FROM `class_list` " . $leftJoin;
 $sql_other = $sql . " WHERE `class_name`='其它'";
@@ -122,11 +122,11 @@ if ($row = $result->fetch_object()) {
     if (!$row->team_account_num) $row->team_account_num = 0;
     if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         if ($row->stu_num) {
-            $view_class[$cnt][5] = "<a href='user_list.php?class=".urlencode("其它")."'>$MSG_Stu_List($row->stu_num)</a>";
-        } else $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
+            $view_class[$cnt][5] = "<a class='btn btn-primary' href='user_list.php?class=".urlencode("其它")."'>$MSG_Stu_List($row->stu_num)</a>";
+        } else $view_class[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_Stu_List($row->stu_num)</span>";
         if ($row->team_account_num) {
-            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class=".urlencode("其它")."'>$MSG_TEAM($row->team_account_num)</a>";
-        } else $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
+            $view_class[$cnt][6] = "<a class='btn btn-primary' href='user_list.php?team=all&class=".urlencode("其它")."'>$MSG_TEAM($row->team_account_num)</a>";
+        } else $view_class[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_TEAM($row->team_account_num)</span>";
     } else {
         $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
         $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
@@ -146,22 +146,22 @@ while ($row = $result->fetch_object()) {
     $view_class[$cnt][1] = $row->enrollment_year . "级";
     $view_class[$cnt][2] = $row->class_name;
     if (HAS_PRI("edit_user_profile")) {
-        $view_class[$cnt][3] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-        $view_class[$cnt][4] = "<a href='" . generate_url("", "class_edit.php") . "&cid=".urlencode($row->class_name)."'>$MSG_EDIT</a>";
+        $view_class[$cnt][3] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+        $view_class[$cnt][4] = "<a class='btn btn-primary' href='" . generate_url("", "class_edit.php") . "&cid=".urlencode($row->class_name)."'>$MSG_EDIT</a>";
     } else {
-        $view_class[$cnt][3] = $MSG_DEL;
-        $view_class[$cnt][4] = $MSG_EDIT;
+        $view_class[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
+        $view_class[$cnt][4] = "<span class='btn btn-primary' disabled>$MSG_EDIT</span>";
     }
     if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         if ($row->stu_num) {
-            $view_class[$cnt][5] = "<a href='user_list.php?class=".urlencode($row->class_name)."'>$MSG_Stu_List($row->stu_num)</a>";
-        } else $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
+            $view_class[$cnt][5] = "<a class='btn btn-primary' href='user_list.php?class=".urlencode($row->class_name)."'>$MSG_Stu_List($row->stu_num)</a>";
+        } else $view_class[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_Stu_List($row->stu_num)</span>";
         if ($row->team_account_num) {
-            $view_class[$cnt][6] = "<a href='user_list.php?team=all&class".urlencode($row->class_name)."'>$MSG_TEAM($row->team_account_num)</a>";
-        } else $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
+            $view_class[$cnt][6] = "<a class='btn btn-primary' href='user_list.php?team=all&class".urlencode($row->class_name)."'>$MSG_TEAM($row->team_account_num)</a>";
+        } else $view_class[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_TEAM($row->team_account_num)</span>";
     } else {
-        $view_class[$cnt][5] = "$MSG_Stu_List($row->stu_num)";
-        $view_class[$cnt][6] = "$MSG_TEAM($row->team_account_num)";
+        $view_class[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_Stu_List($row->stu_num)</span>";
+        $view_class[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_TEAM($row->team_account_num)</span>";
     }
     $cnt++;
 }
@@ -286,7 +286,7 @@ while ($row = $result->fetch_object()) {
                     foreach ($view_class as $row) {
                         echo "<tr>\n";
                         foreach ($row as $table_cell) {
-                            echo "<td>";
+                            echo "<td style='vertical-align:middle;'>";
                             echo $table_cell;
                             echo "</td>\n";
                         }

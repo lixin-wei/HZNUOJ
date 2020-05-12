@@ -238,10 +238,10 @@ function generate_url($data){
 <?php 
 while ($row=$result->fetch_object()){
     echo "<tr>\n";
-    echo "<td>".$row->contest_id."&nbsp;<input type=checkbox name='cid[]' value='".$row->contest_id."' /></td>\n";
-    echo "<td><a href='../contest.php?cid=$row->contest_id'>".$row->title."</a></td>\n";
-    echo "<td>".date('Y-m-d H:i',strtotime($row->start_time))."</td>\n";
-    echo "<td>".date('Y-m-d H:i',strtotime($row->end_time))."</td>\n";
+    echo "<td style='vertical-align:middle;'>".$row->contest_id."&nbsp;<input type=checkbox name='cid[]' value='".$row->contest_id."' /></td>\n";
+    echo "<td style='vertical-align:middle;'><a href='../contest.php?cid=$row->contest_id'>".$row->title."</a></td>\n";
+    echo "<td style='vertical-align:middle;'>".date('Y-m-d H:i',strtotime($row->start_time))."</td>\n";
+    echo "<td style='vertical-align:middle;'>".date('Y-m-d H:i',strtotime($row->end_time))."</td>\n";
     $start_time=strtotime($row->start_time);
     $end_time=strtotime($row->end_time);
     $now=time();
@@ -252,29 +252,41 @@ while ($row=$result->fetch_object()){
     } else if ($end_time>=$now) {
       $runstatus .= "<b>$MSG_Running</b>";
     } else $runstatus .= $MSG_Ended;
-    echo "<td>".formatTimeLength($length).$runstatus."</td>\n";
-    echo "<td>".$row->user_id."</td>\n";
-    $type = "&gt;&gt;$MSG_Public";
+    echo "<td style='vertical-align:middle;'>".formatTimeLength($length).$runstatus."</td>\n";
+    echo "<td style='vertical-align:middle;'>".$row->user_id."</td>\n";
+    $type = $MSG_Public;
     if($row->private) $type = $MSG_Private;
-    if($row->user_limit=="Y") $type = "<span style='color: #f44336;'>$MSG_Special</span>";
-    if($row->practice) $type = "<span style='color: #009688;'>$MSG_Practice</span>";
-	  $cid=$row->contest_id;
+    if($row->user_limit=="Y") $type = "<span class='btn btn-warning' style='cursor: default;'>$MSG_Special</span>";
+    if($row->practice) $type = "<span class='btn btn-warning' style='cursor: default;'>$MSG_Practice</span>";
+    $cid=$row->contest_id;
+    $btn_class=($type == $MSG_Public)?"btn btn-danger":"btn btn-primary";
     if(HAS_PRI("edit_contest")) {
-	  if($type == $MSG_Private || $type == "&gt;&gt;".$MSG_Public){
-	      echo "<td><a href=contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".$type."</a></td>\n";
-	  } else {
-		  echo "<td>".$type."</td>\n";
-	  }
-      echo "<td><a href=contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey'].">".($row->defunct=="N"?$MSG_Available:"&gt;&gt;".$MSG_Reserved)."</a></td>\n";
-      echo "<td><a href=contest_edit.php?cid=$row->contest_id>$MSG_EDIT</a></td>\n";
-      echo "<td><a href=contest_add.php?cid=$row->contest_id>$MSG_Copy</a></td>\n";
-      echo "<td><a href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_EXPORT</a></td>\n";
-      echo "<td> <a href=\"../export_contest_code.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_Logs</a></td>\n";
+      if($type == $MSG_Private || $type == $MSG_Public){
+          echo "<td style='vertical-align:middle;'><a class='$btn_class' href=\"contest_pr_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".$type."</a></td>\n";
+      } else {
+        echo "<td style='vertical-align:middle;'>".$type."</td>\n";
+      }
+      echo "<td style='vertical-align:middle;'><a class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' href=\"contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</a></td>\n";
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_edit.php?cid=$row->contest_id\">$MSG_EDIT</a></td>\n";
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
     } else {
-	  echo "<td>".$type."</td>\n";		
-	  echo "<td>".($row->defunct=="N"?"<span style='color: green;'>$MSG_Available</span>":"<span style='color: red;'>$MSG_Reserved</span>")."</td>\n";
-      echo "<td colspan=4 align=right><a href=contest_add.php?cid=$row->contest_id>Copy</a><td>\n";
+      if($type == $MSG_Private || $type == $MSG_Public){
+        echo "<td style='vertical-align:middle;'><span class='$btn_class' style='cursor: default;'>$type</span></td>\n";
+      } else {
+        echo "<td style='vertical-align:middle;'>".$type."</td>\n";
+      }
+      echo "<td style='vertical-align:middle;'><span class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' style='cursor: default;'>".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</span></td>\n";
+      echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_EDIT</span></td>\n";
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
     }
+    if (HAS_PRI("inner_function")){
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_EXPORT</a></td>\n";
+    } else echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_EXPORT</span></td>\n";
+    if (isset($_SESSION['m'.$contest_id])||HAS_PRI("inner_function")){
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"../export_contest_code.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_Logs</a></td>\n";
+    } else echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_Logs</span></td>\n";
+    
+
     echo "</tr>\n";
   }
 ?>

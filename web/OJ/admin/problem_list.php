@@ -289,7 +289,7 @@
 <form id="form1" class="form-inline center" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
-    	<td colspan=13>
+    	<td colspan="14">
         <input type=submit name='problem2contest' class='btn btn-default' value='CheckToNewContest' >
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
@@ -327,23 +327,30 @@
     </tr></thead><tbody>
 <?php while($row=$result->fetch_object()){ ?>
       <tr>
-          <td><?php echo $row->problem_id ?>&nbsp;<input type=checkbox name='pid[]' value='<?php echo $row->problem_id ?>' /></td>
-          <td  style='white-space:normal;'><a href='../problem.php?id=<?php echo $row->problem_id ?>'><?php echo $row->title ?></a></td>
-          <td><?php echo $row->accepted ?></td>
-          <td><?php echo $row->submit ?></td>
-          <td><?php if($row->submit) echo round(100*$row->accepted/$row->submit,1)."%"; ?></td>
-           <td><?php echo $row->score ?></td>
-          <td><?php if($row->defunct=="N"){
-				echo "<a href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Available."</a>";
+          <td style="vertical-align:middle;"><?php echo $row->problem_id ?>&nbsp;<input type=checkbox name='pid[]' value='<?php echo $row->problem_id ?>' /></td>
+          <td style="vertical-align:middle;white-space:normal;"><a href='../problem.php?id=<?php echo $row->problem_id ?>'><?php echo $row->title ?></a></td>
+          <td style="vertical-align:middle;"><?php echo $row->accepted ?></td>
+          <td style="vertical-align:middle;"><?php echo $row->submit ?></td>
+          <td style="vertical-align:middle;"><?php if($row->submit) echo round(100*$row->accepted/$row->submit,1)."%"; ?></td>
+          <td style="vertical-align:middle;"><?php echo $row->score ?></td>
+<?php if (HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {?>
+          <td style="vertical-align:middle;"><?php if($row->defunct=="N"){
+				echo "<a class='btn btn-primary' href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Available."</a>";
 				} else {
-				echo "<a href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Reserved."</a>";
+				echo "<a class='btn btn-danger' href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Reserved."</a>";
 			} ?>
           </td>
-<td><a href='#' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey'] ?>"'><?php echo $MSG_DEL ?></a></td>
-<td><a href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
-<td><a href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
+          <td style="vertical-align:middle;"><a class='btn btn-primary' href='#' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey'] ?>"'><?php echo $MSG_DEL ?></a></td>
+          <td style="vertical-align:middle;"><a class='btn btn-primary' href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
+          <td style="vertical-align:middle;"><a class='btn btn-primary' href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
+<?php  } else { ?>
+          <td style="vertical-align:middle;"><span class='<?php echo ($row->defunct=="N"?"btn btn-primary":"btn btn-danger")?>' disabled><?php echo ($row->defunct=="N"?$MSG_Available:$MSG_Reserved)?></span></td>
+          <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_DEL ?></span></td>
+          <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_EDIT ?></span></td>
+          <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_TestData ?></span></td>
+<?php  } ?>
 	
-          <td><?php echo $row->author?$row->author:$MSG_IMPORTED ?></td>
+          <td style="vertical-align:middle;"><?php echo $row->author?$row->author:$MSG_IMPORTED ?></td>
           <?php
           $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
           if(HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {
@@ -352,9 +359,9 @@
           $view_source .= show_category($row->source,"sm");
           $view_source .= "</div>";
           ?>
-          <td style='white-space:normal;'><?php echo $view_source ?></td>
-          <td><?php echo $row->set_name_show ?></td>
-          <td><?php echo $row->in_date ?></td>
+          <td style="vertical-align:middle;white-space:normal;"><?php echo $view_source ?></td>
+          <td style="vertical-align:middle;"><?php echo $row->set_name_show ?></td>
+          <td style="vertical-align:middle;"><?php echo $row->in_date ?></td>
 </tr>
  <?php   }?>
  </tbody>

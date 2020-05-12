@@ -158,34 +158,34 @@ if (!isset($_GET['team'])) { //查询普通账号
         if (HAS_PRI("edit_user_profile")) {
             if ($row->user_id != 'admin' && $row->user_id != $_SESSION['user_id']) {
                 if ($row->defunct == "N") {
-                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
+                    $view_users[$cnt][3] = "<a class='btn btn-primary' href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
                 } else {
-                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'><font color=red><b>" . $MSG_Reserved . "</b></font></a>";
+                    $view_users[$cnt][3] = "<a class='btn btn-danger' href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Reserved . "</a>";
                 }
                 $view_users[$cnt][4] = get_group($row->user_id);
                 if (!IS_ADMIN($row->user_id)) {
-                    $view_users[$cnt][5] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?del&cid=$row->user_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-                } else $view_users[$cnt][5] = $MSG_DEL;
+                    $view_users[$cnt][5] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?del&cid=$row->user_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+                } else $view_users[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
             } else {
                 if ($row->defunct == "N") {
-                    $view_users[$cnt][3] = $MSG_Available;
+                    $view_users[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_Available</span>";
                 } else {
-                    $view_users[$cnt][3] = $MSG_Reserved;
+                    $view_users[$cnt][3] = "<span class='btn btn-danger' disabled>$MSG_Reserved</span>";
                 }
                 $view_users[$cnt][4] = get_group($row->user_id);
-                $view_users[$cnt][5] = $MSG_DEL;
+                $view_users[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
             }
             if ($row->user_id != $_SESSION['user_id'] && get_order(get_group($row->user_id)) <= get_order(get_group(""))) {
-                $view_users[$cnt][6] = $MSG_EDIT;
-            } else $view_users[$cnt][6] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
+                $view_users[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_EDIT</span>";
+            } else $view_users[$cnt][6] = "<a class='btn btn-primary' href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
             if (!IS_ADMIN($row->user_id)) {
-                $view_users[$cnt][7] = "<a href='changepass.php?cid=$row->user_id' target='_blank'>$MSG_SETPASSWORD</a>";
-            } else $view_users[$cnt][7] = $MSG_SETPASSWORD;
+                $view_users[$cnt][7] = "<a class='btn btn-primary' href='changepass.php?cid=$row->user_id' target='_blank'>$MSG_SETPASSWORD</a>";
+            } else $view_users[$cnt][7] = "<span class='btn btn-primary' disabled>$MSG_SETPASSWORD</span>";
         } else {
             if ($row->defunct == "N") {
-                $view_users[$cnt][3] = $MSG_Available;
+                $view_users[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_Available</span>";
             } else {
-                $view_users[$cnt][3] = $MSG_Reserved;
+                $view_users[$cnt][3] = "<span class='btn btn-danger' disabled>$MSG_Reserved</span>";
             }
             $view_users[$cnt][4] = get_group($row->user_id);
         }
@@ -216,9 +216,9 @@ if (!isset($_GET['team'])) { //查询普通账号
         $view_users[$cnt][1] = $row->user_id;
         $view_users[$cnt][2] = $row->nick;
         if (HAS_PRI("edit_user_profile")) {
-            $view_users[$cnt][3] = "<a href='' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-            $view_users[$cnt][4] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id@$row->contest_id'>$MSG_EDIT</a>";
-            $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
+            $view_users[$cnt][3] = "<a class='btn btn-primary' href='' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+            $view_users[$cnt][4] = "<a class='btn btn-primary' href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id@$row->contest_id'>$MSG_EDIT</a>";
+            $view_users[$cnt][5] = "<a class='btn btn-primary' href='user_edit.php?resetpwd&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
         }
         $contest_status = ($row->defunct == 'Y') ? '<font color=red><b>【' . $MSG_Reserved . '】</b></font>' : "";
         $view_users[$cnt][6] = ($row->title) ? "<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
@@ -441,7 +441,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                     foreach ($view_users as $row) {
                         echo "<tr>\n";
                         foreach ($row as $table_cell) {
-                            echo "<td>";
+                            echo "<td style='vertical-align:middle;'>";
                             echo $table_cell;
                             echo "</td>\n";
                         }
@@ -532,7 +532,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                     foreach ($view_users as $row) {
                         echo "<tr>\n";
                         foreach ($row as $table_cell) {
-                            echo "<td>";
+                            echo "<td style='vertical-align:middle;'>";
                             echo $table_cell;
                             echo "</td>\n";
                         }
