@@ -369,12 +369,12 @@ function get_contests($type_list){ //返回一个二维数组给选择框等提�
     $result->free();
     return $view_contest;
 }
-function createPwd($seed="", $len=16){
+function createPwd($seed="", $len=16, $haveSpecialChar=true){
     $password = "";
     $codeAlphabet .= "ABCDEFGHJKMNPQRSTUVWXYZ".$seed;
     $codeAlphabet .= "abcdefghjkmnpqrstuvwxyz";
     $codeAlphabet .= "23456789";
-    $codeAlphabet .= "!@#$%^&*";
+    if($haveSpecialChar) $codeAlphabet .= "_!@#$%^&*";
     $r=strlen($codeAlphabet)-1;
     for($i=0;$i<$len;$i++){
         $password .= $codeAlphabet[mt_rand(0,$r)];
