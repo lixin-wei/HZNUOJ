@@ -79,7 +79,7 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
         case "A":
             foreach ($classes as $c) {
                 $temp[0] = $mysqli->real_escape_string(trim($c));
-                $temp[1] = createPwd($c, 10);
+                $temp[1] = createPwd("", 10, false);
                 $temp[2] = $remain_num;
                 array_push($class_list, $temp);
             }
@@ -88,7 +88,7 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
             $reg_code =  explode("\n", trim($_POST['reg_code']));
             foreach ($classes as $key => $value) {
                 $temp[0] = $mysqli->real_escape_string(trim($classes[$key]));
-                $temp[1] = ($reg_code[$key] ? $mysqli->real_escape_string(trim(str_replace("\r", "", $reg_code[$key]))) : createPwd($c, 10));
+                $temp[1] = ($reg_code[$key] ? $mysqli->real_escape_string(trim(str_replace("\r", "", $reg_code[$key]))) : createPwd("", 10, false));
                 $temp[2] = $remain_num;
                 array_push($class_list, $temp);
             }

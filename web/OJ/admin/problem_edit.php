@@ -294,18 +294,18 @@ if(isset($_POST['problem_id'])){ //写入数据库
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
     $hint=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['hint']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
-    $source=$mysqli->real_escape_string(trim($_POST['source']));
+    $source=str_replace("\r\n","",$_POST['source']);
+    $source=str_replace("\r","",$source);
+    $source=$mysqli->real_escape_string(trim($source));
     $source=array_unique(explode(" ",$source));//关键字去重
     sortByPinYin($source);//关键字按拼音字母排序
     $source=implode(' ', $source);
-    $spj=$_POST['spj'];
-	  $author = "";
-    $author_tmp = $mysqli->real_escape_string($_POST['author']);
-    $strlen = strlen($author_tmp);
-    for ($i=0; $i<$strlen; ++$i) {
-        if ($author_tmp[$i]==' ' || $author_tmp[$i]=='\n' || $author_tmp[$i]=='\t' || $author_tmp[$i]=='\r') continue;
-        $author .= $author_tmp[$i];
-    }
+    $spj=$mysqli->real_escape_string($_POST['spj']);
+    $author=str_replace("\r\n","",$_POST['author']);
+    $author=str_replace("\r","",$author);
+    $author=str_replace("\t","",$author);
+    $author=str_replace(" ","",$author);
+    $author = $mysqli->real_escape_string($author);
     //火狐浏览器73.0.1版本中kindeditor会在textarea内容的末尾加入<!---->
     $description = str_replace("<!---->","",$description);
     $input = str_replace("<!---->","",$input);
