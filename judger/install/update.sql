@@ -8,6 +8,7 @@ ALTER TABLE `solution` MODIFY COLUMN `pass_rate` DECIMAL(3,2) UNSIGNED NOT NULL 
 ALTER TABLE `printer_code` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `privilege` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `solution` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
+ALTER TABLE `problemset` MODIFY COLUMN `index` int(11) NOT NULL AUTO_INCREMENT FIRST ;
 -- Dump completed on 2019-03-13 17:03:43
 -- ----------------------------
 -- Table structure for `class_list`

@@ -275,7 +275,7 @@ CREATE TABLE `loginlog` (
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`index`),
   KEY `user_time_index` (`user_id`,`time`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +284,6 @@ CREATE TABLE `loginlog` (
 
 LOCK TABLES `loginlog` WRITE;
 /*!40000 ALTER TABLE `loginlog` DISABLE KEYS */;
-INSERT INTO `loginlog` VALUES (1,'admin','No Saved','127.0.0.1','2019-03-12 17:29:20'),(2,'admin','No Saved','127.0.0.1','2019-03-12 17:29:39'),(3,'admin','No Saved','127.0.0.1','2019-03-12 17:33:27'),(4,'admin','No Saved','127.0.0.1','2019-03-12 17:38:04'),(5,'admin','No Saved','127.0.0.1','2019-03-12 17:39:13'),(6,'admin','No Saved','127.0.0.1','2019-03-13 15:32:27');
 /*!40000 ALTER TABLE `loginlog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -586,11 +585,11 @@ DROP TABLE IF EXISTS `problemset`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `problemset` (
-  `index` int(11) NOT NULL,
+  `index` int(11) NOT NULL AUTO_INCREMENT,
   `set_name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `set_name_show` varchar(255) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`index`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
