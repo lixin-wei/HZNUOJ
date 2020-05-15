@@ -80,6 +80,7 @@ require_once("$baseDir/include/db_info.inc.php");
             $html_li .= "<li><a href='$urlbaseDir/problem_list.php'>$MSG_PROBLEM$MSG_LIST</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/problem_edit.php?new_problem'>$MSG_ADD$MSG_PROBLEM</a></li>";            
           }
+          if(HAS_PRI("inner_function")) $html_li.="<li><a href='$urlbaseDir/problem_set.php'>$MSG_PROBLEMSET$MSG_LIST</a></li>";
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
