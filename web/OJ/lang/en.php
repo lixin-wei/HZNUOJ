@@ -125,6 +125,7 @@
   $MSG_Download = "Download";
   $MSG_IgnoreWS = "Ignore Whitespaces";
   $MSG_SIM = "SIM";
+  $MSG_Alias = "Alias";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -303,6 +304,8 @@
   $MSG_HELP_EXPORT_PROBLEM= "export the problems of the system in the form of fps.xml file. ";
   $MSG_HELP_IMPORT_PROBLEM=" import fps.xml files downloaded from internet or tk.hustoj.com, support zip file. ";
   $MSG_HELP_PROBLEM_STATISTICS="You are able to view all submissions after solving this problem.";
+  $MSG_HELP_PROBLEMSET1="add, delete and edit problem set. ";
+  $MSG_HELP_PROBLEMSET2="You can't delete the problem set when it is not empty.";
 
   $MSG_HELP_AC="Congratulations!"; 
   $MSG_HELP_PE="Your output format is not exactly the same as the judge's output, although your answer to the problem is correct. Check your output for spaces, blank lines,etc against the problem output specification."; 
@@ -322,7 +325,6 @@
 
   //privilege_distribution.php
   $MSG_enter_admin_page ="enter_admin_page";
-  $MSG_edit_default_problem ="edit_default_problem";
   $MSG_rejudge ="rejudge";
   $MSG_edit_news ="edit_news";
   $MSG_HELP_edit_news = "edit and add News";
@@ -345,7 +347,6 @@
   $MSG_see_hidden_xx_problem ="see_hidden_default_problem";
   $MSG_HELP_see_hidden_xx_problem1 ="see hidden problems in corresponding problemset at problemset page. ";
   $MSG_HELP_see_hidden_xx_problem2 ="including problems in running contest. ";
-  $MSG_see_hidden_default_problem ="see_hidden_default_problem";
   $MSG_see_hidden_user_info ="see_hidden_user_info";
   $MSG_HELP_see_hidden_user_info ="see the hidden information in userinfo page, including real name, class and recent login info.";
   $MSG_see_wa_info_out_of_contest ="see_wa_info_out_of_contest";

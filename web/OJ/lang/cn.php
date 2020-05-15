@@ -125,6 +125,7 @@
   $MSG_Download = "下载";
   $MSG_IgnoreWS = "忽略空白";
   $MSG_SIM = "相似度";
+  $MSG_Alias = "别名";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -303,6 +304,8 @@
   $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
   $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件，支持ZIP压缩文件批量上传。";
   $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
+  $MSG_HELP_PROBLEMSET1="增加、删除、编辑题库，";
+  $MSG_HELP_PROBLEMSET2="当题库中有题目时不能做删除操作。";
 
   $MSG_HELP_AC="答案正确，请再接再厉。"; 
   $MSG_HELP_PE="答案基本正确，但是格式不对。"; 
@@ -322,7 +325,6 @@
   
   //privilege_distribution.php
   $MSG_enter_admin_page = "访问管理页面";
-  $MSG_edit_default_problem = $MSG_EDIT.$MSG_PROBLEM;
   $MSG_rejudge = $MSG_REJUDGE;
   $MSG_edit_news = $MSG_EDIT.$MSG_NEWS;
   $MSG_HELP_edit_news = "可以添加和编辑".$MSG_NEWS."。";
@@ -340,12 +342,11 @@
   $MSG_edit_privilege_distribution=$MSG_Distribution;
   $MSG_inner_function ="内建功能";
   $MSG_HELP_inner_function ="一些不常用或者较为危险的功能";
-  $MSG_edit_xx_problem = $MSG_EDIT.$MSG_PROBLEM."(相应题库)";
-  $MSG_HELP_edit_xx_problem1 = "可以在相应的".$MSG_PROBLEMSET."中".$MSG_EDIT.$MSG_PROBLEM."以及查看相关数据。";
-  $MSG_see_hidden_xx_problem ="查看隐藏的".$MSG_PROBLEM."(相应题库)";
-  $MSG_HELP_see_hidden_xx_problem1 ="可以在".$MSG_PROBLEMSET."页面里查看相应".$MSG_PROBLEMSET."中隐藏的".$MSG_PROBLEM."。";
+  $MSG_edit_xx_problem = "edit_xx_problem";
+  $MSG_HELP_edit_xx_problem1 = "可以在xx".$MSG_PROBLEMSET."中".$MSG_EDIT.$MSG_PROBLEM."以及查看相关数据。";
+  $MSG_see_hidden_xx_problem ="see_hidden_xx_problem";
+  $MSG_HELP_see_hidden_xx_problem1 ="可以在".$MSG_PROBLEMSET."页面里查看xx".$MSG_PROBLEMSET."中隐藏的".$MSG_PROBLEM."。";
   $MSG_HELP_see_hidden_xx_problem2 ="包括因为被包含在运行中".$MSG_CONTEST."而被隐藏的".$MSG_PROBLEM."。";
-  $MSG_see_hidden_default_problem ="查看隐藏的题目";
   $MSG_see_hidden_user_info ="查看隐藏的用户信息";
   $MSG_HELP_see_hidden_user_info ="可以在用户信息页面中查看隐藏的信息，包括真名、班级和最近的登录信息。";
   $MSG_see_wa_info_out_of_contest ="查看比赛之外提交代码的错误信息";
