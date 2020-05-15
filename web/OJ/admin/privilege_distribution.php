@@ -81,7 +81,7 @@ if($_POST['data']){
       </div>
     </div><!--col-3-->
     <div class="col-sm-7" >
-      <div class="well am-scrollable-vertical" style="height:515px">
+      <div class="well am-scrollable-vertical" style="height:580px">
       <ul>
         <li>
           <?php echo $MSG_enter_admin_page ?>
@@ -104,6 +104,17 @@ if($_POST['data']){
             </li>
             <li>
               so is recommended to add both "edit"&amp;"see_hidden" privilege. (not finished)
+            </li>
+          </ul>
+        </li>
+        <li>
+          <?php echo $MSG_see_hidden_xx_problem ?>:
+          <ul>
+            <li>
+            <?php echo $MSG_HELP_see_hidden_xx_problem1 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_see_hidden_xx_problem2 ?>
             </li>
           </ul>
         </li>
@@ -158,17 +169,7 @@ if($_POST['data']){
               <?php echo $MSG_HELP_inner_function ?>
             </li>
       </ul></li>
-        <li>
-          <?php echo $MSG_see_hidden_xx_problem ?>:
-          <ul>
-            <li>
-            <?php echo $MSG_HELP_see_hidden_xx_problem1 ?>
-            </li>
-            <li>
-            <?php echo $MSG_HELP_see_hidden_xx_problem2 ?>
-            </li>
-          </ul>
-        </li>
+        
         <li>
           <?php echo $MSG_see_hidden_user_info ?>:
           <ul>
