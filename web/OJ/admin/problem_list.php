@@ -81,6 +81,20 @@
     }
   }
   /* 来源/分类标签处理：给选定题目批量删掉指定标签、批量打标签 end */
+  else if(isset($_POST['changeProblemset'])){ //批量更改题目的题库归属
+    require_once("../include/check_post_key.php");
+    $pids=array();
+    foreach($_POST['pid'] as $i){
+      $i = intval($mysqli->real_escape_string($i));
+      if(HAS_PRI("edit_".get_problemset($i)."_problem")) array_push($pids,$i);
+    }
+    $newProbelmset=$mysqli->real_escape_string(trim($_POST['newProblemset']));
+    $sql="SELECT COUNT(`set_name`) FROM `problemset` WHERE `set_name`='$newProbelmset'";
+    if($mysqli->query($sql)->fetch_array()[0]>0){
+      $sql="UPDATE `problem` SET `problemset`='$newProbelmset' WHERE `problem_id` IN ('". implode("','", $pids) ."')";
+      $mysqli->query($sql);
+    }
+  }
   $sql = "";
   $total = 0;
   /* 获取sql语句中的筛选部分 start */
@@ -294,8 +308,19 @@
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
         <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_PROBLEM ?>' onclick='$("form").attr("action","problem_edit.php?new_problem")'>&nbsp;|
-        
-        <input class="form-control" name="cate" id="cate" type="text" maxlength='50' placeholder="<?php echo $MSG_Source ?> 多个标签请以逗号分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
+        <select class='selectpicker show-tick' data-width="auto" name="newProblemset">
+        <option value=''></option>
+        <?php
+          foreach ($problem_sets as $row) {
+            echo "<option value='$row[0]'". ($row[0]==$_GET['OJ']?" selected ":" ").">$row[1]</option>";
+          }
+        ?>
+        </select>
+        <input type='submit' name='changeProblemset' title='先勾选需要更改<?php echo $MSG_PROBLEMSET ?>归属的题目，再选择目的<?php echo $MSG_PROBLEMSET ?>，最后点击‘<?php echo $MSG_SUBMIT ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_SUBMIT ?>' onclick='$("form").attr("action","problem_list.php")'>
+      </td>
+    </tr>
+    <td colspan="14">
+    <?php echo $MSG_Source ?>：<input class="form-control" name="cate" id="cate" type="text" maxlength='50' placeholder="多个标签请以逗号分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
         <input type='submit' name='addCategory' title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_ADD ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
         <?php require_once("../include/set_post_key.php"); ?>
         <select multiple class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="10" data-live-search-placeholder="搜索" name="category[]" onchange='$("#cate").val($(this).val());' />
