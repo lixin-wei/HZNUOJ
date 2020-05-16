@@ -86,7 +86,7 @@
       var begin_time = <?php echo $contest_time[0] ?>;
       var warnning_percent = <?php echo $warnning_percent ?>;
       var lock_time=-1;
-      <?php if ($unclock!=1){ ?>
+      <?php if ($unlock!=1){ ?>
         lock_time=<?php echo $view_lock_time ?>;
       <?php }?>
       function time_format(time_stamp) {
