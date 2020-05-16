@@ -63,7 +63,7 @@
         } else {
           $http_judge_form = "";
           if(HAS_PRI("rejudge")) {
-            $http_judge_form = "<form class='http_judge_form form-inline'><input type='hidden' name='sid' value='".$row['solution_id']."'>";
+            $http_judge_form = "<form class='http_judge_form form-inline' style='display:none'><input type='hidden' name='sid' value='".$row['solution_id']."'>";
           }
           if($OJ_SIM && $row['sim']>=70 && $row['sim_s_id'] != $row['s_id']){
             if(HAS_PRI("see_compare")){
