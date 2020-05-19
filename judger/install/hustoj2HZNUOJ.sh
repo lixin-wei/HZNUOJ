@@ -48,7 +48,7 @@ mysql -h localhost -u$DBUSER -p$DBPASS < hustoj2HZNUOJ.sql
     mysql -h localhost -u$DBUSER -p$DBPASS -e "UPDATE jol.problem SET source=REPLACE(source, '，', ' ');"
     # hzqsn config end
 fi
-echo "Update successful?"
+echo "The update have successfully completed!"
 echo "Remember your database account for OJ:"
 echo "username:$DBUSER"
 echo "password:$DBPASS"
