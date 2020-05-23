@@ -533,7 +533,6 @@ CREATE TABLE `problem` (
   `problemset` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`problem_id`),
   UNIQUE KEY `problem_id` (`problem_id`) USING BTREE,
-  KEY `spj` (`problemset`,`defunct`,`spj`,`problem_id`) USING BTREE,
   KEY `score` (`score`,`accepted`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -287,7 +287,6 @@ ALTER TABLE `problem` ADD COLUMN `tag2` varchar(250) DEFAULT NULL;
 ALTER TABLE `problem` ADD COLUMN `tag3` varchar(250) DEFAULT NULL;
 ALTER TABLE `problem` ADD COLUMN `problemset` varchar(255) DEFAULT NULL;
 ALTER TABLE `problem` ADD UNIQUE `problem_id` (`problem_id`) USING BTREE;
-ALTER TABLE `problem` ADD INDEX `spj` (`problemset`,`defunct`,`spj`,`problem_id`) USING BTREE;
 ALTER TABLE `problem` ADD INDEX `score` (`score`,`accepted`);
 UPDATE `problem` SET `problemset`='default';
 UPDATE `problem` SET `source`=REPLACE(`source`,'&nbsp ','_');
