@@ -90,7 +90,7 @@ $view_problemset = array();
 $i = 0;
 while ($row = $result->fetch_object()) {
     $sql = "SELECT * FROM `privilege_distribution` WHERE see_hidden_".$row->set_name."_problem=1 OR edit_".$row->set_name."_problem=1";
-    $privilege=$mysqli->query($sql);
+    $privilege=$mysqli->query($sql) or die("`problemset`表中数据和`privilege_distribution`表中字段不符，请登录数据库处理！".$mysqli->error);
     $temp=$privilege->num_rows>1?"rowspan='".$privilege->num_rows."'":"";
     //$privilege->fetch_all(MYSQLI_ASSOC);
     $view_problemset[$i][0] = "<td style='vertical-align:middle;' $temp>$row->index<input type='hidden' name='id' value='$row->index'></td>\n";
