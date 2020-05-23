@@ -87,9 +87,11 @@ set encoding=prc
    ```bash
    admin@ubuntu16:~$ git clone https://github.com/wlx65003/HZNUOJ.git
    admin@ubuntu16:~$ cd HZNUOJ/judger/install
-   admin@ubuntu16:~/HZNUOJ/judger/install$ sudo bash hustoj2HZNUOJ.sh
+   admin@ubuntu16:~/HZNUOJ/judger/install$ sudo bash hustoj2HZNUOJ-ubuntu16+.sh
    ```
 
 2、因HZNUOJ是hustoj的分支，判题机支持的编程语言和hustoj最新版会略有差异，请参照待升级hustoj的**const.inc.php**文件，人工编辑 `OJ/include/const.inc.php` 中$language_name数组（编程语言支持列表），以及$language_order数组（各个编程语言的显示顺序）。
 
 3、根据需要修改`OJ/include/static.php`中的$OJ_LANGMASK，调整开放的编程语言，具体参看[HZNUOJ配置手册](Configuration.md)或者配置文件中的注释。
+
+4、**注意**：Ubuntu14系统中php版本为PHP5，而HZNUOJ的web部分是基于PHP7，因此若待升级hustoj跑在Ubuntu14上，请先将PHP5升级至PHP7（未测试），或将系统更换或升级成Ubuntu16或Ubuntu18后，再升级成HZNUOJ系统。
