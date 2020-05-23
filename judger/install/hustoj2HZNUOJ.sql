@@ -269,6 +269,27 @@ call transLangmask();
 DROP PROCEDURE transLangmask;
 -- 更新比赛的语言掩码 end
 
+-- 新版hustoj新增了几个字段和索引，老版没有
+DROP PROCEDURE IF EXISTS AddCOLUMN;
+delimiter //
+create procedure AddCOLUMN()
+begin
+    SELECT count(*) INTO @cnt FROM information_schema.columns WHERE `TABLE_SCHEMA` ='jol' AND `TABLE_NAME` = 'contest_problem' AND `COLUMN_NAME` = 'c_accepted';
+    IF @cnt=0 THEN
+        ALTER TABLE `contest_problem` ADD COLUMN `c_accepted` int(11) NOT NULL DEFAULT '0' AFTER `num`;
+    END IF;
+    SELECT count(*) INTO @cnt FROM information_schema.columns WHERE `TABLE_SCHEMA` ='jol' AND `TABLE_NAME` = 'contest_problem' AND `COLUMN_NAME` = 'c_submit';
+    IF @cnt=0 THEN
+        ALTER TABLE `contest_problem` ADD COLUMN `c_submit` int(11) NOT NULL DEFAULT '0' AFTER `c_accepted`;
+    END IF;
+    SELECT count(*) INTO @cnt FROM information_schema.statistics WHERE `TABLE_SCHEMA` ='jol' AND table_name='contest_problem' AND index_name='Index_contest_id' ;
+    IF @cnt=0 THEN
+	    ALTER TABLE `contest_problem` ADD INDEX `Index_contest_id` (`contest_id`);
+    END IF;
+end; //
+delimiter ;
+call AddCOLUMN();
+drop procedure AddCOLUMN;
 ALTER TABLE `contest_problem` ADD COLUMN `index` int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`index`);
 ALTER TABLE `contest_problem` ADD COLUMN `score` int(11) NOT NULL DEFAULT '100';
 ALTER TABLE `contest_problem` ADD INDEX `problem_id` (`problem_id`);
@@ -355,6 +376,20 @@ delimiter ;
 call Add_sim_idx();
 DROP PROCEDURE Add_sim_idx;
 
+-- 老版的hustoj没有nick字段，新版有
+DROP PROCEDURE IF EXISTS AddNick;
+delimiter //
+create procedure AddNick()
+begin
+    SELECT count(*) INTO @cnt FROM information_schema.columns WHERE `TABLE_SCHEMA` ='jol' AND `TABLE_NAME` = 'solution' AND `COLUMN_NAME` = 'nick';
+    IF @cnt=0 THEN
+        ALTER TABLE `solution` ADD COLUMN `nick` char(20) NOT NULL DEFAULT '' AFTER `user_id`;
+    END IF;
+end; //
+delimiter ;
+call AddNick();
+drop procedure AddNick;
+
 ALTER TABLE `solution` ADD INDEX `in_date` (`in_date`) USING BTREE;
 
 ALTER TABLE `users` ADD COLUMN `stu_id` varchar(20) DEFAULT NULL AFTER `user_id`;
@@ -373,3 +408,13 @@ ALTER TABLE `users` ADD COLUMN `like` int(9) DEFAULT '0';
 ALTER TABLE `users` ADD COLUMN `dislike` int(9) DEFAULT '0';
 ALTER TABLE `users` ADD COLUMN `tag` varchar(250) DEFAULT NULL;
 UPDATE `users` SET `class`='其它';
+
+-- 老版的hustoj没有表`share_code`，新版有
+CREATE TABLE IF NOT EXISTS `share_code` (
+  `share_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(48) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `share_code` text COLLATE utf8mb4_unicode_ci,
+  `language` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `share_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`share_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
