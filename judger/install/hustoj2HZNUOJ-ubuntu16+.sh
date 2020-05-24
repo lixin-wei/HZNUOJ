@@ -30,6 +30,7 @@ mysql -h localhost -u$DBUSER -p$DBPASS < hustoj2HZNUOJ.sql
     sed -i "s/OJ_LANGMASK=717823/OJ_LANGMASK=524359/g" $WEBBASE/include/static.php
     sed -i "s/OJ_SIM=false/OJ_SIM=true/g" $WEBBASE/include/static.php    
     sed -i "s/OJ_SIM_ENABLE=0/OJ_SIM_ENABLE=1/g" /home/judge/etc/judge.conf
+    sed -i "s/OJ_OI_MODE=0/OJ_OI_MODE=1/g" /home/judge/etc/judge.conf
     sed -i "133d" $WEBBASE/template/hznu/contest_header.php
     sed -i "132d" $WEBBASE/template/hznu/contest_header.php
     sed -i "105d" $WEBBASE/template/hznu/index.php
