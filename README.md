@@ -124,6 +124,8 @@ admin@ubuntu16:~$ docker run -it --rm -p 90:80 --privileged hznuoj:latest
 
 4. 安装完成后访问localhost、服务器IP或相应域名即可。
 
+5. 若想在现存的hustoj上使用HZNUOJ，请参看[HZNUOJ常见问题列表/将hustoj升级为HZNUOJ（只迁移web部分，后台的判题机不变）](wiki/maintainer-manual.md)，
+
 ## 功能配置
 
 ### 原理
