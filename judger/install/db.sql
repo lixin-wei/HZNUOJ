@@ -32,7 +32,7 @@ CREATE TABLE `contest_discuss` (
   `in_date` datetime DEFAULT NULL,
   `reply_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `printer_code`;
 CREATE TABLE `printer_code` (
@@ -119,7 +119,7 @@ CREATE TABLE `contest_excluded_user` (
   `user_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`index`),
   KEY `contest_id` (`contest_id`,`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,7 +195,7 @@ CREATE TABLE `faq_codes` (
   `language_show` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `code` varchar(10000) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,7 +219,7 @@ CREATE TABLE `faqs` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
   `content` text,
   PRIMARY KEY (`index`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +248,7 @@ CREATE TABLE `hit_log` (
   PRIMARY KEY (`index`),
   KEY `time` (`time`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -462,7 +462,7 @@ CREATE TABLE `privilege_distribution` (
   `upload_files` tinyint(4) DEFAULT NULL,
   `watch_solution_video` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`group_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +486,7 @@ CREATE TABLE `privilege_groups` (
   `group_order` int(11) NOT NULL DEFAULT '0',
   `group_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`group_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -563,7 +563,7 @@ CREATE TABLE `problem_samples` (
   `show_after` int(11) DEFAULT '0',
   PRIMARY KEY (`problem_id`,`sample_id`),
   KEY `problem_id` (`problem_id`,`sample_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +588,7 @@ CREATE TABLE `problemset` (
   `set_name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `set_name_show` varchar(255) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`index`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -690,7 +690,7 @@ CREATE TABLE `slide` (
   `url` varchar(200) NOT NULL,
   `defunct` char(1) DEFAULT NULL,
   PRIMARY KEY (`img_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -761,7 +761,7 @@ CREATE TABLE `solution_video_watch_log` (
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`index`),
   KEY `video_id` (`video_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -852,7 +852,7 @@ CREATE TABLE `tag` (
   `user_id` varchar(100) CHARACTER SET utf8 NOT NULL,
   `tag` varchar(100) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`index`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -994,7 +994,7 @@ CREATE TABLE `users_cache` (
   `activity` int(10) unsigned zerofill DEFAULT NULL,
   `total_score` decimal(10,2) unsigned zerofill DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1022,7 +1022,7 @@ CREATE TABLE `users_cache_array` (
   `value_int` int(10) unsigned zerofill NOT NULL,
   `value_double` decimal(10,2) unsigned zerofill DEFAULT NULL,
   PRIMARY KEY (`index`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
