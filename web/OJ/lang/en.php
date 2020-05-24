@@ -95,7 +95,7 @@
   $MSG_TOTAL = "Total";
   $MSG_Available = "Available";
   $MSG_Reserved = "Reserved";
-  $MSG_CreatedDate = "Created Date";
+  $MSG_LastEditTime = "Last Edit Time";
   $MSG_Solution = "Solution";
   $MSG_Importance = "Importance";
   $MSG_Content = "Content";

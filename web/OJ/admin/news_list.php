@@ -25,7 +25,7 @@
   <th><?php echo $MSG_TITLE ?></th>
   <th style="width:50px;"><?php echo $MSG_Importance ?></th>
   <th style="width:50px;"><?php echo $MSG_Creator ?></th>
-  <th style="width:150px;"><?php echo $MSG_CreatedDate ?></th>
+  <th style="width:150px;"><?php echo $MSG_LastEditTime ?></th>
   <th style="width:50px;"><?php echo $MSG_STATUS ?></th>
   <th colspan="2" style="text-align: center;"><?php echo $MSG_Operations ?></th>
   </tr></thead>

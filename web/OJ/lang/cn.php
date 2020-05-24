@@ -95,7 +95,7 @@
   $MSG_TOTAL = "合计";
   $MSG_Available = "启用";
   $MSG_Reserved = "停用";
-  $MSG_CreatedDate = "创建日期";
+  $MSG_LastEditTime = "最后编辑时间";
   $MSG_Solution = "单个提交代码";
   $MSG_Importance = "优先级";
   $MSG_Content = "内容";
