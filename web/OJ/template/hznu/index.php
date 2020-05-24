@@ -48,6 +48,7 @@ require_once('./include/db_info.inc.php');
                 <?php
                 $n = count($news_title);
                 if ($n) { // 有公告的话
+                    $firstNews="news-".$news_id[0];
                     for ($i=0; $i<$n; ++$i) {
                         $nid=$news_id[$i];
                         if ($news_importance[$i] == 10) echo "<div class='am-panel am-panel-danger'>";
@@ -259,6 +260,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
     }).on('close.collapse.amui', function() {
         console.log('折叠菜单关闭鸟！');
     });
+    $('#<?php echo $firstNews ?>').parent()[0].children[0].click();
 </script>
 <!-- modal auto jump START -->
 <!-- <div class="am-modal am-modal-no-btn" tabindex="-1" id="index_ad_modal">
