@@ -20,7 +20,11 @@
   <span>-</span>
   </div>
   ★<?php echo $MSG_SERVERTIME ?>: <span id='footerdate'><?php echo date('Y-m-d H:i:s',time()); ?></span>★
-  
+  <div style="padding-bottom: 20px;">
+  <?php if(isset($OJ_BEIAN)&&$OJ_BEIAN){ ?>
+    <span><a href='http://beian.miit.gov.cn/' target='_blank'><?php echo $OJ_BEIAN?></a></span>
+  <?php } ?>
+  </div>
   <!-- go to top btn START -->
   <div class="amz-toolbar" id="go-top" style="display: none; position: fixed; bottom: 15px; right: 15px;">
     <a data-am-smooth-scroll href="#" title="回到顶部" class="am-icon-btn am-icon-arrow-up"></a>

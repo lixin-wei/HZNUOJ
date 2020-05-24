@@ -48,8 +48,8 @@
   static  $OJ_LOGIN_MOD="hustoj";
   static  $OJ_SHOW_DIFF=true;//是否显示WA的对比说明
   static  $OJ_TEST_RUN=false;//提交界面是否允许测试运行
+  static  $OJ_BEIAN="";//如果有网站备案号，请填入备案号
   static $OJ_OPENID_PWD='8a367fe87b1e406ea8e94d7d508dcf01';
-
 
   static $ICON_PATH="image/hznuoj.ico";//设置网站图标
   static $BORDER=500000;
