@@ -46,7 +46,7 @@ INSERT INTO `faqs` VALUES (1,'## 环境参数\r\n\r\n系统运行于[Ubuntu 14.0
 
 CREATE TABLE `hit_log` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(20) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   `path` text,
   `time` datetime DEFAULT NULL,
   `user_id` text,
@@ -163,7 +163,7 @@ CREATE TABLE `team` (
   `school` varchar(100) DEFAULT NULL,
   `accesstime` datetime DEFAULT NULL,
   `reg_time` datetime DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   PRIMARY KEY (`contest_id`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -295,7 +295,7 @@ ALTER TABLE `contest_problem` ADD COLUMN `score` int(11) NOT NULL DEFAULT '100';
 ALTER TABLE `contest_problem` ADD INDEX `problem_id` (`problem_id`);
 
 ALTER TABLE `loginlog` ADD COLUMN `index` int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`index`);
-
+ALTER TABLE `loginlog` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
 ALTER TABLE `privilege` ADD COLUMN `index` int(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`index`);
 INSERT INTO `privilege`(`user_id`,`rightstr`) VALUES ('admin','root');
 
@@ -391,7 +391,7 @@ call AddNick();
 drop procedure AddNick;
 
 ALTER TABLE `solution` ADD INDEX `in_date` (`in_date`) USING BTREE;
-
+ALTER TABLE `users` MODIFY COLUMN `ip` varchar(46) NOT NULL DEFAULT '';
 ALTER TABLE `users` ADD COLUMN `stu_id` varchar(20) DEFAULT NULL AFTER `user_id`;
 ALTER TABLE `users` ADD COLUMN `volume_c` int(11) DEFAULT NULL AFTER `volume`;
 ALTER TABLE `users` ADD COLUMN `real_name` varchar(100) DEFAULT NULL AFTER `reg_time`;
@@ -418,3 +418,5 @@ CREATE TABLE IF NOT EXISTS `share_code` (
   `share_time` datetime DEFAULT NULL,
   PRIMARY KEY (`share_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+ALTER TABLE `reply` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
+ALTER TABLE `online` MODIFY COLUMN `ip` varchar(46) CHARACTER SET utf8 NOT NULL DEFAULT '';

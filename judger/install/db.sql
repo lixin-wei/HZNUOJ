@@ -241,7 +241,7 @@ DROP TABLE IF EXISTS `hit_log`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hit_log` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(20) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   `path` text,
   `time` datetime DEFAULT NULL,
   `user_id` text,
@@ -271,7 +271,7 @@ CREATE TABLE `loginlog` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(20) NOT NULL DEFAULT '',
   `password` varchar(40) DEFAULT NULL,
-  `ip` varchar(100) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`index`),
   KEY `user_time_index` (`user_id`,`time`)
@@ -387,7 +387,7 @@ DROP TABLE IF EXISTS `online`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `online` (
   `hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `ip` varchar(46) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `ua` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `refer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lastmove` int(10) NOT NULL,
@@ -615,7 +615,7 @@ CREATE TABLE `reply` (
   `content` text NOT NULL,
   `topic_id` int(11) NOT NULL,
   `status` int(2) NOT NULL DEFAULT '0',
-  `ip` varchar(30) NOT NULL,
+  `ip` varchar(46) NOT NULL,
   PRIMARY KEY (`rid`),
   KEY `author_id` (`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -718,7 +718,7 @@ CREATE TABLE `solution` (
   `in_date` datetime NOT NULL,
   `result` smallint(6) NOT NULL DEFAULT '0',
   `language` tinyint(4) NOT NULL DEFAULT '0',
-  `ip` char(15) NOT NULL,
+  `ip` char(46) NOT NULL,
   `contest_id` int(11) DEFAULT NULL,
   `valid` tinyint(4) NOT NULL DEFAULT '1',
   `num` tinyint(4) NOT NULL DEFAULT '-1',
@@ -886,7 +886,7 @@ CREATE TABLE `team` (
   `school` varchar(100) DEFAULT NULL,
   `accesstime` datetime DEFAULT NULL,
   `reg_time` datetime DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
+  `ip` varchar(46) DEFAULT NULL,
   PRIMARY KEY (`contest_id`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -943,7 +943,7 @@ CREATE TABLE `users` (
   `submit` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
   `defunct` char(1) NOT NULL DEFAULT 'N',
-  `ip` varchar(20) NOT NULL DEFAULT '',
+  `ip` varchar(46) NOT NULL DEFAULT '',
   `accesstime` datetime DEFAULT NULL,
   `volume` int(11) NOT NULL DEFAULT '1',
   `volume_c` int(11) DEFAULT NULL,

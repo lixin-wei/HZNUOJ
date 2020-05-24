@@ -9,6 +9,13 @@ ALTER TABLE `printer_code` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `privilege` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `solution` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `problemset` MODIFY COLUMN `index` int(11) NOT NULL AUTO_INCREMENT FIRST ;
+ALTER TABLE `hit_log` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
+ALTER TABLE `loginlog` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
+ALTER TABLE `online` MODIFY COLUMN `ip` varchar(46) CHARACTER SET utf8 NOT NULL DEFAULT '';
+ALTER TABLE `reply` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
+ALTER TABLE `solution` MODIFY COLUMN `ip` char(46) NOT NULL;
+ALTER TABLE `team` MODIFY COLUMN `ip` varchar(46) DEFAULT NULL;
+ALTER TABLE `users` MODIFY COLUMN `ip` varchar(46) NOT NULL DEFAULT '';
 -- Dump completed on 2019-03-13 17:03:43
 -- ----------------------------
 -- Table structure for `class_list`
