@@ -24,6 +24,7 @@ mysql -h localhost -u$DBUSER -p$DBPASS < hustoj2HZNUOJ.sql
  then
     # hzqsn config start
     sed -i "s/OJ_NAME=\"HZNUOJ\"/OJ_NAME=\"hzqsnOJ\"/g" $WEBBASE/include/static.php
+    sed -i "s/OJ_BEIAN=\"\"/OJ_BEIAN=\"?ICP?17029265?-1\"/g" $WEBBASE/include/static.php
     sed -i "s/OJ_LANG=\"en\"/OJ_LANG=\"cn\"/g" $WEBBASE/include/static.php
     sed -i "s/OJ_AUTO_SHARE=true/OJ_AUTO_SHARE=false/g" $WEBBASE/include/static.php
     sed -i "s/OJ_SHOW_DIFF=true/OJ_SHOW_DIFF=false/g" $WEBBASE/include/static.php
