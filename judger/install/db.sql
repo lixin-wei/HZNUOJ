@@ -90,7 +90,7 @@ CREATE TABLE `contest` (
   `first_prize` int(11) DEFAULT '0',
   `second_prize` int(11) DEFAULT '0',
   `third_prize` int(11) DEFAULT '0',
-  `practice` tinyint(4) DEFAULT NULL,
+  `practice` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`contest_id`),
   KEY `contest_id` (`contest_id`,`defunct`,`private`,`defunct_TA`,`open_source`) USING BTREE,
   KEY `running_contest` (`start_time`,`end_time`,`practice`)

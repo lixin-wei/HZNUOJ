@@ -196,7 +196,7 @@ ALTER TABLE `contest` ADD COLUMN `unlock` tinyint(4) DEFAULT '1';
 ALTER TABLE `contest` ADD COLUMN `first_prize` int(11) DEFAULT '0';
 ALTER TABLE `contest` ADD COLUMN `second_prize` int(11) DEFAULT '0';
 ALTER TABLE `contest` ADD COLUMN `third_prize` int(11) DEFAULT '0';
-ALTER TABLE `contest` ADD COLUMN `practice` tinyint(4) DEFAULT NULL;
+ALTER TABLE `contest` ADD COLUMN `practice` tinyint(4) DEFAULT '0';
 ALTER TABLE `contest` ADD INDEX `contest_id` (`contest_id`,`defunct`,`private`,`defunct_TA`,`open_source`) USING BTREE;
 ALTER TABLE `contest` ADD INDEX `running_contest` (`start_time`,`end_time`,`practice`);
 UPDATE `contest` SET `first_prize`=1,`second_prize`=3,`third_prize`=5;
