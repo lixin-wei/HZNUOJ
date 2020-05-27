@@ -169,8 +169,8 @@ function generate_url($data){
   </div>
 <!-- 页标签 end -->
 <!-- 数据表格显示 start -->
-    <div class="am-avg-md-1 well">
-      <table id="result-tab" class="am-table am-table-hover  am-table-striped">
+    <div class="am-avg-md-1 well" >
+      <table id="result-tab" class="am-table am-table-hover am-table-striped am-text-nowrap">
         <thead>
         <tr>
           <th><?php echo $MSG_RUNID ?></th>

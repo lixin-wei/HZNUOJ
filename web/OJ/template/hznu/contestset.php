@@ -38,12 +38,13 @@ function generate_url($data){
   </div>
   <!-- contest查找 start -->
   <div class="am-g">
-      <form id="searchform" class="am-form am-form-horizontal">
+  <div class="am-u-md-12">
+      <form id="searchform" class="am-form am-form-inline">
         <?php if(isset($_GET['my'])){
 			echo "<input type='hidden' name='my' value=''>";
 		}?>
     <!-- 通过类型查找 start -->
-    <div class="am-form-group am-u-sm-2">
+    <div class="am-form-group">
       <select name="type" data-am-selected="{}" onchange='javascript:document.getElementById("searchform").submit();'>
         <option value='all' <?php if (isset($_GET['type']) && ($_GET['type'] == "" || $_GET['type'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Type ?></option>
         <option value='Public' <?php if (isset($_GET['type']) && $_GET['type'] == "Public" ) echo "selected"; ?>><?php echo $MSG_Public ?></option>
@@ -53,7 +54,7 @@ function generate_url($data){
       </select>
     </div>
     <!-- 通过状态查找 end -->
-    <div class="am-form-group am-u-sm-2">
+    <div class="am-form-group">
       <select name="runstatus" data-am-selected="{}" onchange='javascript:document.getElementById("searchform").submit();'>
         <option value='all' <?php if (isset($_GET['runstatus']) && ($_GET['runstatus'] == "" || $_GET['runstatus'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_STATUS ?></option>
         <option value='noStart' <?php if (isset($_GET['runstatus']) && $_GET['runstatus'] == "noStart" ) echo "selected"; ?>><?php echo $MSG_notStart2 ?></option>
@@ -63,17 +64,15 @@ function generate_url($data){
     </div>
     <!-- 通过状态查找 end -->
     <!-- 通过关键词查找 start -->
-        <div class="am-u-sm-3">
-          <div class="am-form-group am-form-icon">
-            <i class="am-icon-binoculars"></i>
-            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $search ?>">
-          </div>
-        </div>
-       <button type="submit" class="am-u-sm-1 am-btn am-btn-secondary am-u-end"><?php echo $MSG_SEARCH ?></button>
+      <div class="am-form-group am-form-icon">
+        <i class="am-icon-binoculars"></i>
+        <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $search ?>">
+      </div>
+    <!-- 通过关键词查找 end -->
+       <button type="submit" class="am-btn am-btn-secondary"><?php echo $MSG_SEARCH ?></button>
       </form>
+      </div>
     </div>
-<!-- 通过关键词查找 end -->
-
   <!-- contest查找 end -->
    <!-- 页标签 start -->
   <div class="am-g">
