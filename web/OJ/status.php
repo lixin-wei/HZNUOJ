@@ -362,16 +362,8 @@
   </table>
 <script>
 var i = 0;
-var judge_result = [<?php
-foreach ($judge_result as $result) {
-	echo "'$result',";
-} ?>
-''];
-var judge_color = [<?php
-foreach ($judge_color as $result) {
-	echo "'$result',";
-} ?>
-''];
+var judge_result = [<?php echo "'". implode("','", $judge_result) ."'";?>];
+var judge_color = [<?php echo "'". implode("','", $judge_color) ."'";?>];
 </script>
 <script src="template/<?php echo $OJ_TEMPLATE?>/auto_refresh.js?v=0.38"></script>
   <?php exit(0) ?>
