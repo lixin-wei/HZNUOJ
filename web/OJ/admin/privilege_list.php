@@ -16,8 +16,7 @@
   //   echo "Permission denied!";
   //   exit(1);
   // }
-  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$mysqli->real_escape_string($_SESSION['user_id'])."'";
-  $user_group=$mysqli->query($sql)->fetch_array()[0];
+  $user_group=get_group($mysqli->real_escape_string($_SESSION['user_id']));
   $user_order=get_order($user_group);
   // echo "<pre>user_group:$user_group</pre>";
   // echo "<pre>user_order:$user_order</pre>";
