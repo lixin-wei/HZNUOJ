@@ -1,10 +1,18 @@
 #!/bin/bash
-printf "Update for http://www.kidsccshow.com/ input 'y', else input 'n':"
-read hzqsn
+reset
+echo ""
+echo " ██      ██ ████████ ████     ██ ██     ██   ███████        ██"
+echo "░██     ░██░░░░░░██ ░██░██   ░██░██    ░██  ██░░░░░██      ░██"
+echo "░██     ░██     ██  ░██░░██  ░██░██    ░██ ██     ░░██     ░██"
+echo "░██████████    ██   ░██ ░░██ ░██░██    ░██░██      ░██     ░██"
+echo "░██░░░░░░██   ██    ░██  ░░██░██░██    ░██░██      ░██     ░██"
+echo "░██     ░██  ██     ░██   ░░████░██    ░██░░██     ██  ██  ░██"
+echo "░██     ░██ ████████░██    ░░███░░███████  ░░███████  ░░█████ "
+echo "░░      ░░ ░░░░░░░░ ░░      ░░░  ░░░░░░░    ░░░░░░░    ░░░░░  "
+echo ""
 WEBBASE=/home/judge/src/web/
 DBUSER=`cat /etc/mysql/debian.cnf |grep user|head -1|awk  '{print $3}'`
 DBPASS=`cat /etc/mysql/debian.cnf |grep password|head -1|awk  '{print $3}'`
-
 echo "Backup hustoj's webpage to /home/judge/webbackup."
 mkdir -p /home/judge/webbackup
 mv -f $WEBBASE /home/judge/webbackup/
@@ -20,37 +28,114 @@ sed -i "s/OJ_HOME=\"\/OJ\/\"/OJ_HOME=\".\/\"/g" $WEBBASE/include/static.php
 cd ./judger/install
 echo "Update Datebase from hustoj to HZNUOJ, please wait."
 mysql -h localhost -u$DBUSER -p$DBPASS < hustoj2HZNUOJ.sql
- if test $hzqsn = "y"
- then
-    # hzqsn config start
-    sed -i "s/OJ_NAME=\"HZNUOJ\"/OJ_NAME=\"hzqsnOJ\"/g" $WEBBASE/include/static.php
-    sed -i "s/OJ_BEIAN=\"\"/OJ_BEIAN=\"浙ICP备17029265号-1\"/g" $WEBBASE/include/static.php
+echo ""
+echo "OJ Configuration:"
+echo ""
+printf "1-Please input OJ's name, press Enter for default name(argument:\$OJ_NAME): "
+read ojname
+if test "$ojname" != ""
+then
+    sed -i "s/OJ_NAME=\"HZNUOJ\"/OJ_NAME=\"$ojname\"/g" $WEBBASE/include/static.php
+fi
+echo ""
+echo "2-Please select the UI language.(argument:\$OJ_LANG)"
+echo "  1) Chinese"
+echo "  2) English"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 1
+then
     sed -i "s/OJ_LANG=\"en\"/OJ_LANG=\"cn\"/g" $WEBBASE/include/static.php
-    sed -i "s/OJ_AUTO_SHARE=true/OJ_AUTO_SHARE=false/g" $WEBBASE/include/static.php
-    sed -i "s/OJ_SHOW_DIFF=true/OJ_SHOW_DIFF=false/g" $WEBBASE/include/static.php
-    sed -i "s/OJ_LANGMASK=717823/OJ_LANGMASK=524359/g" $WEBBASE/include/static.php
-    sed -i "s/OJ_SIM=false/OJ_SIM=true/g" $WEBBASE/include/static.php    
-    sed -i "s/OJ_SIM_ENABLE=0/OJ_SIM_ENABLE=1/g" /home/judge/etc/judge.conf
+else
+    sed -i "s/OJ_LANG=\"cn\"/OJ_LANG=\"en\"/g" $WEBBASE/include/static.php
+fi
+echo ""
+echo "3-Please select running mode.(argument:OJ_OI_MODE)"
+echo "  1)  OI Mode (Middle school)"
+echo "  2) ACM Mode (University)"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 1
+then
     sed -i "s/OJ_OI_MODE=0/OJ_OI_MODE=1/g" /home/judge/etc/judge.conf
-    sed -i "133d" $WEBBASE/template/hznu/contest_header.php
-    sed -i "132d" $WEBBASE/template/hznu/contest_header.php
-    sed -i "105d" $WEBBASE/template/hznu/index.php
-    sed -i "104d" $WEBBASE/template/hznu/index.php
-    sed -i "103d" $WEBBASE/template/hznu/index.php
-    sed -i "102d" $WEBBASE/template/hznu/index.php
-    sed -i "101d" $WEBBASE/template/hznu/index.php
-    sed -i "100d" $WEBBASE/template/hznu/index.php
-    sed -i "38d" $WEBBASE/template/hznu/index.php
-    sed -i "37d" $WEBBASE/template/hznu/index.php
-    sed -i "36d" $WEBBASE/template/hznu/index.php
+else
+    sed -i "s/OJ_OI_MODE=1/OJ_OI_MODE=0/g" /home/judge/etc/judge.conf
+fi
+echo ""
+echo "4-Please select trun on/off the code share mode.(argument:\$OJ_AUTO_SHARE)"
+echo "  1) Trun on  (All of users are able to view all submissions after solving this problem.)"
+echo "  2) Trun off (Only administrators are able to view all submissions.)"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 2
+then
+    sed -i "s/OJ_AUTO_SHARE=true/OJ_AUTO_SHARE=false/g" $WEBBASE/include/static.php
+else
+    sed -i "s/OJ_AUTO_SHARE=false/OJ_AUTO_SHARE=true/g" $WEBBASE/include/static.php
+fi
+echo ""
+echo "5-Please select trun on/off show the WA/CE information in reinfo/ceinfo page.(argument:\$OJ_SHOW_DIFF)"
+echo "1) Trun on  (All of users are able to view the WA/CE information of their own code.)"
+echo "2) Trun off (Only administrators are able to view the WA/CE information.)"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 2
+then
+    sed -i "s/OJ_SHOW_DIFF=true/OJ_SHOW_DIFF=false/g" $WEBBASE/include/static.php
+else
+    sed -i "s/OJ_SHOW_DIFF=false/OJ_SHOW_DIFF=true/g" $WEBBASE/include/static.php
+fi
+echo ""
+echo "6-Please select trun on/off source code similarity detection.(argument:\$OJ_SIM, OJ_SIM_ENABLE)"
+echo "1) Trun on"
+echo "2) Trun off"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 2
+then
+    sed -i "s/OJ_SIM=true/OJ_SIM=false/g" $WEBBASE/include/static.php
+    sed -i "s/OJ_SIM_ENABLE=1/OJ_SIM_ENABLE=0/g" /home/judge/etc/judge.conf
+else
+    sed -i "s/OJ_SIM=false/OJ_SIM=true/g" $WEBBASE/include/static.php
+    sed -i "s/OJ_SIM_ENABLE=0/OJ_SIM_ENABLE=1/g" /home/judge/etc/judge.conf
+fi
+echo ""
+echo "7-Please select trun on/off show the contest's solution in status page.(\/status.php)"
+echo "1) Trun on  (contest's solution will be show in status page and contest-status page.)"
+echo "2) Trun off (contest's solution will be show in contest-status page only.)"
+temp=0
+while test $temp != 1 -a $temp != 2
+do
+    printf "#? "
+    read temp
+done
+if test $temp = 1
+then
     sed -i "s/\$sql=\" WHERE contest_id is null \";/\/\/\$sql=\" WHERE contest_id is null \";/g" $WEBBASE/status.php
     sed -i "s/\/\/\$sql=\" WHERE 1 \";/\$sql=\" WHERE 1 \";/g" $WEBBASE/status.php
-    mysql -h localhost -u$DBUSER -p$DBPASS -e "UPDATE jol.privilege_distribution SET inner_function=1 WHERE group_name='administrator';"
-    mysql -h localhost -u$DBUSER -p$DBPASS -e "UPDATE jol.problem SET source=REPLACE(source, ',', ' ');"
-    mysql -h localhost -u$DBUSER -p$DBPASS -e "UPDATE jol.problem SET source=REPLACE(source, '，', ' ');"
-    # hzqsn config end
 fi
 echo "The update have successfully completed!"
+echo ""
 echo "Remember your database account for OJ:"
 echo "username:$DBUSER"
 echo "password:$DBPASS"
