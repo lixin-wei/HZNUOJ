@@ -49,9 +49,3 @@
 <?php 
   require_once("admin-footer.php")
 ?>
-
-<script type="text/javascript">
-  $("#news_del").click(function(){
-    alert("asdasd");
-  });
-</script>
