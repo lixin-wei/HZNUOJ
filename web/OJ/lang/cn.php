@@ -17,6 +17,8 @@
   $MSG_RECENT_CONTEST = "名校联赛";
   $MSG_FAQ = "常见问答";
   $MSG_ACM_MAIL = "杭师ACM邮箱";
+  $MSG_COURSE = "课程";
+  $MSG_Assist = "辅助";
 
   // 用户导航栏
   $MSG_LOGIN = "登录";
@@ -243,6 +245,7 @@
   $MSG_New = "新";
   $MSG_FastTrack = "快速通道";
   $MSG_ChangeClass = "批量分班";
+  $MSG_CourseSet = "课程设置";
   
   //contest
   $MSG_PRIVATE_WARNING="私有比赛或考试作业，您无权查看题目。";
@@ -293,7 +296,7 @@
   $MSG_HELP_RegCode_PwdMode="当前系统设定为密码模式，人员凭后台设置的注册码进行注册，账号注册后立即激活。";
   $MSG_HELP_RegCode_PwdComfirmMode="当前系统设定为密码+审核模式，人员凭后台设置的注册码进行注册，账号注册后还需管理员后台审核激活。";
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
-  $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
+  $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传测试数据可以用zip格式压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
   $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，清理比较麻烦。<font color='red'><b>此外，账号生成过程中遇到相同{$MSG_USER_ID}和{$MSG_CONTEST}的{$MSG_USER}，系统将做覆盖处理。</b></font>";
   $MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
@@ -306,6 +309,7 @@
   $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
   $MSG_HELP_PROBLEMSET1="增加、删除、编辑题库，";
   $MSG_HELP_PROBLEMSET2="当题库中有题目时不能做删除操作。";
+  $MSG_HELP_CourseSet="添加、删除、编辑课程/章节及相关题目，拖拽节点可以调整顺序，按住Ctrl键或Cmd键（MacOS系统）后拖拽可复制节点。";
 
   $MSG_HELP_AC="答案正确，请再接再厉。"; 
   $MSG_HELP_PE="答案基本正确，但是格式不对。"; 

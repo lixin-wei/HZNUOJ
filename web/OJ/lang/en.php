@@ -17,6 +17,8 @@
   $MSG_RECENT_CONTEST = "Recent Contest";
   $MSG_FAQ = "F.A.Qs";
   $MSG_ACM_MAIL = "ACM Mail";
+  $MSG_COURSE = "Course";
+  $MSG_Assist = " Assistance";
 
   // 用户导航栏
   $MSG_LOGIN = "Login";
@@ -243,6 +245,7 @@
   $MSG_New = "New ";
   $MSG_FastTrack = "Fast Track";
   $MSG_ChangeClass = "Change Classes";
+  $MSG_CourseSet = "Course Set";
    
   //contest.php
   $MSG_PRIVATE_WARNING="This is a private contest which you don't have privilege.";
@@ -306,6 +309,7 @@
   $MSG_HELP_PROBLEM_STATISTICS="You are able to view all submissions after solving this problem.";
   $MSG_HELP_PROBLEMSET1="add, delete and edit problem set. ";
   $MSG_HELP_PROBLEMSET2="You can't delete the problem set when it is not empty.";
+  $MSG_HELP_CourseSet="You can add/delete/edit course, section and their problems.";
 
   $MSG_HELP_AC="Congratulations!"; 
   $MSG_HELP_PE="Your output format is not exactly the same as the judge's output, although your answer to the problem is correct. Check your output for spaces, blank lines,etc against the problem output specification."; 
