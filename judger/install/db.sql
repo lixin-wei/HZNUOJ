@@ -1078,6 +1078,16 @@ INSERT INTO `reg_code` VALUES ('其它', '', '0');
 /*!40000 ALTER TABLE `reg_code` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `section` varchar(255) NOT NULL,
+  `order` int(11) NOT NULL DEFAULT '10000',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `isProblem` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 -- 添加触发器，防止同一用户类似代码提交第二遍时被认定为抄袭
 delimiter //
 drop trigger if exists simfilter//

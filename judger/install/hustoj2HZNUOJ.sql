@@ -2,6 +2,15 @@ set names utf8;
 alter database jol character set utf8; 
 use jol;
 
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `section` varchar(255) NOT NULL,
+  `order` int(11) NOT NULL DEFAULT '10000',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `isProblem` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `class_list` (
   `class_name` varchar(100) NOT NULL,
   `enrollment_year` smallint(4) NOT NULL,
