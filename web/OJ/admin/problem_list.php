@@ -357,7 +357,7 @@
           <td style="vertical-align:middle;"><?php echo $row->accepted ?></td>
           <td style="vertical-align:middle;"><?php echo $row->submit ?></td>
           <td style="vertical-align:middle;"><?php if($row->submit) echo round(100*$row->accepted/$row->submit,1)."%"; ?></td>
-          <td style="vertical-align:middle;"><?php echo $row->score ?></td>
+          <td style="vertical-align:middle;"><?php echo round($row->score) ?></td>
 <?php if (HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {?>
           <td style="vertical-align:middle;"><?php if($row->defunct=="N"){
 				echo "<a class='btn btn-primary' href='problem_df_change.php?id=".$row->problem_id."&getkey=".$_SESSION['getkey']."'>".$MSG_Available."</a>";

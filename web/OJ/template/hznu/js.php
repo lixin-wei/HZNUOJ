@@ -26,7 +26,8 @@ function problem_add_source(sp,pid){
         if(data!=0) {
           p.parent().append("<a title='"+ns+"' class='am-badge am-badge-"+color_theme[Math.floor(Math.random()*5)]+" <?php echo $ajaxform['size'] ?> am-radius' href='problemset.php?search=" +ns+ "'>"+ns+"</a>&nbsp;");
         } else alert("‘"+ns+"’已存在！");
-        p.html("<span class='am-icon-plus' pid='"+pid+"' style='cursor: pointer;' onclick='problem_add_source(this,"+pid+");'></span>");
+        p.parent().append("<span><span class='am-icon-plus' pid='"+pid+"' style='cursor: pointer;' onclick='problem_add_source(this,"+pid+");'></span></span>");
+        p.remove();
       }
     });
   });

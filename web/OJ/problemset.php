@@ -191,24 +191,24 @@ while ($row=$result->fetch_object()) {
         $view_problemset[$i][2] .= "color: dimgrey;'><span title='this problem is locked because they are in running contest.'>{$row->title}</span> <i class='am-icon-lock'></i>";
     if(strtolower($row->defunct)=="y") $view_problemset[$i][2] .= " <i class='am-icon-eye-slash'></i>";
     $view_problemset[$i][2] .= "</td>";
-    $view_problemset[$i][3] = "<td >";
     if ($show_tag) {
+        $view_problemset[$i][3] = "<td >";
         if($row->tag1) $view_problemset[$i][3] .= "<span class='am-badge am-badge-danger'>".$row->tag1."</span>\n";
         if($row->tag2) $view_problemset[$i][3] .= "<span class='am-badge am-badge-warning'>".$row->tag2."</span>\n";
         if($row->tag3) $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>\n";
+        $view_problemset[$i][3] .= "</td>";
     }
-    $view_problemset[$i][3] .= "</td>";
     $view_problemset[$i][4] = "<td><nobr>".mb_substr(($row->author?$row->author:$MSG_IMPORTED),0,40,'utf8')."</nobr></td >";
     // 题目来源 ajax html代码 start
     $view_problemset[$i][5] = "<td style='text-align:left;white-space:normal;'><div pid='".$row->problem_id."' fd='source' class='center' >\n";
+    $view_problemset[$i][5] .= show_category($row->source,"default");
     if(HAS_PRI("edit_".get_problemset($row->problem_id)."_problem")) {
         $view_problemset[$i][5] .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
-    }  
-    $view_problemset[$i][5] .= show_category($row->source,"default");
+    }
     $view_problemset[$i][5] .= "</div></td>";
     // 题目来源 ajax html代码 end
-    $view_problemset[$i][6]="<td><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/"."<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
-    $view_problemset[$i][7]="<td >".$row->score."</td>";
+    $view_problemset[$i][6]="<td style='text-align:left;'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
+    $view_problemset[$i][7]="<td>".round($row->score)."</td>";
     $i++;
 }
 $result->free();
