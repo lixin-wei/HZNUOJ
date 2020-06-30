@@ -156,7 +156,7 @@ function generate_url($data){
         <th class='am-text-center' style='width:1%;'><?php echo $MSG_PROBLEM_ID ?></th>
         <th class='am-text-left'><?php echo $MSG_TITLE ?></th>
   <?php if ($show_tag) { ?><th class='am-text-center'><?php echo $MSG_TAGS ?></th><?php } ?>
-        <th class='am-text-center' style='width:1%;'><?php echo $MSG_AUTHOR ?></th>
+        <th class='am-text-left' style='width:1%;'><?php echo $MSG_AUTHOR ?></th>
         <th class='am-text-left'><?php echo $MSG_Source ?></th>
         <th class='am-text-left' style='width:1%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
           <?php
