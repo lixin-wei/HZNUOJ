@@ -55,3 +55,18 @@ CREATE TABLE `course` (
   `isProblem` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Records of course
+-- ----------------------------
+INSERT INTO `course` VALUES ('1', '入门篇', '0', '0', '0');
+INSERT INTO `course` VALUES ('2', '九阴真经', '1', '0', '0');
+INSERT INTO `course` VALUES ('3', '九阳神功', '2', '0', '0');
+INSERT INTO `course` VALUES ('4', '葵花宝典', '3', '0', '0');
+INSERT INTO `course` VALUES ('5', '辟邪剑谱', '4', '0', '0');
+INSERT INTO `course` VALUES ('6', '平台操作题', '0', '1', '0');
+INSERT INTO `course` VALUES ('7', '输出题入门', '1', '1', '0');
+INSERT INTO `course` VALUES ('8', '计算题入门', '2', '1', '0');
+INSERT INTO `course` VALUES ('9', '分支结构入门', '3', '1', '0');
+INSERT INTO `course` VALUES ('10', '循环结构入门', '4', '1', '0');
+INSERT INTO `course` VALUES ('11', '1000', '0', '6', '1');
+
