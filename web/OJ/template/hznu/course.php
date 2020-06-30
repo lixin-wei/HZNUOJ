@@ -30,7 +30,7 @@ require_once("header.php");
       },
       async: {
         enable: true,
-        url:"../../admin/zTreeAjax.php?getNodes",
+        url:"./admin/zTreeAjax.php?getNodes",
         autoParam:["id","isProblem"],
         otherParam:{"otherParam":"zTreeAsyncTest"},
         dataFilter: filter
