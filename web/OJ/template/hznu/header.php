@@ -19,14 +19,14 @@
 <?php // 是否显示tag的判断
   require_once "./include/db_info.inc.php";
   if(!isset($mysqli))exit(0);
-  $show_tag = true;
+  $show_tag = false;
   if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
     $uid = $_SESSION['user_id'];
     $sql = "SELECT tag FROM users WHERE user_id='$uid'";
     $result = $mysqli->query($sql);
     $row_h = $result->fetch_array();
     $result->free();
-    if ($row_h['tag'] == "N") $show_tag = false;
+    if ($row_h['tag'] == "Y") $show_tag = true;
   } else if (isset($_SESSION['tag'])) {
     if ($_SESSION['tag'] == "N") $show_tag = false;
     else $show_tag = true;

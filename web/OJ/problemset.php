@@ -41,7 +41,7 @@ if (isset($_GET['page'])) {
 
 
 /* 是否显示标签 start */
-$show_tag = true;
+$show_tag = false;
 
 if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
     $uid = $_SESSION['user_id'];
@@ -49,7 +49,7 @@ if (isset($_SESSION['user_id']) && !isset($_SESSION['contest_id'])) {
     $result = $mysqli->query($sql);
     $row_h = $result->fetch_array();
     $result->free();
-    if ($row_h['tag'] == "N") $show_tag = false;
+    if ($row_h['tag'] == "Y") $show_tag = true;
 } else if (isset($_SESSION['tag'])) {
     if ($_SESSION['tag'] == "N") $show_tag = false;
     else $show_tag = true;
