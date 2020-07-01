@@ -331,7 +331,7 @@
   if($rows_cnt==0)
     exit(0);
   ?>
-  <table id="result-tab" class="am-table am-table-hover am-table-striped">
+  <table id="result-tab" class="am-table am-table-hover am-table-striped" style='white-space: nowrap;'>
     <thead>
       <tr>
         <th><?php echo $MSG_RUNID ?></th>
@@ -347,16 +347,19 @@
     </thead>
     <tbody>
       <?php
-                    foreach($view_status as $row){
-                      echo "<tr>";
-                            foreach($row as $table_cell){
-                                    echo "<td>";
-                                    echo $table_cell;
-                                    echo "</td>";
-                            }
-
-                            echo "</tr>";
-                    }
+      foreach($view_status as $row){
+        echo "<tr>";
+        echo "<td style='text-align:left'>".$row[0]."</td>";
+        echo "<td style='text-align:left'>".$row[1]."</td>";
+        echo "<td style='text-align:left'>".$row[2]."</td>";
+        echo "<td style='text-align:left'>".$row[3]."</td>";
+        echo "<td style='text-align:left'>".$row[4]."</td>";
+        echo "<td style='text-align:left'>".$row[5]."</td>";
+        echo "<td style='text-align:left'>".$row[6]."</td>";
+        echo "<td style='text-align:left'>".$row[7]."</td>";
+        echo "<td style='text-align:left'>".$row[8]."</td>";
+        echo "</tr>";
+      }
       ?>
     </tbody>
   </table>
