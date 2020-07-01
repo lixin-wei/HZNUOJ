@@ -37,6 +37,7 @@ $id=strval(intval($_GET['sid']));
 $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
 $result=$mysqli->query($sql);
 $row=$result->fetch_object();
+if($row->contest_id) $cid = $row->contest_id;
 $view_reinfo="";
 if (can_see_res_info($id)){
 	if($row->user_id!=$_SESSION['user_id'])

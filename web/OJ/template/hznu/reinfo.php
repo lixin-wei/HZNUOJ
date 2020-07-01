@@ -11,8 +11,10 @@
 
 <?php 
   $title="RE or WA Info";
-  if (isset($cid)) require_once("contest_header.php");
-  else require_once("header.php");
+  if (isset($cid) && is_numeric($cid)){
+    $_GET['cid']=$cid;
+    require_once("contest_header.php");
+  } else require_once("header.php");
 ?>
 <div class="am-container">
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">

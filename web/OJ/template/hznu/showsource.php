@@ -94,7 +94,7 @@ HTML;
         $nick = $is_temp_user ? $tuser_nick : $user_nick;
         $nick = $nick ? "($nick)" : "";
         $ptitle = $ptitle ? "($ptitle)" : "";
-        echo "\tProblem: $pid $ptitle\n\tUser: $suser_id $nick\n";
+        echo "\tProblem: ". ($p_lable?$p_lable:$pid) ." $ptitle\n\tUser: $suser_id $nick\n";
         echo "\tLanguage: ".$language_name[$slanguage]."\n\tResult: ".$judge_result[$sresult]."\n";
         echo "\tDate:".$sindate."\n";
         if ($sresult==4){
