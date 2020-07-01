@@ -120,7 +120,7 @@ else
     sed -i "s/OJ_SIM_ENABLE=0/OJ_SIM_ENABLE=1/g" /home/judge/etc/judge.conf
 fi
 echo ""
-echo "7-Please select trun on/off show the contest's solution in status page.(\/status.php)"
+echo "7-Please select trun on/off show the contest's solution in status page.(/status.php)"
 echo "1) Trun on  (contest's solution will be show in status page and contest-status page.)"
 echo "2) Trun off (contest's solution will be show in contest-status page only.)"
 temp=0
