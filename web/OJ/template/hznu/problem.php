@@ -155,7 +155,7 @@ HTML;
     
     
     <div style="text-align:center;">
-      <?php echo $MSG_Time_Limit ?>:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->time_limit?> s</span>
+      <?php echo $MSG_Time_Limit ?>:&nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo round($row->time_limit) ?> s</span>
       &nbsp;&nbsp;&nbsp;&nbsp; <?php echo $MSG_Memory_Limit ?>: &nbsp;&nbsp;<span class="am-badge am-badge-warning"><?php echo $row->memory_limit?> MB</span></span>
         <?php if($row->spj) echo "<span class='am-badge am-badge-primary'>Special Judge</span>"?>
     </div>
@@ -170,9 +170,9 @@ HTML;
         else if ($row->score >= 46) $score_class='am-badge-primary';
         else if ($row->score >= 28) $score_class='am-badge-secondary';
         ?>
-        <?php echo $MSG_SCORE ?>：<span class='am-badge <?php echo $score_class ?>'><?php echo $row->score?></span>
+        <?php echo $MSG_SCORE ?>：<span class='am-badge <?php echo $score_class ?>'><?php echo round($row->score) ?></span>
       <?php else:?>
-        <?php echo $MSG_SCORE ?>：<span class='am-badge am-badge-success'><?php echo $contest_score?></span>
+        <?php echo $MSG_SCORE ?>：<span class='am-badge am-badge-success'><?php echo round($contest_score) ?></span>
       <?php endif;?>
       
     </div>
