@@ -84,13 +84,12 @@
     }
     //require_once("contest-header.php");
   } else {
-    //$sql="SELECT * FROM `solution` WHERE contest_id is null ";
     if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的排名
       $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql=" WHERE contest_id is null ";//若要在主状态页面中显示contest中提交的代码，注释本行代码，并启用下一行代码
+    $sql=" WHERE (contest_id is null OR contest_id=0) ";//若要在主状态页面中显示contest中提交的代码，注释本行代码，并启用下一行代码
     //$sql=" WHERE 1 ";
   }
   

@@ -436,6 +436,7 @@ UPDATE `users` SET `class`='其它';
 CREATE TABLE IF NOT EXISTS `share_code` (
   `share_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(48) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `share_code` text COLLATE utf8mb4_unicode_ci,
   `language` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `share_time` datetime DEFAULT NULL,

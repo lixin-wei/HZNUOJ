@@ -208,7 +208,7 @@ do
 done
 if test $temp = 1
 then
-    sed -i "s/\$sql=\" WHERE contest_id is null \";/\/\/\$sql=\" WHERE contest_id is null \";/g" $WEBBASE/web/OJ/status.php
+    sed -i "s/\$sql=\" WHERE (contest_id is null OR contest_id=0) \";/\/\/\$sql=\" WHERE (contest_id is null OR contest_id=0) \";/g" $WEBBASE/web/OJ/status.php
     sed -i "s/\/\/\$sql=\" WHERE 1 \";/\$sql=\" WHERE 1 \";/g" $WEBBASE/web/OJ/status.php
 fi
 
