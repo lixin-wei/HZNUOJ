@@ -312,7 +312,7 @@ if(isset($_POST['problem_id'])){ //写入数据库
     $output = str_replace("<!---->","",$output);
     $hint = str_replace("<!---->","",$hint);
 
-	  if($author == "" && $add_problem_mod) $author = $_SESSION['user_id'];
+	  if($author == "" && isset($_POST['add_problem_mod'])) $author = $_SESSION['user_id']; 
 
     //remove original samples
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
