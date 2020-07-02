@@ -198,7 +198,7 @@ while ($row=$result->fetch_object()) {
         if($row->tag3) $view_problemset[$i][3] .= "<span class='am-badge am-badge-primary'>".$row->tag3."</span>\n";
         $view_problemset[$i][3] .= "</td>";
     }
-    $view_problemset[$i][4] = "<td><nobr>".mb_substr(($row->author?$row->author:$MSG_IMPORTED),0,40,'utf8')."</nobr></td >";
+    $view_problemset[$i][4] = "<td style='text-align:left;'><nobr>".mb_substr(($row->author?$row->author:$MSG_IMPORTED),0,40,'utf8')."</nobr></td >";
     // 题目来源 ajax html代码 start
     $view_problemset[$i][5] = "<td style='text-align:left;white-space:normal;'><div pid='".$row->problem_id."' fd='source' class='center' >\n";
     $view_problemset[$i][5] .= show_category($row->source,"default");
