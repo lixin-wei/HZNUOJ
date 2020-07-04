@@ -22,7 +22,7 @@ echo ""
 #try install tools
 echo 'mysql-server-5.5 mysql-server/root_password password ""' | sudo debconf-set-selections
 echo 'mysql-server-5.5 mysql-server/root_password_again password ""' | sudo debconf-set-selections
-deps="make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli php-xml mono-mcs subversion libexplain-dev"
+deps="make flex g++ clang libmysql++-dev php7.0 apache2 mysql-server libapache2-mod-php7.0 php7.0-mysql php7.0-mbstring php7.0-gd php7.0-cli php-xml mono-mcs subversion libexplain-dev php-zip"
 apt-get update
 apt-get -y install $deps
 apt-get purge -y --auto-remove $buildDeps
