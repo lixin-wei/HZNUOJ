@@ -128,6 +128,7 @@
   $MSG_IgnoreWS = "Ignore Whitespaces";
   $MSG_SIM = "SIM";
   $MSG_Alias = "Alias";
+  $MSG_Top = "TOP";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
