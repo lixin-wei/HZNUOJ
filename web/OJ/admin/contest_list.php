@@ -146,8 +146,8 @@ function generate_url($data){
   if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
   if ($page < 1) $page = 1;
   $st=($page-1)*$page_cnt;
-  $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct`,`user_id` FROM `contest` WHERE";
-  $sql.= $sql_filter." order by `contest_id` desc LIMIT $st,$page_cnt";
+  $sql = "SELECT `contest_id`,`title`,`start_time`,`end_time`,`private`,`user_limit`,`practice`,`defunct`,`user_id`,`isTop` FROM `contest` WHERE";
+  $sql.= $sql_filter." ORDER BY isTop DESC, `contest_id` DESC LIMIT $st,$page_cnt";
   $result=$mysqli->query($sql) or die($mysqli->error);
 ?>
 <title><?php echo $html_title.$MSG_CONTEST.$MSG_LIST?></title>
@@ -217,7 +217,7 @@ function generate_url($data){
 <thead>
 <?php if(HAS_PRI("edit_contest")) { ?>
 <tr>
-    	<td colspan=12>
+    	<td colspan="13">
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","contest_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","contest_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>&nbsp;
         <input type=submit name='newPrblem'  class='btn btn-default' value='<?php echo $MSG_ADD.$MSG_CONTEST ?>' onclick='$("form").attr("action","contest_add.php")'>
@@ -232,8 +232,9 @@ function generate_url($data){
     <th><?php echo $MSG_TotalTime ?></th>
     <th><?php echo $MSG_Creator ?></th>
     <th><?php echo $MSG_Type ?></th>
-    <th><?php echo $MSG_STATUS ?></th>
-    <th colspan=4 style="text-align: center"><?php echo $MSG_Operations ?></th>
+    <th style="text-align: center"><?php echo $MSG_STATUS ?></th>
+    <th style="text-align: center"><?php echo $MSG_Top ?></th>
+    <th colspan="4" style="text-align: center"><?php echo $MSG_Operations ?></th>
 </tr></thead>
 <?php 
 while ($row=$result->fetch_object()){
@@ -266,25 +267,27 @@ while ($row=$result->fetch_object()){
       } else {
         echo "<td style='vertical-align:middle;'>".$type."</td>\n";
       }
-      echo "<td style='vertical-align:middle;'><a class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' href=\"contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</a></td>\n";
-      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_edit.php?cid=$row->contest_id\">$MSG_EDIT</a></td>\n";
-      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' href=\"contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='".($row->isTop!=0?"btn btn-danger":"btn btn-primary")."' href=\"contest_df_change.php?isTop&cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".($row->isTop!=0?"Yes":"No&nbsp;")."</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='btn btn-primary' href=\"contest_edit.php?cid=$row->contest_id\">$MSG_EDIT</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
     } else {
       if($type == $MSG_Private || $type == $MSG_Public){
-        echo "<td style='vertical-align:middle;'><span class='$btn_class' style='cursor: default;'>$type</span></td>\n";
+        echo "<td style='vertical-align:middle;text-align: center'><span class='$btn_class' style='cursor: default;'>$type</span></td>\n";
       } else {
-        echo "<td style='vertical-align:middle;'>".$type."</td>\n";
+        echo "<td style='vertical-align:middle;text-align: center'>".$type."</td>\n";
       }
-      echo "<td style='vertical-align:middle;'><span class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' style='cursor: default;'>".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</span></td>\n";
-      echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_EDIT</span></td>\n";
-      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><span class='".($row->defunct=="N"?"btn btn-primary":"btn btn-danger")."' style='cursor: default;'>".($row->defunct=="N"?$MSG_Available:$MSG_Reserved)."</span></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='".(!$row->isTop?"btn btn-primary":"btn btn-danger")."' href=\"contest_df_change.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">".(!$row->isTop?"Y":"N")."</a></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><span class='btn btn-primary' disabled>$MSG_EDIT</span></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='btn btn-primary' href=\"contest_add.php?cid=$row->contest_id\">$MSG_Copy</a></td>\n";
     }
     if (HAS_PRI("inner_function")){
-      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_EXPORT</a></td>\n";
-    } else echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_EXPORT</span></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='btn btn-primary' href=\"problem_export_xml.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_EXPORT</a></td>\n";
+    } else echo "<td style='vertical-align:middle;text-align: center'><span class='btn btn-primary' disabled>$MSG_EXPORT</span></td>\n";
     if (isset($_SESSION['m'.$contest_id])||HAS_PRI("inner_function")){
-      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=\"../export_contest_code.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_Logs</a></td>\n";
-    } else echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_Logs</span></td>\n";
+      echo "<td style='vertical-align:middle;text-align: center'><a class='btn btn-primary' href=\"../export_contest_code.php?cid=$row->contest_id&getkey=".$_SESSION['getkey']."\">$MSG_Logs</a></td>\n";
+    } else echo "<td style='vertical-align:middle;text-align: center'><span class='btn btn-primary' disabled>$MSG_Logs</span></td>\n";
     
 
     echo "</tr>\n";

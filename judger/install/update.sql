@@ -4,6 +4,7 @@
 set names utf8;
 use jol;
 ALTER TABLE `contest` ADD COLUMN `user_id` VARCHAR(48) NOT NULL DEFAULT 'admin' AFTER `password`;
+ALTER TABLE `contest` ADD COLUMN `isTop`  tinyint(1) NOT NULL DEFAULT 0 AFTER `practice`;
 ALTER TABLE `solution` MODIFY COLUMN `pass_rate` DECIMAL(3,2) UNSIGNED NOT NULL DEFAULT '0.00';
 ALTER TABLE `printer_code` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
 ALTER TABLE `privilege` MODIFY COLUMN `user_id` CHAR(48) NOT NULL;
