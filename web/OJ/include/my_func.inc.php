@@ -371,7 +371,7 @@ function get_contests($type_list){ //返回一个二维数组给选择框等提�
 }
 function createPwd($seed="", $len=16, $haveSpecialChar=true){
     $password = "";
-    $codeAlphabet .= "ABCDEFGHJKMNPQRSTUVWXYZ".$seed;
+    $codeAlphabet = "ABCDEFGHJKMNPQRSTUVWXYZ".$seed;
     $codeAlphabet .= "abcdefghjkmnpqrstuvwxyz";
     $codeAlphabet .= "23456789";
     if($haveSpecialChar) $codeAlphabet .= "_!@#$%^&*";
