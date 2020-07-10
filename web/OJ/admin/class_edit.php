@@ -51,7 +51,7 @@ if (isset($_GET['del'])) { //删除班级信息
   $mode = $_POST['mode'];
   $err_str = "";
   $err_cnt = 0;
-  if (!is_numeric($year) || $year > 2500 || $year < 1900) {
+  if (!is_numeric($year) || $year > 2500 || ($year < 1900 && $year != 0)) {
     $err_str .= "输入的{$MSG_Enrollment_Year}({$year})不是一个合法的年份 ！\\n";
     $err_cnt++;
   }
@@ -125,7 +125,8 @@ if (isset($_GET['del'])) { //删除班级信息
     } else {
       $sql = "INSERT INTO `class_list` VALUES ('" . $c . "', '" . $year . "')";
       $mysqli->query($sql);
-      echo $year . "级 " . $c. "-成功写入！<br>\n";
+      if($year!=0) echo $year . "级 " . $c. "-成功写入！<br>\n";
+      else echo "无入学年份 " . $c. "-成功写入！<br>\n";
       $cnt++;
     }
   }

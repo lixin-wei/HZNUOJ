@@ -75,7 +75,7 @@ switch ($args['sort_method']) {
     case 'class_DESC':
         $class_icon = "am-icon-sort-amount-desc";
         $year_icon = "am-icon-sort";
-        $sql_filter .= " ORDER BY `class_name` DESC ";
+        $sql_order = " ORDER BY `class_name` DESC ";
         $class = 'class_ASC';
         $year = 'year_DESC';
         break;
@@ -83,7 +83,7 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort-amount-asc";
         $year_icon = "am-icon-sort";
         $strength_icon = "am-icon-sort";
-        $sql_filter .= " ORDER BY `class_name` ";
+        $sql_order = " ORDER BY `class_name` ";
         $class = 'class_DESC';
         $year = 'year_DESC';
         break;
@@ -91,7 +91,7 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort";
         $year_icon = "am-icon-sort-amount-asc";
         $strength_icon = "am-icon-sort";
-        $sql_filter .= " ORDER BY `enrollment_year`, `class_name`";
+        $sql_order = " ORDER BY `enrollment_year`, `class_name`";
         $class = 'class_DESC';
         $year = 'year_DESC';
         break;
@@ -100,12 +100,11 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort";
         $year_icon = "am-icon-sort-amount-desc";
         $strength_icon = "am-icon-sort";
-        $sql_filter .= " ORDER BY `enrollment_year` DESC, `class_name` ";
+        $sql_order = " ORDER BY `enrollment_year` DESC, `class_name` ";
         $class = 'class_DESC';
         $year = 'year_ASC';
         break;
 }
-$sql_filter .= " LIMIT $left_bound, $page_cnt";
 $view_class = array();
 $cnt = 0;
 $view_class[$cnt][0] = "<input type=checkbox name='other' value='' disabled/>&nbsp;0";
@@ -136,14 +135,14 @@ if ($row = $result->fetch_object()) {
     $view_class[$cnt][5] = $MSG_Stu_List . "(0)";
 }
 
-$sql .=  $sql_filter;
+$sql = $sql.$sql_filter." AND `enrollment_year`=0 UNION (".$sql.$sql_filter." AND `enrollment_year`<>0 ".$sql_order .") LIMIT $left_bound, $page_cnt";
 $result = $mysqli->query($sql);
 while ($row = $result->fetch_object()) {
     if (!$row->stu_num) $row->stu_num = 0;
     if (!$row->team_account_num) $row->team_account_num = 0;
     if (HAS_PRI("edit_user_profile")) $view_class[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->class_name' />&nbsp;" . ++$u_id;
     else $view_class[$cnt][0] = ++$u_id;
-    $view_class[$cnt][1] = $row->enrollment_year . "级";
+    $view_class[$cnt][1] = $row->enrollment_year==0?"":$row->enrollment_year . "级";
     $view_class[$cnt][2] = $row->class_name;
     if (HAS_PRI("edit_user_profile")) {
         $view_class[$cnt][3] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
@@ -308,6 +307,7 @@ while ($row = $result->fetch_object()) {
                     <div class="am-form-group" style="white-space: nowrap;">
                         <label class="am-u-sm-4 am-form-label"><?php echo $MSG_Enrollment_Year ?>:</label>
                         <select name="year" style="width:220px;" class="am-u-sm-8 am-u-end">
+                            <option value='0'>无入学年份</option>
                             <?php
                             for ($i = 5; $i >= -4; $i--) {
                                 $eyear = date("Y", strtotime("-{$i} year"));
