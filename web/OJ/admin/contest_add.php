@@ -311,8 +311,14 @@ else if(isset($_POST['problem2contest'])){
   </p>
     <table >
     <tr>
+        <td><strong><?php echo $MSG_LANG ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_PROBLEM_ID ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_SCORE ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_CONTEST."-".$MSG_USER ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_RankingExcludedUsers ?>&nbsp;:</strong></td>
+    </tr>
+    <tr>
         <td>
-        <strong><?php echo $MSG_LANG ?>&nbsp;:</strong><br />
   <select name="lang[]" size="13"  multiple="multiple" required>
       <?php
       $lang_count=count($language_ext);
@@ -329,23 +335,43 @@ else if(isset($_POST['problem2contest'])){
           echo  "<option value=$j ".( $lang&(1<<$j)?"selected":"").">".$language_name[$j]."</option>\n";
       }
       ?>
-  </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td><td>
-  <strong><?php echo $MSG_PROBLEM_ID ?>&nbsp;:</strong><br />
   <textarea name="cproblem" cols="15" rows="10" required placeholder="*示例:<?php echo "\n"?>1000<?php echo "\n"?>1001<?php echo "\n"?>1002<?php echo "\n"?>"><?php if(isset($plist)){ echo $plist;}?></textarea>
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
   </td><td>
-  <strong><?php echo $MSG_SCORE ?>&nbsp;:</strong><br />
   <textarea name="score_list" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>100<?php echo "\n"?>100<?php echo "\n"?>100<?php echo "\n"?>每题所占分值，留空则默认每题100分。"><?php if(isset($slist)){ echo $slist;}?></textarea>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  </td><td>
- <strong><?php echo $MSG_CONTEST."-".$MSG_USER ?>&nbsp;:</strong><br />
-  <textarea name="ulist" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>可以将学生用户名从Excel整列复制过来，学生登录后就能免密进入<?php echo $MSG_Private ?>的比赛作为作业和测验。"><?php if(isset($ulist)){ echo $ulist;}?></textarea>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <textarea id="ulist" name="ulist" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>可以将学生用户名从Excel整列复制过来，或者在下方班级列表中选择班级加入，学生登录后就能免密进入<?php echo $MSG_Private ?>的比赛作为作业和测验。"><?php if(isset($ulist)){ echo $ulist;}?></textarea>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td><td>
-  <strong><?php echo $MSG_RankingExcludedUsers ?>&nbsp;:</strong><br />
   <textarea name="ex_ulist" cols="15" rows="10" placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>填入不参与比赛排名的用户名。"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
         </td>
     </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>
+    <select multiple name="class" class="selectpicker show-tick" data-live-search="true" data-width="150px" onchange='getUserList($(this).val());'>
+    <option value=''></option>
+      <?php
+        require_once("../include/classList.inc.php");
+        $classList = get_classlist(false, "");
+        foreach ($classList as $c){
+          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
+          foreach ($c[1] as $cl){
+            echo "<option value='$cl'>$cl</option>\n";
+          }
+          echo "</optgroup>\n";
+        }
+      ?>
+    </select>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
 </table><br>
   <p align=left><strong><?php echo $MSG_Description ?>:</strong><br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea></p>
     
@@ -353,7 +379,21 @@ else if(isset($_POST['problem2contest'])){
   
   </td></tr></table>
   </form>
-
+<script type="text/javascript">
+function getUserList(classes){
+  //console.log(classes);
+  $.ajax({
+    type: "POST",
+    url: "./ajax.php?getUserList",
+    data: {"classes":classes},
+    dataType: "text",
+    success: function(res){
+      $("#ulist").val(res);
+      //console.log(res)
+    }
+  });
+}
+</script>
 <?php 
   require_once("admin-footer.php")
 ?>
