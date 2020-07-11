@@ -56,13 +56,11 @@ function generate_url($data){
         <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ ?>
         <div class='am-form-group'>
           <select data-am-selected="{searchBox: 1, maxHeight: 400}" id='class' name='class' style='width:110px' onchange='javascript:document.getElementById("searchform").submit();'>
-            <option value='all' <?php if (isset($_GET['class']) && $_GET['class']=="" || !isset($_GET['class'])) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+            <option value='all' <?php if (isset($_GET['class']) && $_GET['class']=="" || !isset($_GET['class'])) echo "selected"; ?>> <?php echo $MSG_ALL. $MSG_Class ?></option>
           <?php
             foreach($classSet as $class) {
-              $selected = "";
-              $class=substr($class, 5);
-              if (isset($_GET['class']) && $_GET['class']==$class) $selected = "selected";
-              echo "<option value='".$class."' ".$selected.">".$class."</option>";
+              if (isset($_GET['class']) && $_GET['class']==$class["class"]) $selected = "selected"; else $selected = "";
+              echo "<option value='".$class["class"]."' ".$selected.">".$class["grade"].$class["class"]."</option>";
             }
           ?>
           </select>

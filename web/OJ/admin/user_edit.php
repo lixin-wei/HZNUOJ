@@ -485,7 +485,7 @@ if(isset($_GET['team'])) {
           <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="340px">
             <?php 
               foreach ($classList as $c){
-                  if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                  if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                   foreach ($c[1] as $cl){
                     if($cl == $class) $selected = "selected"; else $selected ="";
                     echo "<option value='$cl' $selected>$cl</option>\n";

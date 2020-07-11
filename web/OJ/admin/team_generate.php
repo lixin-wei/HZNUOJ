@@ -159,7 +159,7 @@ if (isset($_POST['add'])) {
           <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="250px" required>
             <?php
             foreach ($classList as $c) {
-              if ($c[0]) echo "<optgroup label='$c[0]级'>\n";
+              if ($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
               foreach ($c[1] as $cl) {
                 echo "<option value='$cl'>$cl</option>\n";
               }

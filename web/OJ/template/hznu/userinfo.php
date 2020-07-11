@@ -74,7 +74,7 @@ require_once("header.php");
                   <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'100%'}">
                     <?php 
                       foreach ($classList as $c){
-                          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                           foreach ($c[1] as $cl){
                             if($cl == $class) $selected = "selected"; else $selected ="";
                             echo "<option value='$cl' $selected>$cl</option>\n";

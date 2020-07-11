@@ -438,7 +438,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                                 require_once("../include/classList.inc.php");
                                 $classList = get_classlist(false, "c.`class_name` NOT IN (SELECT `class_name` FROM `reg_code`)");
                                 foreach ($classList as $c) {
-                                    if ($c[0]) echo "<optgroup label='$c[0]级'>\n";
+                                    if ($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                                     foreach ($c[1] as $cl) {
                                         echo "<option value='$cl'>$cl</option>\n";
                                     }
