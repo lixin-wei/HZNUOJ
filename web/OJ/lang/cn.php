@@ -247,6 +247,7 @@
   $MSG_FastTrack = "快速通道";
   $MSG_ChangeClass = "批量分班";
   $MSG_CourseSet = "课程设置";
+  $MSG_UpdateScores = "更新题目分值";
   
   //contest
   $MSG_PRIVATE_WARNING="私有比赛或考试作业，您无权查看题目。";

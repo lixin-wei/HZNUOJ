@@ -247,6 +247,7 @@
   $MSG_FastTrack = "Fast Track";
   $MSG_ChangeClass = "Change Classes";
   $MSG_CourseSet = "Course Set";
+  $MSG_UpdateScores = "Update Problem's Scores";
    
   //contest.php
   $MSG_PRIVATE_WARNING="This is a private contest which you don't have privilege.";
