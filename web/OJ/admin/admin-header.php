@@ -80,8 +80,11 @@ require_once("$baseDir/include/db_info.inc.php");
             $html_li .= "<li><a href='$urlbaseDir/problem_list.php'>$MSG_PROBLEM$MSG_LIST</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/problem_edit.php?new_problem'>$MSG_ADD$MSG_PROBLEM</a></li>";            
           }
-          if(HAS_PRI("inner_function")) $html_li.="<li><a href='$urlbaseDir/problem_set.php'>$MSG_PROBLEMSET$MSG_LIST</a></li>";
           if(HAS_PRI("edit_contest")) $html_li.="<li><a href='$urlbaseDir/course.php'>$MSG_CourseSet</a></li>";
+          if(HAS_PRI("inner_function")) {
+            $html_li.="<li><a href='$urlbaseDir/problem_set.php'>$MSG_PROBLEMSET$MSG_LIST</a></li>";
+            $html_li.="<li><a href='$urlbaseDir/updateScores.php'>$MSG_UpdateScores</a></li>";
+          }
           if($html_li!=""){
             echo<<<sss
             <li class="dropdown">
@@ -177,6 +180,8 @@ sss;
 
           $html_li="";
           if(HAS_PRI("inner_function")){
+            $html_li .= "<li><a href='$urlbaseDir/problem_set.php'>$MSG_PROBLEMSET$MSG_LIST</a></li>";
+            $html_li .= "<li><a href='$urlbaseDir/updateScores.php'>$MSG_UpdateScores</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/source_give.php'>$MSG_GIVESOURCE</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/problem_export.php'>$MSG_EXPORT$MSG_PROBLEM</a></li>";
             $html_li .= "<li><a href='$urlbaseDir/problem_import.php'>$MSG_IMPORT$MSG_PROBLEM</a></li>";
