@@ -21,7 +21,7 @@
   <!-- 工具栏 start -->
   <div class='am-text-center'>
     <?php 
-      if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank.php?cid=".$cid."&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;&nbsp;&nbsp;";
+      if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank.php?cid=".$cid."&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;";
       // if (!$_GET['scroll'])
       //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
       // else 
@@ -29,12 +29,12 @@
      if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
       if(HAS_PRI('see_hidden_user_info')) {
         if ($real_name_mode) {
-            echo "[ <a href='contestrank.php?cid=$cid'>Normal mode</a> ]";
+            echo "[ <a href='contestrank.php?cid=$cid'>$MSG_Normal_Mode</a> ]";
         }
-        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>Real Name Mode</a> ]";
+        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>$MSG_RealName_Mode</a> ]";
       }
     ?>
-    [ Choose Class
+    [ <?php echo $MSG_Class ?>
       <select id="class">
         <option value="" <?php if ($_GET['class']=="") echo "selected"; ?> ><?php echo $MSG_ALL ?></option>
         <option value="null" <?php if ($_GET['class']=="null") echo "selected"; ?> >其它</option>

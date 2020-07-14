@@ -75,6 +75,8 @@
   $MSG_USER = "用户";
   $MSG_PENALTY = "累计时间";
   $MSG_DOWNLOAD_RANK = "下载排名";
+  $MSG_Normal_Mode = "普通模式";
+  $MSG_RealName_Mode = "实名模式";
   
   //其他
   $MSG_SUBMISSIONS = "提交量";

@@ -75,6 +75,8 @@
   $MSG_REAL_NAME = "Real name";
   $MSG_PENALTY = "Penalty";
   $MSG_DOWNLOAD_RANK = "Download Rank";
+  $MSG_Normal_Mode = "Normal Mode";
+  $MSG_RealName_Mode = "Real Name Mode";
       
    //其他
   $MSG_SUBMISSIONS = "Submissions";
