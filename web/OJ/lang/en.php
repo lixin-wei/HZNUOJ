@@ -338,6 +338,7 @@
   $MSG_HELP_edit_contest1 = "edit and add contest.";
   $MSG_HELP_edit_contest2 = "you can enter any contest in passing. ";
   $MSG_HELP_edit_contest3 = "you can see problem ID even when contest is running. ";
+  $MSG_HELP_edit_contest4 = "You can add/delete/edit course, section and their problems. ";
   $MSG_download_ranklist ="download_ranklist";
   $MSG_generate_team ="generate_team";
   $MSG_HELP_generate_team ="Generate accounts and passwords in batches.";

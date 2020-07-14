@@ -136,6 +136,9 @@ if($_POST['data']){
             <li>
             <?php echo $MSG_HELP_edit_contest3 ?>
             </li>
+            <li>
+            <?php echo $MSG_HELP_edit_contest4 ?>
+            </li>
           </ul>
         </li>
         <li>

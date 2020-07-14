@@ -338,6 +338,7 @@
   $MSG_HELP_edit_contest1 = "可以添加和编辑".$MSG_CONTEST."。";
   $MSG_HELP_edit_contest2 = "可以查看任何已结束的".$MSG_CONTEST."。";
   $MSG_HELP_edit_contest3 = "可以在未结束的".$MSG_CONTEST."中查看原始".$MSG_PROBLEM_ID."。";
+  $MSG_HELP_edit_contest4 = "可以添加、删除、编辑课程辅助中的课程/章节及相关题目。";
   $MSG_download_ranklist = $MSG_DOWNLOAD_RANK;
   $MSG_generate_team ="账号生成";
   $MSG_HELP_generate_team ="批量生成比赛帐号以及批量导入普通账号。";
@@ -347,7 +348,7 @@
   $MSG_HELP_edit_privilege_group ="添加、删除指定用户的".$MSG_PRIVILEGE."。";
   $MSG_edit_privilege_distribution=$MSG_Distribution;
   $MSG_inner_function ="内建功能";
-  $MSG_HELP_inner_function ="一些不常用或者较为危险的功能";
+  $MSG_HELP_inner_function ="一些不常用（如题库管理、题目分值更新、题目导入导出）或者较为危险的功能（修改原始题号）等";
   $MSG_edit_xx_problem = "edit_xx_problem";
   $MSG_HELP_edit_xx_problem1 = "可以在xx".$MSG_PROBLEMSET."中".$MSG_EDIT.$MSG_PROBLEM."以及查看相关数据。";
   $MSG_see_hidden_xx_problem ="see_hidden_xx_problem";
