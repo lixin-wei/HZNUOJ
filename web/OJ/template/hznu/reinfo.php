@@ -25,7 +25,7 @@
       var pats=new Array();
       var exps=new Array();
       pats[0]=/A Not allowed system call.* /;
-      exps[0]="使用了系统禁止的操作系统调用，看看是否越权访问了文件或进程等资源";
+      exps[0]="使用了系统禁止的操作系统调用，看看是否越权访问了文件或进程等资源。<br>此类问题常见为程序运行超时，比如死循环或者循环时间过长超过规定时间";
       pats[1]=/Segmentation fault/;
       exps[1]="段错误，检查是否有数组越界，指针异常，访问到不应该访问的内存区域";
       pats[2]=/Floating point exception/;
