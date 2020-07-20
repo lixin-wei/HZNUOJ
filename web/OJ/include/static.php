@@ -39,7 +39,7 @@
   static  $OJ_VCODE=true; // 是否开启验证码
   static  $OJ_APPENDCODE=true; // 是否启用自动添加代码，启用的话，提交时会参考$OJ_DATA对应题目的目录里是否有append.c、prepend.c一类的文件，
                                  //有的话会把其中代码附加到对应语言的提交代码之前（prepend.c加到C语言代码之前）或之后（append.c加到C语言代码之后），
-                                 //C++代码是append.cc、append.cc等，对应的后缀名见/include/const.inc.php的$language_ext数组，
+                                 //C++代码是append.cc、prepend.cc等，对应的后缀名见/include/const.inc.php的$language_ext数组，
                                  //巧妙使用可以指定main函数而要求学生编写main部分调用的函数。
   static  $OJ_MEMCACHE=false;//是否使用memcache作为页面缓存，如果不启用则用/cache目录
   static  $OJ_MEMSERVER="127.0.0.1";//memcached的服务器地址
@@ -57,12 +57,14 @@
   static $VIDEO_SUBMIT_TIME=3;// can see video after
 
   static  $OJ_REGISTER=true; //允许注册新用户
-  static  $OJ_REG_NEED_CONFIRM="pwd"; //新注册用户需要审核，四种模式
+  static  $OJ_REG_NEED_CONFIRM="pwd"; //新注册用户模式，共四种模式
                                    //开放模式，值为"off"，注册无限制，账号注册后立即激活
                                    //审核模式，值为"on"，注册无限制，账号注册后需要管理员后台审核激活
                                    //密码模式，值为"pwd"，凭后台设置的班级+注册码进行注册（注册码可设定注册次数），账号注册后立即激活
                                    //密码+审核模式，值为"pwd+confirm"，基础功能同密码模式，但是账号注册后并不是立即激活，而是还需管理员后台审核激活
   static  $OJ_NEED_CLASSMODE=true;//是否开启班级模式，包括显示班级、学号、真名
+  static  $OJ_show_PrinterAndDiscussInContest=true;//是否在比赛页面显示Code Printer和Discuss的链接
+  static  $OJ_show_contestSolutionInStatus=false;//是否在status.php中显示contest中提交的代码
 
   /* Email configuration */
   static $SMTP_SERVER="smtp.exmail.qq.com";

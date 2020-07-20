@@ -89,8 +89,9 @@
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql=" WHERE (contest_id is null OR contest_id=0) ";//若要在主状态页面中显示contest中提交的代码，注释本行代码，并启用下一行代码
-    //$sql=" WHERE 1 ";
+    if(isset($OJ_show_contestSolutionInStatus)&&$OJ_show_contestSolutionInStatus){
+      $sql=" WHERE 1 "; //要在主状态页面中显示contest中提交的代码
+    } else $sql=" WHERE (contest_id is null OR contest_id=0) ";//不在主状态页面中显示contest中提交的代码
   }
   
   $order_str=" ORDER BY `solution_id` DESC ";

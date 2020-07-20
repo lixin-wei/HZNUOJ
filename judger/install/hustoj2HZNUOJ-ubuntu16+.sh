@@ -120,7 +120,7 @@ else
     sed -i "s/OJ_SIM_ENABLE=0/OJ_SIM_ENABLE=1/g" /home/judge/etc/judge.conf
 fi
 echo ""
-echo "7-Please select trun on/off show the contest's solution in status page.(/status.php)"
+echo "7-Please select trun on/off show the contest's solution in status page.(argument:\$OJ_show_contestSolutionInStatus)"
 echo "1) Trun on  (contest's solution will be show in status page and contest-status page.)"
 echo "2) Trun off (contest's solution will be show in contest-status page only.)"
 temp=0
@@ -131,8 +131,9 @@ do
 done
 if test $temp = 1
 then
-    sed -i "s/\$sql=\" WHERE (contest_id is null OR contest_id=0) \";/\/\/\$sql=\" WHERE (contest_id is null OR contest_id=0) \";/g" $WEBBASE/status.php
-    sed -i "s/\/\/\$sql=\" WHERE 1 \";/\$sql=\" WHERE 1 \";/g" $WEBBASE/status.php
+    sed -i "s/OJ_show_contestSolutionInStatus=false/OJ_show_contestSolutionInStatus=true/g" $WEBBASE/include/static.php
+else
+    sed -i "s/OJ_show_contestSolutionInStatus=true/OJ_show_contestSolutionInStatus=false/g" $WEBBASE/include/static.php
 fi
 echo "The update have successfully completed!"
 echo ""

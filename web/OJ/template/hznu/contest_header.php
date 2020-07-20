@@ -129,8 +129,10 @@ if(isset($_GET['cid'])){
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank.php"){echo "class='am-active'";} ?>><a href='./contestrank.php?cid=<?php echo $cid?>'><?php echo $MSG_RANKLIST ?></a></li>
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contestrank-oi.php"){echo "class='am-active'";} ?>><a href='./contestrank-oi.php?cid=<?php echo $cid?>'>OI <?php echo $MSG_RANKLIST ?></a></li>
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="conteststatistics.php"){echo "class='am-active'";} ?>><a href='./conteststatistics.php?cid=<?php echo $cid?>'><?php echo $MSG_STATISTICS ?></a></li>
+        <?php if(isset($OJ_show_PrinterAndDiscussInContest)&&$OJ_show_PrinterAndDiscussInContest){?>
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_code_printer.php"){echo "class='am-active'";} ?>><a href='./contest_code_printer.php?cid=<?php echo $cid?>'>Printer</a></li>     
         <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="contest_discuss.php"){echo "class='am-active'";} ?>><a href='./contest_discuss.php?cid=<?php echo $cid?>'>Discuss</a></li>   
+        <?php }?>
       </ul>
         <!-- 用户部分 start -->
         <?php
