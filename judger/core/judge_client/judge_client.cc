@@ -1042,6 +1042,48 @@ void _update_problem_mysql(int p_id)
           p_id, p_id);
   if (mysql_real_query(conn, sql, strlen(sql)))
     write_log(mysql_error(conn));
+  //动态计算题目分值 start
+  MYSQL_RES *res;
+  MYSQL_ROW row;
+
+  // get user numbers
+  int user_cnt = 1;
+  sprintf(sql,"SELECT count(*) as num FROM `users` WHERE `solved`>10");
+  mysql_real_query(conn, sql, strlen(sql));
+  res = mysql_store_result(conn);
+  row = mysql_fetch_row(res);
+  if(atoi(row[0])>user_cnt) user_cnt = atoi(row[0]);
+
+  // get AC user numbers
+  sprintf(sql,"SELECT count(DISTINCT `user_id`) AS num FROM `solution` WHERE `result`=4 AND `problem_id`=\'%d\'", p_id);
+  mysql_real_query(conn, sql, strlen(sql));
+  res = mysql_store_result(conn);
+  row = mysql_fetch_row(res);
+  int solved_user = atoi(row[0]);
+
+  // get submit user numbers
+  sprintf(sql,"SELECT count(DISTINCT `user_id`) AS num FROM `solution` WHERE `problem_id`=\'%d\'", p_id);
+  mysql_real_query(conn, sql, strlen(sql));
+  res = mysql_store_result(conn);
+  row = mysql_fetch_row(res);
+  int submit_user = atoi(row[0]);
+
+  if (res != NULL)
+  {
+    mysql_free_result(res); // free the memory
+    res = NULL;
+  }
+
+  // calculate scores
+  float scores = 100.0 * (1 - (solved_user + submit_user / 2.0) / user_cnt);
+  if (scores < 10) scores = 10;
+
+  sprintf(sql,
+          "UPDATE `problem` SET `solved_user`=\'%d\', `submit_user`=\'%d\',`score`=\'%f\' WHERE `problem_id`=\'%d\'",
+          solved_user, submit_user, scores, p_id);
+  if (mysql_real_query(conn, sql, strlen(sql)))
+    write_log(mysql_error(conn));
+  //动态计算题目分值 end
 }
 #endif
 void update_problem(int pid)
