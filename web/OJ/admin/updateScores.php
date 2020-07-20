@@ -12,7 +12,7 @@ if (!HAS_PRI("inner_function")) {
 $sql = "SELECT count(*) as num FROM users WHERE solved>10";
 $result_user  = $mysqli->query($sql) or die($mysqli->error);
 $row = $result_user->fetch_object();
-$user_cnt = $row->num;
+$user_cnt = $row->num?$row->num:1;
 $result_user->free();
 //echo $user_cnt;
 
