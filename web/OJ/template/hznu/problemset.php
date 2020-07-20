@@ -177,7 +177,7 @@ function generate_url($data){
             cursor: pointer;
           }
         </style>
-        <th id="score" class='am-text-center' style='width:1%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
+        <th id="score" class='am-text-left' style='width:1%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
       </thead>
       <tbody>

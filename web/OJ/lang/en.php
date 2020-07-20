@@ -201,7 +201,7 @@
   $MSG_Samples = "Samples";
   $MSG_Sample_Input= "Sample Input" ;
   $MSG_Sample_Output= "Sample Output" ;
-  $MSG_HINT= "HINT" ;
+  $MSG_HINT= "Hint" ;
   $MSG_Source= "Source/Category" ;
   $MSG_Limit = "Limit";
   $MSG_Times = "Time";

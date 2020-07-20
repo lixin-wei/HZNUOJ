@@ -7,9 +7,10 @@
 ?>
 <?php if(!session_id()) @session_start();
 
-ini_set("display_errors","Off");
-//ini_set("display_errors",true);
-//error_reporting(E_ALL^E_NOTICE^E_WARNING);
+//ini_set("display_errors","Off");
+ini_set("display_errors",true);//不设置为显示错误信息，阿
+error_reporting(E_CORE_ERROR); //里云上有时会遇到502 bad gateway错误
+//error_reporting(E_ALL^E_NOTICE^E_WARNING);//调试用
 require_once("static.php");
 
 //if(date('H')<5||date('H')>21||isset($_GET['dark'])) $OJ_CSS="dark.css";

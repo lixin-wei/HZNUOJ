@@ -25,6 +25,14 @@
     $author = $mysqli->real_escape_string($author);
     $source=$mysqli->real_escape_string($source);
   //  $spj=($spj);
+    $sql = "SELECT * FROM `problemset` WHERE `set_name`='$problemset'";
+    $result = @$mysqli->query ( $sql );
+    if($row=$result->fetch_object()){
+      $problemset2=$problemset."【".$row->set_name_show."】";
+    } else {
+      $problemset="default";
+      $problemset2="default";
+    }
     $sql = "INSERT into `problem` (`problemset`,`title`,`time_limit`,`memory_limit`,
     `description`,`input`,`output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
     VALUES('$problemset','$title','$time_limit','$memory_limit','$description','$input',
@@ -32,10 +40,10 @@
     @$mysqli->query ( $sql ) or die ( $mysqli->error );
     $pid = $mysqli->insert_id;
     // echo $sql;
-    echo $MSG_PROBLEMSET.':'.$problemset;
+    echo $MSG_PROBLEMSET.' : '.$problemset2;
     //echo "<pre>".$sql."</pre>";
     echo "<br>$MSG_ADD $pid ";
-    if (isset ( $_POST ['contest_id'] )) {
+    if (isset ( $_POST['contest_id'] ) && $_POST['contest_id']!="") {
       $sql = "SELECT count(*) FROM `contest_problem` WHERE `contest_id`=" . strval ( intval ( $_POST ['contest_id'] ) );
       $result = @$mysqli->query ( $sql ) or die ( $mysqli->error );
       $row = $result->fetch_row();

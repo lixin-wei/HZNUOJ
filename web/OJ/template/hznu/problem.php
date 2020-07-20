@@ -318,10 +318,10 @@ HTML;
       if (!isset($_GET['cid'])) { // hide source if the problem is in contest
           $str=sss($row->source);
             $view_source = "<div pid='".$row->problem_id."' fd='source' class='center'>\n";
-            if(HAS_PRI("edit_".$set_name."_problem")) {
-                $view_source .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
-            }
             $view_source .= show_category($str,"default");
+            if(HAS_PRI("edit_".$set_name."_problem")) {
+              $view_source .="<span><span class='am-icon-plus' pid='$row->problem_id' style='cursor: pointer;' onclick='problem_add_source(this,\"$row->problem_id\");'></span></span>&nbsp;\n";
+            }
             $view_source .= "</div>";
             if($str || HAS_PRI("edit_".$set_name."_problem")) {
               echo <<<HTML

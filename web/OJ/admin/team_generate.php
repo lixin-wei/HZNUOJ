@@ -135,7 +135,7 @@ if (isset($_POST['add'])) {
     <font size='2px' color='red'>
       使用指南：<br />
       <ol>
-        <li><?php echo $MSG_SCHOOL ?>、<?php echo $MSG_Class ?>和<?php echo $MSG_NICK ?>为选填项，其余必填，此处分<?php echo $MSG_Class ?>创建<?php echo $MSG_TEAM ?>是为了方便在contestranklist中分班级进行排名；</li>
+        <li><?php echo $MSG_SCHOOL ?>和<?php echo $MSG_NICK ?>为选填项，其余必填，此处分<?php echo $MSG_Class ?>创建<?php echo $MSG_TEAM ?>是为了方便在contestranklist比赛排名页中按班级进行排名；</li>
         <li><?php echo $MSG_TEAM ?>前缀名（Prefix）不能超过20个字符，此外若填入<?php echo $MSG_NICK ?>表示指定账号的nick</li>
         <li>若不小心创建了过多的账号，请登录管理员账号在 <?php echo $MSG_USER . $MSG_LIST ?>-><?php echo $MSG_TEAM ?> 中删除。</li>
       </ol>
@@ -154,14 +154,16 @@ if (isset($_POST['add'])) {
       ?>
         <div class="am-form-group">
           <label class="am-u-sm-4 am-form-label" style="white-space: nowrap;">
-            <?php echo $MSG_Class ?>:
+          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Class ?>:
           </label>
           <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="250px" required>
             <?php
             foreach ($classList as $c) {
               if ($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
               foreach ($c[1] as $cl) {
-                echo "<option value='$cl'>$cl</option>\n";
+                echo "<option value='$cl' ";
+                if ($cl=="其它") echo "selected";
+                echo ">$cl</option>\n";
               }
               if ($c[0]) echo "</optgroup>\n";
             }

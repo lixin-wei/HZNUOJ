@@ -208,7 +208,7 @@ while ($row=$result->fetch_object()) {
     $view_problemset[$i][5] .= "</div></td>";
     // 题目来源 ajax html代码 end
     $view_problemset[$i][6]="<td style='text-align:left;'><a href='status.php?problem_id=".$row->problem_id."&jresult=4'>".$row->accepted."</a>/<a href='status.php?problem_id=".$row->problem_id."'>".$row->submit."</a></td>";
-    $view_problemset[$i][7]="<td>".round($row->score)."</td>";
+    $view_problemset[$i][7]="<td style='text-align:left;'>".round($row->score,2)."</td>";
     $i++;
 }
 $result->free();

@@ -187,7 +187,7 @@ SQL;
         <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
             <div class="am-g">
                 <div class="am-u-sm-2">
-                    <label class="am-form-label"><?php echo $MSG_Class ?>:</label><textarea name="class" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_Class ?>占1行<?php echo "\n" . $MSG_Class_Name . "1\n" . $MSG_Class_Name . "2\n" . $MSG_Class_Name . "3\n若行数不足，剩余" . $MSG_USER . "的此项信息将空白。" ?> "></textarea>
+                    <label class="am-form-label"><?php echo $MSG_Class ?>:</label><textarea name="class" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_Class_Name ?>占1行<?php echo "\n" . $MSG_Class_Name . "1\n" . $MSG_Class_Name . "2\n" . $MSG_Class_Name . "3\n若行数不足，剩余" . $MSG_USER . "将归到班级“其它”。" ?> "></textarea>
                 </div>
                 <div class="am-u-sm-2">
                     <label class="am-form-label"><?php echo $MSG_REAL_NAME ?>:</label><textarea name="real_name" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_REAL_NAME ?>占1行<?php echo "\n" . $MSG_REAL_NAME . "1\n" . $MSG_REAL_NAME . "2\n" . $MSG_REAL_NAME . "3\n每个限20个以内的汉字、字母、数字或下划线，若行数不足，剩余" . $MSG_USER . "的此项信息将空白。" ?> "></textarea>

@@ -307,7 +307,7 @@ for ($i=$result->num_rows;$i>0;$i--){
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>
-    <select multiple name="class" class="selectpicker show-tick" data-live-search="true" data-width="150px" onchange='getUserList($(this).val());'>
+    <select multiple name="class" class="selectpicker show-tick" data-live-search="true" data-width="150px" onchange='getUserList($(this).val());' data-title="选择<?php echo $MSG_Class ?>">
     <option value=''></option>
       <?php
         require_once("../include/classList.inc.php");
@@ -325,7 +325,7 @@ for ($i=$result->num_rows;$i>0;$i--){
     <td>&nbsp;</td>
   </tr>
 </table><br>
-  <p align=left><strong><?php echo $MSG_Description ?>:</strong><br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea></p>
+  <p align=left><strong><?php echo $MSG_NEWS ?>:</strong><br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea></p>
     
   <p><input type=submit value="<?php echo $MSG_SUBMIT ?>" name=submit>&nbsp;<input type=reset value="<?php echo $MSG_RESET ?>" name=reset></p>
   

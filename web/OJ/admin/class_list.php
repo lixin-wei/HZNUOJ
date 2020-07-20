@@ -60,7 +60,8 @@ if (isset($_GET['zero'])){
 }
 $leftJoin = " LEFT JOIN (SELECT `users`.`class`, COUNT(`users`.`user_id`) AS stu_num FROM `users` GROUP BY `users`.`class`) AS u  ON `class_name`= u.`class` ";
 $leftJoin .= " LEFT JOIN (SELECT `team`.`class`, COUNT(`team`.`user_id`) AS team_account_num FROM `team` GROUP BY `team`.`class`) AS t ON `class_name`= t.`class`";
-$sql0 = "SELECT COUNT(`class_name`) FROM `class_list` " . $leftJoin . $sql_filter;
+$leftJoin = " FROM `class_list` " . $leftJoin;
+$sql0 = "SELECT COUNT(`class_name`)" . $leftJoin . $sql_filter;
 $result = $mysqli->query($sql0)->fetch_all();
 $total = 0;
 if ($result) $total = $result[0][0];
@@ -75,7 +76,7 @@ switch ($args['sort_method']) {
     case 'class_DESC':
         $class_icon = "am-icon-sort-amount-desc";
         $year_icon = "am-icon-sort";
-        $sql_order = " ORDER BY `class_name` DESC ";
+        $sql_order = " ORDER BY od,`class_name` DESC ";
         $class = 'class_ASC';
         $year = 'year_DESC';
         break;
@@ -83,7 +84,7 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort-amount-asc";
         $year_icon = "am-icon-sort";
         $strength_icon = "am-icon-sort";
-        $sql_order = " ORDER BY `class_name` ";
+        $sql_order = " ORDER BY od,`class_name` ";
         $class = 'class_DESC';
         $year = 'year_DESC';
         break;
@@ -91,7 +92,7 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort";
         $year_icon = "am-icon-sort-amount-asc";
         $strength_icon = "am-icon-sort";
-        $sql_order = " ORDER BY `enrollment_year`, `class_name`";
+        $sql_order = " ORDER BY od,`enrollment_year`, `class_name`";
         $class = 'class_DESC';
         $year = 'year_DESC';
         break;
@@ -100,7 +101,7 @@ switch ($args['sort_method']) {
         $class_icon = "am-icon-sort";
         $year_icon = "am-icon-sort-amount-desc";
         $strength_icon = "am-icon-sort";
-        $sql_order = " ORDER BY `enrollment_year` DESC, `class_name` ";
+        $sql_order = " ORDER BY od,`enrollment_year` DESC, `class_name` ";
         $class = 'class_DESC';
         $year = 'year_ASC';
         break;
@@ -113,8 +114,8 @@ $view_class[$cnt][2] = "其它";
 $view_class[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
 $view_class[$cnt][4] = "<span class='btn btn-primary' disabled>$MSG_EDIT</span>";
 
-$sql = "SELECT `class_list`.*, stu_num, team_account_num FROM `class_list` " . $leftJoin;
-$sql_other = $sql . " WHERE `class_name`='其它'";
+$sql = "SELECT `class_list`.*, stu_num, team_account_num";
+$sql_other = $sql. $leftJoin . " WHERE `class_name`='其它'";
 $result = $mysqli->query($sql_other);
 if ($row = $result->fetch_object()) {
     if (!$row->stu_num) $row->stu_num = 0;
@@ -135,7 +136,7 @@ if ($row = $result->fetch_object()) {
     $view_class[$cnt][5] = $MSG_Stu_List . "(0)";
 }
 
-$sql = $sql.$sql_filter." AND `enrollment_year`=0 UNION (".$sql.$sql_filter." AND `enrollment_year`<>0 ".$sql_order .") LIMIT $left_bound, $page_cnt";
+$sql = $sql.", 0 as od ".$leftJoin.$sql_filter." AND `enrollment_year`=0 UNION ALL (".$sql.", 1 as od ".$leftJoin.$sql_filter." AND `enrollment_year`<>0) ".$sql_order ." LIMIT $left_bound, $page_cnt";
 $result = $mysqli->query($sql);
 while ($row = $result->fetch_object()) {
     if (!$row->stu_num) $row->stu_num = 0;
@@ -145,7 +146,7 @@ while ($row = $result->fetch_object()) {
     $view_class[$cnt][1] = $row->enrollment_year==0?"":$row->enrollment_year . "级";
     $view_class[$cnt][2] = $row->class_name;
     if (HAS_PRI("edit_user_profile")) {
-        $view_class[$cnt][3] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+        $view_class[$cnt][3] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL $row->class_name ?\")) location.href=\"class_edit.php?del&cid=".urlencode($row->class_name)."&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
         $view_class[$cnt][4] = "<a class='btn btn-primary' href='" . generate_url("", "class_edit.php") . "&cid=".urlencode($row->class_name)."'>$MSG_EDIT</a>";
     } else {
         $view_class[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
@@ -188,7 +189,7 @@ while ($row = $result->fetch_object()) {
     <form id="searchform" class="am-form am-form-inline">
         <div class='am-form-group'>
             <select class="selectpicker show-tick" data-live-search="true" name='year' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                <option value='all' <?php if (isset($_GET['year']) && ($_GET['year'] == "" || $_GET['year'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                <option value='all' <?php if (isset($_GET['year']) && ($_GET['year'] == "" || $_GET['year'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Enrollment_Year ?></option>
                 <?php
                 $sql = "SELECT DISTINCT `enrollment_year` FROM `class_list` WHERE `class_name`<> '其它' ORDER BY `enrollment_year` DESC";
                 $result = $mysqli->query($sql);
@@ -197,14 +198,14 @@ while ($row = $result->fetch_object()) {
                 foreach ($years as $row) {
                     echo "<option value='" . $row[0] . "' ";
                     if ($args['year'] == $row[0])  echo "selected";
-                    echo ">$row[0]级</option>";
+                    echo $row[0]?">$row[0]级</option>":">无$MSG_Enrollment_Year</option>";
                 }
                 ?>
             </select>
         </div>
         <div class='am-form-group'>
             <select class="selectpicker show-tick" name='zero' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                <option value='all' <?php if (isset($_GET['zero']) && $_GET['zero'] != "y" && $_GET['zero'] != "n") echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                <option value='all' <?php if (isset($_GET['zero']) && $_GET['zero'] != "y" && $_GET['zero'] != "n") echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_STATUS ?></option>
                 <option value='y' <?php if (isset($_GET['zero']) && $_GET['zero'] == "y") echo "selected"; ?>><?php echo $MSG_Empty_Class ?></option>
                 <option value='n' <?php if (isset($_GET['zero']) && $_GET['zero'] == "n") echo "selected"; ?>><?php echo $MSG_Not_Empty_Class ?></option>
             </select>
@@ -299,7 +300,7 @@ while ($row = $result->fetch_object()) {
     <div class="am-u-sm-4">
         <section class="am-panel am-panel-primary">
             <header class="am-panel-hd">
-                <h3 class="am-panel-title"><b><?php echo $MSG_ADD . $MSG_Class_Name ?></b></h3>
+                <h3 class="am-panel-title"><b><?php echo $MSG_ADD . $MSG_Class ?></b></h3>
             </header>
             <main class="am-panel-bd" style="margin-left: 0px;">
                 <form class="am-form am-form-horizontal" action="class_edit.php" method="POST">

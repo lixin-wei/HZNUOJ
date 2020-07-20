@@ -235,7 +235,7 @@ $result->free();
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Enrollment_Year ?>:</label>
       <div class="am-u-sm-8">
-        <label class="am-form-label"><?php echo $view_class['enrollment_year'] ?></label>
+        <label class="am-form-label"><?php echo $view_class['enrollment_year']>0?$view_class['enrollment_year']:"无"; ?></label>
       </div>
     </div>
     <div class="am-form-group" style="white-space: nowrap;">
