@@ -95,17 +95,16 @@
       <div class="am-collapse am-topbar-collapse" id="collapse-head">
         <ul class="am-nav am-nav-pills am-topbar-nav">
 
-        <?php 
-        $page_name=basename($_SERVER['SCRIPT_NAME']);
-        if (!isset($_SESSION['contest_id'])) { ?>
-          <!-- ProblemSet部分 start -->
+        <?php $page_name=basename($_SERVER['SCRIPT_NAME']);?>
+          <!-- Contest部分 start -->
           <li <?php
-          if($page_name=="problemset.php" || $page_name=="problem.php") {
-            echo "class='am-active'";
+          if($page_name=="contest.php" || $page_name=="recent-contest.php") {
+              echo "class='am-active'";
           }
-          ?>><a href="./problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
-          <!-- ProblemSet部分 end -->
-          
+          ?>><a href="./contest.php"><?php echo $MSG_CONTEST ?></a></li>
+          <!-- Contest部分 end -->
+          <?php 
+        if (!isset($_SESSION['contest_id'])) { ?>
            <!-- course部分 start -->
            <li <?php
           if($page_name=="course.php") {
@@ -137,15 +136,15 @@
           }
           ?>><a href="./ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
           <!-- ranklist部分 end -->
-          
-          <?php } ?>
-          <!-- Contest部分 start -->
+          <!-- ProblemSet部分 start -->
           <li <?php
-          if($page_name=="contest.php" || $page_name=="recent-contest.php") {
-              echo "class='am-active'";
+          if($page_name=="problemset.php" || $page_name=="problem.php") {
+            echo "class='am-active'";
           }
-          ?>><a href="./contest.php"><?php echo $MSG_CONTEST ?></a></li>
-          <!-- Contest部分 end -->
+          ?>><a href="./problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
+          <!-- ProblemSet部分 end -->
+          <?php } ?>
+
 
           <li <?php if(basename($_SERVER['SCRIPT_NAME'])=="faqs.php"){
 			  echo "class='am-active'";}
