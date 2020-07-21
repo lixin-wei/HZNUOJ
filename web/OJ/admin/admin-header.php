@@ -59,17 +59,17 @@ require_once("$baseDir/include/db_info.inc.php");
     }
   </style>
   <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="am-container" style="margin-left: 100px;max-width: 1400px;width: 100%;">
     <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
+    <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class='navbar-brand' href='<?php echo $urlbaseDir ?>/index.php'><?php echo $MSG_DASHBOARD ?></a>
+        <a class='navbar-brand' style="margin-left: 150px;" href='<?php echo $urlbaseDir ?>/index.php'><?php echo $MSG_DASHBOARD ?></a>
       </div>
+    <div class="am-container" style="max-width: 2000px;">
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
