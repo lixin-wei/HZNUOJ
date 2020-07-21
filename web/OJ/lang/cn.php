@@ -212,7 +212,7 @@
   $MSG_SolutionVideo = "帮助视频";
   $MSG_WatchVideo = "点击观看帮助视频";
   $MSG_ToggleSamples = "隐藏/显示";
-  $MSG_ShowAfterTrying = "几次之后显示本样例";
+  $MSG_ShowAfterTrying = "错误几次之后显示本样例";
   $MSG_AddSapmple = "增加一组样例";
   $MSG_RemoveSample = "删除最后一组样例";
   $MSG_SampleDataIsUpdated = "测试样例文件已更新！";
