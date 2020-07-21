@@ -178,6 +178,11 @@ HTML;
     </div>
     <br />
     <!-- 提交等按钮 start -->
+    <?php
+    if(isset($_GET['cid'])){
+      $edit_target="target='_blank'";
+    } else $edit_target="";
+    ?>
     <div class="am-text-center">
       <a href="
       <?php
@@ -202,7 +207,7 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white' $edit_target>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
@@ -374,12 +379,12 @@ HTML;
         }
         if (HAS_PRI("edit_".$set_name."_problem")) {
             echo<<<HTML
-          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white'>
+          <a href="./admin/problem_edit.php?id=$row->problem_id&getkey={$_SESSION['getkey']}" style='color:white' $edit_target>
             <button type='button' class='am-btn am-btn-sm am-btn-danger '>
               $MSG_EDIT
             </button>
           </a>
-          <a href="./admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white'>
+          <a href="./admin/quixplorer/index.php?action=list&dir=$row->problem_id&order=name&srt=yes" style='color:white' target="_blank">
             <button type='button' class='am-btn am-btn-sm am-btn-warning '>
               $MSG_TestData
             </button>
