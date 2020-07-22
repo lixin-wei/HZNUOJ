@@ -315,6 +315,12 @@ if(isset($_POST['problem_id'])){ //写入数据库
 	  if($author == "" && isset($_POST['add_problem_mod'])) $author = $_SESSION['user_id']; 
 
     //remove original samples
+    //----remove original sample file from hustoj, start
+    $path=$OJ_DATA."/$id/sample.in";
+    if(file_exists($path)) $success=unlink($path);
+    $path=$OJ_DATA."/$id/sample.out";
+    if(file_exists($path)) $success=unlink($path);
+    //----remove original sample file from hustoj, end
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
     $original_sample_cnt=$mysqli->query($sql)->fetch_array()[0];
     for($i=0 ; $i<$original_sample_cnt ; ++$i){
