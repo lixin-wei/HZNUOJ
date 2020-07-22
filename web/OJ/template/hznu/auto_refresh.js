@@ -50,7 +50,7 @@ function fresh_result(solution_id) {
 			var loader = "<img width=18 src=image/loader.gif>";
 			row.cells[4].innerHTML = ra[1];
 			row.cells[5].innerHTML = ra[2];
-			row.cells[9].innerHTML = ra[3];
+			if(typeof(row.cells[9])=="object") row.cells[9].innerHTML = ra[3];
 			// alert(ra[5]);
 			// alert(ra[6]);
 			// alert(ra[7]);
