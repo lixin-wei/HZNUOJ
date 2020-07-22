@@ -57,7 +57,7 @@ if (isset($_GET['del'])) { //删除班级信息
   }
   if ($mode == "A" || $mode == "B") {
     if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
-      $err_str .= "输入的{$MSG_Prefix}限20个以内的汉字、字母、数字或下划线 ！\\n";
+      $err_str .= "输入的{$MSG_Prefix}限20个以内的汉字、字母、数字或下划线、加号 ！\\n";
       $err_cnt++;
     }
     if (!preg_match("/^[1-9][0-9]{0,1}$/", $class_num)) {
@@ -100,8 +100,8 @@ if (isset($_GET['del'])) { //删除班级信息
           $class_list = array();
           foreach ($classes as $c) {
             $c = trim(str_replace("\r", "", $c));
-            if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $c)) {
-              array_push($class_list_err, "输入的{$MSG_Class_Name} {$c} 不合规，限20个以内的汉字、字母、数字或下划线 ！<br>\n");
+            if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $c)) {
+              array_push($class_list_err, "输入的{$MSG_Class_Name} {$c} 不合规，限20个以内的汉字、字母、数字或下划线、加号  ！<br>\n");
             } else array_push($class_list, $mysqli->real_escape_string(htmlentities($c)));
           }
         } else {
