@@ -119,7 +119,7 @@
     }
 </style>
 <div class="am-container well am-scrollable-horizontal" style="max-width: 98%;">
-  <table class="am-table" id="rank_table" style="white-space: nowrap;">
+  <table class="am-table am-table-hover" id="rank_table" style="white-space: nowrap;">
     <thead>
       <tr>
       <th id="rank" width="5%"><?php echo $MSG_RANK ?></th>
