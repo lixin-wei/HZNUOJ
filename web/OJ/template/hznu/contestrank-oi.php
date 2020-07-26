@@ -125,7 +125,7 @@
       <th id="penalty" width="5%"><?php echo $MSG_PENALTY ?></th>
       <?php
 	   foreach($pid_nums as $num)
-          echo "<th id='p-cell-$i'><a href=problem.php?cid=$cid&pid=$num[0]>".PID($num[0])."</a></th>";	
+          echo "<th class='am-text-right' id='p-cell-$i'><a href='problem.php?cid=$cid&pid=$num[0]' target='_blank'>".PID($num[0])."</a></th><th width='1px'>&nbsp;</th>";
       ?>
       </tr>
     </thead>
@@ -212,7 +212,7 @@
               $cell_class.=" has-num";
               $data_toggle.="data-am-modal=\"{target: '#modal-submission', width:1000}\"";
             }
-            echo "<td class='$cell_class' style='background-color:#$bg_color;' id='pcell $uuid $probelm_lable' $data_toggle>";
+            echo "<td colspan='2' class='$cell_class' style='background-color:#$bg_color;' id='pcell $uuid $probelm_lable' $data_toggle>";
             if(isset($U[$i])){
               if (isset($U[$i]->p_ac_sec[$num[0]])&&$U[$i]->p_ac_sec[$num[0]]>0)
                 echo sec2str($U[$i]->p_ac_sec[$num[0]]);
@@ -244,11 +244,16 @@
 </div>
 </div>
 <?php include "footer.php" ?>
-
+<?php
+$sortHeader="";
+for($i=0; $i<2*count($pid_nums); $i+=2){
+  $sortHeader.=",". (6+$i).":{sorter:false}";
+}
+?>
 <script type="text/javascript" src="plugins/tablesorter/jquery.tablesorter.js"></script>
 <script type="text/javascript">
   $( document ).ready( function () {
-    $( "#rank_table" ).tablesorter({headers:{0:{sorter:false}}});
+    $( "#rank_table" ).tablesorter({headers:{0:{sorter:false}<?php echo $sortHeader?>}});
   });
 </script>
 
