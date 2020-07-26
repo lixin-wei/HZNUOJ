@@ -303,7 +303,7 @@
 <form id="form1" class="form-inline center" action="contest_add.php" method='post' onkeydown='if(event.keyCode==13){return false;}'>
     <table class='table table-hover table-bordered table-condensed table-striped' style='white-space: nowrap;'>
     <thead><tr>
-    	<td colspan="14">
+    	<td colspan="15">
         <input type=submit name='problem2contest' class='btn btn-default' value='CheckToNewContest' >
         <input type=submit name='enable'  class='btn btn-default' value='<?php echo $MSG_Available ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
         <input type=submit name='disable'  class='btn btn-default' value='<?php echo $MSG_Reserved ?>' onclick='$("form").attr("action","problem_df_change.php?getkey=<?php echo $_SESSION['getkey'] ?>")'>
@@ -319,7 +319,7 @@
         <input type='submit' name='changeProblemset' title='先勾选需要更改<?php echo $MSG_PROBLEMSET ?>归属的题目，再选择目的<?php echo $MSG_PROBLEMSET ?>，最后点击‘<?php echo $MSG_SUBMIT ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_SUBMIT ?>' onclick='$("form").attr("action","problem_list.php")'>
       </td>
     </tr>
-    <td colspan="14">
+    <td colspan="15">
     <?php echo $MSG_Source ?>：<input class="form-control" name="cate" id="cate" type="text" maxlength='50' placeholder="多个标签请以逗号分隔" style="width:340px;" title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' >
         <input type='submit' name='addCategory' title='先勾选需要<?php echo $MSG_ADD.$MSG_Source ?>标签的题目，填入相关词条（多个词条用逗号分隔）或从右侧的标签列表中选择，再点击‘<?php echo $MSG_ADD ?>’按钮。' class='btn btn-default' value='<?php echo $MSG_ADD ?>' onclick='$("form").attr("action","<?php echo generate_url("")?>")'>
         <?php require_once("../include/set_post_key.php"); ?>
@@ -344,7 +344,7 @@
         <th id='passrate'><?php echo $MSG_RATIO ?>&nbsp;<span class="<?php echo $pass_icon ?>"></span></th>
         <th><?php echo $MSG_SCORE ?></th>   
         <th><?php echo $MSG_STATUS ?></th>
-        <th colspan=3 style="text-align: center"><?php echo $MSG_Operations ?></th>
+        <th colspan=4 style="text-align: center"><?php echo $MSG_Operations ?></th>
         <th><?php echo $MSG_AUTHOR ?></th>        
         <th><?php echo $MSG_Source ?></th>
         <th><?php echo $MSG_PROBLEMSET ?></th>
@@ -367,11 +367,13 @@
           </td>
           <td style="vertical-align:middle;"><a class='btn btn-primary' href='#' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) location.href="problem_del.php?id=<?php echo $row->problem_id?>&getkey=<?php echo $_SESSION['getkey'] ?>"'><?php echo $MSG_DEL ?></a></td>
           <td style="vertical-align:middle;"><a class='btn btn-primary' href='problem_edit.php?id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' target="_blank"><?php echo $MSG_EDIT ?></a></td>
+          <td style="vertical-align:middle;"><a class='btn btn-primary' href='problem_edit.php?copy_problem&id=<?php echo $row->problem_id ?>&getkey=<?php echo $_SESSION['getkey'] ?>' title="可将题目复制后人工改成代码附加题"><?php echo $MSG_Copy ?></a></td>
           <td style="vertical-align:middle;"><a class='btn btn-primary' href='quixplorer/index.php?action=list&dir=<?php echo $row->problem_id ?>&order=name&srt=yes' target="_blank"><?php echo $MSG_TestData ?></a></td>
 <?php  } else { ?>
           <td style="vertical-align:middle;"><span class='<?php echo ($row->defunct=="N"?"btn btn-primary":"btn btn-danger")?>' disabled><?php echo ($row->defunct=="N"?$MSG_Available:$MSG_Reserved)?></span></td>
           <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_DEL ?></span></td>
           <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_EDIT ?></span></td>
+          <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_Copy ?></span></td>
           <td style="vertical-align:middle;"><span class='btn btn-primary' disabled><?php echo $MSG_TestData ?></span></td>
 <?php  } ?>
 	
@@ -391,7 +393,7 @@
  <?php   }?>
  </tbody>
  <tfoot>
-<tr><td colspan=13><button type=submit name='problem2contest' class='btn btn-default'>CheckToNewContest</button></td>
+<tr><td colspan="15"><button type=submit name='problem2contest' class='btn btn-default'>CheckToNewContest</button></td>
 </tr>
 </tfoot>
 </table></form>

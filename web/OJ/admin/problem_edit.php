@@ -19,28 +19,84 @@ $add_problem_mod=false;
 if(isset($_GET['new_problem'])){
     $add_problem_mod=true;
 }
+function getProblemInfo($pid){
+  global $mysqli, $row, $samples;
+  $sql="SELECT * FROM `problem` WHERE `problem_id`=$pid";
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
+  $sql="SELECT `input`, `output`, `show_after` FROM `problem_samples` WHERE `problem_id`='$pid' ORDER BY `sample_id`";
+  $res=$mysqli->query($sql);
+  while($r=$res->fetch_array()){
+      array_push($samples, array(
+          "input" => $r['input'],
+          "output" => $r['output'],
+          "show_after" => $r['show_after'],
+      ));
+  }
+}
 if(!$add_problem_mod){
     if(isset($_GET['id'])) {
         $pid=intval($_GET['id']);
-        $sql="SELECT * FROM `problem` WHERE `problem_id`=$pid";
-        $result=$mysqli->query($sql);
-        $row=$result->fetch_object();
-        if (!HAS_PRI("edit_".$row->problemset."_problem")) {
-            require_once("error.php");
-            exit(0);
+        if (!HAS_PRI("edit_".get_problemset($pid)."_problem")) {
+          require_once("error.php");
+          exit(0);
         }
-        
-        $sql="SELECT input, output, show_after FROM problem_samples WHERE problem_id='$pid' ORDER BY sample_id";
-        $res=$mysqli->query($sql);
+        $row="";
         $samples=array();
-        while($r=$res->fetch_array()){
-            array_push($samples, array(
-                "input" => $r['input'],
-                "output" => $r['output'],
-                "show_after" => $r['show_after'],
-            ));
-        }
+        getProblemInfo($pid);
     }
+}
+
+if(isset($_GET['copy_problem'])){//复制题目
+    require_once("../include/check_get_key.php");
+    $problemset=$row->problemset;
+    $title=$row->title." copy";
+    $time_limit=$row->time_limit;
+    $memory_limit=$row->memory_limit;
+    $description=$row->description;
+    $input=$row->input;
+    $output=$row->output;
+    $hint=$row->hint;
+    $author=$row->author;
+    $source=$row->source;
+    $spj=$row->spj;
+    $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj, $OJ_DATA );
+    mkdir($OJ_DATA."/$id");
+    foreach ($samples as $key => $sample) {
+      $sample_input=$sample['input'];
+      $sample_output=$sample['output'];
+      $sample_show_after=$sample['show_after'];
+      //don't auto generate sample files if is SPJ
+      if(!$spj) {
+          mkdata($id, "sample{$key}.in", $sample_input, $OJ_DATA);
+          mkdata($id, "sample{$key}.out", $sample_output, $OJ_DATA);
+      }
+      $sql="INSERT INTO `problem_samples` (`problem_id`, `sample_id`, `input`, `output`, `show_after`)
+        VALUES ($id, $key, '$sample_input', '$sample_output', '$sample_show_after')";
+      //echo "<pre>$sql</pre>";
+      $mysqli->query($sql);
+    }
+    // 复制测试数据start
+    $src = $OJ_DATA."/$pid";
+    $dst = $OJ_DATA."/$id";
+    $files = scandir($src);
+    foreach ($files as $file) {
+      if ($file != "." && $file != ".." && !is_dir($src."/$file")){
+        if (file_exists($src."/$file")) copy($src."/$file", $dst."/$file");
+      }
+    }
+    // 复制测试数据end
+    echo "&nbsp;".$MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
+    $_SESSION["p$id"]=true;
+    echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
+    echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
+    echo "<br><b>可在测试数据文件夹中上传prepen.xx、append.xx等预定义代码，将题目变成代码附加题。</b>";
+
+    $_GET['id']=$id;
+    $pid=intval($_GET['id']);
+    $row="";
+    $samples=array();
+    getProblemInfo($pid);
 }
 ?>
 <?php if (isset($_GET['id']) || $add_problem_mod): ?>
