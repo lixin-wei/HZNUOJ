@@ -352,7 +352,7 @@
   $MSG_inner_function ="inner_function";
   $MSG_HELP_inner_function ="some Inner functions, Dangerous functions";
   $MSG_edit_xx_problem = "edit_xx_problem";
-  $MSG_HELP_edit_xx_problem1 = "edit problems, see problems' data in corresponding problemset.";
+  $MSG_HELP_edit_xx_problem1 = "add and edit problems, see problems' data in corresponding problemset.";
   $MSG_see_hidden_xx_problem ="see_hidden_default_problem";
   $MSG_HELP_see_hidden_xx_problem1 ="see hidden problems in corresponding problemset at problemset page. ";
   $MSG_HELP_see_hidden_xx_problem2 ="including problems in running contest. ";
