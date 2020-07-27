@@ -135,6 +135,7 @@ CREATE TABLE `problemset` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
   `set_name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `set_name_show` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `access_level` tinyint NOT NULL DEFAULT 0,
   PRIMARY KEY (`index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
 INSERT INTO `problemset` VALUES (1,'default','DEFAULT');
@@ -431,6 +432,7 @@ ALTER TABLE `users` ADD COLUMN `CF` int(9) DEFAULT NULL;
 ALTER TABLE `users` ADD COLUMN `like` int(9) DEFAULT '0';
 ALTER TABLE `users` ADD COLUMN `dislike` int(9) DEFAULT '0';
 ALTER TABLE `users` ADD COLUMN `tag` varchar(250) DEFAULT NULL;
+ALTER TABLE `users` ADD COLUMN `access_level` tinyint NOT NULL DEFAULT 0;
 UPDATE `users` SET `class`='其它';
 
 -- 老版的hustoj没有表`share_code`，新版有

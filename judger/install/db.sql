@@ -594,6 +594,7 @@ CREATE TABLE `problemset` (
   `index` int(11) NOT NULL AUTO_INCREMENT,
   `set_name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `set_name_show` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `access_level` tinyint NOT NULL DEFAULT 0,
   PRIMARY KEY (`index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -983,6 +984,7 @@ CREATE TABLE `users` (
   `like` int(9) DEFAULT '0',
   `dislike` int(9) DEFAULT '0',
   `tag` varchar(250) DEFAULT NULL,
+  `access_level` tinyint NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
