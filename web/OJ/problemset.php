@@ -91,7 +91,9 @@ if(isset($_GET['search'])&&trim($_GET['search'])!="") {
 }
 
 /* 获取sql语句中的筛选部分 end */
-$res_set = $mysqli->query("SELECT set_name FROM problemset");
+$sql = "SELECT `set_name` FROM `problemset`";
+if(!IS_ADMIN($_SESSION['user_id'])) $sql .= " WHERE `access_level`<>-1 ";
+$res_set = $mysqli->query($sql);
 $first = true;
 $sql = "";
 $cnt = 0;

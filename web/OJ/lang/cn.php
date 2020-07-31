@@ -131,6 +131,7 @@
   $MSG_SIM = "相似度";
   $MSG_Alias = "别名";
   $MSG_Top = "固顶";
+  $MSG_AccessLevel = "访问等级";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -311,8 +312,8 @@
   $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
   $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件，支持ZIP压缩文件批量上传。";
   $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
-  $MSG_HELP_PROBLEMSET1="增加、删除、编辑题库，";
-  $MSG_HELP_PROBLEMSET2="当题库中有题目时不能做删除操作。";
+  $MSG_HELP_PROBLEMSET1="增加、删除、编辑题库，访问等级为x的用户只能查看、答题等级<=x的题库中的题目（只对用户在题库页面访问题目时有效，比赛中的题目无访问等级的限制），<b>管理员级</b>的题库比如考试试题库等不在前台页面显示，但管理员可以在后台将其题目放入竞赛&作业供用户使用。";
+  $MSG_HELP_PROBLEMSET2="<b>当题库中有题目时不能做删除操作。</b>";
   $MSG_HELP_CourseSet="添加、删除、编辑课程/章节及相关题目，拖拽节点可以调整顺序，按住Ctrl键或Cmd键（MacOS系统）后拖拽可复制节点。";
 
   $MSG_HELP_AC="答案正确，请再接再厉。"; 

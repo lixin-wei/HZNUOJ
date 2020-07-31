@@ -88,7 +88,9 @@ function generate_url($data){
             <select data-am-selected class='select-problemset' type='text'>
               <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> ><?php echo $MSG_ALL ?></option>
                 <?php
-                $res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
+                $sql = "SELECT `set_name`,`set_name_show` FROM `problemset`";
+                if(!IS_ADMIN($_SESSION['user_id'])) $sql .= " WHERE `access_level`<>-1 ";
+                $res = $mysqli->query($sql);
                 while($row = $res->fetch_array()){
                     echo "<option value='$row[0]' ";
                     if($_GET['OJ']==$row[0]) echo "selected";

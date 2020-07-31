@@ -131,6 +131,7 @@
   $MSG_SIM = "SIM";
   $MSG_Alias = "Alias";
   $MSG_Top = "TOP";
+  $MSG_AccessLevel = "Access Level";
   
   /*
   下面的代码请不要乱动，以免出问题！！！

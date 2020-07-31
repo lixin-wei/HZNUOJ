@@ -18,17 +18,21 @@ if (isset($_POST['edit'])) {
     $err_str = "";
     $id = $_POST['id'];
     $set_name_show = $mysqli->real_escape_string(trim($_POST['set_name_show']));
+    $access_level = $mysqli->real_escape_string(trim($_POST['access_level']));
     if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $set_name_show)) {
         $err_str .= "输入的{$MSG_Alias}限20个以内的汉字、字母、数字或下划线 ！\\n";
     }
-    $sql="SELECT COUNT(`index`) FROM `problemset` WHERE `set_name_show`='$set_name_show'";
+    $sql="SELECT COUNT(`index`) FROM `problemset` WHERE `index`<>'$id' AND `set_name_show`='$set_name_show'";
     if($mysqli->query($sql)->fetch_array()[0]>0){
         $err_str .= "输入的{$MSG_Alias}有重名，请修改 ！\\n";
+    }
+    if($access_level=="" || $access_level <-1 || $access_level>9){
+        $err_str .= "不能识别的$MSG_AccessLevel ！\\n";
     }
     if ($err_str != "") {
         echo "<script language='javascript'>\n alert('" . $err_str . "');\n</script>";
     } else {
-        $mysqli->query("UPDATE `problemset` SET `set_name_show`='$set_name_show' WHERE `index`='$id'");
+        $mysqli->query("UPDATE `problemset` SET `set_name_show`='$set_name_show',`access_level`='$access_level' WHERE `index`='$id'");
         if ($mysqli->affected_rows == 1) echo "<script language=javascript>alert('修改成功！');</script>";
     }
 } else if (isset($_POST['del'])) {
@@ -56,6 +60,7 @@ if (isset($_POST['edit'])) {
     require_once("../include/check_post_key.php");
     $set_name = $mysqli->real_escape_string(trim($_POST['set_name']));
     $set_name_show = $mysqli->real_escape_string(trim($_POST['set_name_show']));
+    $access_level = $mysqli->real_escape_string(trim($_POST['access_level']));
     $err_str = "";
     if (!preg_match("/^[a-zA-Z0-9]{0,20}$/", $set_name)) {
         $err_str .= "输入的{$MSG_Name}要求为20位以内字母或数字的字符串！\\n";
@@ -66,6 +71,9 @@ if (isset($_POST['edit'])) {
     $sql="SELECT COUNT(`index`) FROM `problemset` WHERE `set_name`='$set_name' OR `set_name_show`='$set_name_show'";
     if($mysqli->query($sql)->fetch_array()[0]>0){
         $err_str .= "输入的{$MSG_Name}或{$MSG_Alias}有重名，请修改 ！\\n";
+    }
+    if($access_level <-1 || $access_level>9){
+        $err_str .= "不能识别的$MSG_AccessLevel ！\\n";
     }
     if ($err_str != "") {
         echo "<script language='javascript'>\n alert('" . $err_str . "');\n</script>";
@@ -79,7 +87,7 @@ if (isset($_POST['edit'])) {
         $sql = "UPDATE `privilege_distribution` SET `edit_" . $set_name . "_problem`=1,`see_hidden_" . $set_name . "_problem`=1 ";
         $sql .= "WHERE group_name IN ('root','administrator','teacher','teacher_assistant','hznu_viewer')"; //给各级管理员添加权限
         $mysqli->query($sql);
-        $sql = "INSERT INTO `problemset`(`set_name`,`set_name_show`) VALUES('$set_name','$set_name_show')";
+        $sql = "INSERT INTO `problemset`(`set_name`,`set_name_show`,`access_level`) VALUES('$set_name','$set_name_show','$access_level')";
         $mysqli->query($sql);
         if ($mysqli->affected_rows == 1) echo "<script language=javascript>alert('添加成功！');</script>";
     }
@@ -97,22 +105,30 @@ while ($row = $result->fetch_object()) {
     $view_problemset[$i][1] = "<td style='vertical-align:middle;' $temp>$row->set_name</td>\n";
     $view_problemset[$i][2] = "<td style='vertical-align:middle;' $temp>" . ($row->num ? $row->num : 0) . "</td>\n";
     $view_problemset[$i][3] = "<td style='vertical-align:middle;' $temp><input type='text' placeholder='限20个以内的汉字/字母/数字/下划线' style='width:300px;' maxlength='20' pattern='^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$' name='set_name_show' value='$row->set_name_show' required /></td>\n";
-    $view_problemset[$i][4] = "<td style='vertical-align:middle;text-align: center' $temp><input class='btn btn-primary' type='submit' name='edit' value='$MSG_SUBMIT'></td>\n";
-    $view_problemset[$i][5] = "<td style='vertical-align:middle;text-align: center' $temp>";
+    $view_problemset[$i][4] = "<td style='vertical-align:middle;text-align: center' $temp>";
+    $view_problemset[$i][4].= "<select title='等级为x的用户不能访问等级>x的题库。' name='access_level'>";
+    $view_problemset[$i][4].= "<option value=''". (($row->access_level<-1 || $row->access_level>9)?"selected":"") .">请选择$MSG_AccessLevel</option>";
+    $view_problemset[$i][4].= "<option value='-1'". ($row->access_level==-1?"selected":"") .">管理员级</option>";
+    for($x=9;$x>0;$x--){
+        $view_problemset[$i][4].= "<option value='$x'". ($row->access_level==$x?"selected":"") .">第{$x}级</option>";
+    }
+    $view_problemset[$i][4].= "<option value='0'". ($row->access_level==0?"selected":"") .">所有用户可见</option></select></td>\n";
+    $view_problemset[$i][5] = "<td style='vertical-align:middle;text-align: center' $temp><input class='btn btn-primary' type='submit' name='edit' value='$MSG_SUBMIT'></td>\n";
+    $view_problemset[$i][6] = "<td style='vertical-align:middle;text-align: center' $temp>";
     if ($row->set_name == "default") {
-        $view_problemset[$i][5] .= "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
+        $view_problemset[$i][6] .= "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
     } else {
         if ($row->num != "") {
-            $view_problemset[$i][5] .= "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
-        } else $view_problemset[$i][5] .= "<input class='btn btn-primary' type='submit' name='del' value='$MSG_DEL'></a>";
+            $view_problemset[$i][6] .= "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
+        } else $view_problemset[$i][6] .= "<input class='btn btn-primary' type='submit' name='del' value='$MSG_DEL'></a>";
     }
-    $view_problemset[$i][5] .= "</td>\n";
+    $view_problemset[$i][6] .= "</td>\n";
     if ($row2 = $privilege->fetch_array(MYSQLI_ASSOC)) {
-        $view_problemset[$i][6] = "<td>" . ($row2["edit_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>\n";
-        $view_problemset[$i][7] = "<td>" . ($row2["see_hidden_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>\n";
+        $view_problemset[$i][7] = "<td>" . ($row2["edit_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>\n";
+        $view_problemset[$i][8] = "<td>" . ($row2["see_hidden_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>\n";
     } else {
-        $view_problemset[$i][6] = "";
         $view_problemset[$i][7] = "";
+        $view_problemset[$i][8] = "";
     }
     $i++;
     while ($row2 = $privilege->fetch_array(MYSQLI_ASSOC)) {
@@ -122,8 +138,9 @@ while ($row = $result->fetch_object()) {
         $view_problemset[$i][3] = "";
         $view_problemset[$i][4] = "";
         $view_problemset[$i][5] = "";
-        $view_problemset[$i][6]="<td>" . ($row2["edit_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>";
-        $view_problemset[$i][7]="<td>" . ($row2["see_hidden_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>";
+        $view_problemset[$i][6] = "";
+        $view_problemset[$i][7]="<td>" . ($row2["edit_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>";
+        $view_problemset[$i][8]="<td>" . ($row2["see_hidden_".$row->set_name."_problem"] ? $row2["group_name"] : "") . "</td>";
         $i++;
     }
 }
@@ -141,7 +158,23 @@ while ($row = $result->fetch_object()) {
                 <td style='vertical-align:middle;'><?php require_once("../include/set_post_key.php"); ?><input type='text' placeholder='限20个以内的字母、数字' style='width:300px;' maxlength='20' pattern='^[a-zA-Z0-9]{1,20}$' name='set_name' value='' required /></td>
                 <td style='vertical-align:middle;width:10px;font-weight:bold;'><?php echo $MSG_Alias ?>:</td>
                 <td style='vertical-align:middle;'><input type='text' placeholder='限20个以内的汉字/字母/数字/下划线' style='width:300px;' maxlength='20' pattern='^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$' name='set_name_show' value='' required /></td>
-                <td style='vertical-align:middle;'><input class='btn btn-primary' type='submit' name='add' value='<?php echo $MSG_ADD ?>'></td></td>
+                <td style='vertical-align:middle;width:10px;font-weight:bold;'><?php echo $MSG_AccessLevel ?>:</td>
+                <td style='vertical-align:middle;'>
+                <select title='等级为x的用户不能访问等级>x的题库。' name='access_level'>";
+                    <option value='-1'>管理员级</option>
+                    <?php
+                        for($x=9;$x>0;$x--){
+                            echo "<option value='$x'>第{$x}级</option>";
+                        }
+                    ?>
+                    <option value='0' selected>所有用户可见</option>
+                </select>
+                
+                </td>
+                <td style='vertical-align:middle;'><input class='btn btn-primary' type='submit' name='add' value='<?php echo $MSG_ADD ?>'></td>
+                
+
+    
             </tr>
         </thead>
     </table>
@@ -154,6 +187,7 @@ while ($row = $result->fetch_object()) {
             <th><?php echo $MSG_Name ?></th>
             <th><?php echo $MSG_PROBLEM ?></th>
             <th><?php echo $MSG_Alias ?></th>
+            <th><?php echo $MSG_AccessLevel ?></th>
             <th colspan="2" style="text-align: center"><?php echo $MSG_Operations ?></th>
             <th>edit_xx_problem</th>
             <th>see_hidden_xx_problem</th>
@@ -162,18 +196,17 @@ while ($row = $result->fetch_object()) {
     <tbody>
         <?php
         foreach ($view_problemset as $row) {
-            echo "<form method='post'>";
-            require("../include/set_post_key.php");
             if($row[0]!=""){
+                echo "<form method='post'>";
+                require("../include/set_post_key.php");
                 echo "<tr>";
                 foreach ($row as $table_cell) {
                     echo $table_cell;
                 }
-                echo "</tr>\n";
+                echo "</tr></form>\n";
             } else {
-                echo "<tr>".$row[6].$row[7]."</tr>\n";
+                echo "<tr>".$row[7].$row[8]."</tr>\n";
             }
-            echo "</form>";
         }
         ?>
     </tbody>

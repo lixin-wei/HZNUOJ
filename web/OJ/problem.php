@@ -55,9 +55,12 @@ if (isset($_GET['id']) && !(isset($_GET['cid']) && isset($_GET['pid'])) ) { // �
       }
     $id=intval($_GET['id']);
     $real_id=$id;
-    $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
-    $set_name = $res->fetch_array()[0];
-    
+    $set_name = get_problemset($id);
+    if(!can_access_problem($_SESSION['user_id'], $id)){
+        $view_errors= "<font color='red'>您尚无本题所在题库的访问权限！若有需要请联系管理员取得权限。</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
     if(isset($_SESSION['user_id'])) {
         $sql = "SELECT count(*) FROM solution WHERE problem_id=$id AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
         $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;

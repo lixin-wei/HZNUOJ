@@ -31,6 +31,12 @@
     $uid = $_SESSION['user_id'];
     
     /* 判断该用户是否有查看该题目权限 start */
+    $set_name = get_problemset($id);
+    if(!can_access_problem($uid, $id)){
+        $view_errors= "<font color='red'>您尚无本题所在题库的访问权限！若有需要请联系管理员取得权限。</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
     if (isset($_SESSION['contest_id'])) { // 如果是临时账号
       $view_errors = "<font style='color:red;text-decoration:underline;'>You can't submit this problem by team account!</font>";
       require("template/".$OJ_TEMPLATE."/error.php");

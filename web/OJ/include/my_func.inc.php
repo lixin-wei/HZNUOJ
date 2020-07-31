@@ -407,4 +407,23 @@ function sortByPinYin(&$array){
         $array[$key] = mb_convert_encoding($value, "UTF-8", "GBK");
     }
 }
+function can_access_problem($uid, $pid){
+    if(IS_ADMIN($uid)){
+        return true;
+    }
+    global $mysqli;
+    $user_access_level = 0;
+    $sql = "SELECT `access_level` from `users` WHERE `user_id` = '$uid'";
+    $res = $mysqli->query($sql);
+    if($row=$res->fetch_array()){
+        $user_access_level = $row[0];
+    }
+    $sql="SELECT `access_level` FROM `problemset` where `set_name`='". get_problemset($pid) ."'";
+    $res = $mysqli->query($sql);
+    if($row=$res->fetch_array()){
+        $problem_access_level = $row[0];
+        if($problem_access_level==-1) return false;//-1级别为内部题库，如考试题库等，普通用户不能在比赛之外访问
+        return ($user_access_level>=$problem_access_level);
+    } else return false;
+}
 ?>
