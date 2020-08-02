@@ -90,6 +90,7 @@ function generate_url($data){
                 <?php
                 $sql = "SELECT `set_name`,`set_name_show` FROM `problemset`";
                 if(!IS_ADMIN($_SESSION['user_id'])) $sql .= " WHERE `access_level`<>-1 ";
+                $sql .= "ORDER BY `set_name_show`";
                 $res = $mysqli->query($sql);
                 while($row = $res->fetch_array()){
                     echo "<option value='$row[0]' ";

@@ -92,7 +92,7 @@ if (isset($_POST['edit'])) {
         if ($mysqli->affected_rows == 1) echo "<script language=javascript>alert('添加成功！');</script>";
     }
 }
-$sql = "SELECT s.*,p.`num` FROM `problemset` AS s LEFT JOIN (SELECT problemset,COUNT(`problem_id`) AS num FROM `problem` GROUP BY problemset) AS p ON s.`set_name`=p.`problemset`";
+$sql = "SELECT s.*,p.`num` FROM `problemset` AS s LEFT JOIN (SELECT problemset,COUNT(`problem_id`) AS num FROM `problem` GROUP BY problemset) AS p ON s.`set_name`=p.`problemset` ORDER BY s.`set_name_show`";
 $result = $mysqli->query($sql);
 $view_problemset = array();
 $i = 0;

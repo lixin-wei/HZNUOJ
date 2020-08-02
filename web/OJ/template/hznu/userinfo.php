@@ -136,7 +136,7 @@ require_once("header.php");
           <div class="am-panel-bd">
           <?php
             echo "<b>$MSG_SOLVED:</b><br/>";
-            $sql="SELECT set_name,set_name_show FROM problemset";
+            $sql="SELECT set_name,set_name_show FROM problemset ORDER BY `set_name_show`";
             $res=$mysqli->query($sql);
             echo "<div style='margin-left: 10px;'>";
             while($row=$res->fetch_array()){

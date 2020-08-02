@@ -187,7 +187,7 @@
       $sql_filter .= " AND (title like '%$keyword%' or source like '%$keyword%' or author like '%$keyword%' OR tag1 like '%$keyword%' OR tag2 like '%$keyword%' OR tag3 like '%$keyword%')";
   }
   $problem_sets = array();
-  $result = $mysqli->query("SELECT `set_name`,`set_name_show` FROM `problemset`");    
+  $result = $mysqli->query("SELECT `set_name`,`set_name_show` FROM `problemset` ORDER BY `set_name_show`");
   while($row = $result->fetch_array()) {
     if(HAS_PRI("edit_".$row['set_name']."_problem")) array_push($problem_sets,$row);
   }
