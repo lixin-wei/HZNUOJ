@@ -103,7 +103,12 @@ while ($row = $result->fetch_object()) {
     //$privilege->fetch_all(MYSQLI_ASSOC);
     $view_problemset[$i][0] = "<td style='vertical-align:middle;' $temp>$row->index<input type='hidden' name='id' value='$row->index'></td>\n";
     $view_problemset[$i][1] = "<td style='vertical-align:middle;' $temp>$row->set_name</td>\n";
-    $view_problemset[$i][2] = "<td style='vertical-align:middle;' $temp>" . ($row->num ? $row->num : 0) . "</td>\n";
+    $view_problemset[$i][2] = "<td style='vertical-align:middle;' $temp>";
+    if($row->num){
+        $view_problemset[$i][2] .="<a class='btn btn-primary' href='problem_list.php?OJ=".$row->set_name."'>".$row->num."</a></td>\n";
+    } else {
+        $view_problemset[$i][2] .="<span class='btn btn-primary' disabled>0</span></td>\n";
+    }
     $view_problemset[$i][3] = "<td style='vertical-align:middle;' $temp><input type='text' placeholder='限20个以内的汉字/字母/数字/下划线' style='width:300px;' maxlength='20' pattern='^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$' name='set_name_show' value='$row->set_name_show' required /></td>\n";
     $view_problemset[$i][4] = "<td style='vertical-align:middle;text-align: center' $temp>";
     $view_problemset[$i][4].= "<select title='等级为x的用户不能访问等级>x的题库。' name='access_level'>";
