@@ -120,8 +120,8 @@
         <th id="user" width="10%"><?php echo $MSG_USER ?></th>
         <th id="nick" width="10%"><?php echo $MSG_NICK ?></th>
       <?php endif; ?>
-      <th id="solved" width="5%"><?php echo $MSG_SCORE ?></th>
-      <th id="score" width="5%"><?php echo $MSG_SOLVED ?></th>
+      <th id="score" width="5%"><?php echo $MSG_SCORE ?></th>
+      <th id="solved" width="5%"><?php echo $MSG_SOLVED ?></th>
       <th id="penalty" width="5%"><?php echo $MSG_PENALTY ?></th>
       <?php
 	   foreach($pid_nums as $num)
@@ -161,7 +161,7 @@
               $col3=htmlentities($U[$i]->nick);
           }
 
-          if(!isset($is_excluded[$uuid])) {
+          if(!isset($is_excluded[$uuid]) && !isset($haveNotStart_ulist[$uuid])) {
             echo "<span class='$medal_class'> ";
             if($rank==1){
               echo "Winner";
@@ -169,9 +169,9 @@
             else echo $rank;//名次变量
             echo "</span>";
             $rank++;
-          }
-          else 
-            echo "*";
+          } else if(isset($haveNotStart_ulist[$uuid])){
+            echo "----";
+          } else echo "<span style='margin-left: 5px;' class='am-icon-user-times'></span>";
           echo "</td>";
           $uscore = $U[$i]->score;
           $usolved=$U[$i]->solved;
@@ -179,9 +179,9 @@
           echo "<a name=\"$uuid\" href=\"userinfo.php?user=$uuid\">$col2</a>\n";
 
 
-          echo "<td class='rankcell'><div class='nick'>";
-          if(isset($is_excluded[$uuid])) echo "<span>*</span>";
-          echo $col3."</div></td>\n";
+          echo "<td class='rankcell'><div class='nick'>".$col3;
+          if(isset($is_excluded[$uuid])) echo " <span class='am-icon-user-times'></span>";
+          echo "</div></td>\n";
           echo "<td class='rankcell'>$uscore\n";
           echo "<td class='rankcell'><a href=\"status.php?user_id=$uuid&cid=$cid\">$usolved</a>\n";
           echo "<td class='rankcell'>".sec2str($U[$i]->time);

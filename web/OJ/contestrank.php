@@ -70,9 +70,11 @@ class TM {
 }
 
 function s_cmp($A,$B){
-    if ($A->score!=$B->score) return $A->score<$B->score;
-    else if ($A->solved!=$B->solved) return $A->solved<$B->solved;
-    else return $A->time>$B->time;
+    if ($A->score!=$B->score) return $A->score<$B->score; //1看得分
+    else if ($A->solved!=$B->solved) return $A->solved<$B->solved;//2看AC数
+    else if ($A->time!=$B->time) return $A->time>$B->time;//3看累计耗时
+    else if ($A->time==$B->time && $A->time==0) return count($A->p_wa_num)<count($B->p_wa_num);//累计耗时都为0的情况下，谁的错误数多，谁排前面
+    else return count($A->p_wa_num)>count($B->p_wa_num);//累计耗时相等且都不为0的情况下，谁的错误数少，谁排前面
 }
 
 
@@ -256,14 +258,12 @@ if($OJ_MEMCACHE){
 $user_cnt=0;
 $user_name='';
 $U=array();
-$U[$user_cnt]=new TM();
-$U[0]->solved=-1;
+$ulist1=array();
 
 for ($i=0; $i<$rows_cnt; $i++){
     $row=$result[$i];
     $n_user=$row['user_id'];
     if (strcmp($user_name,$n_user)){
-        $user_cnt++;
         $U[$user_cnt]=new TM();
         $U[$user_cnt]->user_id=$row['user_id'];
         $U[$user_cnt]->nick=$row['nick'];
@@ -271,17 +271,48 @@ for ($i=0; $i<$rows_cnt; $i++){
         $U[$user_cnt]->stu_id = $row['stu_id'];
         $U[$user_cnt]->class = $row['class'];
         $user_name=$n_user;
+        $user_cnt2=$user_cnt++;
+        array_push($ulist1,$user_name);
     }
     if($unlock != 1 && time() < $end_time && $lock < strtotime($row['in_date']))
-        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,-1);//Unknown
+        $U[$user_cnt2]->Add($row['num'],strtotime($row['in_date'])-$start_time,-1);//Unknown
     else
-        $U[$user_cnt]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
+        $U[$user_cnt2]->Add($row['num'],strtotime($row['in_date'])-$start_time,intval($row['result']));
 }
 
 /* 获取查询结果 start */
 
 //echo $U[0]->solved;
 usort($U,"s_cmp");
+/*查找在参赛名单内（指定的比赛账号，或者指定的竞赛&作业用户），但还未开始提交代码的用户 start */
+$haveNotStart_ulist=array();
+if (!$user_limit){
+    $sql="SELECT `user_id` FROM `privilege` WHERE `rightstr`='c$cid' order by user_id";
+    $res=$mysqli->query($sql) or die($mysqli->error);
+    $haveNotStart_ulist=array_column($res->fetch_all(MYSQLI_ASSOC), 'user_id');
+    $haveNotStart_ulist=array_diff($haveNotStart_ulist, $ulist1);
+    array_unique($haveNotStart_ulist);
+    $sql="SELECT `user_id`,`nick`,`real_name`,`class`,`stu_id` FROM `users` WHERE `user_id` IN ('".implode("','",$haveNotStart_ulist)."') ORDER BY `user_id`";
+} else {
+    $sql="SELECT `user_id` FROM `team` WHERE `contest_id`='$cid' order by `user_id`";
+    $res=$mysqli->query($sql) or die($mysqli->error);
+    $haveNotStart_ulist=array_column($res->fetch_all(MYSQLI_ASSOC), 'user_id');
+    $haveNotStart_ulist=array_diff($haveNotStart_ulist, $ulist1);
+    array_unique($haveNotStart_ulist);
+    $sql="SELECT `user_id`,`nick`,`real_name`,`class`,`stu_id` FROM `team` WHERE `user_id` IN ('".implode("','",$haveNotStart_ulist)."') ORDER BY `user_id`";
+}
+$res=$mysqli->query($sql) or die($mysqli->error);
+while($row=$res->fetch_object()) {
+    $U[$user_cnt]=new TM();
+    $U[$user_cnt]->user_id=$row->user_id;
+    $U[$user_cnt]->nick=$row->nick;
+    $U[$user_cnt]->real_name = $row->real_name;
+    $U[$user_cnt]->stu_id = $row->stu_id;
+    $U[$user_cnt]->class = $row->class;
+    $user_cnt++;
+}
+$haveNotStart_ulist=array_flip($haveNotStart_ulist);
+/*查找在参赛名单内（指定的比赛账号，或者指定的竞赛&作业用户），但还未开始提交代码的用户 end */
 
 //firstblood 找每题第一个解决的人
 $first_blood=array();
