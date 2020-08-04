@@ -29,6 +29,7 @@ if (isset($_POST['add'])) {
 	}
 	$user_id = explode("\n", trim($_POST['user_id']));
 	$stu_id = explode("\n", trim($_POST['stu_id']));
+	$password = explode("\n", trim($_POST['password']));
 	$institute = explode("\n", trim($_POST['institute']));
 	$class = explode("\n", trim($_POST['class']));
 	$real_name = explode("\n", trim($_POST['real_name']));
@@ -43,8 +44,9 @@ if (isset($_POST['add'])) {
 		$report[$key]['nick'] = $nick[$key];
 		$contest_status = ($contest->defunct == 'Y') ? '<font color=red>【' . $MSG_Reserved . '】</font>' : "";
     	$report[$key]['contest'] = "【" . $contest->contest_id . "】" . $contest->title . $contest_status;
-		$password = createPwd($user_id[$key], 10);
-		$report[$key]['password'] = $password;
+		$password[$key] = $mysqli->real_escape_string(trim(str_replace("\r", "", $password[$key])));
+		if (!$password[$key]) $password[$key] = createPwd($user_id[$key], 10);
+        $report[$key]['password'] = $password[$key];
 		$seat[$key] = $mysqli->real_escape_string(trim(str_replace("\r", "", $seat[$key])));
 		$report[$key]['seat'] = $seat[$key];
 		$institute[$key] = $mysqli->real_escape_string(trim(str_replace("\r", "", $institute[$key])));
@@ -73,7 +75,7 @@ if (isset($_POST['add'])) {
 			}
 		}
 		if ($report[$key]['status'] == "Success") {
-			$password = pwGen($password);
+			$pass_hash = pwGen($password[$key]);
 			$sql = <<<SQL
 			INSERT INTO team (
 				`contest_id`,
@@ -98,7 +100,7 @@ if (isset($_POST['add'])) {
 				'{$real_name[$key]}',
 				'{$nick[$key]}',
 				'{$seat[$key]}',
-				'$password',
+				'$pass_hash',
 				'{$_SERVER['REMOTE_ADDR']}',
 				NOW()
 			) ON DUPLICATE KEY UPDATE  
@@ -202,6 +204,9 @@ SQL;
 			<div class="am-u-sm-2">
 				<font color='red'><b>*</b></font>&nbsp;<label class="am-form-label"><?php echo $MSG_USER_ID ?>:</label><textarea name="user_id" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_USER_ID ?>占1行<?php echo "\n" . $MSG_TEAM . "1\n" . $MSG_TEAM . "2\n" . $MSG_TEAM . "3\n每个限3-20位以内的英文字母和数字" ?>" required></textarea>
 			</div>
+			<div class="am-u-sm-2">
+                <font color='red'><b>*</b></font>&nbsp;<label class="am-form-label"><?php echo $MSG_PASSWORD ?>:</label><textarea name="password" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_PASSWORD ?>占1行<?php echo "\n" . $MSG_PASSWORD . "1\n" . $MSG_PASSWORD . "2\n" . $MSG_PASSWORD . "3\n" . "若行数不足系统将生成随机{$MSG_PASSWORD}补足差额。" ?> "></textarea>
+            </div>
 			<div class="am-u-sm-2">
 				<label class="am-form-label"><?php echo $MSG_NICK ?>:</label><textarea name="nick" rows="10" style="width:205px;" placeholder="*示例：1个<?php echo $MSG_NICK ?>占1行<?php echo "\n" . $MSG_NICK . "1\n" . $MSG_NICK . "2\n" . $MSG_NICK . "3\n每个限20个以内的汉字、字母、数字或下划线，若行数不足，剩余" . $MSG_TEAM . "将使用“" . $MSG_USER_ID . "”作" . $MSG_NICK . "。" ?> "></textarea>
 			</div>
