@@ -78,7 +78,7 @@ else
 $result = $mysqli->query($sql)->fetch_all();
 $total = 0;
 if ($result) $total = $result[0][0];
-$page_cnt = 50;
+if (isset($_GET['keyword']) && $_GET['keyword'] != "") $page_cnt = $total; else $page_cnt = 50;
 $view_total_page = ceil($total / $page_cnt); //计算页数
 $view_total_page = $view_total_page>0?$view_total_page:1;
 if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
