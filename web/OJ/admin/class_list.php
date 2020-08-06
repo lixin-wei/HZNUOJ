@@ -157,7 +157,7 @@ while ($row = $result->fetch_object()) {
             $view_class[$cnt][5] = "<a class='btn btn-primary' href='user_list.php?class=".urlencode($row->class_name)."'>$MSG_Stu_List($row->stu_num)</a>";
         } else $view_class[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_Stu_List($row->stu_num)</span>";
         if ($row->team_account_num) {
-            $view_class[$cnt][6] = "<a class='btn btn-primary' href='user_list.php?team=all&class".urlencode($row->class_name)."'>$MSG_TEAM($row->team_account_num)</a>";
+            $view_class[$cnt][6] = "<a class='btn btn-primary' href='user_list.php?team=all&class=".urlencode($row->class_name)."'>$MSG_TEAM($row->team_account_num)</a>";
         } else $view_class[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_TEAM($row->team_account_num)</span>";
     } else {
         $view_class[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_Stu_List($row->stu_num)</span>";
