@@ -131,12 +131,12 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
         $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;
     }
 
-    
-    if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
-        $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
-        require("template/".$OJ_TEMPLATE."/error.php");
-        exit(0);
-    }
+    // 注释此段确保当题目同时在练习赛和正常的比赛中时，练习赛中对应题目的答题不受限制
+    // if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
+    //     $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
+    //     require("template/".$OJ_TEMPLATE."/error.php");
+    //     exit(0);
+    // }
 
     $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$real_id'";
     $res = $mysqli->query($sql);
