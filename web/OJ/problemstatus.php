@@ -18,7 +18,8 @@ require_once("./include/my_func.inc.php");
 
 $pid = intval($_GET['id']);
 if(!can_see_problem($pid)) {
-    echo "problem not exists or is hidden!";
+    $view_errors= "problem not exists or is hidden,locked!";
+    require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
 }
 
