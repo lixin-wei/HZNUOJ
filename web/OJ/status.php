@@ -68,6 +68,7 @@
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
       $lock_time=$row->lock_time;
       $unlock=$row->unlock;
+      $practice = $row->practice;
     }
     switch($unlock){
       case 0: //用具体时间来控制封榜
@@ -250,6 +251,7 @@
     if (isset($_GET['cid'])) {
       $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||// himself
                 (!is_running(intval($cid))) || // 比赛已经结束了
+                ($practice && $open_source) || // 是练习赛且开放了源代码查看
                 is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
                 !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")// if he can see souce code , he can see these info in passing
               ); 
@@ -297,6 +299,7 @@
 
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
           (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
+          ($practice && $open_source && canSeeSource($row['solution_id'])) || // 是练习赛且开放了源代码查看,本人已经AC
           is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
           !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")
         ) { // 可以查看代码的情况

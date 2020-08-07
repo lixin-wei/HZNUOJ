@@ -198,7 +198,18 @@ function canSeeSource($sid) {
     if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;  // 是本人，可以查看该代码
     else { // 不是本人的情况下
         if (is_running(intval($cid))) { // the problem is in running contest
-            return HAS_PRI("see_source_in_contest");
+            $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id='$pid' AND contest_id='$cid' AND user_id='".$_SESSION['user_id']."'";
+            $result = $mysqli->query($sql);
+            $ok = ($result->num_rows>0);
+            $sql = "SELECT practice, open_source FROM contest WHERE contest_id='$cid'"; 
+            $result = $mysqli->query($sql);
+            $row = $result->fetch_object();
+            $open_source = $row->open_source=="Y"?1:0; // 默认值为0
+            $practice = $row->practice;
+            $result->free();
+            return ( ($ok && $practice && $open_source) || // 已经AC该题目，练习赛未结束时，若开放源代码查看可查看其他人的该题代码
+                HAS_PRI("see_source_in_contest")
+            );
         }
         else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
             $sql = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
