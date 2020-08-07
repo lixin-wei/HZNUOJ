@@ -110,7 +110,7 @@ HTML;
       }
       $now=time();
       ?>
-      <?php if ($is_practice || isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
+      <?php if (($is_practice && isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE) || isset($_GET['cid']) && ($now>$end_time || HAS_PRI("edit_contest"))): ?>
         <span class="am-badge am-badge-primary am-text-lg">
       <a href="problem.php?id=<?php echo $real_id ?>" style="color: white;">
         <?php echo $real_id ?>
@@ -196,7 +196,7 @@ HTML;
         <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
-        if(!isset($_GET['cid']) || $is_practice==1) {
+        if(!isset($_GET['cid']) || ($is_practice==1 && isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE)) {
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">
@@ -368,7 +368,7 @@ HTML;
         <button type="button" class="am-btn am-btn-sm am-btn-success "><?php echo $MSG_SUBMIT ?></button>
       </a>
         <?php
-        if(!isset($_GET['cid']) || $is_practice==1) {
+        if(!isset($_GET['cid']) || ($is_practice==1 && isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE)) {
             echo<<<HTML
             <a href="problemstatus.php?id={$row->problem_id}" style="color:white">
               <button type="button" class="am-btn am-btn-sm am-btn-primary ">

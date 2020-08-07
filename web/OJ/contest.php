@@ -214,7 +214,7 @@ SQL;
         if (isset($_SESSION['user_id']))
             $view_problemset[$cnt][0]=check_ac($cid,$cnt);
         $view_problemset[$cnt][1] = $row->score;
-        if ($practice || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
+        if (($practice && isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE) || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
             $view_problemset[$cnt][2]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
         $view_problemset[$cnt][2] .= "$MSG_PROBLEM &nbsp;".PID($row->pnum);
         // if($practice && is_in_running_contest($row->pid) && !$can_edit_contest)
