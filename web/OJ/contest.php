@@ -19,6 +19,9 @@ if(isset($_GET['my']) && isset($_SESSION['contest_id'])){ //不允许比赛用�
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
 }
+if(!isset($_GET['cid']) && isset($_SESSION['contest_id'])){
+    $_GET['cid']=$_SESSION['contest_id'];
+}
 function formatTimeLength($length)
 {
   $hour = 0;
