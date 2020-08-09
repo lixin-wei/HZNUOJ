@@ -204,20 +204,20 @@ for ( $i=0;$i<$rows_cnt;$i++ ) {
 /* 获取所有班级 start */
 $classSet = array();
 if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
-    $sql_class = "SELECT DISTINCT(`class`),`enrollment_year` FROM users LEFT JOIN `class_list` ON `class`=`class_name` WHERE `enrollment_year`=0 UNION (";
-	$sql_class .= "SELECT DISTINCT(`class`),`enrollment_year` FROM users LEFT JOIN `class_list` ON `class`=`class_name` WHERE `enrollment_year`<>0 ORDER BY `enrollment_year` DESC, `class`)";
+    $sql_class = "SELECT DISTINCT(`class`),`enrollment_year`, 0 as od FROM users LEFT JOIN `class_list` ON `class`=`class_name` WHERE `enrollment_year`=0 UNION ALL (";
+	$sql_class .= "SELECT DISTINCT(`class`),`enrollment_year`, 1 as od FROM users LEFT JOIN `class_list` ON `class`=`class_name` WHERE `enrollment_year`<>0) ORDER BY od,`enrollment_year` DESC, `class`";
 	$result_class = $mysqli->query($sql_class);
 	$i=0;
 	while ($row_class = $result_class->fetch_array()) {
 		$class = $row_class['class'];
-		if (!is_null($class) && $class!="" && $class!="null" && $class!="其它") {
+		//if (!is_null($class) && $class!="" && $class!="null" && $class!="其它") {
             if(!is_null($row_class['enrollment_year']) && $row_class['enrollment_year']!="" && $row_class['enrollment_year']!=0){
                 $grade = $row_class['enrollment_year']."级 ";
             } else $grade = "";
             $classSet[$i]["grade"] = $grade;
             $classSet[$i]["class"] = $class;
             $i++;
-		}
+		//}
 	}
 	$result_class->free();
 }
