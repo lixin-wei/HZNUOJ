@@ -437,4 +437,58 @@ function can_access_problem($uid, $pid){
         return ($user_access_level>=$problem_access_level);
     } else return false;
 }
+function updateRank($uid){ //调用前先require_once：rank.inc.php文件
+    global $mysqli, $level_total, $max_strength, $level_strength, $level_name, $level_color;
+
+    // 获取解题数大于10的用户数量存入user_cnt_divisor
+    $sql = "SELECT user_id FROM users WHERE solved>10";
+    $result = $mysqli->query($sql) or die($mysqli->error);
+    if($result && $result->num_rows > 0 ) $user_cnt_divisor = $result->num_rows;
+    else $user_cnt_divisor = 1;
+    $strength = 0;
+    $level = "斗之气一段";
+    $color = "#E0E0E0";
+    //calculate strength
+    $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$uid' AND result=4 ORDER BY problem_id";
+    $result=$mysqli->query($sql);
+    while($pid=$result->fetch_array()[0]){
+        $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
+        $y_result=$mysqli->query($sql);
+        $y_row = $y_result->fetch_object();
+        $solved = $y_row->solved_user;
+        $submit = $y_row->submit_user;
+        $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
+        if ($scores < 10) $scores = 10;
+        $strength += $scores;
+    }
+    // count hznuoj solved
+    $sql="SELECT count(DISTINCT problem_id) as ac FROM solution WHERE user_id='".$uid."' AND result=4";
+    $result=$mysqli->query($sql) or die($mysqli->error);
+    $row=$result->fetch_object();
+    $AC=$row->ac;
+    $result->free();
+
+    // count hznuoj submission
+    $sql="SELECT count(solution_id) as `Submit` FROM `solution` WHERE `user_id`='".$uid."'";
+    $result=$mysqli->query($sql) or die($mysqli->error);
+    $row=$result->fetch_object();
+    $Submit=$row->Submit;
+    $result->free();
+    
+    // 根据数组计算该实力对应的等级和颜色
+    if ($strength > $max_strength) {
+        $color = "#6C3365";
+        $level = "斗战胜佛";
+    } else for ($j=1; $j<$level_total; $j++) {
+        if ($strength < $level_strength[$j]) {
+            $level = $level_name[$j-1];
+            $color = $level_color[$j-1];
+            break;
+        }
+    }
+
+    // 更新用户信息
+    $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."' WHERE user_id='".$uid."'";
+    $mysqli->query($sql);
+}
 ?>

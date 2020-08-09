@@ -8,8 +8,8 @@
 
 <?php 
   require_once("./include/db_info.inc.php");
-  require_once('./include/setlang.php');
-  require_once("include/check_post_key.php");
+  require_once("./include/setlang.php");
+  require_once("./include/check_post_key.php");
   if($OJ_VCODE){
     $vcode=trim($_POST['vcode']);
     if(($vcode!= $_SESSION["vcode"]||$vcode==""||$vcode==null) ){
@@ -72,11 +72,14 @@
     //require_once("./discuz-api/config.inc.php");
     //require_once("./discuz-api/uc_client/client.php");
     //$uid = uc_user_register($user_id, $password, $email);
-    if($cid){
-      $url="contest.php?cid=$cid";      
-    } else $url="userinfo.php?user=$user_id";
     echo "<script language='javascript'>\n";
-    echo "window.location.href='$url';";  //echo "history.go(-2);\n";
+    if($cid){
+      echo "window.location.href='contest.php?cid=$cid';";
+    } else {
+      require_once("./include/rank.inc.php");
+      updateRank($user_mysql);
+      echo "history.go(-2);\n";
+    }
     echo "</script>";
 
   } else {
