@@ -134,7 +134,7 @@ HTML;
         <div class="col-sm-10">
           <select class="form-control selectpicker" name="problemset">
               <?php
-              $res=$mysqli->query("SELECT * FROM problemset");
+              $res=$mysqli->query("SELECT * FROM problemset ORDER BY `set_name_show`");
               while($row2=$res->fetch_array()){
                   if(HAS_PRI("edit_".$row2['set_name']."_problem")){
                       echo "<option value=".$row2['set_name'];
