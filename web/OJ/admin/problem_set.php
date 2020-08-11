@@ -36,6 +36,7 @@ if (isset($_POST['edit'])) {
         if ($mysqli->affected_rows == 1) echo "<script language=javascript>alert('修改成功！');</script>";
     }
 } else if (isset($_POST['del'])) {
+    require_once("../include/check_post_key.php");
     //默认题库不能删除，不能删除下面有题目的题库
     $id = $_POST['id'];
     $sql = "SELECT s.*,p.`num` FROM `problemset` AS s LEFT JOIN (SELECT problemset,COUNT(`problem_id`) AS num FROM `problem` GROUP BY problemset) AS p ON s.`set_name`=p.`problemset` WHERE `index`='$id'";
