@@ -275,9 +275,13 @@ HTML;
           if($text_input || $text_output) {
               $html_samples.= <<<HTML
                 <div class="sample-outer">
-                  <div class="sample-title">$MSG_Sample_Input:</div>
+                  <div class="sample-title">$MSG_Sample_Input: <button type = "button" class="sample-copy-btn am-btn am-btn-default am-btn-xs" data-clipboard-text = "{$text_input}
+" style = "height:20px;margin-left:10px;margin-top:-4px;padding-top:2px;padding-left: 8px;padding-right: 8px;">
+                $MSG_Copy</button></div>
                   <div class="sample-bg"><span class="sampledata">$text_input</span></div>
-                  <div class="sample-title">$MSG_Sample_Output:</div>
+                  <div class="sample-title">$MSG_Sample_Output: <button type = "button" class="sample-copy-btn am-btn am-btn-default am-btn-xs" data-clipboard-text = "{$text_output}
+" style = "height:20px;margin-left:10px;margin-top:-4px;padding-top:2px;padding-left: 8px;padding-right: 8px;">
+                $MSG_Copy</button></div>
                   <div class="sample-bg"><span class="sampledata">$text_output</span></div>
                 </div>
 HTML;
@@ -417,3 +421,21 @@ HTML;
         });
     });
 </script>
+<!-- clipboard.js START-->
+<script src="./plugins/clipboard/dist/clipboard.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var clipboard = new ClipboardJS('.sample-copy-btn');
+        clipboard.on('success', function(e) {
+            // console.info('Action:', e.action);
+            // console.info('Text:', e.text);
+            // console.info('Trigger:', e.trigger);
+            e.clearSelection();
+        });
+        clipboard.on('error', function(e) {
+            // console.error('Action:', e.action);
+            // console.error('Trigger:', e.trigger);
+        });
+    });
+</script>
+<!-- clipboard.js END-->
