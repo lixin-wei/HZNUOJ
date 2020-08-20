@@ -299,7 +299,7 @@ if (!$user_limit){
     $haveNotStart_ulist=array_column($res->fetch_all(MYSQLI_ASSOC), 'user_id');
     $haveNotStart_ulist=array_diff($haveNotStart_ulist, $ulist1);
     array_unique($haveNotStart_ulist);
-    $sql="SELECT `user_id`,`nick`,`real_name`,`class`,`stu_id` FROM `team` WHERE `user_id` IN ('".implode("','",$haveNotStart_ulist)."') ORDER BY `user_id`";
+    $sql="SELECT `user_id`,`nick`,`real_name`,`class`,`stu_id` FROM `team` WHERE `contest_id`='$cid' AND `user_id` IN ('".implode("','",$haveNotStart_ulist)."') ORDER BY `user_id`";
 }
 $res=$mysqli->query($sql) or die($mysqli->error);
 while($row=$res->fetch_object()) {
