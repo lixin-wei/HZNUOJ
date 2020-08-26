@@ -12,6 +12,7 @@
 				fileManagerJson : '../kindeditor/php/file_manager_json.php',
 				allowFileManager : false,
 				width:"680px",
+				height:"250px",
 				afterCreate : function() {
 					var self = this;
 					K.ctrl(document, 13, function() {
