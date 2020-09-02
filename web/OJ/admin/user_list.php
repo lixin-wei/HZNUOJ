@@ -156,7 +156,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         $view_users[$cnt][1] = "<a href='../userinfo.php?user=" . $row->user_id . "' target='_blank'>" . $row->user_id . "</a>";
         $view_users[$cnt][2] = $row->nick;
         if (HAS_PRI("edit_user_profile")) {
-            if ($row->user_id != 'admin' && $row->user_id != $_SESSION['user_id']) {
+            if ($row->user_id != 'admin' && get_order(get_group($row->user_id)) > get_order(get_group(""))) {
                 if ($row->defunct == "N") {
                     $view_users[$cnt][3] = "<a class='btn btn-primary' href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
                 } else {
