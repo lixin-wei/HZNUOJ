@@ -138,7 +138,7 @@ CREATE TABLE `problemset` (
   `access_level` tinyint NOT NULL DEFAULT 0,
   PRIMARY KEY (`index`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2;
-INSERT INTO `problemset` VALUES (1,'default','DEFAULT');
+INSERT INTO `problemset` VALUES (1,'default','DEFAULT',0);
 
 CREATE TABLE `reg_code` (
   `class_name` varchar(100) NOT NULL,
