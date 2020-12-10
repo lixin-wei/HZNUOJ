@@ -34,11 +34,15 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define BUFFER_SIZE 1024
 #define LOCKFILE "/var/run/judged.pid"
 #define LOCKMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
-#define STD_MB 1048576
+#define STD_MB 1048576LL
 
 #define OJ_WT0 0
 #define OJ_WT1 1
@@ -71,6 +75,11 @@ static char http_baseurl[BUFFER_SIZE];
 static char http_username[BUFFER_SIZE];
 static char http_password[BUFFER_SIZE];
 
+static int  oj_udp = 0;
+static char oj_udpserver[BUFFER_SIZE];
+static int  oj_udpport=1536;
+static int  oj_udp_fd;
+
 static int oj_redis = 0;
 static char oj_redisserver[BUFFER_SIZE];
 static int oj_redisport;
@@ -89,10 +98,36 @@ static MYSQL_ROW row;
 static char query[BUFFER_SIZE];
 #endif
 
+void wait_udp_msg(int fd)
+{
+    char buf[BUFFER_SIZE];  //......1024..
+    socklen_t len;
+    int count;
+    struct sockaddr_in clent_addr;  //clent_addr............
+        memset(buf, 0, BUFFER_SIZE);
+        len = sizeof(clent_addr);
+        count = recvfrom(fd, buf, BUFFER_SIZE, 0, (struct sockaddr*)&clent_addr, &len);  //recvfrom...............
+        if(count == -1)
+        {
+            printf("recieve data fail!\n");
+            return;
+        }
+        printf("udp client:%s\n",buf);  //..client......
+        memset(buf, 0, BUFFER_SIZE);
+//        sprintf(buf, "I have recieved %d bytes data!\n", count);  //..client
+//        printf("server:%s\n",buf);  //..........
+//        sendto(fd, buf, BUFF_LEN, 0, (struct sockaddr*)&clent_addr, len);  //.....client......clent_addr.....
+
+}
+
 void call_for_exit(int s)
 {
-  STOP = true;
-  printf("Stopping judged...\n");
+  if(DEBUG){
+    STOP = true;
+    printf("Stopping judged...\n");
+  }else{
+    printf("HUSTOJ Refusing to stop...\n Please use kill -9 !\n");
+  }
 }
 
 void write_log(const char *fmt, ...)
@@ -171,6 +206,7 @@ void init_mysql_conf()
   oj_tot = 1;
   oj_mod = 0;
   strcpy(oj_lang_set, "0,1,2,3");
+  strcpy(oj_udpserver, "127.0.0.1");
   fp = fopen("./etc/judge.conf", "r");
   if (fp != NULL)
   {
@@ -193,6 +229,10 @@ void init_mysql_conf()
       read_buf(buf, "OJ_HTTP_PASSWORD", http_password);
       read_buf(buf, "OJ_LANG_SET", oj_lang_set);
 
+      read_int(buf, "OJ_UDP_ENABLE", &oj_udp);
+                        read_buf(buf, "OJ_UDP_SERVER", oj_udpserver);
+                        read_int(buf, "OJ_UDP_PORT", &oj_udpport);
+
       read_int(buf, "OJ_REDISENABLE", &oj_redis);
       read_buf(buf, "OJ_REDISSERVER", oj_redisserver);
       read_int(buf, "OJ_REDISPORT", &oj_redisport);
@@ -201,12 +241,18 @@ void init_mysql_conf()
       read_int(buf, "OJ_TURBO_MODE", &turbo_mode);
     }
 #ifdef _mysql_h
+    if (oj_tot==1){
+    sprintf(query,
+            "SELECT solution_id FROM solution WHERE language in (%s) and result<2 ORDER BY solution_id  limit %d",
+      oj_lang_set,  2 *max_running );
+    }else{
     sprintf(query,
             "SELECT solution_id FROM solution WHERE language in (%s) and result<2 and MOD(solution_id,%d)=%d ORDER BY result ASC,solution_id ASC limit %d",
             oj_lang_set, oj_tot, oj_mod, max_running * 2);
+    }
 #endif
     sleep_tmp = sleep_time;
-    //	fclose(fp);
+      fclose(fp);
   }
 }
 
@@ -218,15 +264,32 @@ void run_client(int runid, int clientid)
   LIM.rlim_cur = 800;
   setrlimit(RLIMIT_CPU, &LIM);
 
-  LIM.rlim_max = 180 * STD_MB;
-  LIM.rlim_cur = 180 * STD_MB;
+  LIM.rlim_max = 800 * STD_MB;
+  LIM.rlim_cur = 800 * STD_MB;
   setrlimit(RLIMIT_FSIZE, &LIM);
-
+#ifdef __mips__
+  LIM.rlim_max = STD_MB << 12;
+  LIM.rlim_cur = STD_MB << 12;
+#endif
+#ifdef __arm__
   LIM.rlim_max = STD_MB << 11;
   LIM.rlim_cur = STD_MB << 11;
+#endif
+#ifdef __aarch64__
+  LIM.rlim_max = STD_MB << 15;
+  LIM.rlim_cur = STD_MB << 15;
+#endif
+#ifdef __i386
+  LIM.rlim_max = STD_MB << 11;
+  LIM.rlim_cur = STD_MB << 11;
+#endif
+#ifdef __x86_64__
+  LIM.rlim_max = STD_MB << 15;
+  LIM.rlim_cur = STD_MB << 15;
+#endif
   setrlimit(RLIMIT_AS, &LIM);
 
-  LIM.rlim_cur = LIM.rlim_max = 200;
+  LIM.rlim_cur = LIM.rlim_max = 800* max_running;
   setrlimit(RLIMIT_NPROC, &LIM);
 
   //buf[0]=clientid+'0'; buf[1]=0;
@@ -236,13 +299,17 @@ void run_client(int runid, int clientid)
   //write_log("sid=%s\tclient=%s\toj_home=%s\n",runidstr,buf,oj_home);
   //sprintf(err,"%s/run%d/error.out",oj_home,clientid);
   //freopen(err,"a+",stderr);
+  char * const envp[]={(char * const )"PYTHONIOENCODING=utf-8",
+           (char * const )"LANG=zh_CN.UTF-8",
+           (char * const )"LANGUAGE=zh_CN.UTF-8",
+           (char * const )"LC_ALL=zh_CN.UTF-8",NULL};
 
-  if (!DEBUG)
+  //if (!DEBUG)
     execl("/usr/bin/judge_client", "/usr/bin/judge_client", runidstr, buf,
           oj_home, (char *)NULL);
-  else
-    execl("/usr/bin/judge_client", "/usr/bin/judge_client", runidstr, buf,
-          oj_home, "debug", (char *)NULL);
+  //else
+  //  execl("/usr/bin/judge_client", "/usr/bin/judge_client", runidstr, buf,
+  //      oj_home, "debug", (char *) NULL);
 
   //exit(0);
 }
@@ -283,12 +350,12 @@ int init_mysql()
     }
     else
     {
-      return 0;
+    return executesql("set names utf8");
     }
   }
   else
   {
-    return executesql("set names utf8");
+    return executesql("commit");
   }
 }
 #endif
@@ -490,13 +557,13 @@ bool check_out(int solution_id, int result)
 #endif
   }
 }
+  static int workcnt = 0;
 int work()
 {
   //      char buf[1024];
-  static int retcnt = 0;
+  int retcnt = 0;
   int i = 0;
   static pid_t ID[100];
-  static int workcnt = 0;
   int runid = 0;
   int jobs[max_running * 2 + 1];
   pid_t tmp_pid = 0;
@@ -504,6 +571,8 @@ int work()
   //for(i=0;i<max_running;i++){
   //      ID[i]=0;
   //}
+  for(i=0;i<max_running *2 +1 ;i++)
+    jobs[i]=0;
 
   //sleep_time=sleep_tmp;
   /* get the database info */
@@ -517,11 +586,10 @@ int work()
     runid = jobs[j];
     if (runid % oj_tot != oj_mod)
       continue;
-    if (DEBUG)
-      write_log("Judging solution %d", runid);
     if (workcnt >= max_running)
     {                                 // if no more client can running
-      tmp_pid = waitpid(-1, NULL, 0); // wait 4 one child exit
+      tmp_pid = waitpid(-1, NULL, WNOHANG); // wait 4 one child exit
+      if (DEBUG) printf("try get one tmp_pid=%d\n",tmp_pid);
       for (i = 0; i < max_running; i++)
       { // get the client id
         if (ID[i] == tmp_pid)
@@ -549,19 +617,30 @@ int work()
         if (ID[i] == 0)
         {
           if (DEBUG)
+          {
+            write_log("Judging solution %d", runid);
             write_log("<<=sid=%d===clientid=%d==>>\n", runid, i);
+          }
           run_client(runid, i); // if the process is the son, run it
+          workcnt--;
           exit(0);
         }
       }
       else
       {
-        ID[i] = 0;
+      //  ID[i] = 0;
+        if(DEBUG){
+          if(workcnt<max_running)
+            printf("check out failure ! runid:%d pid:%d \n",i,ID[i]);
+          else
+            printf("workcnt:%d max_running:%d ! \n",workcnt,max_running);
+        }
       }
     }
+    if(DEBUG)
+        printf("workcnt:%d max_running:%d ! \n",workcnt,max_running);
   }
-  while ((tmp_pid = waitpid(-1, NULL, 0)) > 0)
-  {
+  while ((tmp_pid = waitpid(-1, NULL, WNOHANG)) > 0) {
     for (i = 0; i < max_running; i++)
     { // get the client id
       if (ID[i] == tmp_pid)
@@ -668,7 +747,7 @@ int daemon_init(void)
 void turbo_mode2()
 {
 #ifdef _mysql_h
-  if (turbo_mode == 2)
+  if(turbo_mode == 2)
   {
     char sql[BUFFER_SIZE];
     sprintf(sql, " CALL `sync_result`();");
@@ -679,6 +758,7 @@ void turbo_mode2()
 }
 int main(int argc, char **argv)
 {
+  int oj_udp_ret=0;
   DEBUG = (argc > 2);
   ONCE = (argc > 3);
   if (argc > 1)
@@ -705,13 +785,34 @@ int main(int argc, char **argv)
 #ifdef _mysql_h
   init_mysql_conf(); // set the database info
 #endif
+  if(oj_udp){
+    oj_udp_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(oj_udp_fd<0) 
+      printf("udp fd open failed! \n");    
+    struct sockaddr_in ser_addr;
+    memset(&ser_addr, 0, sizeof(ser_addr));
+    ser_addr.sin_family = AF_INET;
+    ser_addr.sin_addr.s_addr = inet_addr(oj_udpserver);
+    ser_addr.sin_port = htons(oj_udpport);
+    struct timeval timeOut;
+    timeOut.tv_sec = sleep_time;                 //..5s..
+    timeOut.tv_usec = 0;
+    if (setsockopt(oj_udp_fd, SOL_SOCKET, SO_RCVTIMEO, &timeOut, sizeof(timeOut)) < 0)
+    {
+      printf("time out setting failed\n");
+    }
+    oj_udp_ret=bind(oj_udp_fd, (struct sockaddr*)&ser_addr, sizeof(ser_addr));
+    if(oj_udp_ret<0) 
+      printf("udp fd open failed! \n");
+  }
   signal(SIGQUIT, call_for_exit);
-  signal(SIGKILL, call_for_exit);
+  signal(SIGINT, call_for_exit);
   signal(SIGTERM, call_for_exit);
   int j = 1;
   int n = 0;
-  while (1)
-  { // start to run
+  while (!STOP)
+  { // start to run until call for exit
+    n=0;
     while (j && (http_judge
 #ifdef _mysql_h
                  || !init_mysql()
@@ -733,7 +834,17 @@ int main(int argc, char **argv)
     turbo_mode2();
     if (ONCE)
       break;
+    if(n==0){
+        printf("workcnt:%d\n",workcnt);
+        if(oj_udp&&oj_udp_ret==0){
+            if(STOP) return 1;
+            wait_udp_msg(oj_udp_fd);
+            if(DEBUG) printf("udp job ... \n");
+        }else{
     sleep(sleep_time);
+            if(DEBUG) printf("sleeping ... %ds \n",sleep_time);
+        }
+    }
     j = 1;
   }
   return 0;
