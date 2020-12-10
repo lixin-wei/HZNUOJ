@@ -47,19 +47,15 @@
       "Lua",        //15
       "JavaScript", //16
       "Go",         //17
-      "Python3"     //18  hustoj中18对应语言是SQL(sqlite3)，若要对接hustoj（即用hustoj的判题机，用HZNUOJ的web部分），那么提交的python3代码会被当做SQL(sqlite3)来判题
-                    //    这里建议如果想用Python3的判题，可以通过系统配置将6 Python配置成Python3，Python2和Python3二选一，毕竟Python3是大势所趋，具体参看wiki/maintainer-manual.md
-      /* hustoj 新增的支持语言
-      "SQL(sqlite3)", //18
-      "Fortran",      //19
-      "Matlab(Octave)",//20
-      "Other Language" //21
-      */
+      "SQL",        //18
+      "Fortran",    //19
+      "Matlab"      //20
+      //"UnknownLanguage" //21
   );
-  $language_order = [0,1,13,14,2,3,4,5,6,18,7,8,9,10,11,12,15,16,17];
-  $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","js", "go", "py");
-  //scheme、Lua和Go语言没有对应的格式刷，先用c的刷子替代，不然显示scheme、Lua和Go语言代码时JavaScript会报错
-  $language_brush=Array( "c", "c++", "delphi", "java", "ruby", "bash", "python", "php","perl", "c#","c","vb","c","c","c++","c","javascript", "c", "python");
+  $language_order = [0,1,6,3,4,5,7,8,9,10,2,11,12,13,14,15,16,17,18,19,20];
+  $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","js", "go", "sql","f95","m" );
+  //scheme、Lua、Fortran、Matlab和Go语言没有对应的格式刷，先用c的刷子替代，不然显示scheme、Lua和Go语言代码时JavaScript会报错
+  $language_brush=Array( "c", "c++", "delphi", "java", "ruby", "bash", "python", "php","perl", "c#","c","vb","c","c","c++","c","javascript", "c", "sql","c","c");
   function PID($id) {
     $id++;
     $res = "";

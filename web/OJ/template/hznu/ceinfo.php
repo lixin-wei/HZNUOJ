@@ -244,6 +244,7 @@
 <script src='./plugins/highlight/scripts/shBrushBash.js' type='text/javascript'></script>
 <script src='./plugins/highlight/scripts/shBrushCSharp.js' type='text/javascript'></script>
 <script src='./plugins/highlight/scripts/shBrushVb.js' type='text/javascript'></script>
+<script src='./plugins/highlight/scripts/shBrushSql.js' type='text/javascript'></script>
 <script language='javascript'>
 $(document).ready(function(){
 	$("#source").load("getsource.php?ce&id=<?php echo $id?>",function(response,status,xhr){
