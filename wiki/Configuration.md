@@ -6,7 +6,7 @@
 
 there are two files that can be used for oj behavior control
 
-**/home/judge/etc/judge.conf** and **/var/www/web/OJ/include/static.php**
+**/home/judge/etc/judge.conf** and **/home/judge/HZNUOJ/web/OJ/include/static.php**
 
 ## = judge.conf =
 
@@ -109,15 +109,15 @@ static  $OJ_SIM=true;//是否显示相似度检测的结果。
 
 static  $OJ_DICT=true;//是否启用在线英字典
 
-static  $OJ_LANGMASK=979967; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
+static  $OJ_LANGMASK=‭2290687‬; //用掩码表示的OJ接受的提交语言，可以被比赛设定覆盖。hustoj原版规则1mC 2mCPP 4mPascal 8mJava 16mRuby 32mBash 1008 for security reason to mask all other language  221184
 
         //HZNUOJ规则 1开启 0关闭，各个语言从后往前排，在最高位补1，再二进制转成十进制变成掩码,语言顺序见/include/const.inc.php的$language_name数组
 
-        //1 1101111001111111111=1(455679D)=979967 github上down下来默认JavaScript、Obj-C、FreeBasic不开
+        //1 111111111111111111111=1(2097151D)=4194303 21个语言全开
 
-        //1 1111111111111111111=1(524287D)=1048575 语言全开
+        //1 000101111001111111111=1(193535D)=2290687 默认JavaScript、Obj-C、FreeBasic、SQL、Fortran、MATLAB不开
 
-        //1 1100000000000000011 = 1(393219D)=917507 只开C C++ python3 GO
+        //1 000000000000001000011=1(67D)=2097219 只开C C++ python
 
         //试验了下最高位1不补好像也没问题
 

@@ -52,10 +52,13 @@ sed -i 's/http\:\/\/pt.archive.ubuntu.com/https\:\/\/mirrors.aliyun.com/g' /etc/
 sed -i 's/http\:\/\/archive.ubuntu.com/https\:\/\/mirrors.aliyun.com/g'    /etc/apt/sources.list
 sed -i 's/http\:\/\/security.ubuntu.com/https\:\/\/mirrors.aliyun.com/g'   /etc/apt/sources.list
 apt-get update
-#try install tools
-echo 'mysql-server-5.5 mysql-server/root_password password ""' | sudo debconf-set-selections
-echo 'mysql-server-5.5 mysql-server/root_password_again password ""' | sudo debconf-set-selections
-apt-get install -y make flex g++ clang libmysqlclient-dev libmysql++-dev php-fpm nginx mysql-server php-mysql  php-common php-gd php-zip fp-compiler openjdk-8-jdk mono-devel php-mbstring php-xml php-curl php-intl php-xmlrpc php-soap subversion php-xml-parser
+for pkg in "net-tools make flex g++ clang libmysqlclient-dev libmysql++-dev php-fpm nginx mysql-server php-mysql  php-common php-gd php-zip fp-compiler openjdk-11-jdk mono-devel php-mbstring php-xml php-curl php-intl php-xmlrpc php-soap subversion"
+do
+    while ! apt-get install -y $pkg 
+    do
+        echo "Network fail, retry... you might want to change another apt source for install"
+    done
+done
 reset
 echo ""
 echo " ██      ██ ████████ ████     ██ ██     ██   ███████        ██"
@@ -70,6 +73,7 @@ echo ""
 /usr/sbin/useradd -m -u 1536 judge
 cp -R HZNUOJ /home/judge/
 cd /home/judge/
+
 USER=`cat /etc/mysql/debian.cnf |grep user|head -1|awk  '{print $3}'`
 PASSWORD=`cat /etc/mysql/debian.cnf |grep password|head -1|awk  '{print $3}'`
 CPU=`grep "cpu cores" /proc/cpuinfo |head -1|awk '{print $4}'`
@@ -80,6 +84,7 @@ mkdir etc data log backup
 cp HZNUOJ/judger/install/java0.policy  /home/judge/etc
 cp HZNUOJ/judger/install/judge.conf  /home/judge/etc
 chmod +x HZNUOJ/judger/install/ans2out
+chmod +x HZNUOJ/judger/install/hustoj
 
 mkdir run0 run1 run2 run3
 chown judge run0 run1 run2 run3
@@ -126,22 +131,20 @@ else
     sed -i "s:#\tinclude snippets:\tinclude snippets:g" /etc/nginx/sites-enabled/default
     sed -i "s|#\tfastcgi_pass unix|\tfastcgi_pass unix|g" /etc/nginx/sites-enabled/default
     sed -i "s:}#added by hustoj::g" /etc/nginx/sites-enabled/default
-    if [ -f "/run/php/php7.2-fpm.sock" ]; then
-        sed -i "s:php7.0:php7.2:g" /etc/nginx/sites-enabled/default
-    fi
+    sed -i "s:php7.0:php7.2:g" /etc/nginx/sites-enabled/default
     sed -i "s|# deny access to .htaccess files|}#added by hustoj\n\n\n\t# deny access to .htaccess files|g" /etc/nginx/sites-enabled/default
 fi
 /etc/init.d/nginx restart
-sed -i "s/post_max_size = 8M/post_max_size = 80M/g" /etc/php/7.0/fpm/php.ini
-sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 80M/g" /etc/php/7.0/fpm/php.ini
+sed -i "s/post_max_size = 8M/post_max_size = 80M/g" /etc/php/7.2/fpm/php.ini
+sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 80M/g" /etc/php/7.2/fpm/php.ini
 sed -i 's/;request_terminate_timeout = 0/request_terminate_timeout = 128/g' `find /etc/php -name www.conf`
 sed -i 's/pm.max_children = 5/pm.max_children = 200/g' `find /etc/php -name www.conf`
  
 COMPENSATION=`grep 'mips' /proc/cpuinfo|head -1|awk -F: '{printf("%.2f",$2/5000)}'`
 sed -i "s/OJ_CPU_COMPENSATION=1.0/OJ_CPU_COMPENSATION=$COMPENSATION/g" etc/judge.conf
 
-/etc/init.d/php7.0-fpm restart
-service php7.0-fpm restart
+/etc/init.d/php7.2-fpm restart
+service php7.2-fpm restart
 
 cd HZNUOJ/judger/core
 chmod +x ./make.sh
@@ -158,9 +161,12 @@ fi
 ln -s /usr/bin/mcs /usr/bin/gmcs
 
 /usr/bin/judged
+cp /home/judge/HZNUOJ/judger/install/hustoj /etc/init.d/hustoj
+update-rc.d hustoj defaults
+systemctl enable hustoj
 systemctl enable nginx
 systemctl enable mysql
-systemctl enable php7.0-fpm
+systemctl enable php7.2-fpm
 systemctl enable judged
 
 mkdir /var/log/hustoj/

@@ -109,22 +109,27 @@ admin@ubuntu16:~$ docker run -it --rm -p 90:80 --privileged hznuoj:latest
 
 ## 使用源码
 
-1. HZNUOJ目前只在Ubuntu16.04上跑过，在更高版本下判题机可能无法正常运行。
+1. HZNUOJ目前只在Ubuntu16.04上跑过，在更高版本下判题机可能无法正常运行。（**2020年12月已将判题机更新到hustoj的最新版本判题机,Ubuntu18/20都已适配。**）
 
-2. 若OJ用于OI信息学奥赛训练，请下载源码后修改`/judger/install/judge.conf`OJ_OI_MODE=1，默认运行模式为OJ_OI_MODE=0 ACM竞赛模式。
-
-3. 下载源码，root权限运行`judger/install/install.sh` , 请确保在目录 `judger/install/` 下执行install.sh，建议安装前把更新源换成国内的比如阿里云、清华等更新源。
-   本地登录或者ssh远程登录Ubuntu系统后，命令行下按顺序执行以下指令：
+2. 下载源码，root权限运行`judger/install/install.sh` , 安装脚本会自动将系统默认更新源换成国内访问速度更快的阿里云更新源。
+   本地登录或者ssh远程登录Ubuntu16系统后，命令行下按顺序执行以下指令：
    ```bash
    admin@ubuntu16:~$ git clone https://github.com/wlx65003/HZNUOJ.git
-   admin@ubuntu16:~$ cd HZNUOJ/judger/install
-   admin@ubuntu16:~/HZNUOJ/judger/install$ sudo bash install.sh
+   admin@ubuntu16:~$ sudo bash HZNUOJ/judger/install/install.sh
+   ```
+   
+   在Ubuntu18中安装时，命令行下按顺序执行以下指令：
+   ```bash
+   admin@ubuntu18:~$ git clone https://github.com/wlx65003/HZNUOJ.git
+   admin@ubuntu18:~$ sudo bash HZNUOJ/judger/install/install-ubuntu18.04.sh
    ```
    源码或者还可以直接访问`https://github.com/wlx65003/HZNUOJ` 下载zip包
 
-4. 安装完成后访问localhost、服务器IP或相应域名即可。
+3. 安装完成后访问localhost、服务器IP或相应域名即可。
 
-5. 若想在现存的hustoj上使用HZNUOJ，请参看[HZNUOJ常见问题列表/将hustoj升级为HZNUOJ（只迁移web部分，后台的判题机不变）](wiki/maintainer-manual.md)，
+4. 若想在现存的hustoj上使用HZNUOJ，请参看[HZNUOJ常见问题列表/将hustoj升级为HZNUOJ（只迁移web部分，后台的判题机不变）](wiki/maintainer-manual.md)，
+
+5. OJ的默认运行模式为OJ_OI_MODE=0 ACM竞赛模式，若要用于OI信息学奥赛训练，可以在安装前修改`/judger/install/judge.conf`OJ_OI_MODE=1，或在安装后运行/judger/install/**ch_OI_MODE.sh**脚本修改运行模式。
 
 ## 功能配置
 
@@ -142,7 +147,7 @@ admin@ubuntu16:~$ sudo pkill -9 judged && sudo judged && ps -A | grep judged
 
 ### 参数配置
 
-Core判题机部分的配置文件为/home/judge/etc/judge.conf，web网站部分的配置文件为/var/www/web/OJ/include/static.php
+Core判题机部分的配置文件为/home/judge/etc/judge.conf，web网站部分的配置文件为/home/judge/HZNUOJ/web/OJ/include/static.php
 
 详细的配置说明可以参看[HZNUOJ配置手册](wiki/Configuration.md)或者配置文件中的注释。
 

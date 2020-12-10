@@ -24,6 +24,8 @@ set encoding=prc
 
 ### 切换Python版本到Python3
 
+**此条针对老版本判题机，2020年12月份升级到hustoj的最新版本判题机，Python默认版本设定为Python3**
+
 首先attach进入容器
 
 然后执行下面两条命令即可
