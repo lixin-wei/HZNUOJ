@@ -79,7 +79,7 @@ PASSWORD=`cat /etc/mysql/debian.cnf |grep password|head -1|awk  '{print $3}'`
 CPU=`grep "cpu cores" /proc/cpuinfo |head -1|awk '{print $4}'`
 
 mkdir etc data log backup
-#mkdir -p /home/judge/HZNUOJ/web/OJ/upload
+mkdir -p /home/judge/HZNUOJ/web/OJ/upload
 
 cp HZNUOJ/judger/install/java0.policy  /home/judge/etc
 cp HZNUOJ/judger/install/judge.conf  /home/judge/etc
