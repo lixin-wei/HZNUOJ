@@ -11,17 +11,21 @@
   <!-- 工具栏 start -->
   <div class='am-text-center'>
     <?php 
-      if(HAS_PRI("download_ranklist")) echo "[ <a href='contestrank-oi.php?cid=".$cid."&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;";
+      if(HAS_PRI("download_ranklist")){
+        if ($real_name_mode) {
+          echo "[ <a href='contestrank-oi.php?cid=".$cid."&real_name_mode&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;";
+       } else echo "[ <a href='contestrank-oi.php?cid=".$cid."&download_ranklist'>".$MSG_DOWNLOAD_RANK."</a> ]&nbsp;";
+      }
       // if (!$_GET['scroll'])
-      //   echo "[ <a href='contestrank.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
+      //   echo "[ <a href='contestrank-oi.php?scroll=true&cid=".$cid."'>Auto-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
       // else 
-      //   echo "[ <a href='contestrank.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
+      //   echo "[ <a href='contestrank-oi.php?cid=".$cid."'>No-scrolling</a> ]&nbsp;&nbsp;&nbsp;";
      if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
       if(HAS_PRI('see_hidden_user_info')) {
         if ($real_name_mode) {
-            echo "[ <a href='contestrank.php?cid=$cid'>$MSG_Normal_Mode</a> ]";
+            echo "[ <a href='contestrank-oi.php?cid=$cid'>$MSG_Normal_Mode</a> ]";
         }
-        else echo "[ <a href='contestrank.php?cid=$cid&real_name_mode'>$MSG_RealName_Mode</a> ]";
+        else echo "[ <a href='contestrank-oi.php?cid=$cid&real_name_mode'>$MSG_RealName_Mode</a> ]";
       }
     ?>
     [ <?php echo $MSG_Class ?>
@@ -113,11 +117,10 @@
     <thead>
       <tr>
       <th id="rank" width="5%"><?php echo $MSG_RANK ?></th>
+      <th id="user" width="10%"><?php echo $MSG_USER ?></th>
       <?php if($real_name_mode):?>
-        <th id="user" width="10%" ><?php echo $MSG_StudentID ?></th>
         <th id="nick" width="10%"><?php echo $MSG_REAL_NAME ?></th>
       <?php else: ?>
-        <th id="user" width="10%"><?php echo $MSG_USER ?></th>
         <th id="nick" width="10%"><?php echo $MSG_NICK ?></th>
       <?php endif; ?>
       <th id="score" width="5%"><?php echo $MSG_SCORE ?></th>
@@ -152,12 +155,11 @@
           echo "<td class='rankcell' style='border-left:0;'>";
           $uuid=htmlentities($U[$i]->user_id);
           $nick=htmlentities($U[$i]->nick);
+          $col2=htmlentities($U[$i]->user_id);
           if($real_name_mode) {
-              $col2=htmlentities($U[$i]->stu_id);
-              $col3=htmlentities($U[$i]->class . "-". $U[$i]->real_name);
+              $col3=htmlentities($U[$i]->real_name);
           }
           else {
-              $col2=htmlentities($U[$i]->user_id);
               $col3=htmlentities($U[$i]->nick);
           }
 
