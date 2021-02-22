@@ -30,7 +30,12 @@ require_once("header.php");
         <table class="am-table am-table-striped am-table-compact">
           <tbody>
             <tr><th class="first-col am-text-right"><?php echo $MSG_USER_ID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($user).$defunct?></td></tr>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($nick)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_nick" type="text" value="<?php echo htmlentities($nick)?>" required>
+             <?php } else echo htmlentities($nick)?>
+            </td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_RANK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $Rank?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_STRENGTH ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo round($strength)?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_LEVEL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $level?></td></tr>
@@ -48,11 +53,21 @@ require_once("header.php");
                 echo "<td><a href=status.php?user_id=".htmlentities($user)."&jresult=".$row[0]." >".$row[1]."</a></td></tr>\n";
                 }
             ?>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($school)?></td></tr>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_school" type="text" value="<?php echo htmlentities($school)?>">
+             <?php } else echo htmlentities($school)?>
+            </td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_email" type="text" value="<?php echo htmlentities($email)?>">
+             <?php } else echo "<a href='mailto:". htmlentities($email)."'>". htmlentities($email)."</a>" ?>
+            </td></tr>
             <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
               if (HAS_PRI("edit_user_profile")){
-                  require_once('./include/set_post_key.php');?>
+            ?>
               <input type="hidden" name="admin_mode" value="1">
               <input type="hidden" name="user_id" value="<?php echo htmlentities($user)?>">
               <tr><td colspan="2" class="am-danger  am-text-center">----The followings are  admin only----</td></tr>
