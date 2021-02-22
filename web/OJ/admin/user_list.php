@@ -154,7 +154,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id' />&nbsp;" . ++$u_id;
         else $view_users[$cnt][0] = ++$u_id;
         $view_users[$cnt][1] = "<a href='../userinfo.php?user=" . $row->user_id . "' target='_blank'>" . $row->user_id . "</a>";
-        $view_users[$cnt][2] = $row->nick;
+        $view_users[$cnt][2] = mb_strlen($row->nick, 'utf-8')<=4 ? "<div style='width:80px;white-space: nowrap;'>$row->nick</div>" : "<div title='$row->nick' style='width:80px;white-space: nowrap;text-overflow:ellipsis; overflow:hidden;'>". mb_substr($row->nick,0,4,'utf-8')."...</div>";
         if (HAS_PRI("edit_user_profile")) {
             if ($row->user_id != 'admin' && get_order(get_group($row->user_id)) > get_order(get_group(""))) {
                 if ($row->defunct == "N") {
@@ -192,13 +192,13 @@ if (!isset($_GET['team'])) { //查询普通账号
         $view_users[$cnt][8] = round($row->strength);
         $view_users[$cnt][9] = $row->level;
         $view_users[$cnt][10] = $row->accesstime;
-        $view_users[$cnt][13] = $row->email;
-        $view_users[$cnt][14] = $row->school;
+        $view_users[$cnt][14] = mb_strlen($row->school, 'utf-8')<=8 ? $row->school : "<div title='$row->school' style='width:150px;white-space: nowrap;text-overflow:ellipsis; overflow:hidden;'>". mb_substr($row->school,0,8,'utf-8')."...</div>";
         if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
-            $view_users[$cnt][17] = $row->class;
             $view_users[$cnt][16] = $row->real_name;
+            $view_users[$cnt][17] = $row->class;
             $view_users[$cnt][15] = $row->stu_id;
         }
+        $view_users[$cnt][13] = $row->email;
         $view_users[$cnt][11] = $row->reg_time;
         $view_users[$cnt][12] = $row->ip;
         $cnt++;
@@ -223,6 +223,8 @@ if (!isset($_GET['team'])) { //查询普通账号
         $contest_status = ($row->defunct == 'Y') ? '<font color=red><b>【' . $MSG_Reserved . '】</b></font>' : "";
         $view_users[$cnt][6] = ($row->title) ? "<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
         $view_users[$cnt][7] = $row->accesstime;
+        $view_users[$cnt][8] = $row->reg_time;;
+        $view_users[$cnt][9] = $row->ip;
         $view_users[$cnt][10] = $row->school;
         if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $view_users[$cnt][13] = $row->class;
@@ -231,8 +233,6 @@ if (!isset($_GET['team'])) { //查询普通账号
         }
         $view_users[$cnt][14] = $row->seat;
         $view_users[$cnt][15] = $row->institute;
-        $view_users[$cnt][8] = $row->reg_time;;
-        $view_users[$cnt][9] = $row->ip;
         $cnt++;
     }
 }
@@ -425,13 +425,13 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <th id="strength"><?php echo $MSG_STRENGTH ?>&nbsp;<span class="<?php echo $strength_icon ?>"></span></th>
                         <th><?php echo $MSG_LEVEL ?></th>
                         <th id="acctime"><?php echo $MSG_AccessTime ?>&nbsp;<span class="<?php echo $acctime_icon ?>"></span></th>
-                        <th><?php echo $MSG_EMAIL ?></th>
                         <th><?php echo $MSG_SCHOOL ?></th>
                         <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
-                            <th><?php echo $MSG_Class ?></th>
                             <th><?php echo $MSG_REAL_NAME ?></th>
+                            <th><?php echo $MSG_Class ?></th>
                             <th><?php echo $MSG_StudentID ?></th>
                         <?php } ?>
+                        <th><?php echo $MSG_EMAIL ?></th>
                         <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
                         <th><?php echo $MSG_RegIP ?></th>
                         </tr>
@@ -515,6 +515,8 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <?php } ?>
                         <th><?php echo $MSG_CONTEST ?></th>
                         <th id="acctime"><?php echo $MSG_AccessTime ?>&nbsp;<span class="<?php echo $acctime_icon ?>"></span></th>                        
+                        <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
+                        <th><?php echo $MSG_RegIP ?></th>
                         <th><?php echo $MSG_SCHOOL ?></th>
                         <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
                             <th><?php echo $MSG_Class ?></th>
@@ -523,8 +525,6 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <?php } ?>
                         <th><?php echo $MSG_Seat ?></th>
                         <th><?php echo $MSG_Institute ?></th>
-                        <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
-                        <th><?php echo $MSG_RegIP ?></th>                        
                         </tr>
                 </thead>
                 <tbody>
