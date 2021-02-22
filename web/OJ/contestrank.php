@@ -349,8 +349,8 @@ foreach($pid_nums as $num){
     header("Content-Type: application/force-download");
     echo "<center><h3>Contest ACM RankList -- $title</h3></center>";
     echo "<table border=1 align='center' class='excel_table'><tr>";
-    if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE)  echo "<td>$MSG_REAL_NAME<td>Student ID<td>Class";
-    echo "<td>$MSG_RANK<td>$MSG_USER<td>$MSG_NICK<td>$MSG_SCORE<td>$MSG_SOLVED<td>$MSG_PENALTY";
+    if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE && $real_name_mode)  echo "<td>$MSG_Class</td><td>$MSG_StudentID</td><td>$MSG_REAL_NAME</td>";
+    echo "<td>$MSG_NICK</td><td>$MSG_RANK</td><td>$MSG_USER</td><td>$MSG_SCORE</td><td>$MSG_SOLVED</td><td>$MSG_PENALTY</td>";
     foreach($pid_nums as $num)
         echo "<td>".PID($num[0])."</td>";
     echo "</tr>";
@@ -358,11 +358,15 @@ foreach($pid_nums as $num){
     $rank=1;
     for ($i=0;$i<$user_cnt;$i++){
         echo "<tr align=left>";
-        if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
-            echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->real_name."</td>";
-            echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
+        if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE && $real_name_mode){
             echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->class."</td>";
+            echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->stu_id."</td>";
+            echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->real_name."</td>";
         }
+        if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
+            $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
+        }
+        echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->nick."</td>";
         echo "<td>";
         if($is_excluded[$U[$i]->user_id]){
             echo "*";
@@ -372,10 +376,6 @@ foreach($pid_nums as $num){
         }
         echo "</td>";
         echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->user_id."</td>";
-        if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')){
-            $U[$i]->nick=iconv("utf8","gbk",$U[$i]->nick);
-        }
-        echo "<td style='mso-number-format:\"\\@\"'>".$U[$i]->nick."</td>";
         echo "<td>".$U[$i]->score."</td>";
         echo "<td>".$U[$i]->solved."</td>";
         echo "<td>".$U[$i]->time."</td>";
