@@ -17,7 +17,7 @@
   static  $DB_VJPASS="root";
   static  $VJ_OPEN=false;
 
-  static  $OJ_HOME="/OJ/";//OJ的首页地址
+  static  $OJ_HOME="/";//OJ的首页地址
   static  $OJ_NAME="HZNUOJ";//OJ的名字，将取代页面标题等位置HZNUOJ字样。
   static  $OJ_ADMIN="root@localhost";//管理员email
   static  $OJ_DATA="/home/judge/data";//测试数据所在目录，实际位置。
