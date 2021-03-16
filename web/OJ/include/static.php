@@ -62,6 +62,7 @@
                                    //密码模式，值为"pwd"，凭后台设置的班级+注册码进行注册（注册码可设定注册次数），账号注册后立即激活
                                    //密码+审核模式，值为"pwd+confirm"，基础功能同密码模式，但是账号注册后并不是立即激活，而是还需管理员后台审核激活
   static  $OJ_NEED_CLASSMODE=true;//是否开启班级模式，包括显示班级、学号、真名
+  static  $OJ_NEED_LOGIN=false; //需要登录才能访问
   static  $OJ_show_PrinterAndDiscussInContest=true;//是否在比赛页面显示Code Printer和Discuss的链接
   static  $OJ_show_contestSolutionInStatus=false;//是否在status.php中显示contest中提交的代码
 

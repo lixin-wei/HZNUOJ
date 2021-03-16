@@ -179,6 +179,8 @@ static  $OJ_REG_NEED_CONFIRM="pwd"; //新注册用户模式，共四种模式
 
 static  $OJ_NEED_CLASSMODE=true;//是否开启班级模式，包括显示班级、学号、真名
 
+static  $OJ_NEED_LOGIN=false; //需要登录才能访问
+
 static  $OJ_show_PrinterAndDiscussInContest=true;//是否在比赛页面显示Code Printer和Discuss的链接
 
 static  $OJ_show_contestSolutionInStatus=false;//是否在status.php中显示contest中提交的代码

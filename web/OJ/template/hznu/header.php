@@ -33,6 +33,16 @@
   }
   if ($show_tag) $_SESSION['tag'] = "Y";
   else $_SESSION['tag'] = "N";
+
+  $url=basename($_SERVER['REQUEST_URI']);
+  if(isset($OJ_NEED_LOGIN)&&$OJ_NEED_LOGIN&&(
+    $url!='loginpage.php' && $url!='registerpage.php'&&
+    $url!='lostpassword.php'&& $url!='lostpassword2.php'&&
+    $url!='faqs.php' && $url!='index.php' && $url!=''
+    ) && !isset($_SESSION['user_id'])){
+  header("location:loginpage.php");
+  exit();
+  }
 ?>
 
 
