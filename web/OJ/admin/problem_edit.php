@@ -8,42 +8,99 @@
 
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
+require_once "../include/db_info.inc.php";
+require_once '../include/my_func.inc.php';
 require_once "admin-header.php";
 require_once "kindeditor.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/problem.php";
+require_once "../include/problem.php";
 ?>
 <?php
 $add_problem_mod=false;
 if(isset($_GET['new_problem'])){
     $add_problem_mod=true;
 }
+function getProblemInfo($pid){
+  global $mysqli, $row, $samples;
+  $sql="SELECT * FROM `problem` WHERE `problem_id`=$pid";
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
+  $sql="SELECT `input`, `output`, `show_after` FROM `problem_samples` WHERE `problem_id`='$pid' ORDER BY `sample_id`";
+  $res=$mysqli->query($sql);
+  while($r=$res->fetch_array()){
+      array_push($samples, array(
+          "input" => $r['input'],
+          "output" => $r['output'],
+          "show_after" => $r['show_after'],
+      ));
+  }
+}
 if(!$add_problem_mod){
     if(isset($_GET['id'])) {
         $pid=intval($_GET['id']);
-        $sql="SELECT * FROM `problem` WHERE `problem_id`=$pid";
-        $result=$mysqli->query($sql);
-        $row=$result->fetch_object();
-        if (!HAS_PRI("edit_".$row->problemset."_problem")) {
-            require_once("error.php");
-            exit(0);
+        if (!HAS_PRI("edit_".get_problemset($pid)."_problem")) {
+          require_once("error.php");
+          exit(0);
         }
-        
-        $sql="SELECT input, output, show_after FROM problem_samples WHERE problem_id='$pid' ORDER BY sample_id";
-        $res=$mysqli->query($sql);
+        $row="";
         $samples=array();
-        while($r=$res->fetch_array()){
-            array_push($samples, array(
-                "input" => $r['input'],
-                "output" => $r['output'],
-                "show_after" => $r['show_after'],
-            ));
-        }
+        getProblemInfo($pid);
     }
+}
+
+if(isset($_GET['copy_problem'])){//复制题目
+    require_once("../include/check_get_key.php");
+    $problemset=$row->problemset;
+    $title=$row->title." copy";
+    $time_limit=$row->time_limit;
+    $memory_limit=$row->memory_limit;
+    $description=$row->description;
+    $input=$row->input;
+    $output=$row->output;
+    $hint=$row->hint;
+    $author=$row->author;
+    $source=$row->source;
+    $spj=$row->spj;
+    $id=addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj, $OJ_DATA );
+    mkdir($OJ_DATA."/$id");
+    foreach ($samples as $key => $sample) {
+      $sample_input=$sample['input'];
+      $sample_output=$sample['output'];
+      $sample_show_after=$sample['show_after'];
+      //don't auto generate sample files if is SPJ
+      if(!$spj) {
+          mkdata($id, "sample{$key}.in", $sample_input, $OJ_DATA);
+          mkdata($id, "sample{$key}.out", $sample_output, $OJ_DATA);
+      }
+      $sql="INSERT INTO `problem_samples` (`problem_id`, `sample_id`, `input`, `output`, `show_after`)
+        VALUES ($id, $key, '$sample_input', '$sample_output', '$sample_show_after')";
+      //echo "<pre>$sql</pre>";
+      $mysqli->query($sql);
+    }
+    // 复制测试数据start
+    $src = $OJ_DATA."/$pid";
+    $dst = $OJ_DATA."/$id";
+    $files = scandir($src);
+    foreach ($files as $file) {
+      if ($file != "." && $file != ".." && !is_dir($src."/$file")){
+        if (file_exists($src."/$file")) copy($src."/$file", $dst."/$file");
+      }
+    }
+    // 复制测试数据end
+    echo "&nbsp;".$MSG_SampleDataIsUpdated.$MSG_HELP_MORE_TESTDATA_LATER."<br>";
+    $_SESSION["p$id"]=true;
+    echo "<a href='../problem.php?id=$id'>$MSG_SeeProblem</a>&nbsp;";
+    echo "<a href=quixplorer/index.php?action=list&dir=$id&order=name&srt=yes>$MSG_AddMoreTestData</a>";
+    echo "<br><b>可在测试数据文件夹中上传prepen.xx、append.xx等预定义代码，将题目变成代码附加题。</b>";
+
+    $_GET['id']=$id;
+    $pid=intval($_GET['id']);
+    $row="";
+    $samples=array();
+    getProblemInfo($pid);
 }
 ?>
 <?php if (isset($_GET['id']) || $add_problem_mod): ?>
-  <title><?php
+  <title><?php echo $html_title;
       if($add_problem_mod){
           echo "$MSG_ADD$MSG_PROBLEM";
       }
@@ -59,7 +116,7 @@ if(!$add_problem_mod){
         }
         else{
             echo<<<HTML
-        <h1>$MSG_EDIT$MSG_PROBLEM:<a href="/OJ/problem.php?id=$pid">$pid</a></h1>
+        <h1>$MSG_EDIT$MSG_PROBLEM:<a href="../problem.php?id=$pid">$pid</a></h1>
 HTML;
         }
         ?>
@@ -77,7 +134,7 @@ HTML;
         <div class="col-sm-10">
           <select class="form-control selectpicker" name="problemset">
               <?php
-              $res=$mysqli->query("SELECT * FROM problemset");
+              $res=$mysqli->query("SELECT * FROM problemset ORDER BY `set_name_show`");
               while($row2=$res->fetch_array()){
                   if(HAS_PRI("edit_".$row2['set_name']."_problem")){
                       echo "<option value=".$row2['set_name'];
@@ -233,13 +290,13 @@ HTML;
       <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?php echo $MSG_AUTHOR ?></label>
         <div class="col-sm-10">
-          <input class="form-control" type=text name=author value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
+          <input class="form-control" type=text name=author placeholder="<?php echo $add_problem_mod ? "留空则自动填入您的用户名":"" ?>" value="<?php if(!$add_problem_mod)echo htmlentities($row->author,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?php echo $MSG_Source ?></label>
         <div class="col-sm-10">
-          <input class="form-control" type=text name=source value="<?php if(!$add_problem_mod)echo htmlentities($row->source,ENT_QUOTES,"UTF-8")?>">
+          <input class="form-control" type=text name=source placeholder="多个关键字请以空格分隔" value="<?php if(!$add_problem_mod)echo htmlentities($row->source,ENT_QUOTES,"UTF-8")?>">
         </div>
       </div>
       <div class="form-group">
@@ -277,37 +334,49 @@ if(isset($_POST['problem_id'])){ //写入数据库
     }
     require_once("../include/check_post_key.php");
     $id=intval($_POST['problem_id']);
-    $title=$mysqli->real_escape_string($_POST['title']);
-    $problemset=$mysqli->real_escape_string($_POST['problemset']);
-    $time_limit=$mysqli->real_escape_string($_POST['time_limit']);
-    $memory_limit=$mysqli->real_escape_string($_POST['memory_limit']);
-    $description=$mysqli->real_escape_string($_POST['description']);
-    $input=$mysqli->real_escape_string($_POST['input']);
-    $output=$mysqli->real_escape_string($_POST['output']);
+    $title=$mysqli->real_escape_string(trim($_POST['title']));
+    $problemset=$mysqli->real_escape_string(trim($_POST['problemset']));
+    $time_limit=$mysqli->real_escape_string(trim($_POST['time_limit']));
+    $memory_limit=$mysqli->real_escape_string(trim($_POST['memory_limit']));
+    $description=$mysqli->real_escape_string(trim($_POST['description']));
+    $input=$mysqli->real_escape_string(trim($_POST['input']));
+    $output=$mysqli->real_escape_string(trim($_POST['output']));
+    $description=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['description']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $input=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['input']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $output=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['output']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
     $sample_inputs=$_POST['sample_input'];
     $sample_outputs=$_POST['sample_output'];
     $sample_show_after=$_POST['show_after'];
     // var_dump($sample_inputs);
     // var_dump($sample_outputs);
-    $hint=$mysqli->real_escape_string($_POST['hint']);
-    $source=$mysqli->real_escape_string($_POST['source']);
-    $spj=$_POST['spj'];
-	  $author = "";
-    $author_tmp = $mysqli->real_escape_string($_POST['author']);
-    $strlen = strlen($author_tmp);
-    for ($i=0; $i<$strlen; ++$i) {
-        if ($author_tmp[$i]==' ' || $author_tmp[$i]=='\n' || $author_tmp[$i]=='\t' || $author_tmp[$i]=='\r') continue;
-        $author .= $author_tmp[$i];
-    }
+    $hint=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['hint']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $source=str_replace("\r\n","",$_POST['source']);
+    $source=str_replace("\r","",$source);
+    $source=$mysqli->real_escape_string(trim($source));
+    $source=array_unique(explode(" ",$source));//关键字去重
+    sortByPinYin($source);//关键字按拼音字母排序
+    $source=implode(' ', $source);
+    $spj=$mysqli->real_escape_string($_POST['spj']);
+    $author=str_replace("\r\n","",$_POST['author']);
+    $author=str_replace("\r","",$author);
+    $author=str_replace("\t","",$author);
+    $author=str_replace(" ","",$author);
+    $author = $mysqli->real_escape_string($author);
     //火狐浏览器73.0.1版本中kindeditor会在textarea内容的末尾加入<!---->
     $description = str_replace("<!---->","",$description);
     $input = str_replace("<!---->","",$input);
     $output = str_replace("<!---->","",$output);
     $hint = str_replace("<!---->","",$hint);
 
-	  if($author == "") $author = $_SESSION['user_id'];
+	  if($author == "" && isset($_POST['add_problem_mod'])) $author = $_SESSION['user_id']; 
 
     //remove original samples
+    //----remove original sample file from hustoj, start
+    $path=$OJ_DATA."/$id/sample.in";
+    if(file_exists($path)) $success=unlink($path);
+    $path=$OJ_DATA."/$id/sample.out";
+    if(file_exists($path)) $success=unlink($path);
+    //----remove original sample file from hustoj, end
     $sql="SELECT COUNT(1) FROM problem_samples WHERE problem_id=$id";
     $original_sample_cnt=$mysqli->query($sql)->fetch_array()[0];
     for($i=0 ; $i<$original_sample_cnt ; ++$i){

@@ -2,13 +2,15 @@
 <?php
 
 if(isset($_POST['pid'])){
-    $pid=$_POST['pid'];
+  $pid=$_POST['pid'];
 }
 else{
-    exit(0);
+  exit(0);
 }
-$title="Solution Video Of Problem $pid";
-require_once "template/hznu/header.php";
+require_once("./include/db_info.inc.php");
+require_once('./include/setlang.php');
+$title=$MSG_SolutionVideo." Of Problem $pid";
+require_once("template/".$OJ_TEMPLATE."/header.php");
 
 $can_see_video=false;
 if(isset($_SESSION['user_id'])){
@@ -28,10 +30,10 @@ $sql="INSERT INTO solution_video_watch_log (video_id,user_id,`time`) VALUES($pid
 $mysqli->query($sql);
 ?>
 <div class="am-container">
-  <h1 style="padding-top: 20px;">Solution Video Of Problem <?php echo $pid ?></h1><hr>
+  <h1 style="padding-top: 20px;"><?php echo $title ?></h1><hr>
   <div>
-    <video src="/OJ/upload/video/<?php echo md5($pid)."pfb" ?>.mp4" width=100% controls=1></video>
+    <video src="./upload/video/<?php echo md5($pid)."pfb" ?>.mp4" width=100% controls=1></video>
   </div>
 </div>
 
-<?php require_once "template/hznu/footer.php"; ?>
+<?php require_once "template/".$OJ_TEMPLATE."/footer.php"; ?>

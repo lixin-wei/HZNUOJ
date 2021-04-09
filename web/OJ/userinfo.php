@@ -36,6 +36,8 @@
   $view_title=$user ."@".$OJ_NAME;
   $user_mysql=$mysqli->real_escape_string($user);
 
+  require_once("./include/rank.inc.php");
+  updateRank($user_mysql);
   $sql="SELECT `school`,`email`,`nick`,`level`,`color`,`strength`,`real_name`,`class`,`stu_id`,`defunct` FROM `users` WHERE `user_id`='$user_mysql'";
 
   $result=$mysqli->query($sql);
@@ -59,18 +61,11 @@
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
      $class = $row->class;
   }
+  $level=$row->level;
+  $strength=$row->strength;
   $result->free();
  
-  // 获取解题数大于10的用户数量存入user_cnt_divisor
-  $sql = "SELECT user_id FROM users WHERE solved>10";
-  $result  = $mysqli->query($sql) or die($mysqli->error);
-  if($result && $result->num_rows > 0 ) $user_cnt_divisor = $result->num_rows;
-  else $user_cnt_divisor = 1;
-  $result->free();
-  $strength = 0;
-  $level = "斗之气一段";
-  $color = "#E0E0E0";
-  //get ac set and calculate strength
+  //get ac set 
   $ac_set=array();
   $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$user_mysql' AND result=4 ORDER BY problem_id"; 
   $res=$mysqli->query($sql);  
@@ -80,17 +75,6 @@
     $set_name=get_problemset($pid);
     if(!$ac_set[$set_name])$ac_set[$set_name]=array();
     array_push($ac_set[$set_name], $pid);
-    
-    //calculate strength
-    $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
-    $y_result=$mysqli->query($sql); 
-    $y_row = $y_result->fetch_object();
-    $solved = $y_row->solved_user;
-    $submit = $y_row->submit_user;
-
-    $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
-    if ($scores < 10) $scores = 10;
-    $strength += $scores;
   }
 
   // count hznuoj solved
@@ -126,25 +110,6 @@
   }
   $result->free();
   /* 查找HZNUOJ未解决的题目编号 end */
-
-  require_once("./include/rank.inc.php");
-
-  // 根据数组计算该实力对应的等级和颜色
-  if ($strength > $max_strength) {
-    $color = "#6C3365";
-    $level = "斗战胜佛";
-  } else for ($j=1; $j<$level_total; $j++) {
-
-    if ($strength < $level_strength[$j]) {
-      $level = $level_name[$j-1];
-      $color = $level_color[$j-1];
-      break;
-    }
-  }
-  
-  // 更新用户信息
-  $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."' WHERE user_id='".$user_mysql."'";
-  $result=$mysqli->query($sql);
 
   // 获取排名
   $sql="SELECT count(*) as `Rank` FROM `users` WHERE strength>".round($strength,2);
@@ -269,22 +234,21 @@
   }
   $result->free();
 
-  $sql= "SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql' group by md order by md desc";
+  $sql= "SELECT date_format(in_date,'%Y/%m') ym,count(1) c FROM `solution` where `user_id`='$user_mysql' group by ym order by ym";
   $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
   $chart_data_all= array();
+  $xAxis_data=array();
   //echo $sql;
     
   while ($row=$result->fetch_array()){
-    $chart_data_all[$row['md']]=$row['c'];
+    $chart_data_all[$row['ym']]['total']=$row['c'];
+    $chart_data_all[$row['ym']]['ac']=0;
+    array_push($xAxis_data,$row['ym']);
   }
-    
-  $sql= "SELECT UNIX_TIMESTAMP(date(in_date))*1000 md,count(1) c FROM `solution` where  `user_id`='$user_mysql' and result=4 group by md order by md desc ";
+  $sql= "SELECT date_format(in_date,'%Y/%m') ym,count(1) c FROM `solution` where `user_id`='$user_mysql' and result=4 group by ym order by ym";
   $result=$mysqli->query($sql);//$mysqli->real_escape_string($sql));
-  $chart_data_ac= array();
-  //echo $sql;
-    
   while ($row=$result->fetch_array()){
-    $chart_data_ac[$row['md']]=$row['c'];
+    $chart_data_all[$row['ym']]['ac']=$row['c'];
   }
   
   $result->free();

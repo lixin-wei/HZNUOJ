@@ -1,9 +1,9 @@
 <?php $title="Programming Fundamentals"; ?>
 <?php
-require_once('./include/static.php'); 
+require_once('./include/db_info.inc.php');
 require_once('./include/setlang.php'); 
 ?>
-<?php require_once "template/hznu/header.php"; ?>
+<?php require_once "template/".$OJ_TEMPLATE."/header.php"; ?>
   <style>
     .box{
       border: 1px solid #eee;
@@ -73,8 +73,8 @@ require_once('./include/setlang.php');
       </div>
       <div class="class-description">
         《程序设计基础》是高等学校计算机科学与技术、软件工程等专业的一门重要的基础课程。是后续课程的先修课。<br>
-          <a href="/OJ/upload/file/20180916/20180916214410_30851.doc">程序设计基础教学大纲</a>&nbsp;
-          <a href="/OJ/upload/file/20180916/20180916214446_68972.doc">程序设计基础实践教学大纲</a>
+          <a href="./upload/file/20180916/20180916214410_30851.doc">程序设计基础教学大纲</a>&nbsp;
+          <a href="./upload/file/20180916/20180916214446_68972.doc">程序设计基础实践教学大纲</a>
       </div>
     </div>
     <div class="am-g">
@@ -770,7 +770,7 @@ HTML;
               题集
             </div>
             <div class="content-block-body">
-              <a href="/OJ/problemset.php?OJ=c">ProblemSet - C Course</a>
+              <a href="./problemset.php?OJ=c">ProblemSet - C Course</a>
             </div>
           </div>
         </div>
@@ -778,4 +778,4 @@ HTML;
     </div>
   </div><!-- container -->
 
-<?php require_once "template/hznu/footer.php" ?>
+<?php require_once "template/".$OJ_TEMPLATE."/footer.php" ?>

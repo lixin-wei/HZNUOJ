@@ -19,6 +19,9 @@ if(isset($_GET['my']) && isset($_SESSION['contest_id'])){ //不允许比赛用�
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
 }
+if(!isset($_GET['cid']) && isset($_SESSION['contest_id'])){
+    $_GET['cid']=$_SESSION['contest_id'];
+}
 function formatTimeLength($length)
 {
   $hour = 0;
@@ -96,9 +99,9 @@ if (isset($_GET['cid'])){
     } else {
         $row=$result->fetch_object();
         if($row->user_limit=="Y" && $_SESSION['contest_id']!=$cid && !HAS_PRI("edit_contest")){
-            require_once "template/hznu/contest_header.php";
+            require_once "template/".$OJ_TEMPLATE."/contest_header.php";
             echo  "<div class='am-text-center'><font style='color:red;text-decoration:underline;'>You are not invited to this contest!</font></div>";
-            require_once "template/hznu/footer.php";
+            require_once "template/".$OJ_TEMPLATE."/footer.php";
             exit(0);
         }
         $view_private=$row->private;
@@ -214,12 +217,12 @@ SQL;
         if (isset($_SESSION['user_id']))
             $view_problemset[$cnt][0]=check_ac($cid,$cnt);
         $view_problemset[$cnt][1] = $row->score;
-        if ($practice || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
+        if (($practice && isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE) || $now>$end_time || HAS_PRI("edit_contest")) // 比赛结束，或者是practice，或者当前用户是管理员则显示 Problem ID
             $view_problemset[$cnt][2]= "<a href='problem.php?id=$row->pid' style='margin:10px;'>$row->pid</a>";
         $view_problemset[$cnt][2] .= "$MSG_PROBLEM &nbsp;".PID($row->pnum);
-        if($practice && is_in_running_contest($row->pid) && !$can_edit_contest)
-            $view_problemset[$cnt][3]= "<span style='color: dimgrey;' title='this problem is locked because they are in running contest.'>$row->title <i class='am-icon-lock'></i></span>";
-        else
+        // if($practice && is_in_running_contest($row->pid) && !$can_edit_contest)
+        //     $view_problemset[$cnt][3]= "<span style='color: dimgrey;' title='this problem is locked because they are in running contest.'>$row->title <i class='am-icon-lock'></i></span>";
+        // else
             $view_problemset[$cnt][3]= "<a href='problem.php?cid=$cid&pid=$row->pnum'>$row->title</a>";
         $view_problemset[$cnt][4]=$row->author;
         $view_problemset[$cnt][5]=$row->accepted ;
@@ -231,10 +234,9 @@ SQL;
         $cnt++;
     }
     $result->free();
-}
-else {
+} else {
   $getMy = "";
-  $wheremy = " 1";
+  $sql_filter = "";
   $mycontests = "";	
   if(isset($_GET['my'])){ //我的比赛、作业
     $getMy = "my";
@@ -243,32 +245,57 @@ else {
         $mycontests.=",".intval(mb_substr($key,1));
       }
     }
-    if($mycontests) $wheremy=" contest_id IN (".substr($mycontests,1).")";//去掉最开始的","
-    else $wheremy=" 0 ";
+    if($mycontests) $sql_filter .=" AND contest_id IN (".substr($mycontests,1).")";//去掉最开始的","
+    else $sql_filter .=" AND 0 ";
   }
-  $search = ""; //查找关键字
   if(isset($_GET['search'])&&trim($_GET['search'])!="") {
-    $search=$mysqli->real_escape_string($_GET['search']);
-  }	
+    $search=$mysqli->real_escape_string(trim($_GET['search']));
+    $sql_filter .= "AND contest.title LIKE '%$search%'";
+  }
+  if(isset($_GET['type']) && trim($_GET['type']) != "" && trim($_GET['type']) != "all") {
+    switch (trim($_GET['type'])) {
+      case "Special":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='Y') ";
+      break;
+      case "Private":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND `private`) ";
+      break;
+      case "Public":
+        $sql_filter .= " AND (NOT `practice` AND `user_limit`='N' AND NOT `private`) ";
+      break;
+      case "Practice":
+        $sql_filter .= "AND `practice` ";
+      break;
+    }
+  }
+  if(isset($_GET['runstatus']) && trim($_GET['runstatus']) != "" && trim($_GET['runstatus']) != "all") {
+    switch (trim($_GET['runstatus'])) {
+      case "noStart":
+        $sql_filter .= " AND `start_time`>NOW() ";
+      break;
+      case "Running":
+        $sql_filter .= " AND (`start_time`<NOW() AND `end_time`>NOW()) ";
+      break;
+      case "Ended":
+        $sql_filter .= " AND `end_time`<NOW() ";
+      break;
+    }
+  }
     $page = 1;
     if(isset($_GET['page'])) $page = intval($_GET['page']);
     $page_cnt = 10;
-    $pstart = $page_cnt*$page-$page_cnt;
-    $pend = $page_cnt;
-    if($search){
-      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy AND contest.title LIKE '%$search%' ";		
-      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND contest.title LIKE '%$search%' AND $wheremy ORDER BY contest_id DESC";		
-      $sql .= " limit ".strval($pstart).",".strval($pend); 
-    }else{
-      $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' AND $wheremy";
-      $sql = "SELECT *  FROM contest WHERE contest.defunct='N' AND $wheremy ORDER BY contest_id DESC";
-      $sql .= " limit ".strval($pstart).",".strval($pend); 
-    }
+    $sql0 = "SELECT count(1) FROM contest WHERE contest.defunct='N' ".$sql_filter;
     //echo $sql0;
     $rows =$mysqli->query($sql0)->fetch_all(MYSQLI_BOTH);
     if($rows) $total = $rows[0][0];
     $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-
+    $view_total_page = $view_total_page>0?$view_total_page:1;
+    if ($page > $view_total_page) $page = $view_total_page;
+    if ($page < 1) $page = 1;
+    $pstart = $page_cnt*$page-$page_cnt;
+    $pend = $page_cnt;
+    $sql = "SELECT *  FROM contest WHERE contest.defunct='N' ".$sql_filter." ORDER BY isTop DESC, contest_id DESC";
+    $sql .= " limit ".strval($pstart).",".strval($pend); 
     $result=$mysqli->query($sql);
     $view_contest=Array();
     $i=0;
@@ -276,6 +303,7 @@ else {
         $view_contest[$i][0]= $row->contest_id;
         if(trim($row->title)=="") $row->title=$MSG_CONTEST.$row->contest_id;
         $view_contest[$i][1]= "<a href='contest.php?cid=$row->contest_id'>$row->title</a>";
+        if($row->isTop) $view_contest[$i][1].="<span title='$MSG_Top'>&nbsp;<i class='am-icon-arrow-up'></i>";
         $start_time=strtotime($row->start_time);
         $end_time=strtotime($row->end_time);
         $now=time();
@@ -283,9 +311,9 @@ else {
         $left=$end_time-$now;
         
         if ($now>$end_time) { // past
-            $view_contest[$i][2]= "<span style='color: #9e9e9e;'>$MSG_Ended@$row->end_time</span>";
+            $view_contest[$i][2]= "<span style='color: #9e9e9e;'>$MSG_Ended@".date('Y-m-d H:i',$end_time)."</span>";
         } else if ($now<$start_time){ // pending
-            $view_contest[$i][2]= "<span style='color: #03a9f4;'>$MSG_Start@$row->start_time&nbsp;";
+            $view_contest[$i][2]= "<span style='color: #03a9f4;'>$MSG_Start@".date('Y-m-d H:i',$start_time)."&nbsp;";
             $view_contest[$i][2].= "$MSG_TotalTime ".formatTimeLength($length)."</span>";
         } else { // running
             $view_contest[$i][2]= "<span style='color: #ff5722;'> $MSG_Running&nbsp;";

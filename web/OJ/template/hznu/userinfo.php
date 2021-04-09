@@ -30,7 +30,12 @@ require_once("header.php");
         <table class="am-table am-table-striped am-table-compact">
           <tbody>
             <tr><th class="first-col am-text-right"><?php echo $MSG_USER_ID ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($user).$defunct?></td></tr>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($nick)?></td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_NICK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_nick" type="text" value="<?php echo htmlentities($nick)?>" required>
+             <?php } else echo htmlentities($nick)?>
+            </td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_RANK ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $Rank?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_STRENGTH ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo round($strength)?></td></tr>
             <tr><th class="first-col am-text-right"><?php echo $MSG_LEVEL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo $level?></td></tr>
@@ -38,11 +43,31 @@ require_once("header.php");
               <th class="first-col am-text-right"><?php echo $MSG_SOLVED ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
               <td><a href="status.php?user_id=<?php echo htmlentities($user)?>&jresult=4"><?php echo $local_ac?></a></td>
             </tr>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><?php echo htmlentities($school)?></td></tr>
-            <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th><td><a href="mailto:<?php echo htmlentities($email); ?>"><?php echo htmlentities($email)?></a></td></tr>
+            <tr>
+              <th class="first-col am-text-right"><?php echo $MSG_SUBMIT?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+              <td><a href='status.php?user_id=<?php echo htmlentities($user)?>'><?php echo $Submit?></a></td>
+            </tr>
+            <?php
+              foreach($view_userstat as $row){
+                echo "<tr><th class='first-col am-text-right'>".$jresult[$row[0]]."&nbsp;&nbsp;&nbsp;&nbsp;</th>\n";
+                echo "<td><a href=status.php?user_id=".htmlentities($user)."&jresult=".$row[0]." >".$row[1]."</a></td></tr>\n";
+                }
+            ?>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_SCHOOL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_school" type="text" value="<?php echo htmlentities($school)?>">
+             <?php } else echo htmlentities($school)?>
+            </td></tr>
+            <tr><th class="first-col am-text-right"><?php echo $MSG_EMAIL ?>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <td><?php if (HAS_PRI("edit_user_profile")){
+                  require_once('./include/set_post_key.php');?>
+                  <input class="am-form-field" name="stu_email" type="text" value="<?php echo htmlentities($email)?>">
+             <?php } else echo "<a href='mailto:". htmlentities($email)."'>". htmlentities($email)."</a>" ?>
+            </td></tr>
             <?php if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){ 
               if (HAS_PRI("edit_user_profile")){
-                  require_once('./include/set_post_key.php');?>
+            ?>
               <input type="hidden" name="admin_mode" value="1">
               <input type="hidden" name="user_id" value="<?php echo htmlentities($user)?>">
               <tr><td colspan="2" class="am-danger  am-text-center">----The followings are  admin only----</td></tr>
@@ -64,7 +89,7 @@ require_once("header.php");
                   <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'100%'}">
                     <?php 
                       foreach ($classList as $c){
-                          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                           foreach ($c[1] as $cl){
                             if($cl == $class) $selected = "selected"; else $selected ="";
                             echo "<option value='$cl' $selected>$cl</option>\n";
@@ -84,27 +109,35 @@ require_once("header.php");
           </tbody>
         </table>
         <?php 
-		if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
-		if (HAS_PRI("edit_user_profile")){ ?>
+  if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
+  if (HAS_PRI("edit_user_profile")){ ?>
           <div class="am-text-center">
             <button class="am-btn am-btn-secondary"><?php echo $MSG_SUBMIT ?></button>
           </div>
-        <?php }	?>
+        <?php } ?>
       </form>
       <?php }?>
     </div>
     <!-- 左侧个人信息表格 end -->
      
     <!-- 个人图表信息 start -->
-    <div class="am-u-md-4" >
-      <div id="chart-sub" style="height: 327px; width: 100%;"></div>
+    <div class='am-u-md-8'>
+      <div class='am-g'>
+        <div class="am-u-md-6" >
+          <div id="chart-sub" style="height: 327px; width: 100%;"></div>
+        </div>
+        <div class='am-u-md-6'>
+          <!-- <label>用户评价</label><br> -->
+          <!-- <a href="charts/show_fore.php?user=<?php echo $_GET['user']?>">用于教学的过程性评价详情请点这里</a> -->
+          <div id='chart' style='height:327px;width:100%'></div>
+        </div>
+      </div>
+      <div class='am-g'>
+        <div class="am-u-md-12" >
+          <div id="chart-sub2" style="height: 327px; width: 100%;"></div>
+        </div>
+      </div>
     </div>
-    <div class='am-u-md-4'>
-      <!-- <label>用户评价</label><br> -->
-      <!-- <a href="charts/show_fore.php?user=<?php echo $_GET['user']?>">用于教学的过程性评价详情请点这里</a> -->
-      <div id='chart' style='height:327px;width:100%'></div>
-    </div>
-   
     <!-- 个人图表信息 end -->
   </div>
   <!-- userinfo上半部分 end -->
@@ -118,7 +151,7 @@ require_once("header.php");
           <div class="am-panel-bd">
           <?php
             echo "<b>$MSG_SOLVED:</b><br/>";
-            $sql="SELECT set_name,set_name_show FROM problemset";
+            $sql="SELECT set_name,set_name_show FROM problemset ORDER BY `set_name_show`";
             $res=$mysqli->query($sql);
             echo "<div style='margin-left: 10px;'>";
             while($row=$res->fetch_array()){
@@ -244,9 +277,7 @@ require_once("header.php");
 
 <?php
 $chart_sub_data="";
-$sql="SELECT result,count(*) FROM solution WHERE user_id='{$_GET['user']}' group by result";
-$res=$mysqli->query($sql)->fetch_all();
-foreach($res as $row){
+foreach($view_userstat as $row){
   $chart_sub_data.="{value: $row[1], name: '{$judge_result[$row[0]]}'},";
 }
 ?>
@@ -315,12 +346,58 @@ option = {
 };
 chart_sub.setOption(option);
 
+var chart_sub2=echarts.init(document.getElementById("chart-sub2"));
+option = {
+  grid: {
+      x: 50,
+      x2: 50, y2: 50
+  },
+  color: ['#3398DB','red'],
+  tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+          type: 'shadow'
+      }
+  },
+  legend: {
+      show: true,
+      data:['<?php echo $MSG_SUBMIT ?>','<?php echo $MSG_Accepted ?>']
+  },
+  xAxis: {
+      type: 'category',
+      data: ['<?php echo implode("','",$xAxis_data) ?>']
+  },
+  yAxis: [
+      {
+          type : "value",
+          name : "<?php echo $MSG_SUBMISSIONS ?>"
+      }
+  ],
+  series: [
+      {
+          name: '<?php echo $MSG_SUBMIT ?>',
+          barWidth : 10,
+          type: 'bar',
+          stack: 'total',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'total')) ?>']
+      },
+      {
+          name: '<?php echo $MSG_Accepted ?>',
+          type: 'line',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'ac')) ?>']
+      }
+  ]
+};
+chart_sub2.setOption(option);
+
 $(window).resize(function(){
   chart.resize();
   chart_sub.resize();
+  chart_sub2.resize();
 });
 $(window).ready(function(){
   chart.resize();
   chart_sub.resize();
+  chart_sub2.resize();
 });
 </script>

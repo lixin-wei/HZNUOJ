@@ -54,13 +54,13 @@ function make_list($_list1, $_list2) {		// make list of files
 	}
 	
 	if(is_array($list1)) {
-		while (list($key, $val) = each($list1)) {
+		foreach ($list1 as $key => $val) {
 			$list[$key] = $val;
 		}
 	}
 	
 	if(is_array($list2)) {
-		while (list($key, $val) = each($list2)) {
+		foreach ($list2 as $key => $val){
 			$list[$key] = $val;
 		}
 	}
@@ -144,8 +144,7 @@ function make_tables($dir, &$dir_list, &$file_list, &$tot_file_size, &$num_items
 function print_table($dir, $list)
 {
 	if(!is_array($list)) return;
-	
-	while(list($item,) = each($list)){
+	foreach ($list as $item => $val) { //while(list($item,) = each($list)){ // php7.2 error:each()
 		// link to dir / file
 		$abs_item=get_abs_item($dir,$item);
 		$target="";
@@ -236,8 +235,8 @@ function list_dir($dir)
 	echo "<BR>";
 	
 	// PARENT DIR
-	// echo "<A style='margin:2px' HREF=\"".make_link("list",$dir_up,NULL)."\" title=\"".$GLOBALS["messages"]["uplink"]."\">";
-	// echo "<span class='glyphicon glyphicon-arrow-up' style='font-size: 18px;'></span>";
+	echo "<A style='margin:2px' HREF=\"".make_link("list",$dir_up,NULL)."\" title=\"".$GLOBALS["messages"]["uplink"]."\">";
+	echo "<span class='glyphicon glyphicon-arrow-up' style='font-size: 18px;'></span>";
 	// echo "</A>";
 	// HOME DIR
 	// echo "<A style='margin:2px' HREF=\"".make_link("list",NULL,NULL)."\" title=\"".$GLOBALS["messages"]["homelink"]."\">";

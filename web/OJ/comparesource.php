@@ -7,6 +7,7 @@
 ?>
 
 <?php
+ $title = "Compare Source Code";
  $cache_time=90;
   $OJ_CACHE_SHARE=false;
   require_once('./include/cache_start.php');
@@ -25,24 +26,12 @@
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }
-  $id=strval(intval($_GET['left']));
+  $id=strval(intval($_GET['right']));
   $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
   $result=$mysqli->query($sql);
   $row=$result->fetch_object();
-  $slanguage=$row->language;
-  $sresult=$row->result;
-  $stime=$row->time;
-  $smemory=$row->memory;
-  $sproblem_id=$row->problem_id;
-  $view_user_id=$suser_id=$row->user_id;
+  $cid = $row->contest_id;
   $result->free();
-
-
-  $view_source="No source code available!";
-  $sql="SELECT `source` FROM `source_code` WHERE `solution_id`=".$id;
-  $result=$mysqli->query($sql);
-  $row=$result->fetch_object();
-  if($row) $view_source=$row->source;
 
   /////////////////////////Template
   require("template/".$OJ_TEMPLATE."/comparesource.php");

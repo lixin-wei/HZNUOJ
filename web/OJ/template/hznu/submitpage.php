@@ -15,7 +15,7 @@
     require_once("header.php");
   else
     require_once("contest_header.php");
-  require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/const.inc.php";
+  require_once "include/const.inc.php";
 ?>
 <div class="am-container" style="padding-top: 20px;">
   <?php
@@ -28,9 +28,10 @@
  
   ?>
   <div class="am-g">
-    <form id="submit_form" action="/OJ/submit.php" method="post">
-      <?php require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/set_post_key.php" ?>
-      <div class="am-u-md-10 am-u-md-centered" style="width:800px;">
+    <script src="include/checksource.js"></script>
+    <form id="submit_form" action="submit.php" method="post">
+      <?php require_once "include/set_post_key.php" ?>
+      <div class="am-u-md-10 am-u-md-centered" style="width:1000px;">
        <?php  echo "<h2>$title</h2>" ?>
         <div class="am-g am-text-center" style="margin-bottom: 20px;">
           <div class="am-u-md-6">
@@ -67,11 +68,11 @@
         <input type="hidden" id="source" name="source">
           <?php
           if(isset($_GET['cid'])) {
-              echo "<input type='hidden' id='source' name='cid' value='$cid'>";
-              echo "<input type='hidden' id='source' name='pid' value='$pid'>";
+              echo "<input type='hidden' name='cid' value='$cid'>";
+              echo "<input type='hidden' name='pid' value='$pid'>";
           }
           else {
-              echo "<input type='hidden' id='source' name='id' value='$id'>";
+              echo "<input type='hidden' name='id' value='$id'>";
           }
           ?>
       </div>
@@ -82,41 +83,42 @@
   </div>
 </div>
 <?php require_once("footer.php") ?>
-<script src="/OJ/plugins/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/theme-iplastic.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-c_cpp.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-pascal.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-java.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-batchfile.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-php.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-perl.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-csharp.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-objectivec.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-scheme.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-lua.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-<script src="/OJ/plugins/ace/mode-golang.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/theme-iplastic.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/theme-tomorrow_night_bright.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-c_cpp.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-pascal.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-java.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-batchfile.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-php.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-perl.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-csharp.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-objectivec.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-scheme.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-lua.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="plugins/ace/mode-golang.js" type="text/javascript" charset="utf-8"></script>
 <script>
     language_mod = ["c_cpp","c_cpp","pascal","java","ruby","batchfile","python","php","perl","csharp","objectivec","plain_text","scheme","c_cpp","c_cpp","lua","javascript","golang","python"];
     var editor = ace.edit("editor");
     var $obj_select_lang = $("#language");
     var lang = $obj_select_lang.val();
-	editor.setFontSize(16);
+	  editor.setFontSize(16);    
+    <?php if($OJ_EDITE_AREA){ ?>
     editor.getSession().setMode("ace/mode/"+language_mod[lang]);
-    editor.setTheme("ace/theme/iplastic");
     $("#submit_form").submit(function () {
         $("#source").val(editor.getValue());
+        if(!checksource($("#source").val())) return false;
         return true;
-    });
-    
+    });    
     $obj_select_lang.change(function () {
         lang = $(this).val();
         editor.getSession().setMode("ace/mode/"+language_mod[lang]);
     });
-    
+    <?php } ?>
+    editor.setTheme("ace/theme/iplastic");
     $("#theme").change(function () {
         editor.setTheme("ace/theme/"+$(this).val());
     });

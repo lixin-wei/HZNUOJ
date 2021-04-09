@@ -26,11 +26,26 @@
     $private=$mysqli->real_escape_string($_POST['private']);
     $password=$mysqli->real_escape_string($_POST['password']);
 	  $user_id=$_SESSION['user_id'];
-    $description=$mysqli->real_escape_string($_POST['description']);
+    $description=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$_POST['description']));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+    $description = str_replace("<!---->","",$description);//火狐浏览器中kindeditor会在内容的末尾加入<!---->
     $user_limit = $mysqli->real_escape_string($_POST['user_limit']);
     $defunct_TA = $mysqli->real_escape_string($_POST['defunct_TA']);
     $open_source = $mysqli->real_escape_string($_POST['open_source']);
     $practice = $mysqli->real_escape_string($_POST['practice']);
+    $unlock = intval($mysqli->real_escape_string($_POST['unlock']));
+    switch($unlock){
+      case 0:
+        $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']))*3600;
+        break;
+      case 2:
+        $lock_time = intval($mysqli->real_escape_string($_POST['lock_time']));
+        break;
+      default:
+        $lock_time = 0;
+    }
+    $first_prize = $mysqli->real_escape_string($_POST['first_prize']);
+    $second_prize = $mysqli->real_escape_string($_POST['second_prize']);
+    $third_prize = $mysqli->real_escape_string($_POST['third_prize']);
 
     if (get_magic_quotes_gpc ()){
       $title = stripslashes ($title);
@@ -45,8 +60,8 @@
 	  //echo $t." ";
       $langmask+=1<<$t;
     }
-    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`)
-          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice', '$user_id')";
+    $sql="INSERT INTO `contest`(`title`,`start_time`,`end_time`,`private`,`langmask`,`description`,`password`, user_limit, defunct_TA, open_source, practice,`user_id`,`unlock`,`lock_time`,`first_prize`,`second_prize`,`third_prize`)
+          VALUES('$title','$starttime','$endtime','$private',$langmask,'$description','$password', '$user_limit', '$defunct_TA', '$open_source', '$practice', '$user_id','$unlock','$lock_time','$first_prize','$second_prize','$third_prize')";
   //echo $sql;
   $mysqli->query($sql) or die($mysqli->error);
   //添加contest记录 end  
@@ -126,7 +141,11 @@ else{
           exit(0);
         }
         $row=$result->fetch_array();
-
+  $unlock=$row['unlock'];
+  $lock_time=$row['lock_time'];
+  $first_prize=$row['first_prize'];
+  $second_prize=$row['second_prize'];
+  $third_prize=$row['third_prize'];
 	$private=$row['private'];
 	$user_limit = $row['user_limit']=="Y"?'Y':'N';
 	$defunct_TA = $row['defunct_TA']=="Y"?'Y':'N';
@@ -134,8 +153,8 @@ else{
 	$practice = $row['practice'];
 	$password=$row['password'];
 	$langmask=$row['langmask'];
-  $description=$row['description'];  
-  $description = str_replace("<!---->","",$description);//kindeditor会在内容的末尾加入<!---->
+  $description=str_replace("<br />\r\n<!---->","",$row['description']);//kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+  $description = str_replace("<!---->","",$description);//火狐浏览器中kindeditor会在内容的末尾加入<!---->
 	$title=htmlentities($row['title'],ENT_QUOTES,"UTF-8")." copy";
       $result->free();
       $plist="";
@@ -271,11 +290,35 @@ else if(isset($_POST['problem2contest'])){
   </select>
   </p>
   <p align=left>
+    <strong><?php echo $MSG_LockBoard ?>&nbsp;:</strong>&nbsp;
+  <select name='unlock' style='width:195px' onchange='if($(this).val()=="1") $("#lock_time").val("0"); else $("#lock_time").val("");'>
+  <?php if(isset($_GET['cid'])){ ?>
+    <option value='1' <?php echo $unlock==1?'selected=selected':''?>>No</option>
+    <option value='0' <?php echo $unlock==0?'selected=selected':''?>><?php echo $MSG_LockByTime ?></option>
+    <option value='2' <?php echo $unlock==2?'selected=selected':''?>><?php echo $MSG_LockByRate ?></option>
+  <?php  }else { 
+	   echo "<option value='1' selected='selected'>No</option>";
+     echo "<option value='0'>$MSG_LockByTime</option>";
+     echo "<option value='2'>$MSG_LockByRate</option>";
+  } ?>
+  </select>&nbsp;&nbsp;
+  <strong><?php echo $MSG_LockTime ?>:</strong>&nbsp;<input name='lock_time' id='lock_time' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($lock_time)&&$lock_time!="") {if($unlock==0) echo ceil($lock_time/3600); else echo $lock_time; } else echo 0?>" maxlength="2" required>
+  </p>
+  <p align=left>
+  <strong><?php echo $MSG_GOLD ?>:</strong>&nbsp;<input name='first_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($first_prize)&&$first_prize!="") echo $first_prize; else echo 1?>" maxlength="2" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_SILVER ?>:</strong>&nbsp;<input name='second_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($second_prize)&&$second_prize!="") echo $second_prize; else echo 3?>" maxlength="2" required>&nbsp;&nbsp;
+  <strong><?php echo $MSG_BRONZE ?>:</strong>&nbsp;<input name='third_prize' type='number' style='width:50px' min="0" max="99" step="1" value="<?php if(isset($third_prize)&&$third_prize!="") echo $third_prize; else echo 5?>" maxlength="2" required>
   </p>
     <table >
     <tr>
+        <td><strong><?php echo $MSG_LANG ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_PROBLEM_ID ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_SCORE ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_CONTEST."-".$MSG_USER ?>&nbsp;:</strong></td>
+        <td><strong><?php echo $MSG_RankingExcludedUsers ?>&nbsp;:</strong></td>
+    </tr>
+    <tr>
         <td>
-        <strong><?php echo $MSG_LANG ?>&nbsp;:</strong><br />
   <select name="lang[]" size="13"  multiple="multiple" required>
       <?php
       $lang_count=count($language_ext);
@@ -292,31 +335,65 @@ else if(isset($_POST['problem2contest'])){
           echo  "<option value=$j ".( $lang&(1<<$j)?"selected":"").">".$language_name[$j]."</option>\n";
       }
       ?>
-  </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td><td>
-  <strong><?php echo $MSG_PROBLEM_ID ?>&nbsp;:</strong><br />
   <textarea name="cproblem" cols="15" rows="10" required placeholder="*示例:<?php echo "\n"?>1000<?php echo "\n"?>1001<?php echo "\n"?>1002<?php echo "\n"?>"><?php if(isset($plist)){ echo $plist;}?></textarea>
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
   </td><td>
-  <strong><?php echo $MSG_SCORE ?>&nbsp;:</strong><br />
   <textarea name="score_list" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>100<?php echo "\n"?>100<?php echo "\n"?>100<?php echo "\n"?>每题所占分值，留空则默认每题100分。"><?php if(isset($slist)){ echo $slist;}?></textarea>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  </td><td>
- <strong><?php echo $MSG_CONTEST."-".$MSG_USER ?>&nbsp;:</strong><br />
-  <textarea name="ulist" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>可以将学生用户名从Excel整列复制过来，学生登录后就能免密进入<?php echo $MSG_Private ?>的比赛作为作业和测验。"><?php if(isset($ulist)){ echo $ulist;}?></textarea>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <textarea id="ulist" name="ulist" cols="15" rows="10"  placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>可以将学生用户名从Excel整列复制过来，或者在下方班级列表中选择班级加入，学生登录后就能免密进入<?php echo $MSG_Private ?>的比赛作为作业和测验。"><?php if(isset($ulist)){ echo $ulist;}?></textarea>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </td><td>
-  <strong><?php echo $MSG_RankingExcludedUsers ?>&nbsp;:</strong><br />
   <textarea name="ex_ulist" cols="15" rows="10" placeholder="示例:<?php echo "\n"?>user1<?php echo "\n"?>user2<?php echo "\n"?>user3<?php echo "\n"?>填入不参与比赛排名的用户名。"><?php if (isset($ex_ulist)) { echo $ex_ulist; } ?></textarea>
         </td>
     </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>
+    <select multiple name="class" class="selectpicker show-tick" data-live-search="true" data-width="150px" onchange='getUserList($(this).val());' data-title="选择<?php echo $MSG_Class ?>">
+    <option value=''></option>
+      <?php
+        require_once("../include/classList.inc.php");
+        $classList = get_classlist(false, "");
+        foreach ($classList as $c){
+          if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
+          foreach ($c[1] as $cl){
+            echo "<option value='$cl'>$cl</option>\n";
+          }
+          echo "</optgroup>\n";
+        }
+      ?>
+    </select>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
 </table><br>
-  <p align=left><strong><?php echo $MSG_Description ?>:</strong><br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea></p>
+  <p align=left><strong><?php echo $MSG_NEWS ?>:</strong><br><textarea class="kindeditor" rows=13 name=description cols=80><?php echo htmlentities($description,ENT_QUOTES,"UTF-8")?></textarea></p>
     
   <p><input type=submit value="<?php echo $MSG_SUBMIT ?>" name=submit>&nbsp;<input type=reset value="<?php echo $MSG_RESET ?>" name=reset></p>
   
   </td></tr></table>
   </form>
-
+<script type="text/javascript">
+function getUserList(classes){
+  //console.log(classes);
+  $.ajax({
+    type: "POST",
+    url: "./ajax.php?getUserList",
+    data: {"classes":classes},
+    dataType: "text",
+    success: function(res){
+      $("#ulist").val(res);
+      //console.log(res)
+    }
+  });
+}
+</script>
 <?php 
   require_once("admin-footer.php")
 ?>

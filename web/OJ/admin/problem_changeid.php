@@ -21,6 +21,9 @@ function writable($path){
     unlink($path."/testifwritable.tst");
     return $ret;
 }
+if(isset($_POST['do'])){
+    require "../include/check_post_key.php";
+}
 ?>
 <?php
 
@@ -45,7 +48,7 @@ if($show_form){
         <input type=input name='b'>
         <input type='hidden' name='do' value='move'>
         <input type=submit value=submit>
-        <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+        <?php require "../include/set_post_key.php"?>
       </form>
     </li>
     <li>Swap Problem
@@ -54,7 +57,7 @@ if($show_form){
         <input type=input name='b'>
         <input type=submit value=submit>
         <input type='hidden' name='do' value='swap'>
-        <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+        <?php require "../include/set_post_key.php"?>
       </form>
     </li>
   </ol>
@@ -139,7 +142,6 @@ function move_problem($from, $to) {
     echo "</pre>";
 }
 if(isset($_POST['do'])){
-    require "../include/check_post_key.php";
     if (isset($_POST['a'])){
         $a=intval($_POST['a']);
         $b=intval($_POST['b']);

@@ -47,10 +47,15 @@
       "Lua",        //15
       "JavaScript", //16
       "Go",         //17
-      "Python3"     //18
+      "SQL",        //18
+      "Fortran",    //19
+      "Matlab"      //20
+      //"UnknownLanguage" //21
   );
-  $language_order = [0,1,13,14,2,3,4,5,6,18,7,8,9,10,11,12,15,16,17];
-  $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","js", "go", "py");
+  $language_order = [0,1,6,3,4,5,7,8,9,10,2,11,12,13,14,15,16,17,18,19,20];
+  $language_ext=Array( "c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm","c","cc","lua","js", "go", "sql","f95","m" );
+  //scheme、Lua、Fortran、Matlab和Go语言没有对应的格式刷，先用c的刷子替代，不然显示scheme、Lua和Go语言代码时JavaScript会报错
+  $language_brush=Array( "c", "c++", "delphi", "java", "ruby", "bash", "python", "php","perl", "c#","c","vb","c","c","c++","c","javascript", "c", "sql","c","c");
   function PID($id) {
     $id++;
     $res = "";

@@ -18,11 +18,13 @@ if (isset($_GET['page'])) $page = intval($_GET['page']);
 if (isset($_GET['team'])) $args['team'] = $_GET['team'];
 if (isset($_GET['contest'])) $args['contest'] = $_GET['contest'];
 if (isset($_GET['defunct'])) $args['defunct'] = $_GET['defunct'];
-if (isset($_GET['class'])) $args['class'] = $_GET['class'];
+if (isset($_GET['class'])) $args['class'] = urlencode($_GET['class']);
 if (isset($_GET['sort_method'])) $args['sort_method'] = $_GET['sort_method'];
 else $args['sort_method'] = "";
-if (isset($_GET['keyword'])) $args['keyword'] = $_GET['keyword'];
-else $args['keyword'] = "";
+if (isset($_GET['keyword'])) {
+    $_GET['keyword'] = trim($_GET['keyword']);
+    $args['keyword'] = urlencode($_GET['keyword']);
+}
 if (isset($page)) $args['page'] = $page;
 function generate_url($data, $link)
 {
@@ -76,9 +78,11 @@ else
 $result = $mysqli->query($sql)->fetch_all();
 $total = 0;
 if ($result) $total = $result[0][0];
-$page_cnt = 50;
+if (isset($_GET['keyword']) && $_GET['keyword'] != "") $page_cnt = $total; else $page_cnt = 50;
 $view_total_page = ceil($total / $page_cnt); //计算页数
-if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
+$view_total_page = $view_total_page>0?$view_total_page:1;
+if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
+if ($page < 1) $page = 1;
 $left_bound = $page_cnt * $page - $page_cnt;
 $u_id = $left_bound;
 switch ($args['sort_method']) {
@@ -150,51 +154,51 @@ if (!isset($_GET['team'])) { //查询普通账号
         if (HAS_PRI("edit_user_profile")) $view_users[$cnt][0] = "<input type=checkbox name='cid[]' value='$row->user_id' />&nbsp;" . ++$u_id;
         else $view_users[$cnt][0] = ++$u_id;
         $view_users[$cnt][1] = "<a href='../userinfo.php?user=" . $row->user_id . "' target='_blank'>" . $row->user_id . "</a>";
-        $view_users[$cnt][2] = $row->nick;
+        $view_users[$cnt][2] = mb_strlen($row->nick, 'utf-8')<=4 ? "<div style='width:80px;white-space: nowrap;'>$row->nick</div>" : "<div title='$row->nick' style='width:80px;white-space: nowrap;text-overflow:ellipsis; overflow:hidden;'>". mb_substr($row->nick,0,4,'utf-8')."...</div>";
         if (HAS_PRI("edit_user_profile")) {
-            if ($row->user_id != 'admin' && $row->user_id != $_SESSION['user_id']) {
+            if ($row->user_id != 'admin' && get_order(get_group($row->user_id)) > get_order(get_group(""))) {
                 if ($row->defunct == "N") {
-                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
+                    $view_users[$cnt][3] = "<a class='btn btn-primary' href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Available . "</a>";
                 } else {
-                    $view_users[$cnt][3] = "<a href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'><font color=red><b>" . $MSG_Reserved . "</b></font></a>";
+                    $view_users[$cnt][3] = "<a class='btn btn-danger' href='user_df_change.php?cid=" . $row->user_id . "&getkey=" . $_SESSION['getkey'] . "'>" . $MSG_Reserved . "</a>";
                 }
                 $view_users[$cnt][4] = get_group($row->user_id);
                 if (!IS_ADMIN($row->user_id)) {
-                    $view_users[$cnt][5] = "<a href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?del&cid=$row->user_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-                } else $view_users[$cnt][5] = $MSG_DEL;
+                    $view_users[$cnt][5] = "<a class='btn btn-primary' href='#' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?del&cid=$row->user_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+                } else $view_users[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
             } else {
                 if ($row->defunct == "N") {
-                    $view_users[$cnt][3] = $MSG_Available;
+                    $view_users[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_Available</span>";
                 } else {
-                    $view_users[$cnt][3] = $MSG_Reserved;
+                    $view_users[$cnt][3] = "<span class='btn btn-danger' disabled>$MSG_Reserved</span>";
                 }
                 $view_users[$cnt][4] = get_group($row->user_id);
-                $view_users[$cnt][5] = $MSG_DEL;
+                $view_users[$cnt][5] = "<span class='btn btn-primary' disabled>$MSG_DEL</span>";
             }
             if ($row->user_id != $_SESSION['user_id'] && get_order(get_group($row->user_id)) <= get_order(get_group(""))) {
-                $view_users[$cnt][6] = $MSG_EDIT;
-            } else $view_users[$cnt][6] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
+                $view_users[$cnt][6] = "<span class='btn btn-primary' disabled>$MSG_EDIT</span>";
+            } else $view_users[$cnt][6] = "<a class='btn btn-primary' href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id'>$MSG_EDIT</a>";
             if (!IS_ADMIN($row->user_id)) {
-                $view_users[$cnt][7] = "<a href='changepass.php?cid=$row->user_id' target='_blank'>$MSG_SETPASSWORD</a>";
-            } else $view_users[$cnt][7] = $MSG_SETPASSWORD;
+                $view_users[$cnt][7] = "<a class='btn btn-primary' href='changepass.php?cid=$row->user_id' target='_blank'>$MSG_SETPASSWORD</a>";
+            } else $view_users[$cnt][7] = "<span class='btn btn-primary' disabled>$MSG_SETPASSWORD</span>";
         } else {
             if ($row->defunct == "N") {
-                $view_users[$cnt][3] = $MSG_Available;
+                $view_users[$cnt][3] = "<span class='btn btn-primary' disabled>$MSG_Available</span>";
             } else {
-                $view_users[$cnt][3] = $MSG_Reserved;
+                $view_users[$cnt][3] = "<span class='btn btn-danger' disabled>$MSG_Reserved</span>";
             }
             $view_users[$cnt][4] = get_group($row->user_id);
         }
         $view_users[$cnt][8] = round($row->strength);
         $view_users[$cnt][9] = $row->level;
         $view_users[$cnt][10] = $row->accesstime;
-        $view_users[$cnt][13] = $row->email;
-        $view_users[$cnt][14] = $row->school;
+        $view_users[$cnt][14] = mb_strlen($row->school, 'utf-8')<=8 ? $row->school : "<div title='$row->school' style='width:150px;white-space: nowrap;text-overflow:ellipsis; overflow:hidden;'>". mb_substr($row->school,0,8,'utf-8')."...</div>";
         if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
-            $view_users[$cnt][17] = $row->class;
             $view_users[$cnt][16] = $row->real_name;
+            $view_users[$cnt][17] = $row->class;
             $view_users[$cnt][15] = $row->stu_id;
         }
+        $view_users[$cnt][13] = $row->email;
         $view_users[$cnt][11] = $row->reg_time;
         $view_users[$cnt][12] = $row->ip;
         $cnt++;
@@ -212,13 +216,15 @@ if (!isset($_GET['team'])) { //查询普通账号
         $view_users[$cnt][1] = $row->user_id;
         $view_users[$cnt][2] = $row->nick;
         if (HAS_PRI("edit_user_profile")) {
-            $view_users[$cnt][3] = "<a href='' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
-            $view_users[$cnt][4] = "<a href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id@$row->contest_id'>$MSG_EDIT</a>";
-            $view_users[$cnt][5] = "<a href='user_edit.php?resetpwd&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
+            $view_users[$cnt][3] = "<a class='btn btn-primary' href='' onclick='javascript:if(confirm(\" $MSG_DEL ?\")) location.href=\"user_edit.php?team&del&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}\"'>$MSG_DEL</a>";
+            $view_users[$cnt][4] = "<a class='btn btn-primary' href='" . generate_url("", "user_edit.php") . "&cid=$row->user_id@$row->contest_id'>$MSG_EDIT</a>";
+            $view_users[$cnt][5] = "<a class='btn btn-primary' href='user_edit.php?resetpwd&cid=$row->user_id@$row->contest_id&getkey={$_SESSION['getkey']}'>$MSG_RESET$MSG_PASSWORD</a>";
         }
         $contest_status = ($row->defunct == 'Y') ? '<font color=red><b>【' . $MSG_Reserved . '】</b></font>' : "";
         $view_users[$cnt][6] = ($row->title) ? "<a href='../status.php?cid=$row->contest_id' target='_blank'>【{$row->contest_id}】$row->title $contest_status</a>" : "【{$row->contest_id}】";
         $view_users[$cnt][7] = $row->accesstime;
+        $view_users[$cnt][8] = $row->reg_time;;
+        $view_users[$cnt][9] = $row->ip;
         $view_users[$cnt][10] = $row->school;
         if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $view_users[$cnt][13] = $row->class;
@@ -227,8 +233,6 @@ if (!isset($_GET['team'])) { //查询普通账号
         }
         $view_users[$cnt][14] = $row->seat;
         $view_users[$cnt][15] = $row->institute;
-        $view_users[$cnt][8] = $row->reg_time;;
-        $view_users[$cnt][9] = $row->ip;
         $cnt++;
     }
 }
@@ -244,11 +248,13 @@ if (!isset($_GET['team'])) { //查询普通账号
             <li><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
             <li class="am-active"><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
             <li><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+            <li><a href="change_class.php"><?php echo $MSG_ChangeClass ?></a></li>
             <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
         <?php } else { ?>
             <li class="am-active"><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
             <li><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
             <li><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+            <li><a href="change_class.php"><?php echo $MSG_ChangeClass ?></a></li>
             <li><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
         <?php } ?>
     </ul>
@@ -325,7 +331,7 @@ if (!isset($_GET['team'])) { //查询普通账号
         <?php } ?>
         <div class="am-form-group am-form-icon">
             <i class="am-icon-search"></i>
-            <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>" />
+            <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $_GET['keyword'] ?>" />
         </div>
         <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH ?>">
     </form>
@@ -335,16 +341,27 @@ if (!isset($_GET['team'])) { //查询普通账号
 <!-- 页标签 start -->
 <div class="am-g" style="margin-left: 5px;">
     <ul class="pagination text-center" style="margin-top: 10px;margin-bottom: 0px;">
+        <?php $link = generate_url(Array("page"=>"1"), "")?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(array("page" => max($page - 1, 1)), "") ?>
         <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
-        //分页
-        for ($i = 1; $i <= $view_total_page; $i++) {
-            $link = generate_url(array("page" => "$i"), "");
-            if ($page == $i)
-                echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+        $page_size=10;
+        $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+        $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+        for ($i=$page_start;$i<$page;$i++){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"), "");
+        echo "<li class='active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page))), "") ?>
@@ -368,18 +385,19 @@ if (!isset($_GET['team'])) { //查询普通账号
                     <?php if (HAS_PRI("edit_user_profile")) { ?>
                         <tr>
                             <td colspan=<?php echo $colspan + 2 ?>>
+                                <input type=submit name='delete' class='btn btn-default' value='<?php echo $MSG_DEL ?>' onclick='javascript:if(confirm("<?php echo $MSG_DEL ?>?")) $("form").attr("action","user_edit.php?del&getkey=<?php echo $_SESSION['getkey'] ?>");'>&nbsp;
                                 <input type=submit name='enable' class='btn btn-default' value='<?php echo $MSG_Available ?>'>&nbsp;
                                 <input type=submit name='disable' class='btn btn-default' value='<?php echo $MSG_Reserved ?>'>
                                 <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { 
                                     require_once("../include/classList.inc.php");
-                                    $classList = get_classlist(true, "");                            
+                                    $classList = get_classlist(true, "");
                                 ?>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="auto" data-size="8" data-title="选择一个<?php echo $MSG_Class ?>">
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
-                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n";
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                                         foreach ($c[1] as $cl){
                                             echo "<option value='$cl'>$cl</option>\n";
                                         }
@@ -407,13 +425,13 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <th id="strength"><?php echo $MSG_STRENGTH ?>&nbsp;<span class="<?php echo $strength_icon ?>"></span></th>
                         <th><?php echo $MSG_LEVEL ?></th>
                         <th id="acctime"><?php echo $MSG_AccessTime ?>&nbsp;<span class="<?php echo $acctime_icon ?>"></span></th>
-                        <th><?php echo $MSG_EMAIL ?></th>
                         <th><?php echo $MSG_SCHOOL ?></th>
                         <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
-                            <th><?php echo $MSG_Class ?></th>
                             <th><?php echo $MSG_REAL_NAME ?></th>
+                            <th><?php echo $MSG_Class ?></th>
                             <th><?php echo $MSG_StudentID ?></th>
                         <?php } ?>
+                        <th><?php echo $MSG_EMAIL ?></th>
                         <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
                         <th><?php echo $MSG_RegIP ?></th>
                         </tr>
@@ -423,7 +441,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                     foreach ($view_users as $row) {
                         echo "<tr>\n";
                         foreach ($row as $table_cell) {
-                            echo "<td>";
+                            echo "<td style='vertical-align:middle;'>";
                             echo $table_cell;
                             echo "</td>\n";
                         }
@@ -456,7 +474,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                                 <option value='' selected></option>
                                 <?php 
                                     foreach ($classList as $c){
-                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n";
+                                        if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                                         foreach ($c[1] as $cl){
                                             echo "<option value='$cl'>$cl</option>\n";
                                         }
@@ -497,6 +515,8 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <?php } ?>
                         <th><?php echo $MSG_CONTEST ?></th>
                         <th id="acctime"><?php echo $MSG_AccessTime ?>&nbsp;<span class="<?php echo $acctime_icon ?>"></span></th>                        
+                        <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
+                        <th><?php echo $MSG_RegIP ?></th>
                         <th><?php echo $MSG_SCHOOL ?></th>
                         <?php if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) { ?>
                             <th><?php echo $MSG_Class ?></th>
@@ -505,8 +525,6 @@ if (!isset($_GET['team'])) { //查询普通账号
                         <?php } ?>
                         <th><?php echo $MSG_Seat ?></th>
                         <th><?php echo $MSG_Institute ?></th>
-                        <th id="regtime"><?php echo $MSG_RegTime ?>&nbsp;<span class="<?php echo $regtime_icon ?>"></span></th>
-                        <th><?php echo $MSG_RegIP ?></th>                        
                         </tr>
                 </thead>
                 <tbody>
@@ -514,7 +532,7 @@ if (!isset($_GET['team'])) { //查询普通账号
                     foreach ($view_users as $row) {
                         echo "<tr>\n";
                         foreach ($row as $table_cell) {
-                            echo "<td>";
+                            echo "<td style='vertical-align:middle;'>";
                             echo $table_cell;
                             echo "</td>\n";
                         }
@@ -530,16 +548,25 @@ if (!isset($_GET['team'])) { //查询普通账号
 <!-- 页标签 start -->
 <div class="am-g" style="margin-left: 5px;">
     <ul class="pagination text-center" style="margin-top: 1px;margin-bottom: 0px;">
+        <?php $link = generate_url(Array("page"=>"1"), "")?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(array("page" => max($page - 1, 1)), "") ?>
         <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
         //分页
-        for ($i = 1; $i <= $view_total_page; $i++) {
-            $link = generate_url(array("page" => "$i"), "");
-            if ($page == $i)
-                echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+        for ($i=$page_start;$i<$page;$i++){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"), "");
+        echo "<li class='active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+            $link=generate_url(Array("page"=>"$i"), "");
+            echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page))), "") ?>

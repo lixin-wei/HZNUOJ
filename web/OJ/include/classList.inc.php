@@ -18,16 +18,20 @@
     global $mysqli;
     $i = 0;
     $class_list = array();
-    if($includeOther){
-      $class_list[$i][0] = 0;
-      $class_list[$i][1] = array("其它");
-      $i++;
-    }
-    
     if(!$filter){
       $filter = " 1 ";
     }
-    $sql = "SELECT DISTINCT `enrollment_year` FROM `class_list` WHERE `class_name`<>'其它' ORDER BY `enrollment_year` DESC";
+    if($includeOther){
+      $sqlclass = "SELECT c.`class_name` FROM `class_list` AS c WHERE $filter AND c.`enrollment_year`='0' ORDER BY c.`class_name`";
+    } else $sqlclass = "SELECT c.`class_name` FROM `class_list` AS c WHERE $filter AND c.`enrollment_year`='0' AND `class_name`<>'其它' ORDER BY c.`class_name`";
+    $resClass = $mysqli->query($sqlclass);
+    if($resClass->num_rows>0){
+      $class_list[$i][0] = 0;
+      $class_list[$i][1] = array_column($resClass->fetch_all(MYSQLI_ASSOC), 'class_name');
+      $i++;
+    }
+
+    $sql = "SELECT DISTINCT `enrollment_year` FROM `class_list` WHERE `class_name`<>'其它' AND `enrollment_year`<>'0' ORDER BY `enrollment_year` DESC";
     foreach(array_column($mysqli->query($sql)->fetch_all(MYSQLI_ASSOC), 'enrollment_year') as $enrollment_year){
       $class_list[$i][0] = $enrollment_year;
       $sqlclass = "SELECT c.`class_name` FROM `class_list` AS c WHERE $filter AND c.`enrollment_year`='$enrollment_year' ORDER BY  c.`class_name`";

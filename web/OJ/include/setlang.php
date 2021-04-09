@@ -6,12 +6,16 @@
   **/
 ?>
 <?php
-  if (isset($GLOBALS["OJ_LANG"])) {
-    require_once($_SERVER['DOCUMENT_ROOT']."/OJ/lang/{$GLOBALS["OJ_LANG"]}.php");
-    if (file_exists($_SERVER['DOCUMENT_ROOT']."/OJ/faqs.{$GLOBALS["OJ_LANG"]}.php")) {
-      $OJ_FAQ_LINK = $_SERVER['DOCUMENT_ROOT']."/OJ/faqs.{$GLOBALS["OJ_LANG"]}.php";
-    }
+  if(!preg_match("/\/admin\//i", $_SERVER['SCRIPT_NAME'])) {
+    $baseDir=".";
+  } else if(preg_match("/\/admin\/quixplorer\//i", $_SERVER['SCRIPT_NAME'])) {
+    $baseDir="../..";//在admin/quixplorer目录下
   } else {
-    require_once($_SERVER['DOCUMENT_ROOT']."/OJ/lang/en.php");
+    $baseDir="..";
+  }
+  if (isset($GLOBALS["OJ_LANG"])) {
+    require_once("$baseDir/lang/{$GLOBALS["OJ_LANG"]}.php");
+  } else {
+    require_once("$baseDir/lang/en.php");
   }
 ?>

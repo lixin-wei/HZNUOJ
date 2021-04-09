@@ -17,7 +17,7 @@
       <h2><?php echo $MSG_LOGIN ?></h2>
     <hr>
     <form action="login.php" method="post" class="am-form am-form-horizontal">
-      <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+      <?php include_once "./include/set_post_key.php"?>
       <div class="am-form-group">
         <label for="username" class="am-u-sm-4 am-form-label"><?php echo $MSG_USER_ID ?>: </label>
         <div class="am-u-sm-8">
@@ -36,7 +36,7 @@
       <div class="am-u-sm-1">
 		<input name="vcode" type='text' style="width:100px;" size=4 maxlength="4" autocomplete="off" required></input></div>
         <div class="am-u-sm-5">
-        <img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <img style='width:100px; height:35px; cursor:pointer;' alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
     </div>
     <?php endif ?>
       <div class="am-form-group">
@@ -47,8 +47,11 @@
       </div>
       <div class="am-from-group">
         <div class="am-cf am-u-sm-offset-4 am-u-sm-8 am-u-end" style="text-align: center">
-            <div style="display: inline-block;">
+            <div class="am-u-sm-6" style="display: inline-block;">
               <input type="submit" name="submit" value="<?php echo $MSG_LOGIN ?>" class="am-btn am-btn-primary am-btn-sm am-fl" style="width: 100px;"> 
+            </div>
+            <div class="am-u-sm-6" style="display: inline-block;">
+              <a class="am-btn am-btn-warning am-btn-sm am-fl" href="lostpassword.php"><?php echo $MSG_LOST_PASSWORD ?></a>
             </div>
         </div>
       </div>

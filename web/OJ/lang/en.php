@@ -17,6 +17,8 @@
   $MSG_RECENT_CONTEST = "Recent Contest";
   $MSG_FAQ = "F.A.Qs";
   $MSG_ACM_MAIL = "ACM Mail";
+  $MSG_COURSE = "Course";
+  $MSG_Assist = " Assistance";
 
   // 用户导航栏
   $MSG_LOGIN = "Login";
@@ -30,7 +32,13 @@
   $MSG_MY_CONTESTS="My ".$MSG_CONTEST; 
   $MSG_HIDETAG = "Hide Tag";
   $MSG_SHOWTAG = "Show Tag";
-  
+  $MSG_LOST_PASSWORD="Lost Password";
+  $MSG_Securekey="Secure Key";
+  $MSG_LOSTPASSWORD_HELP1="Input your User ID and Email to authenticate your Identity.";
+  $MSG_LOSTPASSWORD_HELP2="Input the ".$MSG_Securekey." sended to your email (may be in Trash Box). if it's correct, it will be the new password.";
+  $MSG_RESETPASSWORD_SUCC="Password has been reseted to the ".$MSG_Securekey." you've just inputed. Click <a href='loginpage.php'>here</a> to login!";
+  $MSG_RESETPASSWORD_FAIL="Password Reset Failed.";
+
   // 比赛导航栏
   $MSG_BACK_TO_HOME = "Back To Home";
   $MSG_PROBLEM = " Problem ";
@@ -42,7 +50,7 @@
   $MSG_PROBLEM_ID = "Prob ID";
   $MSG_TITLE = " Title";
   $MSG_SUBMIT = "Submit";
-  $MSG_SCORES = "Scores";
+  $MSG_SCORE = "Scores";
   $MSG_KEYWORDS = "Keywords";
   $MSG_TAGS = "Tag";
   $MSG_AUTHOR = "Author";
@@ -51,17 +59,24 @@
   $MSG_RANK = "Rank";
   $MSG_NICK = "Nick Name";
   $MSG_SOLVED = "Solved";
-  $MSG_RATIO = "Ratio";
+  $MSG_RATIO = "Pass Rate";
   $MSG_LEVEL = "Level";
   $MSG_STRENGTH = "Strength";
   $MSG_RANKTIPS = "Standings won't update automatically, Please visit your user info page to update your information.";
   $MSG_Wrong = "Wrong";
+  $MSG_Year = "Year";
+  $MSG_Month = "Month";
+  $MSG_Week = "Week";
+  $MSG_Day = "Day";
+  $MSG_Update_RANK = "Update Rank";
   
   // contestRank.php
   $MSG_USER = "User";
   $MSG_REAL_NAME = "Real name";
   $MSG_PENALTY = "Penalty";
   $MSG_DOWNLOAD_RANK = "Download Rank";
+  $MSG_Normal_Mode = "Normal Mode";
+  $MSG_RealName_Mode = "Real Name Mode";
       
    //其他
   $MSG_SUBMISSIONS = "Submissions";
@@ -84,7 +99,7 @@
   $MSG_TOTAL = "Total";
   $MSG_Available = "Available";
   $MSG_Reserved = "Reserved";
-  $MSG_CreatedDate = "Created Date";
+  $MSG_LastEditTime = "Last Edit Time";
   $MSG_Solution = "Solution";
   $MSG_Importance = "Importance";
   $MSG_Content = "Content";
@@ -104,7 +119,7 @@
   $MSG_Enrollment_Year = "Enroll Year";
   $MSG_Class_Name = "Class Name";
   $MSG_Stu_List = "Student List";
-  $MSG_Grade = "Grade/Specialty/Prefix";
+  $MSG_Prefix = "Specialty/Prefix";
   $MSG_Amount = " Amount";
   $MSG_Mode = "Mode";
   $MSG_Not_Empty_Class = "Not Empty Class";
@@ -112,6 +127,11 @@
   $MSG_Back = "Back";
   $MSG_Customiz = "Customiz ";
   $MSG_Download = "Download";
+  $MSG_IgnoreWS = "Ignore Whitespaces";
+  $MSG_SIM = "SIM";
+  $MSG_Alias = "Alias";
+  $MSG_Top = "TOP";
+  $MSG_AccessLevel = "Access Level";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -182,8 +202,8 @@
   $MSG_Samples = "Samples";
   $MSG_Sample_Input= "Sample Input" ;
   $MSG_Sample_Output= "Sample Output" ;
-  $MSG_HINT= "HINT" ;
-  $MSG_Source= "Source" ;
+  $MSG_HINT= "Hint" ;
+  $MSG_Source= "Source/Category" ;
   $MSG_Limit = "Limit";
   $MSG_Times = "Time";
   $MSG_Time_Limit="Time Limit";
@@ -228,6 +248,9 @@
   $MSG_Old = "Old ";
   $MSG_New = "New ";
   $MSG_FastTrack = "Fast Track";
+  $MSG_ChangeClass = "Change Classes";
+  $MSG_CourseSet = "Course Set";
+  $MSG_UpdateScores = "Update Problem's Scores";
    
   //contest.php
   $MSG_PRIVATE_WARNING="This is a private contest which you don't have privilege.";
@@ -240,6 +263,8 @@
   $MSG_Start="Start";
   $MSG_StartTime="Start Time";
   $MSG_EndTime="End Time";
+  $MSG_LockTime="Lock Board Time";
+  $MSG_Locked = "The board has been locked.";
   $MSG_TotalTime="Total";
   $MSG_LeftTime="Left";
   $MSG_Ended="Finished";  
@@ -251,11 +276,18 @@
   $MSG_ID = "ID";
   $MSG_NearlyEnd = "Contest is nearly the end!";
   $MSG_notStart = "Contest hasn't started now!";
+  $MSG_notStart2 = "Not Started";
   $MSG_TimeElapsed = "Time elapsed";
   $MSG_TimeRemaining = "Time remaining";
   $MSG_ContestIsClosed = "Contest is closed!";
   $MSG_Creator = "Creator";
   $MSG_IMPORTED="Imported";
+  $MSG_LockBoard = "Lock Board";
+  $MSG_LockByTime="Lock By Time (Hour)";
+  $MSG_LockByRate="Lock By Rate (%)";
+  $MSG_GOLD="Gold Num"; 
+  $MSG_SILVER="Silver Num";
+  $MSG_BRONZE="Bronze Num";
   
   $MSG_HELP_TeamAccount_forbid = "Team account can not use this page!";
   $MSG_HELP_TeamAccount_login = "Don't input if you are not team account!";
@@ -263,6 +295,7 @@
   $MSG_HELP_NEWS_LIST="edit or shutdown published news";
   $MSG_HELP_USER_LIST="enable/disable or edit user,for administrator account need to downgrade to ordinary users to delete or change password.";
   $MSG_HELP_CLASS_LIST="add, delete and edit classes in Class Mode.If you delete a class, all of users and team accounts in the class will be moved to class <b>其它</b>.";
+  $MSG_HELP_CHANGECALSS="You can reassign class for everyone in Class Mode.";
   $MSG_HELP_RegCode_OpenMode="Current mode is Open Mode, everyone can register account, and system will activate account automatically.";
   $MSG_HELP_RegCode_ComfirmMode="Current mode is Comfirm Mode,everyone can register account, but the account must be activated by administrator.";
   $MSG_HELP_RegCode_PwdMode="Current mode is Password Mode,only someone who have a register code created by administrator can register account, and system will activate account automatically.";
@@ -279,6 +312,9 @@
   $MSG_HELP_EXPORT_PROBLEM= "export the problems of the system in the form of fps.xml file. ";
   $MSG_HELP_IMPORT_PROBLEM=" import fps.xml files downloaded from internet or tk.hustoj.com, support zip file. ";
   $MSG_HELP_PROBLEM_STATISTICS="You are able to view all submissions after solving this problem.";
+  $MSG_HELP_PROBLEMSET1="add, delete and edit problem set. ";
+  $MSG_HELP_PROBLEMSET2="You can't delete the problem set when it is not empty.";
+  $MSG_HELP_CourseSet="You can add/delete/edit course, section and their problems.";
 
   $MSG_HELP_AC="Congratulations!"; 
   $MSG_HELP_PE="Your output format is not exactly the same as the judge's output, although your answer to the problem is correct. Check your output for spaces, blank lines,etc against the problem output specification."; 
@@ -298,7 +334,6 @@
 
   //privilege_distribution.php
   $MSG_enter_admin_page ="enter_admin_page";
-  $MSG_edit_default_problem ="edit_default_problem";
   $MSG_rejudge ="rejudge";
   $MSG_edit_news ="edit_news";
   $MSG_HELP_edit_news = "edit and add News";
@@ -306,6 +341,7 @@
   $MSG_HELP_edit_contest1 = "edit and add contest.";
   $MSG_HELP_edit_contest2 = "you can enter any contest in passing. ";
   $MSG_HELP_edit_contest3 = "you can see problem ID even when contest is running. ";
+  $MSG_HELP_edit_contest4 = "You can add/delete/edit course, section and their problems. ";
   $MSG_download_ranklist ="download_ranklist";
   $MSG_generate_team ="generate_team";
   $MSG_HELP_generate_team ="Generate accounts and passwords in batches.";
@@ -317,11 +353,10 @@
   $MSG_inner_function ="inner_function";
   $MSG_HELP_inner_function ="some Inner functions, Dangerous functions";
   $MSG_edit_xx_problem = "edit_xx_problem";
-  $MSG_HELP_edit_xx_problem1 = "edit problems, see problems' data in corresponding problemset.";
+  $MSG_HELP_edit_xx_problem1 = "add and edit problems, see problems' data in corresponding problemset.";
   $MSG_see_hidden_xx_problem ="see_hidden_default_problem";
   $MSG_HELP_see_hidden_xx_problem1 ="see hidden problems in corresponding problemset at problemset page. ";
   $MSG_HELP_see_hidden_xx_problem2 ="including problems in running contest. ";
-  $MSG_see_hidden_default_problem ="see_hidden_default_problem";
   $MSG_see_hidden_user_info ="see_hidden_user_info";
   $MSG_HELP_see_hidden_user_info ="see the hidden information in userinfo page, including real name, class and recent login info.";
   $MSG_see_wa_info_out_of_contest ="see_wa_info_out_of_contest";

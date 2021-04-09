@@ -33,7 +33,7 @@ if($_POST['data']){
 <h1><?php echo $MSG_Distribution ?></h1>
 <hr/>
 <form method="post">
-  <?php require $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+  <?php require "../include/set_post_key.php"?>
   <div class="row">
     <div class="col-sm-2">
       <!-- Nav tabs -->
@@ -81,7 +81,7 @@ if($_POST['data']){
       </div>
     </div><!--col-3-->
     <div class="col-sm-7" >
-      <div class="well am-scrollable-vertical" style="height:515px">
+      <div class="well am-scrollable-vertical" style="height:580px">
       <ul>
         <li>
           <?php echo $MSG_enter_admin_page ?>
@@ -108,6 +108,17 @@ if($_POST['data']){
           </ul>
         </li>
         <li>
+          <?php echo $MSG_see_hidden_xx_problem ?>:
+          <ul>
+            <li>
+            <?php echo $MSG_HELP_see_hidden_xx_problem1 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_see_hidden_xx_problem2 ?>
+            </li>
+          </ul>
+        </li>
+        <li>
           <?php echo $MSG_edit_news ?>
           <ul><li>
               <?php echo $MSG_HELP_edit_news ?>
@@ -124,6 +135,9 @@ if($_POST['data']){
             </li>
             <li>
             <?php echo $MSG_HELP_edit_contest3 ?>
+            </li>
+            <li>
+            <?php echo $MSG_HELP_edit_contest4 ?>
             </li>
           </ul>
         </li>
@@ -158,17 +172,7 @@ if($_POST['data']){
               <?php echo $MSG_HELP_inner_function ?>
             </li>
       </ul></li>
-        <li>
-          <?php echo $MSG_see_hidden_xx_problem ?>:
-          <ul>
-            <li>
-            <?php echo $MSG_HELP_see_hidden_xx_problem1 ?>
-            </li>
-            <li>
-            <?php echo $MSG_HELP_see_hidden_xx_problem2 ?>
-            </li>
-          </ul>
-        </li>
+        
         <li>
           <?php echo $MSG_see_hidden_user_info ?>:
           <ul>

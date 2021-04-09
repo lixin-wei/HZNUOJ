@@ -1,13 +1,12 @@
 <?php if(!session_id()) session_start();
+require_once("include/const.inc.php");
 if (!isset($_SESSION['user_id'])){
-	require("template/".$OJ_TEMPLATE."/header.php");
-	echo "<a href='loginpage.php'>$MSG_Login</a>";
-	require("template/".$OJ_TEMPLATE."/footer.php");
+	$view_errors= "<a href=./loginpage.php>$MSG_Login</a>";
+	require("template/".$OJ_TEMPLATE."/error.php");
 	exit(0);
 }
 require_once("include/check_post_key.php");
 require_once("include/db_info.inc.php");
-require_once("include/const.inc.php");
 require_once("include/my_func.inc.php");
   $now=strftime("%Y-%m-%d %H:%M",time());
 $user_id=$_SESSION['user_id'];
@@ -245,6 +244,6 @@ if(($OJ_LANGMASK)&(1<<$language)){
      if(isset($cid)) {
        $para .= "&cid=$cid";
      }
-     echo "<script>window.location.href='/OJ/status.php?$para'</script>";
+     echo "<script>window.location.href='./status.php?$para'</script>";
    }
 ?>

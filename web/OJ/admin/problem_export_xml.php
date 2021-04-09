@@ -121,10 +121,10 @@ function fixurl($img_url){
    
 	if (substr($img_url,0,7)!="http://"){
 	  if(substr($img_url,0,1)=="/"){
-	     	$ret='http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$img_url;
+	     	$ret='http://'.$_SERVER['HTTP_HOST'].':'.$_SERVER["SERVER_PORT"].$img_url;
      }else{
      		$path= dirname($_SERVER['PHP_SELF']);
-	      $ret='http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$path."/../".$img_url;
+	      $ret='http://'.$_SERVER['HTTP_HOST'].':'.$_SERVER["SERVER_PORT"].$path."/../".$img_url;
      }
    }else{
    	$ret=$img_url;

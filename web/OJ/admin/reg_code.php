@@ -27,8 +27,8 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
             $err_str .= "输入的{$MSG_REG_CODE}限20位字母、数字或下划线 ！\\n";
             $err_cnt++;
         }
-        if (!preg_match("/^[1-9][0-9]{0,3}$/", $remain_num)) {
-            $err_str .= "输入的{$MSG_Remain_Num}要求是介于1-9999的整数 ！\\n";
+        if (!preg_match("/^[1-9][0-9]{0,3}$/", $remain_num) && $remain_num!=-1) {
+            $err_str .= "输入的{$MSG_Remain_Num}要求是介于-1~9999的整数 ！\\n";
             $err_cnt++;
         }
         if ($err_cnt > 0) {
@@ -58,8 +58,8 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
         $err_str .= "请选择{$MSG_Class}！";
         $err_cnt++;
     }
-    if (!preg_match("/^[1-9][0-9]{0,3}$/", $remain_num)) {
-        $err_str .= "输入的{$MSG_Remain_Num}要求是介于1-9999的整数 ！\\n";
+    if (!preg_match("/^[1-9][0-9]{0,3}$/", $remain_num) && $remain_num!=-1) {
+        $err_str .= "输入的{$MSG_Remain_Num}要求是介于-1~9999的整数 ！\\n";
         $err_cnt++;
     }
     if (($_POST['mode']) == "B" && !trim($_POST['reg_code'])) {
@@ -79,7 +79,7 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
         case "A":
             foreach ($classes as $c) {
                 $temp[0] = $mysqli->real_escape_string(trim($c));
-                $temp[1] = createPwd($c, 10);
+                $temp[1] = createPwd("", 10, false);
                 $temp[2] = $remain_num;
                 array_push($class_list, $temp);
             }
@@ -88,7 +88,7 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
             $reg_code =  explode("\n", trim($_POST['reg_code']));
             foreach ($classes as $key => $value) {
                 $temp[0] = $mysqli->real_escape_string(trim($classes[$key]));
-                $temp[1] = ($reg_code[$key] ? $mysqli->real_escape_string(trim(str_replace("\r", "", $reg_code[$key]))) : createPwd($c, 10));
+                $temp[1] = ($reg_code[$key] ? $mysqli->real_escape_string(trim(str_replace("\r", "", $reg_code[$key]))) : createPwd("", 10, false));
                 $temp[2] = $remain_num;
                 array_push($class_list, $temp);
             }
@@ -102,8 +102,8 @@ if (isset($_POST['save']) || isset($_POST['del'])) { //删除或者更新注册�
             echo "{$MSG_Class} <b>$c[0]</b> 已有{$MSG_REG_CODE}，{$MSG_REG_CODE}添加失败！<br>";
         } else if (!preg_match("/^[_a-zA-Z0-9]{6,20}$/", $c[1])) {
             echo "{$MSG_Class} <b>$c[0]</b> 的{$MSG_REG_CODE} {$c[1]} 不合规（限6-20位字母、数字或下划线），{$MSG_REG_CODE}添加失败！<br>";
-        } else if (!preg_match("/^[1-9][0-9]{0,3}$/", $c[2])) {
-            echo "{$MSG_Class} <b>$c[0]</b> 的{$MSG_Remain_Num}不合规（要求是介于1-9999的整数） ！，{$MSG_REG_CODE}添加失败！<br>";
+        } else if (!preg_match("/^[1-9][0-9]{0,3}$/", $c[2]) && $c[2]!=-1) {
+            echo "{$MSG_Class} <b>$c[0]</b> 的{$MSG_Remain_Num}不合规（要求是介于-1~9999的整数） ！，{$MSG_REG_CODE}添加失败！<br>";
         } else {
             $sql = "INSERT INTO `reg_code` VALUES ('{$c[0]}', '{$c[1]}', '{$c[2]}')";
             $sql .= " ON DUPLICATE KEY UPDATE `reg_code`='$c[1]', `remain_num`='$c[2]'";
@@ -128,8 +128,10 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     if (isset($_GET['page'])) $page = intval($_GET['page']);
     if (isset($_GET['year'])) $args['year'] = $_GET['year'];
     else $args['year'] = "";
-    if (isset($_GET['keyword'])) $args['keyword'] = $_GET['keyword'];
-    else $args['keyword'] = "";
+    if (isset($_GET['keyword'])) {
+        $_GET['keyword'] = trim($_GET['keyword']);
+        $args['keyword'] = urlencode($_GET['keyword']);
+    }
     if (isset($_GET['sort_method'])) $args['sort_method'] = $_GET['sort_method'];
     else $args['sort_method'] = "";
     if (isset($page)) $args['page'] = $page;
@@ -162,9 +164,11 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     $result = $mysqli->query($sql0)->fetch_all();
     $total = 0;
     if ($result) $total = $result[0][0];
-    $page_cnt = 50;
+    $page_cnt = 10;
     $view_total_page = ceil($total / $page_cnt); //计算页数
-    if ($page > $view_total_page && $view_total_page > 0) $args['page'] = $page = $view_total_page;
+    $view_total_page = $view_total_page>0?$view_total_page:1;
+    if ($page > $view_total_page) $args['page'] = $page = $view_total_page;
+    if ($page < 1) $page = 1;
     $left_bound = $page_cnt * $page - $page_cnt;
     $u_id = $left_bound;
     switch ($args['sort_method']) {
@@ -172,7 +176,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort";
             $year_icon = "am-icon-sort";
             $remain_icon = "am-icon-sort-amount-desc";
-            $sql_filter .= " ORDER BY r.`remain_num` DESC ";
+            $sql_orderby = " ORDER BY od, `remain_num` DESC ";
             $class = 'class_DESC';
             $year = 'year_DESC';
             $remain = 'remain_ASC';
@@ -181,7 +185,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort";
             $year_icon = "am-icon-sort";
             $remain_icon = "am-icon-sort-amount-asc";
-            $sql_filter .= " ORDER BY r.`remain_num` ";
+            $sql_orderby = " ORDER BY od, `remain_num` ";
             $class = 'class_DESC';
             $year = 'year_DESC';
             $remain = 'remain_DESC';
@@ -190,7 +194,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort-amount-desc";
             $year_icon = "am-icon-sort";
             $remain_icon = "am-icon-sort";
-            $sql_filter .= " ORDER BY r.`class_name` DESC ";
+            $sql_orderby = " ORDER BY od, `class_name` DESC ";
             $class = 'class_ASC';
             $year = 'year_DESC';
             $remain = 'remain_DESC';
@@ -199,7 +203,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort-amount-asc";
             $year_icon = "am-icon-sort";
             $remain_icon = "am-icon-sort";
-            $sql_filter .= " ORDER BY r.`class_name` ";
+            $sql_orderby = " ORDER BY od, `class_name` ";
             $class = 'class_DESC';
             $year = 'year_DESC';
             $remain = 'remain_DESC';
@@ -208,7 +212,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort";
             $year_icon = "am-icon-sort-amount-asc";
             $remain_icon = "am-icon-sort";
-            $sql_filter .= " ORDER BY c.`enrollment_year`, r.`class_name`";
+            $sql_orderby = " ORDER BY od, `enrollment_year`, `class_name`";
             $class = 'class_DESC';
             $year = 'year_DESC';
             $remain = 'remain_DESC';
@@ -218,13 +222,13 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
             $class_icon = "am-icon-sort";
             $year_icon = "am-icon-sort-amount-desc";
             $remain_icon = "am-icon-sort";
-            $sql_filter .= " ORDER BY c.`enrollment_year` DESC, r.`class_name` ";
+            $sql_orderby = " ORDER BY od, `enrollment_year` DESC, `class_name` ";
             $class = 'class_DESC';
             $year = 'year_ASC';
             $remain = 'remain_DESC';
             break;
     }
-    $sql_filter .= " LIMIT $left_bound, $page_cnt";
+    $sql_orderby .= " LIMIT $left_bound, $page_cnt";
 }
 
 $view_class = array();
@@ -252,12 +256,14 @@ if ($row = $result->fetch_object()) {
     exit(0);
 }
 if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
-    $sql = "SELECT c.`enrollment_year`, r.* FROM `reg_code` AS r " . $leftjoin . $sql_filter;
+    $sql = "SELECT 0 as od, c.`enrollment_year`, r.* FROM `reg_code` AS r " . $leftjoin . $sql_filter . " AND c.`enrollment_year` = 0 ";
+    $sql .= "UNION ALL (SELECT 1 as od, c.`enrollment_year`, r.* FROM `reg_code` AS r " . $leftjoin . $sql_filter. " AND c.`enrollment_year` <> 0) ";
+    $sql .= $sql_orderby;
     $result = $mysqli->query($sql);
     while ($row = $result->fetch_object()) {
         $view_class[$cnt][0] = ++$u_id;
         $view_class[$cnt][1] = $row->enrollment_year ? $row->enrollment_year . "级" : "";
-        $view_class[$cnt][2] = $row->class_name . ((!$row->enrollment_year) ? "<font color='red'><b>&nbsp;&nbsp;无效注册码</b></font>" : "【{$row->reg_code}】");
+        $view_class[$cnt][2] = $row->class_name . "【{$row->reg_code}】";
         $view_class[$cnt][3] = "<form action='reg_code.php?getkey={$_SESSION['getkey']}' method='post'><input type='hidden' name='class' value='{$row->class_name}'>";
         $view_class[$cnt][3] .= "<input type='text' style='width:200px;' maxlength='20' pattern='^[_a-zA-Z0-9]{6,20}$' name='reg_code' value='$row->reg_code' required />";
         $view_class[$cnt][4] = "<input type='number' style='width:100px;' name='remain_num' min='-1' max='9999' value='$row->remain_num' required />";
@@ -295,6 +301,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         <li><a href="user_list.php"><?php echo $MSG_USER . $MSG_LIST ?></a></li>
         <li><a href="user_list.php?team=all"><?php echo $MSG_TEAM . $MSG_LIST ?></a></li>
         <li><a href="class_list.php"><?php echo $MSG_Class . $MSG_LIST ?></a></li>
+        <li><a href="change_class.php"><?php echo $MSG_ChangeClass ?></a></li>
         <li class="am-active"><a href="reg_code.php"><?php echo $MSG_REG_CODE ?></a></li>
     </ul>
 </div>
@@ -305,7 +312,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
         <form id="searchform" class="am-form am-form-inline">
             <div class='am-form-group'>
                 <select class="selectpicker show-tick" data-live-search="true" name='year' data-width="auto" onchange='javascript:document.getElementById("searchform").submit();'>
-                    <option value='all' <?php if (isset($_GET['year']) && ($_GET['year'] == "" || $_GET['year'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL ?></option>
+                    <option value='all' <?php if (isset($_GET['year']) && ($_GET['year'] == "" || $_GET['year'] == "all")) echo "selected"; ?>> <?php echo $MSG_ALL.$MSG_Enrollment_Year ?></option>
                     <?php
                     $sql = "SELECT DISTINCT c.`enrollment_year` FROM `class_list` AS c, `reg_code` AS r WHERE c.`class_name`<> '其它' AND c.`class_name`=r.`class_name` ORDER BY c.`enrollment_year` DESC";
                     $result = $mysqli->query($sql);
@@ -314,14 +321,14 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                     foreach ($years as $row) {
                         echo "<option value='" . $row[0] . "' ";
                         if ($args['year'] == $row[0])  echo "selected";
-                        echo ">$row[0]级</option>";
+                        echo $row[0]?">$row[0]级</option>":">无$MSG_Enrollment_Year</option>";
                     }
                     ?>
                 </select>
             </div>
             <div class="am-form-group am-form-icon">
                 <i class="am-icon-search"></i>
-                <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $args['keyword'] ?>" />
+                <input class="am-form-field" name="keyword" type="text" placeholder="<?php echo $MSG_KEYWORDS ?>" value="<?php echo $_GET['keyword'] ?>" />
             </div>
             <input class="btn btn-default" type=submit value="<?php echo $MSG_SEARCH ?>">
         </form>
@@ -332,16 +339,28 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     <!-- 页标签 start -->
     <div class="am-g" style="margin-left: 5px;">
         <ul class="pagination text-center" style="margin-top: 10px;margin-bottom: 0px;">
+            <?php $link = generate_url(Array("page"=>"1"))?>
+            <li><a href="<?php echo $link ?>">Top</a></li>
             <?php $link = generate_url(array("page" => max($page - 1, 1))) ?>
             <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
             <?php
             //分页
-            for ($i = 1; $i <= $view_total_page; $i++) {
-                $link = generate_url(array("page" => "$i"));
-                if ($page == $i)
-                    echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-                else
-                    echo "<li><a href=\"$link\">{$i}</a></li>";
+            $page_size=10;
+            $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+            $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+            for ($i=$page_start;$i<$page;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            $link=generate_url(Array("page"=>"$page"));
+            echo "<li class='active'><a href=\"$link\">{$page}</a></li>";
+            for ($i=$page+1;$i<=$page_end;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            if ($i <= $view_total_page){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
             }
             ?>
             <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page)))) ?>
@@ -362,18 +381,18 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
 <!-- 罗列班级注册码start -->
 <div class="am-g" style="max-width: 1300px;">
     <div class="am-u-sm-8">
-        <table class="table table-hover table-bordered table-condensed table-striped" >
+        <table class="table table-hover table-bordered table-condensed table-striped" style="white-space: nowrap;">
             <thead>
 
                 <tr>
                     <td colspan="<?php echo (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) ? 7 : 4 ?>">
-                        <label>注：</label><br>
+                        <label>说明：</label><br>
                         <ol>
-                            <li><b><?php echo $MSG_REG_CODE ?></b>限6-20位以内的字母、数字、下划线，<b><?php echo $MSG_Remain_Num ?></b>限 -1 ~ 9999 的整数；</li>
-                            <li><b><?php echo $MSG_Remain_Num ?></b> = -1 ——开放无限制数量的注册，<b><?php echo $MSG_Remain_Num ?></b> = 0 ——注册关闭；</li>
-                            <li><b><?php echo $MSG_Remain_Num ?></b> != 0 时，人员每注册一个账号，<b><?php echo $MSG_Remain_Num ?></b>自动减1直至为0，系统关闭注册。</li>
-                            <li><b><?php echo $MSG_Class ?></b>修改名称后，系统会自动更新其对应<?php echo $MSG_REG_CODE ?>的<?php echo $MSG_Class_Name ?>，<?php echo $MSG_Class ?><b>删除</b>后，其<?php echo $MSG_REG_CODE ?>记录也会被清除。</li>
-                            <li>修改<?php echo $MSG_REG_CODE ?>和<?php echo $MSG_Remain_Num ?>后，点击对应的"<?php echo $MSG_SUBMIT ?>"按钮保存设置，修改不会对已注册用户产生影响。</li>
+                            <li><b><?php echo $MSG_REG_CODE ?></b>限6-20位以内的字母、数字、下划线，支持<b>系统生成随机注册码</b>和<b>自定义注册码</b>两种生成模式；</li>
+                            <li><b><b><?php echo $MSG_Remain_Num ?></b>限 -1 ~ 9999 的整数，<?php echo $MSG_Remain_Num ?></b> = -1 ——此通道的注册不限人数，<b><?php echo $MSG_Remain_Num ?></b> = 0 —— 此通道注册关闭；</li>
+                            <li><b><?php echo $MSG_Remain_Num ?></b> > 0 时，人员每注册一个账号，<b><?php echo $MSG_Remain_Num ?></b>自动减1直至为0，此通道的注册将被关闭（<b>后台导入的账号不占<?php echo $MSG_Remain_Num ?></b>）；</li>
+                            <li><b><?php echo $MSG_Class ?></b>修改名称后，系统会自动更新其对应<?php echo $MSG_REG_CODE ?>的<?php echo $MSG_Class_Name ?>，<?php echo $MSG_Class ?><b>删除</b>后，其<?php echo $MSG_REG_CODE ?>记录也会被清除；</li>
+                            <li>修改<?php echo $MSG_REG_CODE ?>和<?php echo $MSG_Remain_Num ?>后，点击对应的"<?php echo $MSG_SUBMIT ?>"按钮保存设置，修改及删除注册码不会对已注册用户产生影响。</li>
                         </ol>
                     </td>
                 </tr>
@@ -421,7 +440,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
                                 require_once("../include/classList.inc.php");
                                 $classList = get_classlist(false, "c.`class_name` NOT IN (SELECT `class_name` FROM `reg_code`)");
                                 foreach ($classList as $c) {
-                                    if ($c[0]) echo "<optgroup label='$c[0]级'>\n";
+                                    if ($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                                     foreach ($c[1] as $cl) {
                                         echo "<option value='$cl'>$cl</option>\n";
                                     }
@@ -444,7 +463,7 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
 
                         <div class="am-form-group" style="white-space: nowrap;" id="B" hidden>
                             <label class="am-u-sm-3 am-form-label"><?php echo $MSG_REG_CODE ?>:</label>
-                            <textarea id="reg_code" name="reg_code" rows="5" class="am-u-sm-9 am-u-end" style="width:260px;" placeholder="*示例：一个班级名称占一行<?php echo "\n" ?>班级1<?php echo $MSG_REG_CODE."\n" ?>班级2<?php echo $MSG_REG_CODE."\n" ?>班级3<?php echo $MSG_REG_CODE."\n" ?>若行数不足系统将生成随机<?php echo $MSG_REG_CODE ?>补足差额。" disabled required></textarea>
+                            <textarea id="reg_code" name="reg_code" rows="5" class="am-u-sm-9 am-u-end" style="width:260px;" placeholder="*示例：一个班级的<?php echo $MSG_REG_CODE ?>占一行<?php echo "\n" ?>班级1<?php echo $MSG_REG_CODE."\n" ?>班级2<?php echo $MSG_REG_CODE."\n" ?>班级3<?php echo $MSG_REG_CODE."\n" ?>若行数不足系统将生成随机<?php echo $MSG_REG_CODE ?>补足差额。" disabled required></textarea>
                         </div>
                         <div class="am-form-group">
                             <div class="am-u-sm-8 am-u-sm-offset-4">
@@ -465,16 +484,28 @@ if (isset($OJ_NEED_CLASSMODE) && $OJ_NEED_CLASSMODE) {
     <!-- 页标签 start -->
     <div class="am-g" style="margin-left: 5px;">
         <ul class="pagination text-center" style="margin-top: 1px;margin-bottom: 0px;">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+            <li><a href="<?php echo $link ?>">Top</a></li>
             <?php $link = generate_url(array("page" => max($page - 1, 1))) ?>
             <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
             <?php
             //分页
-            for ($i = 1; $i <= $view_total_page; $i++) {
-                $link = generate_url(array("page" => "$i"));
-                if ($page == $i)
-                    echo "<li class='active'><a href=\"$link\">{$i}</a></li>";
-                else
-                    echo "<li><a href=\"$link\">{$i}</a></li>";
+            $page_size=10;
+            $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+            $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+            for ($i=$page_start;$i<$page;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            $link=generate_url(Array("page"=>"$page"));
+            echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+            for ($i=$page+1;$i<=$page_end;$i++){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
+            }
+            if ($i <= $view_total_page){
+                $link=generate_url(Array("page"=>"$i"));
+                echo "<li><a href=\"$link\">{$i}</a></li>";
             }
             ?>
             <?php $link = generate_url(array("page" => min($page + 1, intval($view_total_page)))) ?>

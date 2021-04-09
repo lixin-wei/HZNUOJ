@@ -1,5 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/header.php";
+require_once('include/db_info.inc.php');
+require_once('include/setlang.php');
+require_once "template/".$OJ_TEMPLATE."/header.php";
 ?>
 
 <style type="text/css">
@@ -86,7 +88,7 @@ HTML;
 	}
 	echo "</table>";
 	echo "</div>";
-	require_once $_SERVER['DOCUMENT_ROOT']."/OJ/template/hznu/footer.php";
+	require_once "template/".$OJ_TEMPLATE."/footer.php";
 }
 ?>
 

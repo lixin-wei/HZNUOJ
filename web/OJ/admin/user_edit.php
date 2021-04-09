@@ -16,31 +16,34 @@ if (!HAS_PRI("edit_user_profile")) {
 require_once("../include/my_func.inc.php");
 if(isset($_GET['del'])) { //删除账号
     require_once("../include/check_get_key.php");
+    $cid = array();
+    $admin_cid = array();
+    if(isset($_GET['cid'])){
+      $cid[0] =$mysqli->real_escape_string($_GET['cid']);;
+    } else $cid = $_POST['cid'];
     if(!isset($_GET['team'])) { //删除普通用户
-      $cid = $mysqli->real_escape_string($_GET['cid']);
-      if(!IS_ADMIN($cid)){ //用户是非管理员才能删除
+      foreach($cid as $c){ //用户是非管理员才能删除
+        if(IS_ADMIN($c)) array_push($admin_cid, $c);
+      }
+      $cid = array_diff($cid, $admin_cid);
+      $cid = "'". implode("','", $cid) ."'";
         //不清除用户的登录日志`loginlog`、访问日志`hit_log`、往来消息'mail'、发布的公告'news'、提交的代码`solution`
         //以及`reply`、`topic`、`message`、`contest_discuss`、`printer_code`、`solution_video_watch_log`表的相关记录。
         //$sql = "DELETE FROM `loginlog` WHERE `user_id`='$cid' and `password` NOT LIKE '%team account%'";
         //$mysqli->query($sql); 删除普通账号的登录日志
-        $sql = "DELETE FROM `privilege` WHERE `user_id`='$cid'";
-        $mysqli->query($sql); //删除非管理员的权限
-        $sql = "DELETE FROM `tag` WHERE `user_id`='$cid'";
-        $mysqli->query($sql); //删除用户的标签
-        $sql = "DELETE FROM `users` WHERE `user_id`='$cid'";
-        $mysqli->query($sql); //删除用户记录
-        if($mysqli->affected_rows==1) $msg = "删除成功";
-        else $msg = "删除失败";
-      }
+      $sql = "DELETE FROM `privilege` WHERE `user_id` IN ($cid)";
+      $mysqli->query($sql); //删除非管理员的权限
+      $sql = "DELETE FROM `tag` WHERE `user_id` IN ($cid)";
+      $mysqli->query($sql); //删除用户的标签
+      $sql = "DELETE FROM `users` WHERE `user_id` IN ($cid)";
+      $mysqli->query($sql); //删除用户记录
+      if($mysqli->affected_rows<0) $msg = "删除失败";
+      else $msg = "成功删除{$mysqli->affected_rows}个{$MSG_USER}！";
     } else { //删除比赛临时用户
         //不清除比赛用户的登录日志`loginlog`、访问日志`hit_log`、提交的代码`solution`
         //以及`reply`、`topic`、`message`、`contest_discuss`、`printer_code`、`solution_video_watch_log`表的相关记录。
         //$sql = "DELETE FROM `loginlog` WHERE `user_id`='$cid' and `password` LIKE '%team account%'";
         //$mysqli->query($sql); 删除比赛账号的登录日志
-        $cid = array();
-        if(isset($_GET['cid'])){
-          $cid[0] = $_GET['cid'];
-        } else $cid = $_POST['cid'];
         $cnt = 0;
         foreach($cid as $c){
           $tuser = explode("@", trim($c));
@@ -64,11 +67,14 @@ if(isset($_GET['del'])) { //删除账号
     exit(1);
   }
   if(isset($_POST['team'])) $args['team']=$_POST['team'];
-  if(isset($_POST['class'])) $args['class']=$_POST['class'];
+  if(isset($_POST['class'])) $args['class']=urlencode($_POST['class']);
   if (isset($_POST['defunct'])) $args['defunct'] = $_POST['defunct'];
   if (isset($_POST['contest'])) $args['contest'] = $_POST['contest'];
   if(isset($_POST['sort_method'])) $args['sort_method']=$_POST['sort_method'];
-  if(isset($_POST['keyword'])) $args['keyword']=$_POST['keyword'];
+  if (isset($_POST['keyword'])) {
+    $_POST['keyword'] = trim($_POST['keyword']);
+    $args['keyword'] = urlencode($_POST['keyword']);
+  }
   if(isset($_POST['page'])) $args['page']=$_POST['page'];
   function generate_url($data){
       global $args;
@@ -356,7 +362,7 @@ if(!isset($_GET['team'])) {
   }
   $user_id = $mysqli->real_escape_string($_GET['cid']);
   $sql="SELECT * FROM `users` WHERE `user_id`='$user_id'";
-  echo $sql."<br>";
+  //echo $sql."<br>";
   $title = $MSG_EDIT.$MSG_USER;
 } else {
   $tuser = explode("@", trim($_GET['cid']));
@@ -375,6 +381,7 @@ if(isset($_GET['team'])) {
 <title><?php echo $html_title.$title ?></title>
 <h1><?php echo $title ?></h1>
 <hr>
+<link rel="stylesheet" href="../plugins/emailAutoComplete/emailAutoComplete.css"/>
 <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;width:600px;">
   <form class="am-form am-form-horizontal" action="user_edit.php" method="post">
     <?php require_once('../include/set_post_key.php');?>
@@ -431,8 +438,8 @@ if(isset($_GET['team'])) {
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label" style="float:left;">
       <?php echo $MSG_EMAIL ?>:
       </label>
-      <div class="am-u-sm-8">
-        <input type="email" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->email)?>" name="email">
+      <div class="am-u-sm-8 parentCls">
+        <input class="inputElem" type="email" style="width:340px;" autocomplete="off" value="<?php echo htmlentities($row->email)?>" name="email">
       </div>
     </div>
     <?php } else {?>
@@ -478,7 +485,7 @@ if(isset($_GET['team'])) {
           <select name="new_class" class="selectpicker show-tick" data-live-search="true" data-width="340px">
             <?php 
               foreach ($classList as $c){
-                  if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+                  if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
                   foreach ($c[1] as $cl){
                     if($cl == $class) $selected = "selected"; else $selected ="";
                     echo "<option value='$cl' $selected>$cl</option>\n";
@@ -517,3 +524,4 @@ if(isset($_GET['team'])) {
 <?php 
   require_once("admin-footer.php")
 ?>
+<script type="text/javascript" src="../plugins/emailAutoComplete/emailAutoComplete.js"></script>

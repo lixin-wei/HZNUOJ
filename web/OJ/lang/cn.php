@@ -17,6 +17,8 @@
   $MSG_RECENT_CONTEST = "名校联赛";
   $MSG_FAQ = "常见问答";
   $MSG_ACM_MAIL = "杭师ACM邮箱";
+  $MSG_COURSE = "课程";
+  $MSG_Assist = "辅助";
 
   // 用户导航栏
   $MSG_LOGIN = "登录";
@@ -30,6 +32,12 @@
   $MSG_MY_CONTESTS="我的$MSG_CONTEST"; 
   $MSG_HIDETAG = "隐藏标签";
   $MSG_SHOWTAG = "显示标签";
+  $MSG_LOST_PASSWORD="忘记密码";
+  $MSG_Securekey="安全口令";
+  $MSG_LOSTPASSWORD_HELP1="请填写您的用户名和注册时登记的电子邮箱进行身份验证。";
+  $MSG_LOSTPASSWORD_HELP2="请将发到您邮箱中的".$MSG_Securekey."填写到相应位置；如果填写正确通过下一步验证，这个验证码就自动成为您的新密码！";
+  $MSG_RESETPASSWORD_SUCC="已将输入的".$MSG_Securekey."设置为您的新密码。 点击<a href='loginpage.php'>这里</a>登录！";
+  $MSG_RESETPASSWORD_FAIL="密码重置失败！";
 
   // 比赛导航栏
   $MSG_BACK_TO_HOME = "返回主页";
@@ -51,17 +59,24 @@
   $MSG_RANK = "名次";
   $MSG_NICK = "昵称";
   $MSG_SOLVED = "解决";
-  $MSG_RATIO = "比率";
+  $MSG_RATIO = "通过率";
   $MSG_LEVEL = "等级";
   $MSG_STRENGTH = "实力";
   $MSG_RANKTIPS = "此排名非实时数据排名，请访问自己的用户信息页更新数据。";
   $MSG_Wrong = "错误";
+  $MSG_Year = "本年";
+  $MSG_Month = "本月";
+  $MSG_Week = "本周";
+  $MSG_Day = "本日";
+  $MSG_Update_RANK = "更新排名";
 
   // contestRank.php
   $MSG_REAL_NAME = "姓名";
   $MSG_USER = "用户";
-  $MSG_PENALTY = "罚时";
+  $MSG_PENALTY = "累计时间";
   $MSG_DOWNLOAD_RANK = "下载排名";
+  $MSG_Normal_Mode = "普通模式";
+  $MSG_RealName_Mode = "实名模式";
   
   //其他
   $MSG_SUBMISSIONS = "提交量";
@@ -84,7 +99,7 @@
   $MSG_TOTAL = "合计";
   $MSG_Available = "启用";
   $MSG_Reserved = "停用";
-  $MSG_CreatedDate = "创建日期";
+  $MSG_LastEditTime = "最后编辑时间";
   $MSG_Solution = "单个提交代码";
   $MSG_Importance = "优先级";
   $MSG_Content = "内容";
@@ -104,7 +119,7 @@
   $MSG_Enrollment_Year = "入学年份";
   $MSG_Class_Name = "班级名称";
   $MSG_Stu_List = "学生名单";
-  $MSG_Grade = "年级/专业/前缀";
+  $MSG_Prefix = "专业/前缀";
   $MSG_Amount = "数量";
   $MSG_Mode = "模式";
   $MSG_Not_Empty_Class = "有人班级";
@@ -112,6 +127,11 @@
   $MSG_Back = "返回";
   $MSG_Customiz = "自定义";
   $MSG_Download = "下载";
+  $MSG_IgnoreWS = "忽略空白";
+  $MSG_SIM = "相似度";
+  $MSG_Alias = "别名";
+  $MSG_Top = "固顶";
+  $MSG_AccessLevel = "访问等级";
   
   /*
   下面的代码请不要乱动，以免出问题！！！
@@ -183,7 +203,7 @@
   $MSG_Sample_Input= "样例输入" ;
   $MSG_Sample_Output= "样例输出" ;
   $MSG_HINT= "提示" ;
-  $MSG_Source= "来源" ;
+  $MSG_Source= "来源/分类" ;
   $MSG_Limit = "限制";
   $MSG_Times = "时间";
   $MSG_Time_Limit="时间限制";
@@ -193,7 +213,7 @@
   $MSG_SolutionVideo = "帮助视频";
   $MSG_WatchVideo = "点击观看帮助视频";
   $MSG_ToggleSamples = "隐藏/显示";
-  $MSG_ShowAfterTrying = "几次之后显示本样例";
+  $MSG_ShowAfterTrying = "错误几次之后显示本样例";
   $MSG_AddSapmple = "增加一组样例";
   $MSG_RemoveSample = "删除最后一组样例";
   $MSG_SampleDataIsUpdated = "测试样例文件已更新！";
@@ -228,6 +248,9 @@
   $MSG_Old = "老";
   $MSG_New = "新";
   $MSG_FastTrack = "快速通道";
+  $MSG_ChangeClass = "批量分班";
+  $MSG_CourseSet = "课程设置";
+  $MSG_UpdateScores = "更新题目分值";
   
   //contest
   $MSG_PRIVATE_WARNING="私有比赛或考试作业，您无权查看题目。";
@@ -240,6 +263,8 @@
   $MSG_Start="开始于";
   $MSG_StartTime="开始时间";
   $MSG_EndTime="结束时间";
+  $MSG_LockTime="封榜时间";
+  $MSG_Locked = "已封榜，答题信息停止更新！";
   $MSG_TotalTime="总赛时";
   $MSG_LeftTime="剩余";
   $MSG_Ended="已结束";
@@ -250,12 +275,19 @@
   $MSG_Name = "名称";
   $MSG_ID = "编号";
   $MSG_NearlyEnd = "即将结束，请注意掌握时间！";
-  $MSG_notStart = "尚未开始";
+  $MSG_notStart = $MSG_CONTEST."尚未开始";
+  $MSG_notStart2 = "未开始";
   $MSG_TimeElapsed = "已耗时";
   $MSG_TimeRemaining = "剩余时间";
   $MSG_ContestIsClosed = "竞赛&作业已关闭！";
   $MSG_Creator = "组织者";
   $MSG_IMPORTED = "外部导入";
+  $MSG_LockBoard = "封榜";
+  $MSG_LockByTime="比赛结束前xx小时封榜";
+  $MSG_LockByRate=$MSG_TotalTime."剩余xx%时封榜";
+  $MSG_GOLD="金牌数量"; 
+  $MSG_SILVER="银牌数量";
+  $MSG_BRONZE="铜牌数量";
   
   $MSG_HELP_TeamAccount_forbid = $MSG_TEAM."不能访问此页！";
   $MSG_HELP_TeamAccount_login = "非".$MSG_TEAM."登录勿填！";
@@ -263,12 +295,13 @@
   $MSG_HELP_NEWS_LIST="管理已经发布的".$MSG_NEWS."。";
   $MSG_HELP_USER_LIST="对注册用户停用、启用帐号及编辑相关信息，对于管理员帐号需要先降级为普通用户才能删除或修改密码";
   $MSG_HELP_CLASS_LIST="班级模式下，添加、删除和编辑班级。若删除一个班级，则该班所有普通账号和比赛账号都会归到<b>“其它”</b>班下。";
+  $MSG_HELP_CHANGECALSS="班级模式下，给学生批量的重新分班。";
   $MSG_HELP_RegCode_OpenMode="当前系统为开放模式，注册无限制，账号注册后立即激活。";
   $MSG_HELP_RegCode_ComfirmMode="当前系统设定为审核模式，注册无限制，账号注册后需要管理员后台审核激活。";
   $MSG_HELP_RegCode_PwdMode="当前系统设定为密码模式，人员凭后台设置的注册码进行注册，账号注册后立即激活。";
   $MSG_HELP_RegCode_PwdComfirmMode="当前系统设定为密码+审核模式，人员凭后台设置的注册码进行注册，账号注册后还需管理员后台审核激活。";
   $MSG_HELP_ADD_PROBLEM="手动添加新的题目，更多测试数据可以在添加后点击".$MSG_PROBLEM.$MSG_LIST."中的'".$MSG_TestData."'按钮进行批量上传，新建题目<b>默认".$MSG_Reserved."</b>，需点击".$MSG_PROBLEM.$MSG_LIST."中对应的<b>'".$MSG_Reserved."'</b>切换到启用状态。";
-  $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传数据可以用zip压缩不含目录的数据。";
+  $MSG_HELP_PROBLEM_LIST="管理已有的题目和数据，上传测试数据可以用zip格式压缩不含目录的数据。";
   $MSG_HELP_CONTEST_LIST="管理已有的比赛列表，修改时间和公开/私有等类型，尽量不要在开赛后调整题目列表。";
   $MSG_HELP_TEAMGENERATOR="批量生成大量比赛帐号、密码。小系统不要随便使用，可能产生垃圾帐号，清理比较麻烦。<font color='red'><b>此外，账号生成过程中遇到相同{$MSG_USER_ID}和{$MSG_CONTEST}的{$MSG_USER}，系统将做覆盖处理。</b></font>";
   $MSG_HELP_SETPASSWORD="重设指定用户的密码，对于管理员帐号需要先降级为普通用户才能修改。";
@@ -279,6 +312,9 @@
   $MSG_HELP_EXPORT_PROBLEM="将系统中的题目以fps.xml文件的形式导出。";
   $MSG_HELP_IMPORT_PROBLEM="导入从官方群共享或tk.hustoj.com下载到的fps.xml文件，支持ZIP压缩文件批量上传。";
   $MSG_HELP_PROBLEM_STATISTICS="当你AC了一道题，你就有权限查看该题所有的提交代码。";
+  $MSG_HELP_PROBLEMSET1="增加、删除、编辑题库，访问等级为x的用户只能查看、答题等级<=x的题库中的题目（只对用户在题库页面访问题目时有效，比赛中的题目无访问等级的限制），<b>管理员级</b>的题库比如考试试题库等不在前台页面显示，但管理员可以在后台将其题目放入竞赛&作业供用户使用。";
+  $MSG_HELP_PROBLEMSET2="<b>当题库中有题目时不能做删除操作。</b>";
+  $MSG_HELP_CourseSet="添加、删除、编辑课程/章节及相关题目，拖拽节点可以调整顺序，按住Ctrl键或Cmd键（MacOS系统）后拖拽可复制节点。";
 
   $MSG_HELP_AC="答案正确，请再接再厉。"; 
   $MSG_HELP_PE="答案基本正确，但是格式不对。"; 
@@ -298,7 +334,6 @@
   
   //privilege_distribution.php
   $MSG_enter_admin_page = "访问管理页面";
-  $MSG_edit_default_problem = $MSG_EDIT.$MSG_PROBLEM;
   $MSG_rejudge = $MSG_REJUDGE;
   $MSG_edit_news = $MSG_EDIT.$MSG_NEWS;
   $MSG_HELP_edit_news = "可以添加和编辑".$MSG_NEWS."。";
@@ -306,6 +341,7 @@
   $MSG_HELP_edit_contest1 = "可以添加和编辑".$MSG_CONTEST."。";
   $MSG_HELP_edit_contest2 = "可以查看任何已结束的".$MSG_CONTEST."。";
   $MSG_HELP_edit_contest3 = "可以在未结束的".$MSG_CONTEST."中查看原始".$MSG_PROBLEM_ID."。";
+  $MSG_HELP_edit_contest4 = "可以添加、删除、编辑课程辅助中的课程/章节及相关题目。";
   $MSG_download_ranklist = $MSG_DOWNLOAD_RANK;
   $MSG_generate_team ="账号生成";
   $MSG_HELP_generate_team ="批量生成比赛帐号以及批量导入普通账号。";
@@ -315,13 +351,12 @@
   $MSG_HELP_edit_privilege_group ="添加、删除指定用户的".$MSG_PRIVILEGE."。";
   $MSG_edit_privilege_distribution=$MSG_Distribution;
   $MSG_inner_function ="内建功能";
-  $MSG_HELP_inner_function ="一些不常用或者较为危险的功能";
-  $MSG_edit_xx_problem = $MSG_EDIT.$MSG_PROBLEM."(相应题库)";
-  $MSG_HELP_edit_xx_problem1 = "可以在相应的".$MSG_PROBLEMSET."中".$MSG_EDIT.$MSG_PROBLEM."以及查看相关数据。";
-  $MSG_see_hidden_xx_problem ="查看隐藏的".$MSG_PROBLEM."(相应题库)";
-  $MSG_HELP_see_hidden_xx_problem1 ="可以在".$MSG_PROBLEMSET."页面里查看相应".$MSG_PROBLEMSET."中隐藏的".$MSG_PROBLEM."。";
+  $MSG_HELP_inner_function ="一些不常用（如题库管理、题目分值更新、题目导入导出）或者较为危险的功能（修改原始题号）等";
+  $MSG_edit_xx_problem = "edit_xx_problem";
+  $MSG_HELP_edit_xx_problem1 = "可以在xx".$MSG_PROBLEMSET."中".$MSG_ADD."、".$MSG_EDIT.$MSG_PROBLEM."以及查看相关数据。";
+  $MSG_see_hidden_xx_problem ="see_hidden_xx_problem";
+  $MSG_HELP_see_hidden_xx_problem1 ="可以在".$MSG_PROBLEMSET."页面里查看xx".$MSG_PROBLEMSET."中隐藏的".$MSG_PROBLEM."。";
   $MSG_HELP_see_hidden_xx_problem2 ="包括因为被包含在运行中".$MSG_CONTEST."而被隐藏的".$MSG_PROBLEM."。";
-  $MSG_see_hidden_default_problem ="查看隐藏的题目";
   $MSG_see_hidden_user_info ="查看隐藏的用户信息";
   $MSG_HELP_see_hidden_user_info ="可以在用户信息页面中查看隐藏的信息，包括真名、班级和最近的登录信息。";
   $MSG_see_wa_info_out_of_contest ="查看比赛之外提交代码的错误信息";

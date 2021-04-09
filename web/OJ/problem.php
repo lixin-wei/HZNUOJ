@@ -55,9 +55,12 @@ if (isset($_GET['id']) && !(isset($_GET['cid']) && isset($_GET['pid'])) ) { // �
       }
     $id=intval($_GET['id']);
     $real_id=$id;
-    $res = $mysqli->query("SELECT problemset from problem WHERE problem_id=$id");
-    $set_name = $res->fetch_array()[0];
-    
+    $set_name = get_problemset($id);
+    if(!can_access_problem($_SESSION['user_id'], $id)){
+        $view_errors= "<font color='red'>您尚无本题所在题库的访问权限！若有需要请联系管理员取得权限。</font>";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);
+    }
     if(isset($_SESSION['user_id'])) {
         $sql = "SELECT count(*) FROM solution WHERE problem_id=$id AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
         $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;
@@ -120,29 +123,28 @@ else if (isset($_GET['cid']) && isset($_GET['pid'])) { // 如果是比赛中的�
     
     $sql="SELECT `problem_id`, score FROM `contest_problem` WHERE `contest_id`=$cid AND `num`=$pid";
     $res=$mysqli->query($sql)->fetch_array();
-    $real_id=$res[0];
-    $contest_score = $res[1];
+    $real_id=$res ? $res[0] : "0";
+    $contest_score = $res ? $res[1] : "0";
     
     if(isset($_SESSION['user_id'])) {
         $sql = "SELECT count(*) FROM solution WHERE contest_id=$cid AND num=$pid AND result = 4 AND user_id = '{$_SESSION['user_id']}'";
         $has_accepted = intval($mysqli->query($sql)->fetch_array()[0]) > 0;
     }
 
-    
-    if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
-        $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
-        require("template/".$OJ_TEMPLATE."/error.php");
-        exit(0);
-    }
+    // 注释此段确保当题目同时在练习赛和正常的比赛中时，练习赛中对应题目的答题不受限制
+    // if($is_practice && is_in_running_contest($real_id) && !HAS_PRI("edit_contest")) {
+    //     $view_errors = "<span class='am-text-danger'>This problem is locked because it's in running contest.</span>";
+    //     require("template/".$OJ_TEMPLATE."/error.php");
+    //     exit(0);
+    // }
 
-    $sql="SELECT problemset FROM `problem` WHERE `problem_id`=$real_id";
+    $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$real_id'";
     $res = $mysqli->query($sql);
-    $set_name = $res->fetch_array()[0];
-    
+    $set_name = $res ? $res->fetch_array()[0] : "";
     if (!HAS_PRI("edit_contest"))// if you can edit contest, you can see these problem in passing
-        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid AND `start_time`<='$now'";
+        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`='$cid' AND `start_time`<='$now'";
     else
-        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`=$cid";
+        $sql="SELECT langmask,private,defunct,user_limit FROM `contest` WHERE `contest_id`='$cid'";
     $result=$mysqli->query($sql);
     $rows_cnt=$result->num_rows;
     $row=$result->fetch_array();

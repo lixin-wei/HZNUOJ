@@ -1,6 +1,6 @@
 <?php
 if(isset($_GET['cid'])){
-	require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/db_info.inc.php";
+	require_once "./include/db_info.inc.php";
 	$cid=$_GET['cid'];
 
 	$sql="SELECT COUNT(1) FROM contest_problem WHERE contest_id=$cid";

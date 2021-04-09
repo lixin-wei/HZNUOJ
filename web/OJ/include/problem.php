@@ -10,21 +10,14 @@
 
   function addproblem($problemset, $title, $time_limit, $memory_limit, $description, $input, $output, $hint, $author, $source, $spj,$OJ_DATA) {
     global $mysqli, $MSG_PROBLEMSET, $MSG_TestData, $MSG_ADD, $OJ_SAE;
-    $title=$mysqli->real_escape_string($title);
-    $problemset=$mysqli->real_escape_string($problemset);
-    $time_limit=$mysqli->real_escape_string($time_limit);
-    $memory_limit=$mysqli->real_escape_string($memory_limit);
-    $description=$mysqli->real_escape_string($description);
-    $input=$mysqli->real_escape_string($input);
-    $output=$mysqli->real_escape_string($output);
-  //  $sample_input=$mysqli->real_escape_string($sample_input);
-  //  $sample_output=$mysqli->real_escape_string($sample_output);
-  //  $test_input=($test_input);
-  //  $test_output=($test_output);
-    $hint=$mysqli->real_escape_string($hint);
-    $author = $mysqli->real_escape_string($author);
-    $source=$mysqli->real_escape_string($source);
-  //  $spj=($spj);
+    $sql = "SELECT * FROM `problemset` WHERE `set_name`='$problemset'";
+    $result = @$mysqli->query ( $sql );
+    if($row=$result->fetch_object()){
+      $problemset2=$problemset."【".$row->set_name_show."】";
+    } else {
+      $problemset="default";
+      $problemset2="default";
+    }
     $sql = "INSERT into `problem` (`problemset`,`title`,`time_limit`,`memory_limit`,
     `description`,`input`,`output`,`hint`, author, `source`,`spj`,`in_date`,`defunct`)
     VALUES('$problemset','$title','$time_limit','$memory_limit','$description','$input',
@@ -32,10 +25,10 @@
     @$mysqli->query ( $sql ) or die ( $mysqli->error );
     $pid = $mysqli->insert_id;
     // echo $sql;
-    echo $MSG_PROBLEMSET.':'.$problemset;
+    echo $MSG_PROBLEMSET.' : '.$problemset2;
     //echo "<pre>".$sql."</pre>";
     echo "<br>$MSG_ADD $pid ";
-    if (isset ( $_POST ['contest_id'] )) {
+    if (isset ( $_POST['contest_id'] ) && $_POST['contest_id']!="") {
       $sql = "SELECT count(*) FROM `contest_problem` WHERE `contest_id`=" . strval ( intval ( $_POST ['contest_id'] ) );
       $result = @$mysqli->query ( $sql ) or die ( $mysqli->error );
       $row = $result->fetch_row();

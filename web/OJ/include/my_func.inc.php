@@ -188,7 +188,7 @@ function canSeeSource($sid) {
     }
     /* 判断是否有查看权限 start */
     if (isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE && isset($_SESSION['user_id'])){ // 已经AC该题目，可查看该题代码
-        $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id=$pid AND user_id='".$_SESSION['user_id']."'";
+        $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id='$pid' AND user_id='".$_SESSION['user_id']."'";
         $rrs = $mysqli->query($sql);
         $ok = !$irc && ($rrs->num_rows>0) ;
         $rrs->free();
@@ -198,7 +198,18 @@ function canSeeSource($sid) {
     if (isset($_SESSION['user_id'])&&$row && $row->user_id==$_SESSION['user_id']) return true;  // 是本人，可以查看该代码
     else { // 不是本人的情况下
         if (is_running(intval($cid))) { // the problem is in running contest
-            return HAS_PRI("see_source_in_contest");
+            $sql = "SELECT 1 FROM solution WHERE result=4 AND problem_id='$pid' AND contest_id='$cid' AND user_id='".$_SESSION['user_id']."'";
+            $result = $mysqli->query($sql);
+            $ok = ($result->num_rows>0);
+            $sql = "SELECT practice, open_source FROM contest WHERE contest_id='$cid'"; 
+            $result = $mysqli->query($sql);
+            $row = $result->fetch_object();
+            $open_source = $row->open_source=="Y"?1:0; // 默认值为0
+            $practice = $row->practice;
+            $result->free();
+            return ( ($ok && $practice && $open_source) || // 已经AC该题目，练习赛未结束时，若开放源代码查看可查看其他人的该题代码
+                HAS_PRI("see_source_in_contest")
+            );
         }
         else if (is_numeric($cid)) { // 没有运行中的比赛包含该题则考察该代码是否在已经结束的比赛中
             $sql = "SELECT defunct_TA, open_source FROM contest WHERE contest_id='$cid'";
@@ -291,9 +302,14 @@ function can_see_res_info($sid) {
 
 function get_problemset($pid){
     global $mysqli;
-    $sql="SELECT problemset FROM problem WHERE problem_id='$pid'";
-    $res=$mysqli->query($sql);
-    return $res->fetch_array()[0];
+    if(trim($pid)!=""){
+        $pid = intval($pid);
+        $sql="SELECT `problemset` FROM `problem` WHERE `problem_id`='$pid'";
+        return ($mysqli->query($sql)->fetch_array()[0]);
+    } else {
+        $sql="SELECT `set_name` FROM `problemset`";
+        return ($mysqli->query($sql)->fetch_all());
+    }
 }
 function get_order($group_name){
     global $mysqli;
@@ -364,14 +380,115 @@ function get_contests($type_list){ //返回一个二维数组给选择框等提�
     $result->free();
     return $view_contest;
 }
-function createPwd($seed, $len){
-    $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-    while (is_numeric($password))  $password = strtoupper(substr(MD5($seed . rand(0, 9999999)), 0, $len));
-    str_replace("I", "X", $password);
-    str_replace("O", "Y", $password);
-    str_replace("0", "Z", $password);
-    str_replace("1", "W", $password);
+function createPwd($seed="", $len=16, $haveSpecialChar=true){
+    $password = "";
+    $codeAlphabet = "ABCDEFGHJKMNPQRSTUVWXYZ".$seed;
+    $codeAlphabet .= "abcdefghjkmnpqrstuvwxyz";
+    $codeAlphabet .= "23456789";
+    if($haveSpecialChar) $codeAlphabet .= "_!@#$%^&*";
+    $r=strlen($codeAlphabet)-1;
+    for($i=0;$i<$len;$i++){
+        $password .= $codeAlphabet[mt_rand(0,$r)];
+    }
     return $password;
 }
+function show_category($source,$size) {
+    //$size的值有 default、sm、lg、xl
+    $baseUrl = basename($_SERVER['SCRIPT_NAME'])=="problem_list.php" ? "problem_list.php?keyword=" : "problemset.php?search=";
+    $color_theme=Array("primary","secondary","success","warning","danger");
+    $category = array_unique(explode(" ",trim($source)));
+    sortByPinYin($category);
+    $html="";
+    foreach ($category as $cat) {
+        if(trim($cat)=="") continue;
+        $hash_num = hexdec(substr(md5($cat),0,7));
+        $source_theme = $color_theme[$hash_num%count($color_theme)];
+        if ($source_theme=="") $source_theme = $color_theme[0];
+        $temp = htmlentities($cat,ENT_QUOTES,'UTF-8');
+        $html .= "<a style='margin-top: 2px; margin-bottom: 2px;' title='".$temp."' class='am-badge am-badge-$source_theme am-text-$size am-radius' href='$baseUrl".urlencode($cat)."'>$temp</a>&nbsp;";
+    }
+    return $html;
+}
+function sortByPinYin(&$array){
+    foreach ($array as $key=>$value) {
+        $array[$key] = mb_convert_encoding($value, "GBK", "UTF-8");
+    }
+    sort($array);
+    foreach ($array as $key=>$value) {
+        $array[$key] = mb_convert_encoding($value, "UTF-8", "GBK");
+    }
+}
+function can_access_problem($uid, $pid){
+    if(IS_ADMIN($uid)){
+        return true;
+    }
+    global $mysqli;
+    $user_access_level = 0;
+    $sql = "SELECT `access_level` from `users` WHERE `user_id` = '$uid'";
+    $res = $mysqli->query($sql);
+    if($row=$res->fetch_array()){
+        $user_access_level = $row[0];
+    }
+    $sql="SELECT `access_level` FROM `problemset` where `set_name`='". get_problemset($pid) ."'";
+    $res = $mysqli->query($sql);
+    if($row=$res->fetch_array()){
+        $problem_access_level = $row[0];
+        if($problem_access_level==-1) return false;//-1级别为内部题库，如考试题库等，普通用户不能在比赛之外访问
+        return ($user_access_level>=$problem_access_level);
+    } else return false;
+}
+function updateRank($uid){ //调用前先require_once：rank.inc.php文件
+    global $mysqli, $level_total, $max_strength, $level_strength, $level_name, $level_color;
 
+    // 获取解题数大于10的用户数量存入user_cnt_divisor
+    $sql = "SELECT user_id FROM users WHERE solved>10";
+    $result = $mysqli->query($sql) or die($mysqli->error);
+    if($result && $result->num_rows > 0 ) $user_cnt_divisor = $result->num_rows;
+    else $user_cnt_divisor = 1;
+    $strength = 0;
+    $level = "斗之气一段";
+    $color = "#E0E0E0";
+    //calculate strength
+    $sql="SELECT DISTINCT problem_id FROM solution WHERE user_id='$uid' AND result=4 ORDER BY problem_id";
+    $result=$mysqli->query($sql);
+    while($pid=$result->fetch_array()[0]){
+        $sql = "SELECT solved_user, submit_user FROM problem WHERE problem_id=".$pid;
+        $y_result=$mysqli->query($sql);
+        $y_row = $y_result->fetch_object();
+        $solved = $y_row->solved_user;
+        $submit = $y_row->submit_user;
+        $scores = 100.0 * (1-($solved+$submit/2.0)/$user_cnt_divisor);
+        if ($scores < 10) $scores = 10;
+        $strength += $scores;
+    }
+    // count hznuoj solved
+    $sql="SELECT count(DISTINCT problem_id) as ac FROM solution WHERE user_id='".$uid."' AND result=4";
+    $result=$mysqli->query($sql) or die($mysqli->error);
+    $row=$result->fetch_object();
+    $AC=$row->ac;
+    $result->free();
+
+    // count hznuoj submission
+    $sql="SELECT count(solution_id) as `Submit` FROM `solution` WHERE `user_id`='".$uid."'";
+    $result=$mysqli->query($sql) or die($mysqli->error);
+    $row=$result->fetch_object();
+    $Submit=$row->Submit;
+    $result->free();
+    
+    // 根据数组计算该实力对应的等级和颜色
+    if ($strength > $max_strength) {
+        $color = "#6C3365";
+        $level = "斗战胜佛";
+    } else for ($j=1; $j<$level_total; $j++) {
+        if ($strength < $level_strength[$j]) {
+            $level = $level_name[$j-1];
+            $color = $level_color[$j-1];
+            break;
+        }
+    }
+
+    // 更新用户信息
+    $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."' WHERE user_id='".$uid."'";
+    $mysqli->query($sql);
+}
 ?>

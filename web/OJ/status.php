@@ -45,12 +45,10 @@
   $page = 1;
   if(isset($_GET['page'])) $page = intval($_GET['page']);
   $page_cnt = 20;
-  $pstart = $page_cnt*$page-$page_cnt;
-  $pend = $page_cnt;  
+
   //分页end  
   
   $lock=false;
-  $sql_limit = " limit ".strval($pstart).",".strval($pend);   
   $sql=" WHERE problem_id>0 ";
   //check the cid arg start
   if (isset($_GET['cid'])){	 
@@ -70,32 +68,39 @@
       $defunct_TA = $row->defunct_TA=="Y"?1:0; // 默认值为0
       $lock_time=$row->lock_time;
       $unlock=$row->unlock;
+      $practice = $row->practice;
     }
-    $lock_t=$end_time-$lock_time;
-    $time_sql="";
-    if(time()>$lock_t && !$unlock){
-      //echo $time_sql;
+    switch($unlock){
+      case 0: //用具体时间来控制封榜
+          $lock_t=$end_time-$lock_time;
+          break;
+      case 2: //用时间比例来控制封榜
+          $lock_t = $end_time - ($end_time - $start_time) * $lock_time / 100;
+          break;
+    }
+    if($unlock != 1 && time()>$lock_t && time()<$end_time){
        $lock=true;
     }else{
        $lock=false;
     }
     //require_once("contest-header.php");
   } else {
-    //$sql="SELECT * FROM `solution` WHERE contest_id is null ";
     if (isset($_SESSION['contest_id'])){ //不允许比赛用户查看比赛外的排名
       $view_errors= "<font color='red'>$MSG_HELP_TeamAccount_forbid</font>";
       require("template/".$OJ_TEMPLATE."/error.php");
       exit(0);
     }
-    $sql=" WHERE contest_id is null ";
+    if(isset($OJ_show_contestSolutionInStatus)&&$OJ_show_contestSolutionInStatus){
+      $sql=" WHERE 1 "; //要在主状态页面中显示contest中提交的代码
+    } else $sql=" WHERE (contest_id is null OR contest_id=0) ";//不在主状态页面中显示contest中提交的代码
   }
-  //若要在主状态页面中不显示contest中提交的代码，注释掉else段代码
+  
   $order_str=" ORDER BY `solution_id` DESC ";
   //check the cid arg end
   // check the top arg
-  if (isset($_GET['top'])&&$_GET['problem_id']!=""){
+  if (isset($_GET['top'])){
     $top=strval(intval($_GET['top']));
-    if ($top!=-1) $sql=$sql."AND `solution_id`<='".$top."' ";
+    if ($top>0) $sql=$sql."AND `solution_id`<='".$top."' ";
   }
 
   // check the problem arg
@@ -141,9 +146,13 @@
   $sql_page = "SELECT count(1) FROM `solution` ".$sql;
   $rows =$mysqli->query($sql_page)->fetch_all(MYSQLI_BOTH) or die($mysqli->error);
   if($rows) $total = $rows[0][0];  
-  $view_total_page = intval($total/$page_cnt)+($total%$page_cnt?1:0);//计算页数
-
-
+  $view_total_page = ceil($total / $page_cnt); //计算页数
+  $view_total_page = $view_total_page>0?$view_total_page:1;
+  if ($page > $view_total_page) $page = $view_total_page;
+  if ($page < 1) $page = 1;
+  $pstart = $page_cnt*$page-$page_cnt;
+  $pend = $page_cnt;
+  $sql_limit = " limit ".strval($pstart).",".strval($pend);
 
   if($OJ_SIM){
     //$old=$sql;
@@ -242,36 +251,36 @@
     if (isset($_GET['cid'])) {
       $flag = ( isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) ||// himself
                 (!is_running(intval($cid))) || // 比赛已经结束了
+                ($practice && $open_source) || // 是练习赛且开放了源代码查看
                 is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
                 !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")// if he can see souce code , he can see these info in passing
               ); 
     }
-    $info_can_be_read = ( $WA_or_PE || $row['result']==10 || $row['result']==13); // 属于可看类型且
-
-
+    $info_can_be_read = ( $WA_or_PE || $row['result']==7 || $row['result']==8 || $row['result']==10 || $row['result']==13); // 属于可看类型且
+    if (isset($_GET['ranklist_ajax_query'])) $target=" target='_blank' "; else $target="";
+    $contest = $cid  ? "&cid=$cid" : "";
     $view_status[$i][3]="<span class='hidden' style='display:none' result='".$row['result']."' ></span>";
     if($lock&&$lock_t<=strtotime($row['in_date'])&&$row['user_id']!=$_SESSION['user_id'] && !HAS_PRI("edit_contest")){
       $view_status[$i][3] = "----";//Unknown
     } else if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
       //only user himself and admin can see CE info.
-        $view_status[$i][3] .= "<a target='_blank'  href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
+        $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."' $target title='".$MSG_Tips."'>".$MSG_Compile_Error.$mark."</a>";
     } else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others WA/PE/RE/TE
-      $view_status[$i][3] .= "<a target='_blank'  href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
-    } else if($OJ_SIM&&$row['sim']>80&&$row['sim_s_id']!=$row['s_id']) {
+      $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."$contest' class='".$judge_color[$row['result']]."' $target title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</a>";
+    } else if($OJ_SIM&&$row['sim']>=70&&$row['sim_s_id']!=$row['s_id']) {
         $view_status[$i][3].= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>*".$judge_result[$row['result']].$mark."</span>";
         if(HAS_PRI("see_compare")){
-          $view_status[$i][3].= "<a target='_blank' href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']."  class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
-		} else {
+          $view_status[$i][3].= "<a href=comparesource.php?left=".$row['sim_s_id']."&right=".$row['solution_id']." $target class='am-btn am-btn-secondary am-btn-sm' >".$row['sim_s_id']."(".$row['sim']."%)</a>";
+        } else {
           $view_status[$i][3].= "<span class='am-btn am-btn-secondary am-btn-sm'>".$row['sim_s_id']."(".$row['sim']."%)</span>";
-		}
-        if(isset($_GET['showsim'])&&isset($row['sim_s_id'])) 
-		    $view_status[$i][3].= "<span sid='".$row['sim_s_id']."' class='original'></span>";
-      } else {
+        }
+        if(isset($row['sim_s_id']))  $view_status[$i][3].= "<span sid='".$row['sim_s_id']."' class='original'></span>";
+    } else {
         //echo $row['result']." ".$judge_result[1]."<br>";
         $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."' title='".$MSG_Tips."'>".$judge_result[$row['result']].$mark."</span>";
-      }
-    if(isset($_SESSION['http_judge'])) {
-      $view_status[$i][3].="<form class='http_judge_form form-inline'><input type=hidden name=sid value='".$row['solution_id']."'>";
+    }
+    if(HAS_PRI("rejudge")) {
+      $view_status[$i][3].="<form class='http_judge_form form-inline'><input type='hidden' name='sid' value='".$row['solution_id']."'>";
       $view_status[$i][3].="</form>";
     }
           
@@ -290,15 +299,16 @@
 
       if (isset($_SESSION['user_id'])&&strtolower($row['user_id'])==strtolower($_SESSION['user_id']) || // 是本人提交的
           (is_numeric($row['contest_id']) && !is_running($row['contest_id']) && $open_source) || // solution在比赛中，比赛结束了且开放了源代码查看
+          ($practice && $open_source && canSeeSource($row['solution_id'])) || // 是练习赛且开放了源代码查看,本人已经AC
           is_numeric($row['contest_id']) && HAS_PRI("see_source_in_contest") ||
           !is_numeric($row['contest_id']) && HAS_PRI("see_source_out_of_contest")
         ) { // 可以查看代码的情况
         $view_status[$i][6]= "<a target='_blank' href=showsource.php?id=".$row['solution_id'].">".$language_name[$row['language']]."</a>";
         if($row["problem_id"]>0){
           if (isset($cid)) {
-            $view_status[$i][6].= "/<a target='_blank' href=\"submitpage.php?cid=".$cid."&pid=".$row['num']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
+            $view_status[$i][6].= "/<a href=\"submitpage.php?cid=".$cid."&pid=".$row['num']."&sid=".$row['solution_id']."\" $target>$MSG_EDIT</a>";
           }else{
-            $view_status[$i][6].= "/<a target='_blank' href=\"submitpage.php?id=".$row['problem_id']."&sid=".$row['solution_id']."\">$MSG_EDIT</a>";
+            $view_status[$i][6].= "/<a href=\"submitpage.php?id=".$row['problem_id']."&sid=".$row['solution_id']."\" $target>$MSG_EDIT</a>";
           }
         }
       } else { // 不能查看代码的情况
@@ -312,7 +322,7 @@
       $view_status[$i][7]="----";
     }
     $view_status[$i][8]= $row['in_date'];
-    //$view_status[$i][9]= $row['judger'];
+    $view_status[$i][9]= $row['judger'];
   }
   if(!$OJ_MEMCACHE) $result->free();
 
@@ -324,7 +334,7 @@
   if($rows_cnt==0)
     exit(0);
   ?>
-  <table class="am-table am-table-hover am-table-striped">
+  <table id="result-tab" class="am-table am-table-hover am-table-striped" style='white-space: nowrap;'>
     <thead>
       <tr>
         <th><?php echo $MSG_RUNID ?></th>
@@ -340,19 +350,28 @@
     </thead>
     <tbody>
       <?php
-                    foreach($view_status as $row){
-                      echo "<tr>";
-                            foreach($row as $table_cell){
-                                    echo "<td>";
-                                    echo $table_cell;
-                                    echo "</td>";
-                            }
-
-                            echo "</tr>";
-                    }
+      foreach($view_status as $row){
+        echo "<tr>";
+        echo "<td style='text-align:left'>".$row[0]."</td>";
+        echo "<td style='text-align:left'>".$row[1]."</td>";
+        echo "<td style='text-align:left'>".$row[2]."</td>";
+        echo "<td style='text-align:left'>".$row[3]."</td>";
+        echo "<td style='text-align:left'>".$row[4]."</td>";
+        echo "<td style='text-align:left'>".$row[5]."</td>";
+        echo "<td style='text-align:left'>".$row[6]."</td>";
+        echo "<td style='text-align:left'>".$row[7]."</td>";
+        echo "<td style='text-align:left'>".$row[8]."</td>";
+        echo "</tr>";
+      }
       ?>
     </tbody>
   </table>
+<script>
+var i = 0;
+var judge_result = [<?php echo "'". implode("','", $judge_result) ."'";?>];
+var judge_color = [<?php echo "'". implode("','", $judge_color) ."'";?>];
+</script>
+<script src="template/<?php echo $OJ_TEMPLATE?>/auto_refresh.js?v=0.38"></script>
   <?php exit(0) ?>
 <?php endif ?>
 <!-- ranklist ajax query mod END -->

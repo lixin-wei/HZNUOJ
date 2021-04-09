@@ -2,7 +2,7 @@
 require_once('./include/db_info.inc.php');
 require_once('./include/my_func.inc.php');
 require_once('./include/setlang.php');
-require_once './include/const.inc.php';
+require_once('./include/const.inc.php');
 if (isset($_GET['cid'])){
 
     if (isset($_SESSION['contest_id']) && $_SESSION['contest_id']!=$_GET['cid']) {
@@ -30,9 +30,9 @@ if (isset($_GET['cid'])){
     } else {
         $row=$result->fetch_object();
         if($row->user_limit=="Y" && $_SESSION['contest_id']!=$cid && !HAS_PRI("edit_contest")){
-            require_once "template/hznu/contest_header.php";
+            require_once "template/".$OJ_TEMPLATE."/contest_header.php";
             echo  "<div class='am-text-center'><font style='color:red;text-decoration:underline;'>You are not invited to this contest!</font></div>";
-            require_once "template/hznu/footer.php";
+            require_once "template/".$OJ_TEMPLATE."/footer.php";
             exit(0);
         }
         $view_private=$row->private;
@@ -83,5 +83,5 @@ if (isset($_GET['cid'])){
     $result->free();
 
 }
-require_once "template/hznu/contest_code_printer.php";
+require("template/".$OJ_TEMPLATE."/contest_code_printer.php");
 ?>

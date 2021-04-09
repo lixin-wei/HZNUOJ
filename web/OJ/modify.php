@@ -16,20 +16,25 @@
   require_once("./include/check_post_key.php");
   require_once("./include/my_func.inc.php");
 
-  //管理员从userinfo界面修改学号、姓名、班级
+  //管理员从userinfo界面修改学号、姓名、班级，以及昵称、学校、电子邮箱
   if(isset($OJ_NEED_CLASSMODE)&&$OJ_NEED_CLASSMODE){
   if (isset($_POST['admin_mode']) && HAS_PRI("edit_user_profile")) {
       $user_id = $mysqli->real_escape_string(trim($_POST['user_id']));
       if(get_order(get_group($_SESSION['user_id'])) < get_order(get_group($user_id)) //权限比他高
         || $_SESSION['user_id'] == $user_id //自己
       ) {
+          $stu_nick = $mysqli->real_escape_string(trim($_POST['stu_nick']));
+          $stu_school = $mysqli->real_escape_string(trim($_POST['stu_school']));
+          $stu_email = $mysqli->real_escape_string(trim($_POST['stu_email']));
           $stu_id = $mysqli->real_escape_string(trim($_POST['stu_id']));
           $real_name = $mysqli->real_escape_string(trim($_POST['real_name']));
           $class = $mysqli->real_escape_string(trim($_POST['class']));
+          $sql = "UPDATE users SET nick = '$stu_nick', school = '$stu_school', email = '$stu_email', stu_id = '$stu_id', real_name = '$real_name'";
           if(class_is_exist($class)){
-            $sql = "UPDATE users SET stu_id = '$stu_id', real_name = '$real_name', class = '$class' WHERE user_id = '$user_id'";
-            $mysqli->query($sql);
+            $sql .= ", class = '$class'";
           } 
+          $sql .= " WHERE user_id = '$user_id'";
+          $mysqli->query($sql);
           echo "<script>window.history.go(-1)</script>";
       }
       else {

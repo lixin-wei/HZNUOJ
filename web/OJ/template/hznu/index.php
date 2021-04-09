@@ -20,7 +20,7 @@ require_once('./include/db_info.inc.php');
 
 <style>
   .bg{
-    background-image: url(template/hznu/ojINDEX.jpg);
+    background-image: url(template/<?php echo $OJ_TEMPLATE ?>/ojINDEX.jpg);
     background-repeat: no-repeat;
     background-position: center 0px;
   }
@@ -48,6 +48,7 @@ require_once('./include/db_info.inc.php');
                 <?php
                 $n = count($news_title);
                 if ($n) { // 有公告的话
+                    $firstNews="news-".$news_id[0];
                     for ($i=0; $i<$n; ++$i) {
                         $nid=$news_id[$i];
                         if ($news_importance[$i] == 10) echo "<div class='am-panel am-panel-danger'>";
@@ -106,7 +107,7 @@ HTML;
 
 
 
-<script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="./plugins/echarts/echarts.min.js"></script>
 <!-- <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script> -->
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
@@ -259,6 +260,7 @@ for($i=$tot_days-1 ; $i>=0 ; --$i){
     }).on('close.collapse.amui', function() {
         console.log('折叠菜单关闭鸟！');
     });
+    $('#<?php echo $firstNews ?>').parent()[0].children[0].click();
 </script>
 <!-- modal auto jump START -->
 <!-- <div class="am-modal am-modal-no-btn" tabindex="-1" id="index_ad_modal">

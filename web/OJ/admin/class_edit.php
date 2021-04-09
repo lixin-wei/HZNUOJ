@@ -51,13 +51,13 @@ if (isset($_GET['del'])) { //删除班级信息
   $mode = $_POST['mode'];
   $err_str = "";
   $err_cnt = 0;
-  if (!is_numeric($year) || $year > 2500 || $year < 1900) {
+  if (!is_numeric($year) || $year > 2500 || ($year < 1900 && $year != 0)) {
     $err_str .= "输入的{$MSG_Enrollment_Year}({$year})不是一个合法的年份 ！\\n";
     $err_cnt++;
   }
   if ($mode == "A" || $mode == "B") {
-    if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
-      $err_str .= "输入的{$MSG_Grade}限20个以内的汉字、字母、数字或下划线 ！\\n";
+    if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $prefix)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+      $err_str .= "输入的{$MSG_Prefix}限20个以内的汉字、字母、数字或下划线、加号 ！\\n";
       $err_cnt++;
     }
     if (!preg_match("/^[1-9][0-9]{0,1}$/", $class_num)) {
@@ -100,8 +100,8 @@ if (isset($_GET['del'])) { //删除班级信息
           $class_list = array();
           foreach ($classes as $c) {
             $c = trim(str_replace("\r", "", $c));
-            if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $c)) {
-              array_push($class_list_err, "输入的{$MSG_Class_Name} {$c} 不合规，限20个以内的汉字、字母、数字或下划线 ！<br>\n");
+            if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $c)) {
+              array_push($class_list_err, "输入的{$MSG_Class_Name} {$c} 不合规，限20个以内的汉字、字母、数字或下划线、加号  ！<br>\n");
             } else array_push($class_list, $mysqli->real_escape_string(htmlentities($c)));
           }
         } else {
@@ -125,7 +125,8 @@ if (isset($_GET['del'])) { //删除班级信息
     } else {
       $sql = "INSERT INTO `class_list` VALUES ('" . $c . "', '" . $year . "')";
       $mysqli->query($sql);
-      echo $year . "级 " . $c. "-成功写入！<br>\n";
+      if($year!=0) echo $year . "级 " . $c. "-成功写入！<br>\n";
+      else echo "无入学年份 " . $c. "-成功写入！<br>\n";
       $cnt++;
     }
   }
@@ -140,7 +141,10 @@ if (isset($_GET['del'])) { //删除班级信息
   require_once("../include/check_post_key.php");
 
   if (isset($_POST['year'])) $args['year'] = $_POST['year'];
-  if (isset($_POST['keyword'])) $args['keyword'] = $_POST['keyword'];
+  if (isset($_POST['keyword'])) {
+    $_POST['keyword'] = trim($_POST['keyword']);
+    $args['keyword'] = urlencode($_POST['keyword']);
+  }
   if (isset($_POST['sort_method'])) $args['sort_method'] = $_POST['sort_method'];
   if (isset($_POST['page'])) $args['page'] = $_POST['page'];
   function generate_url($data)
@@ -170,8 +174,8 @@ if (isset($_GET['del'])) { //删除班级信息
   } else if (class_is_exist($new_name)) {
     $err_str .= "输入的$MSG_New{$MSG_Class_Name}有重名！\\n";
     $err_cnt++;
-  } else if (!preg_match("/^[\u{4e00}-\u{9fa5}_a-zA-Z0-9]{1,60}$/", $new_name)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
-    $err_str = $err_str . "输入的{$MSG_Class_Name}限20个以内的汉字、字母、数字或下划线 ！\\n";
+  } else if (!preg_match("/^[\u{4e00}-\u{9fa5}_+a-zA-Z0-9]{1,60}$/", $new_name)) { //{1,60} 60=3*20，一个utf-8汉字占3字节
+    $err_str = $err_str . "输入的{$MSG_Class_Name}限20个以内的汉字、字母、数字或下划线、+ ！\\n";
     $err_cnt++;
   }
   if ($err_cnt > 0) {
@@ -231,7 +235,7 @@ $result->free();
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_Enrollment_Year ?>:</label>
       <div class="am-u-sm-8">
-        <label class="am-form-label"><?php echo $view_class['enrollment_year'] ?></label>
+        <label class="am-form-label"><?php echo $view_class['enrollment_year']>0?$view_class['enrollment_year']:"无"; ?></label>
       </div>
     </div>
     <div class="am-form-group" style="white-space: nowrap;">
@@ -243,7 +247,7 @@ $result->free();
     <div class="am-form-group" style="white-space: nowrap;">
       <label class="am-u-sm-2 am-u-sm-offset-2 am-form-label"><?php echo $MSG_New . $MSG_Class_Name ?>:</label>
       <div class="am-u-sm-8">
-        <input type="text" style="width:340px;" maxlength="20" id="new_name" name="new_name" value="<?php echo $view_class['class_name'] ?>" placeholder="限20个以内的汉字、字母、数字或下划线" pattern="^[\u4e00-\u9fa5_a-zA-Z0-9]{1,20}$" required />
+        <input type="text" style="width:340px;" maxlength="20" id="new_name" name="new_name" value="<?php echo $view_class['class_name'] ?>" placeholder="限20个以内的汉字、字母、数字、下划线及加号" pattern="^[\u4e00-\u9fa5_+a-zA-Z0-9]{1,20}$" required />
       </div>
     </div>
     <div class="am-form-group">

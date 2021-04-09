@@ -14,13 +14,17 @@
   <a href="https://github.com/lixin-wei/HZNUOJ" target="_blank">HZNUOJ</a> is based on <a href="https://github.com/zhblue/hustoj" target="_blank">HUSTOJ</a><br />
   <div>
   <span>-</span>
-  <a href='/OJ/setlang.php?lang=en'>English</a>
+  <a href='./setlang.php?lang=en'>English</a>
   <span>-</span>
-  <a href='/OJ/setlang.php?lang=cn'>简体中文</a>
+  <a href='./setlang.php?lang=cn'>简体中文</a>
   <span>-</span>
   </div>
   ★<?php echo $MSG_SERVERTIME ?>: <span id='footerdate'><?php echo date('Y-m-d H:i:s',time()); ?></span>★
-  
+  <div style="padding-bottom: 20px;">
+  <?php if(isset($OJ_BEIAN)&&$OJ_BEIAN){ ?>
+    <span><a href='http://beian.miit.gov.cn/' target='_blank'><?php echo $OJ_BEIAN?></a></span>
+  <?php } ?>
+  </div>
   <!-- go to top btn START -->
   <div class="amz-toolbar" id="go-top" style="display: none; position: fixed; bottom: 15px; right: 15px;">
     <a data-am-smooth-scroll href="#" title="回到顶部" class="am-icon-btn am-icon-arrow-up"></a>
@@ -29,9 +33,8 @@
 </footer>
 <!--[if (gte IE 9)|!(IE)]><!-->
 
-<script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script>
-<script src="/OJ/plugins/AmazeUI/js/amazeui.min.js"></script>
-<!-- <script src="/OJ/plugins/jquery/jquery-3.1.1.min.js"></script> -->
+<script src="./plugins/jquery/jquery-3.1.1.min.js"></script>
+<script src="./plugins/AmazeUI/js/amazeui.min.js"></script>
 <!-- <script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script> -->
 <!-- <script src="AmazeUI/js/handlebars.min.js"></script> -->
 
@@ -86,7 +89,10 @@
       var contest_len = <?php echo $contest_len ?>;
       var begin_time = <?php echo $contest_time[0] ?>;
       var warnning_percent = <?php echo $warnning_percent ?>;
-
+      var lock_time=-1;
+      <?php if ($unlock!=1){ ?>
+        lock_time=<?php echo $view_lock_time ?>;
+      <?php }?>
       function time_format(time_stamp) {
           var h = Math.floor(time_stamp / 3600);
           time_stamp -= h * 3600;
@@ -112,6 +118,8 @@
           } else if (bar_percent >= warnning_percent) {
               $("#contest-bar-progress").attr("class", "am-progress-bar am-progress-bar-danger");
               $("#contest-bar-progress").html("<?php echo $MSG_NearlyEnd ?>");
+          } else if (now() >= lock_time && lock_time > 0) {
+            $("#contest-bar-progress").html("<?php echo $MSG_Locked ?>");
           }
           $("#contest-bar-progress").css({"width" : bar_percent+"%"});
           $("#time_elapsed").html(time_format(dur));

@@ -47,17 +47,16 @@ function generate_url($data){
     <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">   
 	  <?php /*	把题库、状态、排名分开
         <ul class="am-nav am-nav-tabs">
-          <li><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
-          <li class="am-active"><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
-          <li><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
+          <li><a href="./problemset.php"><?php echo $MSG_PROBLEMSET ?></a></li>
+          <li class="am-active"><a href="./status.php"><?php echo $MSG_STATUS ?></a></li>
+          <li><a href="./ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
         </ul>
         */ ?>
     </div>
       <!-- 搜索框 start -->
     <div class="am-g">
       <div class="am-u-md-12">
-        <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
-          <!-- <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">-->
+        <form action="status.php" id="statusform" method="get" class="am-form am-form-inline" role="form" style="float: left;">
           <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_PROBLEM_ID ?>" name="problem_id" value="<?php echo $args['problem_id']?>"></div>
           <div class="am-form-group">
             <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_USER_ID ?>" name="user_id" value="<?php echo $args['user_id']?>">
@@ -112,8 +111,26 @@ function generate_url($data){
             </select>
             <span class="am-form-caret"></span>
           </div>
+          <?php if ($OJ_SIM) { ?>
+          <div class="am-form-group">
+            <label for="sim"><?php echo $MSG_SIM ?>:</label>
+            <select class="am-round" id="showsim" name="showsim" data-am-selected="{btnWidth: '100px'}" onchange="document.getElementById('statusform').submit();">
+                <?php
+                echo "
+                <option value=0 ".($showsim==0?'selected':'').">All</option>
+                <option value=50 ".($showsim==50?'selected':'').">&gt;=50%</option>
+                <option value=60 ".($showsim==60?'selected':'').">&gt;=60%</option>
+                <option value=70 ".($showsim==70?'selected':'').">&gt;=70%</option>
+                <option value=80 ".($showsim==80?'selected':'').">&gt;=80%</option>
+                <option value=90 ".($showsim==90?'selected':'').">&gt;=90%</option>
+                <option value=100 ".($showsim==100?'selected':'').">100%</option>
+                ";
+                ?>
+            </select>
+            <span class="am-form-caret"></span>
+          </div>
+          <?php } ?>
           <button type="submit" class="am-btn am-btn-secondary"><span class='am-icon-filter'></span> <?php echo $MSG_FILTER ?></button>
-          <!-- <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">-->
           &nbsp;&nbsp;<button type="submit" class="am-btn am-btn-default"><?php echo $MSG_RESET ?></button>
         </form>
       </div>
@@ -122,16 +139,28 @@ function generate_url($data){
       <!-- 页标签 start -->
   <div class="am-g">
     <ul class="am-pagination am-text-center">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
       <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
         //分页
-        for ($i=1;$i<=$view_total_page;$i++){
+        $page_size=10;
+        $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+        $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+        for ($i=$page_start;$i<$page;$i++){
             $link=generate_url(Array("page"=>"$i"));
-            if($page==$i)
-                echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+            echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"));
+        echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
@@ -140,8 +169,8 @@ function generate_url($data){
   </div>
 <!-- 页标签 end -->
 <!-- 数据表格显示 start -->
-    <div class="am-avg-md-1 well">
-      <table class="am-table am-table-hover  am-table-striped">
+    <div class="am-avg-md-1 well" >
+      <table id="result-tab" class="am-table am-table-hover am-table-striped am-text-nowrap">
         <thead>
         <tr>
           <th><?php echo $MSG_RUNID ?></th>
@@ -153,7 +182,7 @@ function generate_url($data){
           <th><?php echo $MSG_LANG ?></th>
           <th><?php echo $MSG_CODE_LENGTH ?></th>
           <th><?php echo $MSG_SUBMIT_TIME ?></th>
-          <!--<th><?php echo $MSG_JUDGER ?></th> -->
+          <th><?php echo $MSG_JUDGER ?></th>
         </tr>
         </thead>
         <tbody>
@@ -176,16 +205,25 @@ function generate_url($data){
     <!-- 页标签 start -->
   <div class="am-g">
     <ul class="am-pagination am-text-center">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
       <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
         //分页
-        for ($i=1;$i<=$view_total_page;$i++){
-            $link=generate_url(Array("page"=>"$i"));
-            if($page==$i)
-                echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+        for ($i=$page_start;$i<$page;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"));
+        echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
@@ -195,3 +233,9 @@ function generate_url($data){
 <!-- 页标签 end -->
   </div>
 <?php include "footer.php" ?>
+<script>
+var i = 0;
+var judge_result = [<?php echo "'". implode("','", $judge_result) ."'";?>];
+var judge_color = [<?php echo "'". implode("','", $judge_color) ."'";?>];
+</script>
+<script src="template/<?php echo $OJ_TEMPLATE?>/auto_refresh.js?v=0.38"></script>

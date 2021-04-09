@@ -24,7 +24,7 @@
     exit(0);
   }
   function is_valid($str2){
-    return 1;
+    return true; // 如果希望能让任何人都查看对比和RE,放开行首注释 if you fail to view diff , try remove the // at beginning of this line.
     $n=strlen($str2);
     $str=str_split($str2);
     $m=1;
@@ -35,6 +35,10 @@
   }
 
   $id=strval(intval($_GET['sid']));
+  $sql="SELECT * FROM `solution` WHERE `solution_id`='".$id."'";
+  $result=$mysqli->query($sql);
+  $row=$result->fetch_object();
+  if($row->contest_id) $cid = $row->contest_id;
   $ok = can_see_res_info($id);
   if ($ok==true){
     if($row->user_id!=$_SESSION['user_id'])
@@ -42,12 +46,16 @@
     $sql="SELECT `error` FROM `runtimeinfo` WHERE `solution_id`='".$id."'";
     $result=$mysqli->query($sql);
     $row=$result->fetch_object();
-    if($row&&($OJ_SHOW_DIFF||$OJ_TEST_RUN||is_valid($row->error)))  
+    $see_wa_admin = is_numeric($cid) ? HAS_PRI("see_wa_info_in_contest") : HAS_PRI("see_wa_info_out_of_contest");
+    if($row&&($OJ_SHOW_DIFF || $see_wa_admin)&&($OJ_TEST_RUN||is_valid($row->error)|| $see_wa_admin)){
       $view_reinfo= htmlspecialchars(str_replace("\n\r","\n",$row->error));
+    }else{
+      $view_reinfo="出于数据保密原因，当前错误提示不可查看，如果希望能让任何人都查看对比和运行错误,请管理员编辑本文件，去除相关行的注释，令is_valid总是返回true。 <br>\n Sorry , not available (OJ_SHOW_DIFF:".$OJ_SHOW_DIFF.",TR:".$OJ_TEST_RUN.",valid:".is_valid($row->error).")";
+    }
     $result->free();
   } else {
     $result->free();
-    $view_errors= "I am sorry, You could not view this message!";
+    $view_errors= "<div style='padding-top: 40px;'>I am sorry, You could not view this message!</div>";
     require("template/".$OJ_TEMPLATE."/error.php");
     exit(0);
   }

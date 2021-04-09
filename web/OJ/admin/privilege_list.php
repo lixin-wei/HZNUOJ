@@ -16,8 +16,7 @@
   //   echo "Permission denied!";
   //   exit(1);
   // }
-  $sql="SELECT `rightstr` FROM `privilege` WHERE `user_id`='".$mysqli->real_escape_string($_SESSION['user_id'])."'";
-  $user_group=$mysqli->query($sql)->fetch_array()[0];
+  $user_group=get_group($mysqli->real_escape_string($_SESSION['user_id']));
   $user_order=get_order($user_group);
   // echo "<pre>user_group:$user_group</pre>";
   // echo "<pre>user_order:$user_order</pre>";
@@ -40,7 +39,7 @@ SQL;
   <h1><?php echo $MSG_PRIVILEGE.$MSG_LIST ?></h1>
   <h4><?php echo $MSG_HELP_PRIVILEGE_LIST ?></h4>
   <hr/>
-  <table class='table table-condensed table-striped table-hover'>
+  <table class='table table-condensed table-striped table-hover table-bordered' style='white-space: nowrap;width:800px;'>
   <thead><tr>
   	<th><?php echo $MSG_USER_ID?></th>
     <th><?php echo $MSG_PRIVILEGE ?></th>
@@ -48,11 +47,11 @@ SQL;
   </tr></thead>
   <?php
   for (;$row=$result->fetch_object();){
-    echo "<tr>\n<td><a href='/OJ/userinfo.php?user=$row->user_id' target='_blank'>$row->user_id</a></td>\n";
-    echo "<td>".$row->rightstr."</td>\n";
+    echo "<tr>\n<td style='vertical-align:middle;'><a href='../userinfo.php?user=$row->user_id' target='_blank'>$row->user_id</a></td>\n";
+    echo "<td style='vertical-align:middle;'>".$row->rightstr."</td>\n";
     if (HAS_PRI("edit_privilege_group") && $user_order<get_order($row->rightstr)) 
-      echo "<td><a href=privilege_delete.php?uid=$row->user_id&rightstr=$row->rightstr&getkey=".$_SESSION['getkey'].">$MSG_DEL</a></td>\n";
-    else echo "<td>&nbsp;</td>";
+      echo "<td style='vertical-align:middle;'><a class='btn btn-primary' href=privilege_delete.php?uid=$row->user_id&rightstr=$row->rightstr&getkey=".$_SESSION['getkey'].">$MSG_DEL</a></td>\n";
+    else echo "<td style='vertical-align:middle;'><span class='btn btn-primary' disabled>$MSG_DEL</span></td>";
     echo "</tr>";
   }
 ?>

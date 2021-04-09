@@ -17,7 +17,7 @@ $args=Array();
 //default args
 if($OJ!="all")$args['OJ']=$OJ;
 if(isset($sort_method)) $args['sort_method']=$sort_method;
-if(isset($_GET['search'])) $args['search']=htmlentities($search);
+if(isset($_GET['search'])) $args['search'] = urlencode(htmlentities($search));
 if(isset($page)) $args['page']=$page;
 function generate_url($data){
     // echo "<pre>";
@@ -43,9 +43,9 @@ function generate_url($data){
   <div class="am-avg-md-1" style="margin-top: 20px; margin-bottom: 20px;">
     <?php 	/*把题库、状态、排名分开	
     <ul class="am-nav am-nav-tabs">
-      <li class="am-active"><a href="/OJ/problemset.php"><?php echo $MSG_PROBLEM ?></a></li>
-      <li><a href="/OJ/status.php"><?php echo $MSG_STATUS ?></a></li>
-      <li><a href="/OJ/ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
+      <li class="am-active"><a href="./problemset.php"><?php echo $MSG_PROBLEM ?></a></li>
+      <li><a href="./status.php"><?php echo $MSG_STATUS ?></a></li>
+      <li><a href="./ranklist.php"><?php echo $MSG_RANKLIST ?></a></li>
     </ul>
 	*/ ?>
   </div>
@@ -54,7 +54,6 @@ function generate_url($data){
     <!-- 通过ProblemID查找 start-->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal" action='problem.php'>
-        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-u-sm-7">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-search"></i>
@@ -69,11 +68,10 @@ function generate_url($data){
     <!-- 通过关键词查找 start -->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal">
-        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-u-sm-9">
           <div class="am-form-group am-form-icon">
             <i class="am-icon-binoculars"></i>
-            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $args['search'] ?>">
+            <input type="text" class="am-form-field" placeholder=" &nbsp;<?php echo $MSG_KEYWORDS ?>" name="search" value="<?php echo $search ?>">
             <input type="hidden" name="OJ" value="<?php echo $args['OJ'] ?>">
           </div>
         </div>
@@ -84,14 +82,16 @@ function generate_url($data){
     <!-- by problemset -->
     <div class='am-u-md-4'>
       <form class="am-form am-form-horizontal">
-        <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
         <div class="am-form-group">
           <label class="am-u-sm-4 am-form-label"><?php echo $MSG_PROBLEMSET ?>:</label>
           <div class="am-u-sm-8">
             <select data-am-selected class='select-problemset' type='text'>
               <option value='all' <?php if(!isset($_GET['OJ'])) echo "selected";?> ><?php echo $MSG_ALL ?></option>
                 <?php
-                $res = $mysqli->query("SELECT set_name,set_name_show FROM problemset");
+                $sql = "SELECT `set_name`,`set_name_show` FROM `problemset`";
+                if(!IS_ADMIN($_SESSION['user_id'])) $sql .= " WHERE `access_level`<>-1 ";
+                $sql .= "ORDER BY `set_name_show`";
+                $res = $mysqli->query($sql);
                 while($row = $res->fetch_array()){
                     echo "<option value='$row[0]' ";
                     if($_GET['OJ']==$row[0]) echo "selected";
@@ -110,16 +110,28 @@ function generate_url($data){
   <!-- 页标签 start -->
   <div class="am-g">
     <ul class="am-pagination am-text-center">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
       <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
         //分页
-        for ($i=1;$i<=$view_total_page;$i++){
-            $link=generate_url(Array("page"=>"$i"));
-            if($page==$i)
-                echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+        $page_size=10;
+        $page_start=max(ceil($page/$page_size-1)*$page_size+1,1);
+        $page_end=min(ceil($page/$page_size-1)*$page_size+$page_size,$view_total_page);
+        for ($i=$page_start;$i<$page;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"));
+        echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
@@ -143,13 +155,13 @@ function generate_url($data){
     <table class="am-table am-table-hover am-table-striped am-text-nowrap">
       <thead>
       <tr>
-        <th style='width:3%;'></th>
-        <th class='am-text-center' style='width:7%;'><?php echo $MSG_PROBLEM_ID ?></th>
-        <th class='am-text-center' style='width:35%;'><?php echo $MSG_TITLE ?></th>
-        <th class='am-text-center' style='width:18%;'><?php echo $MSG_TAGS ?></th>
-        <th class='am-text-center' style='width:10%;'><?php echo $MSG_AUTHOR ?></th>
-        <th class='am-text-center' style='width:25%;'><?php echo $MSG_Source ?></th>
-        <th class='am-text-center' style='width:8%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
+        <th style='width:1%;'>&nbsp;</th>
+        <th class='am-text-center' style='width:1%;'><?php echo $MSG_PROBLEM_ID ?></th>
+        <th class='am-text-left'><?php echo $MSG_TITLE ?></th>
+  <?php if ($show_tag) { ?><th class='am-text-center'><?php echo $MSG_TAGS ?></th><?php } ?>
+        <th class='am-text-left' style='width:1%;'><?php echo $MSG_AUTHOR ?></th>
+        <th class='am-text-left'><?php echo $MSG_Source ?></th>
+        <th class='am-text-left' style='width:1%;'><?php echo $MSG_Accepted."/".$MSG_SUBMIT ?></th>
           <?php
           switch ($args['sort_method']) {
               case 'SCORE_DESC':
@@ -168,7 +180,7 @@ function generate_url($data){
             cursor: pointer;
           }
         </style>
-        <th id="score" class='am-text-center' style='width:8%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
+        <th id="score" class='am-text-left' style='width:1%;'><?php echo $MSG_SCORE ?> <span class="<?php echo $score_icon ?>"></span></th>
       </tr>
       </thead>
       <tbody>
@@ -189,16 +201,25 @@ function generate_url($data){
   <!-- 页标签 start -->
   <div class="am-g">
     <ul class="am-pagination am-text-center">
+        <?php $link = generate_url(Array("page"=>"1"))?>
+        <li><a href="<?php echo $link ?>">Top</a></li>
         <?php $link = generate_url(Array("page"=>max($page-1, 1)))?>
       <li><a href="<?php echo $link ?>">&laquo; Prev</a></li>
         <?php
         //分页
-        for ($i=1;$i<=$view_total_page;$i++){
-            $link=generate_url(Array("page"=>"$i"));
-            if($page==$i)
-                echo "<li class='am-active'><a href=\"$link\">{$i}</a></li>";
-            else
-                echo "<li><a href=\"$link\">{$i}</a></li>";
+        for ($i=$page_start;$i<$page;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        $link=generate_url(Array("page"=>"$page"));
+        echo "<li class='am-active'><a href=\"$link\">{$page}</a></li>";
+        for ($i=$page+1;$i<=$page_end;$i++){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
+        }
+        if ($i <= $view_total_page){
+          $link=generate_url(Array("page"=>"$i"));
+          echo "<li><a href=\"$link\">{$i}</a></li>";
         }
         ?>
         <?php $link = generate_url(Array("page"=>min($page+1,intval($view_total_page)))) ?>
@@ -208,7 +229,10 @@ function generate_url($data){
 </div>
 <!-- 页标签 end -->
 
-<?php require_once("footer.php") ?>
+<?php
+  require_once("footer.php");
+  include("js.php");
+?>
 
 <!-- problem selector js START-->
 <script type="text/javascript">

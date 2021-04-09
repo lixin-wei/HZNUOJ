@@ -18,7 +18,8 @@
     $content = stripslashes ( $content );
   }
   $title=$mysqli->real_escape_string($title);
-  $content=$mysqli->real_escape_string($content);
+  $content=$mysqli->real_escape_string(str_replace("<br />\r\n<!---->","",$content));//火狐浏览器中kindeditor会在空白内容的末尾加入<br />\r\n<!---->
+  $content = str_replace("<!---->","",$content);//火狐浏览器中kindeditor会在内容的末尾加入<!---->
   $user_id=$mysqli->real_escape_string($user_id);
   $sql="insert into news(`user_id`,`title`,`content`,`time`, importance) values('$user_id','$title','$content',now(), '$importance')";
   $mysqli->query ( $sql );

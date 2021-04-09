@@ -26,7 +26,12 @@
 <?php include "contest_header.php" ?>
 <div class="am-container" style="margin-top:40px;">
  <!-- <h3 align="center">Contest Statistics</h3><hr/> -->
-  <div class="am-container well am-scrollable-horizontal" style="max-width: 98%;">
+  <!-- 图表信息 start -->
+   <div class="am-g" style="max-width: 98%;">
+    <div id="chart-sub" style="height: 327px; width: 100%;"></div>
+  </div>
+  <!-- 图表信息 end -->
+  <div class="am-g well am-scrollable-horizontal" style="max-width: 98%;">
   <table class="am-table am-table-hover am-table-striped" style="white-space: nowrap;">
     <thead>
       <tr>
@@ -85,5 +90,58 @@
   </div>
 </div>
 
-
 <?php include "footer.php" ?>
+
+<script src="plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+var chart_sub=echarts.init(document.getElementById("chart-sub"));
+var option = {
+  grid: {
+      x: 50,
+      x2: 50, y2: 50
+  },
+  color: ['#3398DB','red'],
+  tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+          type: 'shadow'
+      }
+  },
+  legend: {
+      show: true,
+      data:['<?php echo $MSG_SUBMIT ?>','<?php echo $MSG_Accepted ?>']
+  },
+  xAxis: {
+      type: 'category',
+      data: ['<?php echo implode("','",$xAxis_data) ?>']
+  },
+  yAxis: [
+      {
+          type : "value",
+          name : "<?php echo $MSG_SUBMISSIONS ?>"
+      }
+  ],
+  series: [
+      {
+          name: '<?php echo $MSG_SUBMIT ?>',
+          barWidth : 10,
+          type: 'bar',
+          stack: 'total',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'total')) ?>']
+      },
+      {
+          name: '<?php echo $MSG_Accepted ?>',
+          type: 'line',
+          data: ['<?php echo implode("','",array_column($chart_data_all, 'ac')) ?>']
+      }
+  ]
+};
+chart_sub.setOption(option);
+
+$(window).resize(function(){
+  chart_sub.resize();
+});
+$(window).ready(function(){
+  chart_sub.resize();
+});
+</script>

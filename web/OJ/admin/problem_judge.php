@@ -1,5 +1,5 @@
 <?php require_once("../include/db_info.inc.php");
-if (!(isset($_SESSION['http_judge']))){
+if (!HAS_PRI("rejudge")){
 	echo "0";
 	exit(1);
 }
@@ -148,7 +148,32 @@ if(isset($_POST['update_solution'])){
 	$sql="UPDATE `problem` SET `submit`=(SELECT count(1) FROM `solution` WHERE `problem_id`=$pid) WHERE `problem_id`=$pid";
 	//echo $sql;
 	$mysqli->query($sql);
-	
+
+  //动态计算题目分值 start
+  // get user numbers
+  $sql = "SELECT count(*) as num FROM users WHERE solved>10";
+  $result = $mysqli->query($sql) or die($mysqli->error);
+  $row = $result->fetch_object();
+  $user_cnt = $row->num?$row->num:1;
+
+  // get AC user numbers
+  $sql = "SELECT count(DISTINCT user_id) AS num FROM solution WHERE result=4 AND problem_id='$pid'";
+  $result = $mysqli->query($sql) or die($mysqli->error);
+  $row = $result->fetch_object();
+  $solved_user = $row->num;
+
+  // get submit user numbers
+  $sql = "SELECT count(DISTINCT user_id) AS num FROM solution WHERE problem_id='$pid'";
+  $result = $mysqli->query($sql) or die($mysqli->error);
+  $row = $result->fetch_object();
+  $submit_user = $row->num;
+  $result->free();
+  // calculate scores
+  $scores = 100.0 * (1 - ($solved_user + $submit_user / 2.0) / $user_cnt);
+  if ($scores < 10) $scores = 10;
+  $sql = "UPDATE problem SET solved_user=".$solved_user.", submit_user=".$submit_user.",score=" . $scores . " WHERE problem_id='$pid'";
+  $mysqli->query($sql);
+  //动态计算题目分值 end
 	
 }else if(isset($_POST['checklogin'])){
 	echo "1";

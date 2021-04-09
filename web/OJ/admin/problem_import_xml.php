@@ -11,12 +11,10 @@ if (!HAS_PRI("inner_function")){
 		fwrite($fp,base64_decode($base64_encoded_img));
 		fclose($fp);
 	}
-require_once ("../include/db_info.inc.php");
-require_once ("../include/problem.php");
+require_once("../include/db_info.inc.php");
+require_once("../include/problem.php");
 require_once("../include/setlang.php");
 require_once("../include/const.inc.php");
-
-
 
 function import_addSample($id,$sample_id,$sample_input,$sample_output,$show_after,$spj){
 	
@@ -45,11 +43,6 @@ SQL;
 	
 	//echo "Sample data file Updated!<br>";
 }
-
-
-
-
-
 
 function getLang($language)
 {
@@ -84,20 +77,9 @@ function submitSolution($pid,$solution,$language)
 	$sql = "UPDATE `solution` SET `result`=1 WHERE `solution_id`='$insert_id'";
 	$mysqli->query($sql);
 }
-function fixData($value){
-	//去掉节点值<![CDATA[1]]>首尾位置上交错的换行符、tab，以及空格
-	while(substr($value,0,1)=="	" || substr($value,0,1)=="\r" || substr($value,0,1)=="\n" ||substr($value,0,1)==" "){
-		$value = trim($value, "	");//tab
-		$value = trim($value, " ");//space
-		$value = trim($value, "\r\n");
-		$value = trim($value, "\r");
-		$value = trim($value, "\n");		
-	}
-	return $value;
-}
 function getValue($Node, $TagName) {
 
-	return fixData($Node->$TagName);
+	return $Node->$TagName;
 }
 function getAttribute($Node, $TagName,$attribute) {
 	return $Node->children()->$TagName->attributes()->$attribute;
@@ -128,7 +110,7 @@ function mkpta($pid, $pends, $node)
 }
 function import_fps($tempfile)
 {
-	global $mysqli, $OJ_DATA, $OJ_SAE, $MSG_IMPORTED;
+	global $mysqli, $OJ_DATA, $OJ_SAE;
 	$xmlDoc=simplexml_load_file($tempfile, 'SimpleXMLElement', LIBXML_PARSEHUGE);
 	$searchNodes = $xmlDoc->xpath ( "/fps/item" );
 	$spid=0;
@@ -156,7 +138,7 @@ function import_fps($tempfile)
 		$spjcode = getValue ( $searchNode, 'spj' );
 		$spj = trim($spjcode)?1:0;
 		if(!hasProblem($title )){
-			$pid=addproblem($_POST["problemset"],$title, $time_limit, $memory_limit, $description, $input, $output, $hint, $MSG_IMPORTED, $source, $spj, $OJ_DATA);
+			$pid=addproblem($_POST["problemset"],$title, $time_limit, $memory_limit, $description, $input, $output, $hint, "", $source, $spj, $OJ_DATA);
 			if($spid==0) $spid=$pid;
 			echo $pid;
 			$basedir = "$OJ_DATA/$pid";
@@ -167,13 +149,13 @@ function import_fps($tempfile)
 				$testno = 0;
 				foreach ($samples as $Node) {
 					$sample_list[$testno]['show_after'] = $Node->attributes()['show_after'];
-					$sample_list[$testno]['input'] = fixData($Node);
+					$sample_list[$testno]['input'] = $Node;
 					$testno++;
 				}
 				$samples = $searchNode->children()->sample_output;
 				$testno = 0;
 				foreach ($samples as $Node) {
-					$sample_list[$testno]['output'] = fixData($Node);;
+					$sample_list[$testno]['output'] = $Node;
 					$testno++;
 				}
 				unset($samples);
@@ -190,13 +172,13 @@ function import_fps($tempfile)
 			
 				foreach($testinputs as $testNode){
 					//if($testNode->nodeValue)
-					mkdata($pid,"test".$testno++.".in",fixData($testNode),$OJ_DATA);
+					mkdata($pid,"test".$testno++.".in",$testNode,$OJ_DATA);
 				}
 				$testinputs=$searchNode->children()->test_output;
 				$testno=0;
 				foreach($testinputs as $testNode){
 					//if($testNode->nodeValue)
-					mkdata($pid,"test".$testno++.".out",fixData($testNode),$OJ_DATA);
+					mkdata($pid,"test".$testno++.".out",$testNode,$OJ_DATA);
 				}
        // }
 			$images=($searchNode->children()->img);
@@ -284,6 +266,12 @@ function get_extension($file)
 	$info = pathinfo($file);
 	return $info['extension'];
 }
+function fixData($file_content){
+	//去掉节点值中<![CDATA[]]>标签之外位置上的换行符、tab、空格以及其他无关数据，避免无意义的缩进
+	$file_content=preg_replace ( "/>([^>]*?)<\!\[CDATA/", "><![CDATA", $file_content );
+	$file_content=preg_replace ( "/\]\]>([^<]*?)<\//", "]]></", $file_content );
+	return $file_content;
+}
 ?>
 <title><?php echo $html_title . $MSG_IMPORT . $MSG_PROBLEM ?></title>
 <h1><?php echo $MSG_IMPORT . $MSG_PROBLEM ?></h1>
@@ -294,15 +282,13 @@ function get_extension($file)
 if ($_FILES["fps"]["error"] > 0) {
 	echo "Error: " . $_FILES["fps"]["error"] . "File size is too big, change in PHP.ini<br />";
 } else {
-	$tempfile = $_FILES["fps"]["tmp_name"];
 	// 	echo "Upload: " . $_FILES["fps"]["name"] . "<br />";
 	// 	echo "Type: " . $_FILES["fps"]["type"] . "<br />";
 	// 	echo "Size: " . ($_FILES["fps"]["size"] / 1024) . " KB<br />";
 	// 	echo "Stored in: " . $tempfile;
 	if(get_extension($_FILES["fps"]["name"])=="zip"){
 		echo "zip file , only fps/xml files in root dir are supported. / <b>只支持fps/xml文件存储在zip压缩包根目录下。</b><br>";
-		$resource = zip_open($tempfile);
-		$i = 1;
+		$resource = zip_open($_FILES["fps"]["tmp_name"]);
 		$tempfile=tempnam("/tmp", "fps");
 		while ($dir_resource = zip_read($resource)) {
 		   if (zip_entry_open($resource,$dir_resource)) {
@@ -311,17 +297,23 @@ if ($_FILES["fps"]["error"] > 0) {
 			if(!is_dir($file_name)){
 			  $file_size = zip_entry_filesize($dir_resource);
 			  $file_content = zip_entry_read($dir_resource,$file_size);
-			  file_put_contents($tempfile,$file_content);
+			  file_put_contents($tempfile,fixData($file_content));
 			  import_fps($tempfile);
 			}
 			zip_entry_close($dir_resource);
 		   }
 	   }
 	   zip_close($resource);
-	   unlink($_FILES ["fps"]["tmp_name"]);
 	 }else{
+		$tempfile=tempnam("/tmp", "fps");
+		$myfile=fopen($_FILES["fps"]["tmp_name"],"r");
+		$file_size=filesize($_FILES["fps"]["tmp_name"]);
+		$file_content=fread($myfile,$file_size);
+		file_put_contents($tempfile,fixData($file_content));
+		fclose($mylife);
 		import_fps($tempfile);
 	 }
+	 unlink($_FILES ["fps"]["tmp_name"]);
 	 echo "<br><input type='button' name='submit' value='返回' onclick='javascript:history.go(-1);' style='margin-bottom: 20px;'>";
 }
   require_once("admin-footer.php")

@@ -28,8 +28,11 @@ if(!(isset($_GET['cid']) && isset($_SESSION["m$cid"])||HAS_PRI("edit_contest")))
 }
 if (!isset($_GET['cid'])&& $clist=="") {
   echo "<script language=javascript>history.go(-1);</script>";
-    exit(1);
+  exit(1);
 }
+if (isset($_GET['isTop'])) {
+  $sql="UPDATE `contest` SET `isTop`=not `isTop` WHERE `contest_id`=$cid";
+} else {
 
 //20190826 批量改变状态
 if(isset($_POST['enable'])&&$clist){
@@ -41,10 +44,11 @@ if(isset($_POST['enable'])&&$clist){
 	$result=$mysqli->query($sql);
 	$row=$result->fetch_row();
 	$defunct = $row[0];
-    echo $defunct;
-    $result->free();
+  $result->free();
 	if ($defunct=='Y') $sql="UPDATE `contest` SET `defunct`='N' WHERE `contest_id`=$cid";
 	else $sql="UPDATE `contest` SET `defunct`='Y' WHERE `contest_id`=$cid";
+}
+
 }
 $mysqli->query($sql) or die($mysqli->error);
 ?>

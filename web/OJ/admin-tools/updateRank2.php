@@ -12,16 +12,18 @@
 <?php
 
 require_once('../include/db_info.inc.php');
-if (!HAS_PRI("inner_function")) {
+if (!HAS_PRI("edit_user_profile")) {
   echo "Permission denied!";
   exit(1);
 }
+$silent=false;
+if(isset($_GET['silent'])) $silent=true;
 // 获取解题数大于10的用户数量存入user_cnt_divisor
 $sql = "SELECT user_id FROM users WHERE solved>10";
 $result  = $mysqli->query($sql) or die($mysqli->error);
 if($result) $user_cnt_divisor = $result->num_rows;
 else $user_cnt_divisor = 1;
-echo $user_cnt_divisor."<br>";
+if(!$silent) echo $user_cnt_divisor."<br>";
 
 // 获取用户总量
 $sql = "SELECT user_id FROM users";
@@ -34,7 +36,7 @@ for ($i=0; $i<$user_cnt; $i++) {
     $user_info[$i] = $result_user->fetch_object();
 }
 $result_user->free();
-echo $user_cnt."<br>";
+if(!$silent) echo $user_cnt."<br>";
 
 // 获取hznuoj分数
 for ($i=0; $i<$user_cnt; $i++) {
@@ -91,10 +93,15 @@ for ($i=0; $i<$user_cnt; $i++) {
     // 更新用户信息
     $sql="UPDATE users SET solved=".$AC.",submit=".$Submit.",level='".$level."',strength=".$strength.",color='".$color."' WHERE user_id='".$user_mysql."'";
     $result=$mysqli->query($sql);
-    echo "<pre>$sql</pre>";
+    if(!$silent) echo "<pre>$sql</pre>";
     
 }
-
+if($silent){
+    echo "<script language='javascript'>";
+    echo "alert('update rank successfully!');";
+    echo "history.go(-1);</script>";
+    exit(0);
+}
 echo "update rank successfully!";
 
 ?>

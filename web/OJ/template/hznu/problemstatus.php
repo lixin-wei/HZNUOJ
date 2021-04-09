@@ -9,23 +9,24 @@
   **/
 ?>
 
-<?php
+<?php 
   $title=$MSG_PROBLEM.$MSG_STATISTICS;
  require_once "header.php";
- require_once $_SERVER["DOCUMENT_ROOT"]."/OJ/include/const.inc.php";
 ?>
 
 
 <div class="am-container" style="margin-top:10px;">
     <?php
     echo <<<HTML
-      <h1>$MSG_CodeArchive: <a href="/OJ/problem.php?id=$pid">$pid</a></h1>
+      <h1>$MSG_CodeArchive: <a href="./problem.php?id=$pid">$pid</a></h1>
       <hr/>
 HTML;
+  if(isset($OJ_AUTO_SHARE) && $OJ_AUTO_SHARE) {
     ?>
   <div style="color: grey;">
     <h4><?php echo $MSG_HELP_PROBLEM_STATISTICS ?></h4>
   </div>
+  <?php } ?>
   <div style="padding: 15px;">
     <div style="width: 350px; float: left;" class="am-text-center">
     <div class="am-panel-group">
@@ -133,11 +134,11 @@ HTML;
             echo "<td>";
             if(isset($row['is_temp_user'])) {
               echo<<<HTML
-              <a>{$row['user_id']}</a><sup title='this is a temporary user in a special contest'><a href="/OJ/contest.php?cid={$row['is_temp_user']}" style='color: grey;'>{$row['is_temp_user']}</a></sup>
+              <a>{$row['user_id']}</a><sup title='this is a temporary user in a special contest'><a href="./contest.php?cid={$row['is_temp_user']}" style='color: grey;'>{$row['is_temp_user']}</a></sup>
 HTML;
             }
             else {
-              echo "<a href=\"/OJ/userinfo.php?user={$row['user_id']}\" target='_blank'>{$row['user_id']}</a>";
+              echo "<a href=\"./userinfo.php?user={$row['user_id']}\" target='_blank'>{$row['user_id']}</a>";
             }
             echo "</td>";
             echo <<<HTML
@@ -166,7 +167,7 @@ HTML;
       </table>
         <?php
         function generate_page_url($page) {
-          $url = "/OJ/problemstatus.php?";
+          $url = "./problemstatus.php?";
           foreach ($_GET as $key => $value) {
             $key = htmlentities($key);
             $value = htmlentities($value);
@@ -196,7 +197,7 @@ HTML;
 </div>
 <?php require_once("footer.php")?>
 
-<script type="text/javascript" src="/OJ/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="./plugins/echarts/echarts.min.js"></script>
 <!-- <script src="//cdn.bootcss.com/echarts/3.2.3/echarts.min.js"></script> -->
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
@@ -214,7 +215,6 @@ option = {
             type: 'pie',
             radius: '65%',
             center: ['50%', '50%'],
-            roseType: 'radius',
             labelLine: {
                 smooth: 0.1,
                 length: 5,

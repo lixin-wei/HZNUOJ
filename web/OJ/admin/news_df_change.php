@@ -20,11 +20,11 @@
   $result=$mysqli->query($sql);
   $row=$result->fetch_row();
   $defunct=$row[0];
-  echo $defunct;
+  //echo $defunct;
   $result->free();
   if ($defunct=='Y') $sql="update `news` set `defunct`='N' where `news_id`=$id";
   else $sql="update `news` set `defunct`='Y' where `news_id`=$id";
-  echo $sql;
+  //echo $sql;
   $mysqli->query($sql) or die($mysqli->error);
 ?>
 <script language='javascript'>history.go(-1);</script>

@@ -13,12 +13,13 @@
 <?php
   include "header.php";
 ?>
+<link rel="stylesheet" href="./plugins/emailAutoComplete/emailAutoComplete.css"/>
 <div class="am-g">
   <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
     <h1 style="margin-top:40px; margin-bottom: 0px;"><?php echo $MSG_REG_INFO ?></h1>
     <hr>
     <form class="am-form am-form-horizontal" action="register.php" method="post"  data-am-validator >
-    <?php include_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/set_post_key.php"?>
+    <?php include_once "./include/set_post_key.php"?>
     <div class="am-form-group">
       <label for="username" class="am-u-sm-4 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_USER_ID ?>:
@@ -64,7 +65,7 @@
         <select name="class" data-am-selected="{searchBox: 1, maxHeight: 400, btnWidth:'300px'}">
         <?php 
           foreach ($classList as $c){
-              if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无处收留来我这'>\n";
+              if($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
               foreach ($c[1] as $cl){
                 echo "<option value='$cl'>$cl</option>\n";
               }
@@ -91,8 +92,8 @@
       <label for="email" class="am-u-sm-4 am-form-label">
         <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_EMAIL ?>:
       </label>
-      <div class="am-u-sm-8">
-        <input type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL?>"
+      <div class="am-u-sm-8 parentCls">
+        <input class="inputElem" type="email" id="email" value="" name="email" style="width:300px;" placeholder="<?php echo $MSG_EMAIL?>" autocomplete="off" 
           required/>
       </div>
     </div>
@@ -109,7 +110,7 @@
 		<div class="am-u-sm-1">
 		<input name="vcode" type='text' style="width:150px;" size=4 maxlength="4" autocomplete="off" required></input></div>
         <div class="am-u-sm-5">
-        <img style='width:100px;height:35px'alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
+        <img style='width:100px; height:35px; cursor:pointer;' alt="click to change" src='vcode.php' onclick="this.src='vcode.php#'+Math.random()"></div>
     </div>
     <?php } ?>
     <div class="am-from-group">
@@ -121,8 +122,6 @@
     </form>
   </div>
   <br>
-  <br>
-  <br>
-  <br>
 </div>
 <?php include "footer.php" ?>
+<script type="text/javascript" src="./plugins/emailAutoComplete/emailAutoComplete.js"></script>

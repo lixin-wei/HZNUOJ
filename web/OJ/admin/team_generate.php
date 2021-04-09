@@ -32,7 +32,7 @@ if (isset($_POST['add'])) {
     $err_cnt++;
   }
   if($prefix == "all"){ //前缀不能是all，会影响用户列表页面的筛选
-    $err_str = $err_str . "{$MSG_Grade}不能设定为“all”！\\n";
+    $err_str = $err_str . "{$MSG_Prefix}不能设定为“all”！\\n";
     $err_cnt++;
   }
   if (!$class) $class = "其它";
@@ -47,7 +47,7 @@ if (isset($_POST['add'])) {
     $err_cnt++;
   }
   if (!preg_match("/^[a-zA-Z0-9]{1,20}$/", $prefix)) {
-    $err_str = $err_str . "{$MSG_Grade}不合规，限20个以内的字母、数字！\\n";
+    $err_str = $err_str . "{$MSG_Prefix}不合规，限20个以内的字母、数字！\\n";
     $err_cnt++;
   }
   if (!preg_match("/^[1-9][0-9]{0,1}$/", $user_num)) {
@@ -135,7 +135,7 @@ if (isset($_POST['add'])) {
     <font size='2px' color='red'>
       使用指南：<br />
       <ol>
-        <li><?php echo $MSG_SCHOOL ?>、<?php echo $MSG_Class ?>和<?php echo $MSG_NICK ?>为选填项，其余必填，此处分<?php echo $MSG_Class ?>创建<?php echo $MSG_TEAM ?>是为了方便在contestranklist中分班级进行排名；</li>
+        <li><?php echo $MSG_SCHOOL ?>和<?php echo $MSG_NICK ?>为选填项，其余必填，此处分<?php echo $MSG_Class ?>创建<?php echo $MSG_TEAM ?>是为了方便在contestranklist比赛排名页中按班级进行排名；</li>
         <li><?php echo $MSG_TEAM ?>前缀名（Prefix）不能超过20个字符，此外若填入<?php echo $MSG_NICK ?>表示指定账号的nick</li>
         <li>若不小心创建了过多的账号，请登录管理员账号在 <?php echo $MSG_USER . $MSG_LIST ?>-><?php echo $MSG_TEAM ?> 中删除。</li>
       </ol>
@@ -154,14 +154,16 @@ if (isset($_POST['add'])) {
       ?>
         <div class="am-form-group">
           <label class="am-u-sm-4 am-form-label" style="white-space: nowrap;">
-            <?php echo $MSG_Class ?>:
+          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Class ?>:
           </label>
           <select name="class" class="selectpicker show-tick" data-live-search="true" data-width="250px" required>
             <?php
             foreach ($classList as $c) {
-              if ($c[0]) echo "<optgroup label='$c[0]级'>\n";
+              if ($c[0]) echo "<optgroup label='$c[0]级'>\n"; else echo "<optgroup label='无入学年份'>\n";
               foreach ($c[1] as $cl) {
-                echo "<option value='$cl'>$cl</option>\n";
+                echo "<option value='$cl' ";
+                if ($cl=="其它") echo "selected";
+                echo ">$cl</option>\n";
               }
               if ($c[0]) echo "</optgroup>\n";
             }
@@ -194,7 +196,7 @@ if (isset($_POST['add'])) {
       </div>
       <div class=" am-form-group">
         <label class="am-u-sm-4 am-form-label" style="white-space: nowrap;">
-          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Grade ?>:
+          <font color='red'><b>*</b></font>&nbsp;<?php echo $MSG_Prefix ?>:
         </label>
         <input type="text" value="" name="prefix" style="width:250px;" maxlength="20" placeholder="20位以内的前缀，只能字母/数字" pattern="^[a-zA-Z0-9]{1,20}$" required />
       </div>

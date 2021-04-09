@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/OJ/include/db_info.inc.php";
+require_once "../../include/db_info.inc.php";
 if(!session_id()) session_start();
 $json = array();
 if(isset($_SESSION['user_id'])){

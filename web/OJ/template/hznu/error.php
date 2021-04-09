@@ -6,7 +6,7 @@
 		$view_errors="You don't have the privilege to view this page!";
 	}
 ?>
-<div class="am-container">
+<div class="am-container" style="padding-top: 30px;">
 <h1 align="center"><?php echo $view_errors ?></h1>
 </div>
 <?php require_once("footer.php") ?>

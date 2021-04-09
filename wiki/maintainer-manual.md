@@ -24,6 +24,8 @@ set encoding=prc
 
 ### 切换Python版本到Python3
 
+**此条针对老版本判题机，2020年12月份升级到hustoj的最新版本判题机，Python默认版本设定为Python3**
+
 首先attach进入容器
 
 然后执行下面两条命令即可
@@ -34,19 +36,19 @@ set encoding=prc
 
 要切换回python2的话，执行`sudo update-alternatives --config python`，按照提示输入选择数字回车即可。
 
-运行完上面的命令后，Python的实际版本已经是3了，但是web的提交界面里显示的还是Python2，看着难受的话可以改一下。
+运行完上面的命令后，Python的实际版本已经是3了，提交页面选择Pyhton语言提交Python3代码判题即可。
 
-但是命令行界面下编辑文件得用vim，这个对新手很不友好，如果不会用可以百度下教程。
+### 班级列表
 
-`vim /var/www/web/OJ/include/const.inc.php`
+上一版本的班级列表是写死在代码里的，本次更新（2020年5月）已经更改由数据库管理，老版本HZNUOJ请运行源码文件夹下 `judger/install/update.sql` 更新数据库。
 
-在里面找到language_name数组，把里面的Python2改成Python3就可以了，或者干脆直接改成Python，以免后面切换又得改。
+本次关于班级列表功能的更新包括班级模式开关，以及以班级为单位的注册码、注册名额功能。具体参看源码文件夹下 `web/OJ/include/static.php` 中的 **$OJ_NEED_CLASSMODE** 和 **$OJ_REG_NEED_CONFIRM** 两个参数的注释说明
 
 ### 题集编辑
 
-题集编辑的界面目前也还没写好，下个版本会改进。
+题集编辑的界面（添加、删除、修改）本次更新中（2020年5月）已经添加，请运行源码文件夹下judger/install/update.sql更新数据库（index字段改为自动递增）
 
-你可以手动修改，存在mysql的jol数据库的problemset表里，自行添加即可。
+管理员需要inner_function权限，当题集下有题目存在时这个题集不能删除。
 
 ### 重启服务器
 
@@ -77,3 +79,21 @@ set encoding=prc
 然后重启程序
 
 `sudo judged`
+
+或者试试 `sudo pkill -9 judged && sudo judged`
+
+### 将hustoj升级为HZNUOJ（只迁移web部分，后台的判题机不变）
+
+1、下载源码，root权限运行`judger/install/hustoj2HZNUOJ.sh` , 请确保在目录 `judger/install/` 下执行hustoj2HZNUOJ.sh，本地登录或者ssh远程登录Ubuntu系统后，命令行下按顺序执行以下指令，按提示操作即可：
+
+   ```bash
+   admin@ubuntu16:~$ git clone https://github.com/wlx65003/HZNUOJ.git
+   admin@ubuntu16:~$ cd HZNUOJ/judger/install
+   admin@ubuntu16:~/HZNUOJ/judger/install$ sudo bash hustoj2HZNUOJ-ubuntu16+.sh
+   ```
+
+2、因HZNUOJ是hustoj的分支，判题机支持的编程语言和hustoj最新版会略有差异，请参照待升级hustoj的**const.inc.php**文件，人工编辑 `OJ/include/const.inc.php` 中$language_name数组（编程语言支持列表），以及$language_order数组（各个编程语言的显示顺序）。
+
+3、根据需要修改`OJ/include/static.php`中的$OJ_LANGMASK，调整开放的编程语言，具体参看[HZNUOJ配置手册](Configuration.md)或者配置文件中的注释。
+
+4、**注意**：Ubuntu14系统中php版本为PHP5，而HZNUOJ的web部分是基于PHP7，因此若待升级hustoj跑在Ubuntu14上，请先将PHP5升级至PHP7（未测试），或将系统更换或升级成Ubuntu16或Ubuntu18后，再升级成HZNUOJ系统。

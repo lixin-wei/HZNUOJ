@@ -1,6 +1,6 @@
 <?php
 if(!session_id()) @session_start();
- ini_set("display_errors","Off");
+require_once("./include/setlang.php");
 if (!isset($_SESSION['user_id'])){
         $view_errors= "<a href=./loginpage.php>$MSG_Login</a>";
         require("template/".$OJ_TEMPLATE."/error.php");
